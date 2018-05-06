@@ -4,6 +4,7 @@ using NATIVE;
 // namespace doesnt matter, its here just for clarity
 namespace RuntimeCSharpCompiler
 {
+    //string test = "aaaa";
 
     // it can even be the same as already existing type, what matters is its in different module
     //public class TestLoadScript : MonoBehaviour

@@ -20,7 +20,7 @@ namespace CSharpCompiler
 
         public ScriptBundleLoader(ISynchronizeInvoke synchronizedInvoke)
         {
-            this.synchronizedInvoke = synchronizedInvoke;
+            //this.synchronizedInvoke = synchronizedInvoke;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace CSharpCompiler
         {
             public Assembly assembly;
             IEnumerable<string> filePaths;
-            List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
+            //List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
             List<object> instances = new List<object>();
             ScriptBundleLoader manager;
 
@@ -61,8 +61,8 @@ namespace CSharpCompiler
 
                 manager.logWriter.WriteLine("loading " + string.Join(", ", filePaths.ToArray()));
                 CompileFiles();
-                CreateFileWatchers();
-                CreateNewInstances();
+                //CreateFileWatchers();
+                //CreateNewInstances();
             }
 
             void CompileFiles()
@@ -84,80 +84,80 @@ namespace CSharpCompiler
 
                 this.assembly = result.CompiledAssembly;
             }
-            void CreateFileWatchers()
-            {
-                foreach (var filePath in filePaths)
-                {
-                    FileSystemWatcher watcher = new FileSystemWatcher();
-                    fileSystemWatchers.Add(watcher);
-                    watcher.Path = Path.GetDirectoryName(filePath);
-                    /* Watch for changes in LastAccess and LastWrite times, and 
-                       the renaming of files or directories. */
-                    watcher.NotifyFilter = NotifyFilters.LastWrite
-                       | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-                    watcher.Filter = Path.GetFileName(filePath);
+            //void CreateFileWatchers()
+            //{
+            //    foreach (var filePath in filePaths)
+            //    {
+            //        FileSystemWatcher watcher = new FileSystemWatcher();
+            //        fileSystemWatchers.Add(watcher);
+            //        watcher.Path = Path.GetDirectoryName(filePath);
+            //        /* Watch for changes in LastAccess and LastWrite times, and 
+            //           the renaming of files or directories. */
+            //        watcher.NotifyFilter = NotifyFilters.LastWrite
+            //           | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            //        watcher.Filter = Path.GetFileName(filePath);
 
-                    // Add event handlers.
-                    watcher.Changed += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { Reload(recreateWatchers: false); });
-                    //watcher.Created += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { });
-                    watcher.Deleted += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { Reload(recreateWatchers: false); });
-                    watcher.Renamed += new RenamedEventHandler((object o, RenamedEventArgs a) =>
-                    {
-                        filePaths = filePaths.Select(x =>
-                        {
-                            if (x == a.OldFullPath) return a.FullPath;
-                            else return x;
-                        });
-                        Reload(recreateWatchers: true);
-                    });
-                    watcher.SynchronizingObject = manager.synchronizedInvoke;
-                    // Begin watching.
-                    watcher.EnableRaisingEvents = true;
-                }
-            }
-            void StopFileWatchers()
-            {
-                foreach (var w in fileSystemWatchers)
-                {
-                    w.EnableRaisingEvents = false;
-                    w.Dispose();
-                }
-                fileSystemWatchers.Clear();
-            }
-            void Reload(bool recreateWatchers = false)
-            {
-                manager.logWriter.WriteLine("reloading " + string.Join(", ", filePaths.ToArray()));
-                StopInstances();
-                CompileFiles();
-                CreateNewInstances();
-                if (recreateWatchers)
-                {
-                    StopFileWatchers();
-                    CreateFileWatchers();
-                }
-            }
-            void CreateNewInstances()
-            {
-                if (assembly == null) return;
-                foreach (var type in assembly.GetTypes())
-                {
-                    manager.synchronizedInvoke.Invoke((System.Action)(() =>
-                    {
-                        instances.Add(manager.createInstance(type));
-                    }), null);
-                }
-            }
-            void StopInstances()
-            {
-                foreach (var instance in instances)
-                {
-                    manager.synchronizedInvoke.Invoke((System.Action)(() =>
-                    {
-                        manager.destroyInstance(instance);
-                    }), null);
-                }
-                instances.Clear();
-            }
+            //        // Add event handlers.
+            //        watcher.Changed += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { Reload(recreateWatchers: false); });
+            //        //watcher.Created += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { });
+            //        watcher.Deleted += new FileSystemEventHandler((object o, FileSystemEventArgs a) => { Reload(recreateWatchers: false); });
+            //        watcher.Renamed += new RenamedEventHandler((object o, RenamedEventArgs a) =>
+            //        {
+            //            filePaths = filePaths.Select(x =>
+            //            {
+            //                if (x == a.OldFullPath) return a.FullPath;
+            //                else return x;
+            //            });
+            //            Reload(recreateWatchers: true);
+            //        });
+            //        watcher.SynchronizingObject = manager.synchronizedInvoke;
+            //        // Begin watching.
+            //        watcher.EnableRaisingEvents = true;
+            //    }
+            //}
+            //void StopFileWatchers()
+            //{
+            //    foreach (var w in fileSystemWatchers)
+            //    {
+            //        w.EnableRaisingEvents = false;
+            //        w.Dispose();
+            //    }
+            //    fileSystemWatchers.Clear();
+            //}
+            //void Reload(bool recreateWatchers = false)
+            //{
+            //    manager.logWriter.WriteLine("reloading " + string.Join(", ", filePaths.ToArray()));
+            //    StopInstances();
+            //    CompileFiles();
+            //    CreateNewInstances();
+            //    if (recreateWatchers)
+            //    {
+            //        StopFileWatchers();
+            //        CreateFileWatchers();
+            //    }
+            //}
+            //void CreateNewInstances()
+            //{
+            //    if (assembly == null) return;
+            //    foreach (var type in assembly.GetTypes())
+            //    {
+            //        manager.synchronizedInvoke.Invoke((System.Action)(() =>
+            //        {
+            //            instances.Add(manager.createInstance(type));
+            //        }), null);
+            //    }
+            //}
+            //void StopInstances()
+            //{
+            //    foreach (var instance in instances)
+            //    {
+            //        manager.synchronizedInvoke.Invoke((System.Action)(() =>
+            //        {
+            //            manager.destroyInstance(instance);
+            //        }), null);
+            //    }
+            //    instances.Clear();
+            //}
         }
 
 

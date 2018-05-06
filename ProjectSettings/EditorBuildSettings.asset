@@ -6,5 +6,29 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scene/testScene.unity
-    guid: 3f794fad388736a4bbabe8f62344facc
+    path: Assets/Scene/StartScene.unity
+    guid: f1be5c1776f57f64095668b0aeb2d1b9
+  - enabled: 1
+    path: Assets/Scene/InitScene.unity
+    guid: 9222e474845fc5a40a0d7b16215c005e
+  - enabled: 1
+    path: Assets/Scene/MainScene.unity
+    guid: f7d92aa7354dfeb47bf13e4a16d9519b
+  - enabled: 1
+    path: Assets/Scene/TianXScene.unity
+    guid: fa68d51c6fc47de49b9a85e6eda26964
+  - enabled: 1
+    path: Assets/Scene/ChaoTScene.unity
+    guid: 7ca7ab6ea658e214292593820a1c15df
+  - enabled: 1
+    path: Assets/Scene/HouGScene.unity
+    guid: 98ad8a82e1506a240a59f067a2e9e4e3
+  - enabled: 1
+    path: Assets/Scene/PolicyScene.unity
+    guid: 68ba2b06eb78043349093ac06cff5c65
+  - enabled: 1
+    path: Assets/Scene/StatistScene.unity
+    guid: 933925ef2d07f114d8e4ad5574d098e9
+  - enabled: 1
+    path: Assets/Scene/EndScene.unity
+    guid: 60a8c625e0a039e4db4edb5d0caa4e8d
