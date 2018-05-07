@@ -20,17 +20,6 @@ public interface ItfEvent
 
 public class GMEvent : ItfEvent
 {
-	public GMEvent(ItfLuaEvent itf, string param)
-	{
-		_isChecked = false;
-		this.itf = itf;
-		this.param = param;
-
-        optionDic = new Dictionary<string, EVENT_HD.Option>();
-
-        Debug.Log("Event Start:" + itf.title());
-	}
-
     public GMEvent(EVENT_HD ie, string param)
     {
         this._isChecked = false;
@@ -65,12 +54,12 @@ public class GMEvent : ItfEvent
 			List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>> ();
             foreach (EVENT_HD.Option option in optionDic.Values) 
 			{
-                if (!option.Precondition())
+                if (!option._funcPrecondition())
                 {
                     continue;
                 }
 
-                result.Add (new KeyValuePair<string, string> (option.GetType().Name, option.Desc ()));
+                result.Add (new KeyValuePair<string, string> (option.GetType().Name, option._funcDesc()));
 			}
 
 			return result.ToArray ();
@@ -121,16 +110,15 @@ public class GMEvent : ItfEvent
 	{
         _isChecked = true;
 
-        return optionDic[opKey].Selected(out ret);
+        return optionDic[opKey]._funcSelected(out ret);
        
     }
 
     public string History()
     {
-        return itf.historyrecord();
+        return ie._funcHistorRecord();
     }
 
-	private ItfLuaEvent itf;
     private EVENT_HD ie;
     private bool _isChecked;
     private Dictionary<string, EVENT_HD.Option> optionDic;
@@ -140,11 +128,6 @@ public class GMEvent : ItfEvent
 
 public class TableEvent : ItfEvent
 {
-    public TableEvent(List<List<object>> table)
-    {
-        _table = table;
-    }
-
     public string title
     { 
         get
@@ -236,7 +219,7 @@ public class EventManager
 			return;
 		}
             
-		nextEvent = new GMEvent (StreamManager.eventDictionary [key], param);
+		nextEvent = new GMEvent (StreamManager.eventDict [key], param);
 	}
 
     public void Insert(List<List<object>> table)
@@ -246,7 +229,7 @@ public class EventManager
             return;
         }
 
-        nextEvent = new TableEvent (table);
+        nextEvent = new TableEvent ();
     }
 
 	private ItfEvent nextEvent = null;

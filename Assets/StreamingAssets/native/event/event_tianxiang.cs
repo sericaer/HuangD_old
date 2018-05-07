@@ -5,21 +5,31 @@ namespace native
 {
     public class EVENT_TEST: EVENT_HD
     {
+        string title = "EVENT_TEST_TITLE";
+        string desc = "EVENT_TEST_DESC";
+
         bool Precondition()
         {
             return true;
         }
 
-        string title = "EVENT_TEST_TITLE";
-        string desc = "EVENT_TEST_DESC";
-
-        public class OPTION1 : Option
+        class OPTION1 : Option
         {
             string desc = "OPTION1";
-            
-            public override string Selected(out string ret)
+        }
+
+        class OPTION2 : Option
+        {
+            string desc = "OPTION2";
+        }
+
+        class OPTION3 : Option
+        {
+            string desc = "OPTION3";
+
+            string Selected(out string ret)
             {
-                Debug.Log("EVENT_TEST");
+                Debug.Log(((EVENT_TEST)OUTTER).title + desc);
                 ret = null;
                 return null;
             }

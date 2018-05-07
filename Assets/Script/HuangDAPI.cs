@@ -7,17 +7,36 @@ using UnityEngine;
 
 namespace HuangDAPI
 {
-    public abstract class EVENT_HD
+    public class ReflectBase
     {
-        public EVENT_HD()
+        public ReflectBase()
         {
             Type type = this.GetType();
+
             _subFields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
 
             _subMethods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
+        }
 
-            MethodInfo method = null;
+        protected T GetDelegateInSubEvent<T>(string delegateName, T defaultValue)
+        {
+            IEnumerable<MethodInfo> methodIEnum = _subMethods.Where(x => x.Name == delegateName);
+            if (methodIEnum.Count() == 0)
+            {
+                return defaultValue;
 
+            }
+            return (T)(object)Delegate.CreateDelegate(typeof(T), this, methodIEnum.First());
+        }
+
+        protected List<FieldInfo> _subFields;
+        protected List<MethodInfo> _subMethods;
+    }
+
+    public abstract class EVENT_HD : ReflectBase
+    {
+        public EVENT_HD()
+        {
             _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
                                                                   () =>  {  
                                                                     return false;  
@@ -42,54 +61,21 @@ namespace HuangDAPI
                                                                  });
 
             listOptions = new List<Option>();
-            foreach (Type innerType in type.GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
+
+            Type[] nestedTypes = this.GetType().GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public);
+
+            for(int i= nestedTypes.Count()-1; i>=0; i--)
             {
-                if (innerType.BaseType != typeof(EVENT_HD.Option))
+                if (nestedTypes[i].BaseType != typeof(EVENT_HD.Option))
                 {
                     continue;
                 }
 
-                listOptions.Add((EVENT_HD.Option)Activator.CreateInstance(innerType));
+                EVENT_HD.Option option = (EVENT_HD.Option)Activator.CreateInstance(nestedTypes[i]);
+                option.OUTTER = this;
+                listOptions.Add(option);
             }
         }
-
-        private T GetDelegateInSubEvent<T>(string delegateName, T defaultValue)
-        {
-            IEnumerable<MethodInfo> methodIEnum = _subMethods.Where(x => x.Name == delegateName);
-            if (methodIEnum.Count() == 0)
-            {
-                return defaultValue;
-
-            }
-            return (T)Delegate.CreateDelegate(typeof(T), this, methodIEnum.First());
-        }
-
-
-//        public bool Precondition()
-//        {
-//            return false;
-//        }
-//
-//        public virtual string Title()
-//        {
-//            FieldInfo titleField = _subFields.Where(x => x.Name == "title").First();
-//            return (string)titleField.GetValue(this);
-//        }
-//
-//        public virtual string Desc()
-//        {
-//            FieldInfo titleField = _subFields.Where(x => x.Name == "desc").First();
-//            return (string)titleField.GetValue(this);
-//        }
-//
-//        public virtual string HistorRecord()
-//        {
-//            return null;
-//        }
-//        public virtual void initialize(string param)
-//        {
-//
-//        }
 
         internal Option[] options
         {
@@ -99,23 +85,31 @@ namespace HuangDAPI
             }
         }
 
-        public abstract class Option
+        public abstract class Option : ReflectBase
         {
-            public virtual bool Precondition()
+            public Option()
             {
-                return true;
+                _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
+                                                                  () => {
+                                                                      return true;
+                                                                  });
+                _funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+                                                () => {
+                                                    FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
+                                                    return (string)field.GetValue(this);
+                                                });
+                _funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
+                                                (out string param) => {
+                                                    param = null;
+                                                    return null;
+                                                });
             }
 
-            public virtual string Desc()
-            {
-                Type type = this.GetType();
-                FieldInfo[] subFields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToArray();
-
-                FieldInfo titleField = subFields.Where(x => x.Name == "desc").First();
-                return (string)titleField.GetValue(this);
-            }
-
-            public abstract string Selected(out string ret);
+            public delegate string DelegateSelected(out string param);
+            public Func<bool> _funcPrecondition;
+            public Func<string> _funcDesc;
+            public DelegateSelected _funcSelected;
+            public EVENT_HD OUTTER;
         }
 
 
@@ -126,8 +120,7 @@ namespace HuangDAPI
         public Func<string> _funcHistorRecord;
         public Action<string> _funcInitialize;
 
-        private List<FieldInfo> _subFields;
-        private List<MethodInfo> _subMethods;
+
         private List<Option> listOptions;
 
 
