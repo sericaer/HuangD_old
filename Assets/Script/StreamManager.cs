@@ -70,13 +70,10 @@ public class StreamManager
 
 	private StreamManager ()
 	{
-        //luaenv = new LuaEnv();
-        //luaenv.DoString(script);
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
         csharpLoader.logWriter = new CSharpCompiler.UnityLogTextWriter();
 
         string[] subDir = Directory.GetDirectories(Application.streamingAssetsPath);
-
         foreach (string dirname in subDir)
         {
             string infoPath = dirname + "/info.txt";
@@ -87,10 +84,6 @@ public class StreamManager
 
             LoadMod(dirname);
         }
-
-  //      LoadName ();
-		//LoadEvent ();
-  //      LoadUIDesc();
 	}
 
     private void LoadMod(string path)

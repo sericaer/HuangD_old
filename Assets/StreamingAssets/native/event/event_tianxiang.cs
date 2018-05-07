@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace native
 {
-    public class EVENT_TEST : EVENT_HD
+    public class EVENT_TEST
     {
-        public override bool Precondition()
+        bool Precondition()
         {
             return true;
         }
@@ -17,13 +17,12 @@ namespace native
         {
             string desc = "OPTION1";
             
-            public override string Selected(out string ret)
+            string Selected(out string ret)
             {
                 Debug.Log("EVENT_TEST");
                 ret = null;
                 return null;
             }
         }
-
     }
 }

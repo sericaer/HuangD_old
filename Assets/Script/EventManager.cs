@@ -39,14 +39,14 @@ public class GMEvent : ItfEvent
 
         optionDic = new Dictionary<string, EVENT_HD.Option>();
 
-        Debug.Log("Event Start:" + ie.Title());
+        Debug.Log("Event Start:" + ie._funcTitle());
     }
 
     public string title
 	{
 		get 
 		{
-            return ie.Title();
+            return ie._funcTitle();
 		}
 	}
 
@@ -54,7 +54,7 @@ public class GMEvent : ItfEvent
 	{
 		get 
 		{
-            return ie.Desc();
+            return ie._funcDesc();
 		}
 	}
 
@@ -87,7 +87,7 @@ public class GMEvent : ItfEvent
 
     public void Initlize()
 	{
-		ie.initialize (param);
+        ie._funcInitialize (param);
 
         foreach(EVENT_HD.Option option in ie.options)
         {
@@ -204,9 +204,9 @@ public class EventManager
 	{  
 		foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
 		{
-            Debug.Log("percondition event"+ie.Title());
+            Debug.Log("percondition event"+ie._funcTitle());
 
-            if (!ie.Precondition())
+            if (!ie._funcPrecondition())
 			{
 				continue;
 			}
