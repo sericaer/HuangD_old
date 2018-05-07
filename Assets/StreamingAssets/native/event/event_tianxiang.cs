@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace native
 {
-    public class EVENT_TEST
+    public class EVENT_TEST: EVENT_HD
     {
         bool Precondition()
         {
@@ -17,7 +17,7 @@ namespace native
         {
             string desc = "OPTION1";
             
-            string Selected(out string ret)
+            public override string Selected(out string ret)
             {
                 Debug.Log("EVENT_TEST");
                 ret = null;

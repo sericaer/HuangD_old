@@ -14,21 +14,32 @@ namespace HuangDAPI
             Type type = this.GetType();
             _subFields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
 
+            _subMethods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
+
             MethodInfo method = null;
-            method = type.GetMethod("Precondition");
-            _funcPrecondition = (Func<bool>)Delegate.CreateDelegate(_funcPrecondition.GetType(), this, method);
- 
-            method = type.GetMethod("Title");
-            _funcTitle = (Func<string>)Delegate.CreateDelegate(_funcTitle.GetType(), this, method);
 
-            method = type.GetMethod("Desc");
-            _funcDesc =  (Func<string>)Delegate.CreateDelegate(_funcDesc.GetType(), this, method);
-
-            method = type.GetMethod("HistorRecord");
-            _funcHistorRecord =  (Func<string>)Delegate.CreateDelegate(_funcHistorRecord.GetType(), this, method);
-
-            method = type.GetMethod("Initialize");
-            _funcInitialize =  (Action<string>)Delegate.CreateDelegate(_funcInitialize.GetType(), this, method);
+            _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
+                                                                  () =>  {  
+                                                                    return false;  
+                                                                  });
+            _funcTitle = GetDelegateInSubEvent<Func<string>>("Title",
+                                                            () =>  {  
+                                                                FieldInfo field = _subFields.Where(x => x.Name == "title").First();
+                                                                return (string)field.GetValue(this);   
+                                                            });
+            _funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+                                                            () =>  {  
+                                                                FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
+                                                                return (string)field.GetValue(this);   
+                                                            });
+            _funcHistorRecord = GetDelegateInSubEvent<Func<string>>("HistorRecord",
+                                                                    () =>  {  
+                                                                        return null; 
+                                                                    });
+            _funcInitialize = GetDelegateInSubEvent<Action<string>>("Initialize",
+                                                                  (param) =>  {  
+                                                                    return; 
+                                                                 });
 
             listOptions = new List<Option>();
             foreach (Type innerType in type.GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
@@ -41,6 +52,18 @@ namespace HuangDAPI
                 listOptions.Add((EVENT_HD.Option)Activator.CreateInstance(innerType));
             }
         }
+
+        private T GetDelegateInSubEvent<T>(string delegateName, T defaultValue)
+        {
+            IEnumerable<MethodInfo> methodIEnum = _subMethods.Where(x => x.Name == delegateName);
+            if (methodIEnum.Count() == 0)
+            {
+                return defaultValue;
+
+            }
+            return (T)Delegate.CreateDelegate(typeof(T), this, methodIEnum.First());
+        }
+
 
 //        public bool Precondition()
 //        {
@@ -95,6 +118,8 @@ namespace HuangDAPI
             public abstract string Selected(out string ret);
         }
 
+
+
         public Func<bool> _funcPrecondition;
         public Func<string> _funcTitle;
         public Func<string> _funcDesc;
@@ -102,6 +127,7 @@ namespace HuangDAPI
         public Action<string> _funcInitialize;
 
         private List<FieldInfo> _subFields;
+        private List<MethodInfo> _subMethods;
         private List<Option> listOptions;
 
 
