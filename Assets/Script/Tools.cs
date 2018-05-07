@@ -187,78 +187,70 @@ namespace Tools
 		}
 	}
 
-//	public class Cvs
-//	{
-//		private Cvs(string filename)
-//		{
-//            this.filename = filename;
+    public class Cvs
+    {
+        public Cvs(string filename)
+        {
+            this.filename = filename;
 
-//			//读取csv二进制文件  
-//			TextAsset binAsset = Resources.Load (filename, typeof(TextAsset)) as TextAsset;         
+            //读取csv二进制文件  
+            TextAsset binAsset = Resources.Load(filename, typeof(TextAsset)) as TextAsset;
 
-//			//读取每一行的内容  
-//			string [] lineArray = binAsset.text.Split ('\r');  
+            //读取每一行的内容  
+            string[] lineArray = binAsset.text.Split('\r');
 
-//			m_colIndex = lineArray [0].Replace("ID,", "").Split (',');
+            m_colIndex = lineArray[0].Replace("ID,", "").Split(',');
 
-//			m_rowIndex = new string[lineArray.Length-1];
-//			m_ArrayData = new string [lineArray.Length-1][]; 
+            m_rowIndex = new string[lineArray.Length - 1];
+            m_ArrayData = new string[lineArray.Length - 1][];
 
-//			for(int i =0; i < lineArray.Length-1; i++)  
-//			{  
-//				string[] raw = lineArray[i+1].Split (',');  
-//				m_rowIndex[i] = raw [0];
+            for (int i = 0; i < lineArray.Length - 1; i++)
+            {
+                string[] raw = lineArray[i + 1].Split(',');
+                m_rowIndex[i] = raw[0];
 
-//				m_ArrayData [i] = new string[raw.Length - 1];
-//				Array.Copy (raw, 1, m_ArrayData[i], 0, raw.Length-1);
-//			}  
-//		}
+                m_ArrayData[i] = new string[raw.Length - 1];
+                Array.Copy(raw, 1, m_ArrayData[i], 0, raw.Length - 1);
+            }
+        }
 
-//		public string Get(string row, string column)
-//		{
-//            try
-//            {
-//#if NITY_EDITOR_OSX
-//			    return row+"_"+column;
-//#else
-//                int iRow = Array.FindIndex(m_rowIndex, s => s == row);
-//                int iCol = Array.FindIndex(m_colIndex, s => s == column);
+        public string Get(string row, string column)
+        {
+            try
+            {
+#if NITY_EDITOR_OSX
+			    return row+"_"+column;
+#else
+                int iRow = Array.FindIndex(m_rowIndex, s => s == row);
+                int iCol = Array.FindIndex(m_colIndex, s => s == column);
 
-//                return m_ArrayData[iRow][iCol];
-//#endif
-//            }
-//            catch(Exception e)
-//            {
-//                Debug.Log(filename + ":" + row + "," + column);
-//                throw;
-//            }
-//        }
+                return m_ArrayData[iRow][iCol];
+#endif
+            }
+            catch (Exception e)
+            {
+                Debug.Log(filename + ":" + row + "," + column);
+                throw;
+            }
+        }
 
-//		public string Get(string row)
-//		{
-//			return Get (row, "CHI");
-//		}
-			
-//        public int RowLength()
-//        {
-//            return m_rowIndex.Length;
-//        }
+        public string Get(string row)
+        {
+            return Get(row, "CHI");
+        }
 
-//		private string[] m_rowIndex;
-//		private string[] m_colIndex;
-//		private string[][] m_ArrayData;
-//        private string filename;
+        public int RowLength()
+        {
+            return m_rowIndex.Length;
+        }
 
-//		public static Cvs Xings = new Cvs("text/xingshi");
-//		public static Cvs Mingz = new Cvs("text/mingzi");
-//		public static Cvs UiDesc = new Tools.Cvs ("text/uidesc");
-//		public static Cvs MsgDesc = new Tools.Cvs ("text/msgdef");
-//		public static Cvs Guohao = new Tools.Cvs ("text/guohao");
-//        public static Cvs Nianhao1 = new Tools.Cvs("text/nianhao1");
-//        public static Cvs Nianhao2 = new Tools.Cvs ("text/nianhao2");
-//    }
-		
-	[Serializable]  
+        private string[] m_rowIndex;
+        private string[] m_colIndex;
+        private string[][] m_ArrayData;
+        private string filename;
+    }
+
+    [Serializable]  
 	public class SerialList<T>  
 	{  
 		[SerializeField]  

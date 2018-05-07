@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace native
 {
-    public class EVENT_TEST: EVENT_HD
+    public partial class EVENT_TEST: EVENT_HD
     {
         string title = "EVENT_TEST_TITLE";
         string desc = "EVENT_TEST_DESC";

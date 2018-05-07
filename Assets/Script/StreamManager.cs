@@ -39,9 +39,6 @@ public class StreamManager
 		}
 
         internal List<string> names = new List<string>();
-
-        //internal List<string> first = new List<string> ();
-        //internal List<string> second = new List<string> ();
     }
 
 
@@ -88,7 +85,13 @@ public class StreamManager
 
     private void LoadMod(string path)
     {
-        string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+        string[] csvNames = Directory.GetFiles(path + "/static", "*.csv");
+        foreach(string filename in csvNames)
+        {
+            cvsDict.Add(filename, new Cvs(filename));
+        }
+
+        string[] fileName = Directory.GetFiles(path, "*.cs");
         CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileName);
 
         Type[] types = bd.assembly.GetTypes();
@@ -191,6 +194,7 @@ public class StreamManager
     public  static Dictionary<string, string> UIDictionary = new Dictionary<string, string>();
 
     public static Dictionary<string, EVENT_HD> eventDict = new Dictionary<string, EVENT_HD>();
+    public static Dictionary<string, Tools.Cvs> cvsDict = new Dictionary<string, Cvs>();
 
 #pragma warning disable 414
     private static StreamManager wInst = new StreamManager();
