@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Mono.CSharp;
 
 namespace Tools
 {
@@ -207,7 +208,7 @@ namespace Tools
 						continue;
 					}
 
-					result.Add(Tuple.Create(raw[0], colum[j]), raw[j]);
+					result.Add(new Tuple<string, string>(raw[0], colum[j]), raw[j]);
 				}            
 			}
 

@@ -9,6 +9,11 @@ public partial class MyGame
     [Serializable]
     public class Person
     {
+        public Person()
+        {
+            throw new NotImplementedException();
+        }
+
         public Person(Boolean isMale) : this(isMale, Tools.Probability.GetRandomNum(10, 90))
         {
             

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace native
 {
-    public partial class EVENT_YHSX_START: EVENT_HD
+    public class EVENT_YHSX_START: EVENT_HD
     {
         bool Precondition()
         {
@@ -12,40 +12,58 @@ namespace native
 			return false;
         }
 
-		class OPTION1 : Option
+        class OPTION1 : Option
 		{
-			string Selected(out string param)
+			void Selected(ref string nxtEvent, ref string param)
 			{
 				GMData.GlobalFlag.Set("yhsx");
 
 				param = "1";
-				return "EVENT_STAB_DEC";
+                nxtEvent = "EVENT_STAB_DEC";
 			}
 		}
     }
 
-	public partial class EVENT_YHSX_END : EVENT_HD
+	public class EVENT_YHSX_END : EVENT_HD
     {
         bool Precondition()
         {
-            if (GMData.GlobalFlag.Get("yhsx") != null)
+            if (GMData.GlobalFlag.Get("yhsx") == null)
+                return false;
+            if (Probability.IsProbOccur(0.08))
+                return true;
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.GlobalFlag.Clear("yhsx");
+            }
+        }
+    }
+
+    public class EVENT_YHSX_SOLUTION : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.GlobalFlag.Get("yhsx") == "" && GMData.GetPerson(Selector.ByOffice("JQ1")) != null)
                 return true;
             return false;
         }
 
         class OPTION1 : Option
         {
-            string Selected(out string param)
+            void Selected(ref string nxtEvent, ref string param)
             {
                 GMData.GlobalFlag.Clear("yhsx");
-
-                param = "1";
-				return null;
             }
         }
     }
 
-	public partial class EVENT_STAB_DEC : EVENT_HD
+    public class EVENT_STAB_DEC : EVENT_HD
     {
         bool Precondition()
         {
@@ -59,11 +77,9 @@ namespace native
 
         class OPTION1 : Option
         {
-            string Selected(out string param)
+            void Selected(ref string nxtEvent, ref string param)
             {
-                //GMData.globalFlag.Set("yhsx");
-                param = "1";
-				return null;
+                GMData.Stability--;
             }
         }
     }

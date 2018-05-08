@@ -7,7 +7,26 @@ using UnityEngine;
 
 namespace HuangDAPI
 {
-	public class ReflectBase
+    public class Probability : Tools.Probability
+    {
+
+    }
+    public class Person : MyGame.Person
+    {
+        
+    }
+
+    public class Selector : MyGame.Selector
+    {
+
+    }
+
+    public class BySelector : MyGame.BySelector
+    {
+
+    }
+
+    public class ReflectBase
 	{
 		public ReflectBase()
 		{
@@ -112,14 +131,12 @@ namespace HuangDAPI
 													return (string)field.GetValue(this);
 												});
 				_funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
-												(out string param) =>
+												(ref string nxtEvent, ref string param) =>
 												{
-													param = null;
-													return null;
 												});
 			}
 
-			public delegate string DelegateSelected(out string param);
+			public delegate void DelegateSelected(ref string nxtEvent, ref string param);
 
 			public Func<bool> _funcPrecondition;
 			public Func<string> _funcDesc;
@@ -146,10 +163,14 @@ namespace HuangDAPI
 
 	public class GMData
 	{
-		public class GlobalFlag
-		{
+        public Person GetPerson(BySelector selector)
+        {
+            Person[] p = (Person[])MyGame.Inst.GetPerson(selector);
+            return p[Probability.GetRandomNum(0, p.Length - 1)];
+        }
 
-            
+        public class GlobalFlag
+		{
 			public static Func<string, string> Get = MyGame.Inst.GetFlag;
 			public static void Set(string name, string value = "")
 			{
@@ -158,5 +179,19 @@ namespace HuangDAPI
 
 			public static Action<string> Clear = MyGame.Inst.ClearFlag;
 		}
-	}
+
+        public static int Stability
+        {
+            get
+            {
+                return MyGame.Inst.Stability;
+            }
+            set
+            {
+                MyGame.Inst.Stability = value;
+            }
+        }
+    }
+
+    
 }

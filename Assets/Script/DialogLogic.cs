@@ -23,7 +23,7 @@ public class DialogLogic : MonoBehaviour
 
 
 
-    public delegate object DelegateProcess (string op, out string nextParam);
+    public delegate void DelegateProcess (string op, ref string nextEvent, ref string nextParam);
     public delegate string DelegateHistory ();
 
     public static GameObject newDialogInstace(string title, object content, KeyValuePair<string, string>[] options, DelegateProcess delegateProcess, DelegateHistory delegateHistory)
@@ -90,30 +90,10 @@ public class DialogLogic : MonoBehaviour
     public void OnEventButton(Button btn)
     {
         Debug.Log("Event:" + title + ", OnButton:" + btn.name);
-       
-        object ret = delegateProcess (optionName2KeyDict[btn.name], out _nexparam);
+
         _result = "";
-
-        if (ret == null)
-        {
-            return;
-        }
-
-        if (ret.GetType () == typeof(string)) 
-        {
-            _result = (string)ret;
-        } 
-        //else if(ret.GetType () == typeof(LuaTable))
-        //{
-        //    _table = new List<List<object>>();
-
-        //    List<object> list = ((XLua.LuaTable)ret).Cast<List<object>>();
-        //    foreach(object o in list)
-        //    {
-        //        _table.Add(((XLua.LuaTable)o).Cast<List<object>>());
-        //    }
-        //}
-                    
+        delegateProcess (optionName2KeyDict[btn.name], ref _result, ref _nexparam);
+          
         _historyrecord = delegateHistory();
     }
 

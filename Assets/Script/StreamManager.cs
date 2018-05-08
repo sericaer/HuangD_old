@@ -4,10 +4,10 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tools;
 using System.Linq;
 
 using HuangDAPI;
+using Mono.CSharp;
 
 public class StreamManager
 {
@@ -76,7 +76,7 @@ public class StreamManager
         public void AddCSVFile(string path)
         {
 			var newdict = Tools.CSV.Anaylze(path);
-			dict = dict.Concat(newdict).ToDictionary(k => k.Key, v => v.Value);
+			dict = dict.Union(newdict).ToDictionary(k => k.Key, v => v.Value);
         }
 
 		public string Get(string key)
@@ -84,7 +84,12 @@ public class StreamManager
 #if UNITY_EDITOR_OSX
 			return key;
 #endif
-			return dict[Tuple.Create(key, envLang)];
+            if (!dict.ContainsKey(new Tuple<string, string>(key, envLang)))
+            {
+                return key;
+            }
+
+			return dict[new Tuple<string, string>(key, envLang)];
 		}
 
 		private string envLang;

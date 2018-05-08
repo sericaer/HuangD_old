@@ -13,7 +13,7 @@ public interface ItfEvent
     bool isChecked { get; }
 
     void Initlize();
-    object SelectOption(string opKey, out string ret);
+    void SelectOption(string opKey, ref string nxtEvent, ref string ret);
     string History();
 
 }
@@ -106,11 +106,11 @@ public class GMEvent : ItfEvent
 		//}
 	}
 
-    public object SelectOption(string opKey, out string ret)
+    public void SelectOption(string opKey, ref string nxtEvent, ref string ret)
 	{
         _isChecked = true;
 
-        return optionDic[opKey]._funcSelected(out ret);
+        optionDic[opKey]._funcSelected(ref nxtEvent, ref ret);
        
     }
 
@@ -165,11 +165,9 @@ public class TableEvent : ItfEvent
     {
     }
 
-    public object SelectOption(string opKey, out string ret)
+    public void  SelectOption(string opKey, ref string nxtEvent, ref string ret)
     {
         _isChecked = true;
-        ret = "";
-        return null;
     }
 
     public string History()

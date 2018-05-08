@@ -9,7 +9,10 @@ public partial class MyGame
 {
 	public class Selector
 	{
-        private Selector(){ }
+        public Selector()
+        {
+            throw new NotImplementedException();
+        }
 
         public  static BySelector ByPerson(params string[] key)
 		{
