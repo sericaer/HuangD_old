@@ -187,7 +187,7 @@ public partial class MyGame
         return lstResult.ToArray ();
     }
 
-    public void   SetFlag(string key, string value)
+    public void   SetFlag(string key, string value="")
     {
         DictFlag[key] = value;
     }

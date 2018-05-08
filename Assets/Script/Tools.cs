@@ -187,7 +187,7 @@ namespace Tools
 		}
 	}
 
-    public class Cvs
+    public class CSV
     {
 		public static Dictionary<Tuple<string, string>, string> Anaylze(string filename)
 		{
@@ -202,6 +202,11 @@ namespace Tools
                 
 				for (int j = 1; j < raw.Length; j++)
 				{
+					if(raw[j].Length == 0)
+					{
+						continue;
+					}
+
 					result.Add(Tuple.Create(raw[0], colum[j]), raw[j]);
 				}            
 			}

@@ -75,12 +75,15 @@ public class StreamManager
 
         public void AddCSVFile(string path)
         {
-			var newdict = Tools.Cvs.Anaylze(path);
+			var newdict = Tools.CSV.Anaylze(path);
 			dict = dict.Concat(newdict).ToDictionary(k => k.Key, v => v.Value);
         }
 
 		public string Get(string key)
 		{
+#if UNITY_EDITOR_OSX
+			return key;
+#endif
 			return dict[Tuple.Create(key, envLang)];
 		}
 

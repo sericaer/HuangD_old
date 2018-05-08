@@ -3,35 +3,67 @@ using UnityEngine;
 
 namespace native
 {
-    public partial class EVENT_TEST: EVENT_HD
+    public partial class EVENT_YHSX_START: EVENT_HD
     {
-        //string title = "EVENT_TEST_TITLE";
-        //string desc = "EVENT_TEST_DESC";
-
         bool Precondition()
         {
-            return true;
+			if(GMData.GlobalFlag.Get("yhsx") == null)
+                return true;
+			return false;
+        }
+
+		class OPTION1 : Option
+		{
+			string Selected(out string param)
+			{
+				GMData.GlobalFlag.Set("yhsx");
+
+				param = "1";
+				return "EVENT_STAB_DEC";
+			}
+		}
+    }
+
+	public partial class EVENT_YHSX_END : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.GlobalFlag.Get("yhsx") != null)
+                return true;
+            return false;
         }
 
         class OPTION1 : Option
         {
-            //string desc = "OPTION1";
-        }
-
-        class OPTION2 : Option
-        {
-            //string desc = "OPTION2";
-        }
-
-        class OPTION3 : Option
-        {
-            //string desc = "OPTION3";
-
-            string Selected(out string ret)
+            string Selected(out string param)
             {
-                Debug.Log(((EVENT_TEST)OUTTER).title + desc);
-                ret = null;
-                return null;
+                GMData.GlobalFlag.Clear("yhsx");
+
+                param = "1";
+				return null;
+            }
+        }
+    }
+
+	public partial class EVENT_STAB_DEC : EVENT_HD
+    {
+        bool Precondition()
+        {
+			return false;
+        }
+
+		void Initialize(string param)
+		{
+			
+		}
+
+        class OPTION1 : Option
+        {
+            string Selected(out string param)
+            {
+                //GMData.globalFlag.Set("yhsx");
+                param = "1";
+				return null;
             }
         }
     }
