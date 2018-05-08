@@ -18,6 +18,7 @@ namespace HuangDAPI
             _subMethods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
         }
 
+
         protected T GetDelegateInSubEvent<T>(string delegateName, T defaultValue)
         {
             IEnumerable<MethodInfo> methodIEnum = _subMethods.Where(x => x.Name == delegateName);
@@ -37,6 +38,9 @@ namespace HuangDAPI
     {
         public EVENT_HD()
         {
+			title = StreamManager.uiDesc.Get(this.GetType().Name + "_TITLE");
+			desc  = StreamManager.uiDesc.Get(this.GetType().Name + "_DESC");
+
             _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
                                                                   () =>  {  
                                                                     return false;  
@@ -71,8 +75,8 @@ namespace HuangDAPI
                     continue;
                 }
 
-                EVENT_HD.Option option = (EVENT_HD.Option)Activator.CreateInstance(nestedTypes[i]);
-                option.OUTTER = this;
+				EVENT_HD.Option.OUTTER = this;
+				EVENT_HD.Option option = (EVENT_HD.Option)Activator.CreateInstance(nestedTypes[i]);
                 listOptions.Add(option);
             }
         }
@@ -87,8 +91,10 @@ namespace HuangDAPI
 
         public abstract class Option : ReflectBase
         {
-            public Option()
+			public Option()
             {
+				desc  = StreamManager.uiDesc.Get(OUTTER.GetType().Name + "_" + this.GetType().Name + "_DESC");
+
                 _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
                                                                   () => {
                                                                       return true;
@@ -106,10 +112,14 @@ namespace HuangDAPI
             }
 
             public delegate string DelegateSelected(out string param);
+
             public Func<bool> _funcPrecondition;
             public Func<string> _funcDesc;
             public DelegateSelected _funcSelected;
-            public EVENT_HD OUTTER;
+
+			public static EVENT_HD OUTTER;
+
+            protected string desc;
         }
 
 
@@ -120,6 +130,8 @@ namespace HuangDAPI
         public Func<string> _funcHistorRecord;
         public Action<string> _funcInitialize;
 
+        protected string title;
+        protected string desc;
 
         private List<Option> listOptions;
 

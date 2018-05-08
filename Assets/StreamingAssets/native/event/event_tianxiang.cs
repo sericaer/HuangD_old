@@ -5,8 +5,8 @@ namespace native
 {
     public partial class EVENT_TEST: EVENT_HD
     {
-        string title = "EVENT_TEST_TITLE";
-        string desc = "EVENT_TEST_DESC";
+        //string title = "EVENT_TEST_TITLE";
+        //string desc = "EVENT_TEST_DESC";
 
         bool Precondition()
         {
@@ -15,17 +15,17 @@ namespace native
 
         class OPTION1 : Option
         {
-            string desc = "OPTION1";
+            //string desc = "OPTION1";
         }
 
         class OPTION2 : Option
         {
-            string desc = "OPTION2";
+            //string desc = "OPTION2";
         }
 
         class OPTION3 : Option
         {
-            string desc = "OPTION3";
+            //string desc = "OPTION3";
 
             string Selected(out string ret)
             {

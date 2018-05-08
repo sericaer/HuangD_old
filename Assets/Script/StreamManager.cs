@@ -65,6 +65,29 @@ public class StreamManager
 		internal List<string> givenfemale = new List<string> ();
 	}
 
+    public class UIDesc
+    {
+        public UIDesc(string envLang)
+        {
+			this.envLang = envLang;
+			dict = new Dictionary<Tuple<string, string>, string>();
+        }
+
+        public void AddCSVFile(string path)
+        {
+			var newdict = Tools.Cvs.Anaylze(path);
+			dict = dict.Concat(newdict).ToDictionary(k => k.Key, v => v.Value);
+        }
+
+		public string Get(string key)
+		{
+			return dict[Tuple.Create(key, envLang)];
+		}
+
+		private string envLang;
+		private Dictionary<Tuple<string, string>, string> dict;
+    }
+
 	private StreamManager ()
 	{
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
@@ -82,16 +105,16 @@ public class StreamManager
             LoadMod(dirname);
         }
 	}
-
+    
     private void LoadMod(string path)
     {
         string[] csvNames = Directory.GetFiles(path + "/static", "*.csv");
         foreach(string filename in csvNames)
         {
-            cvsDict.Add(filename, new Cvs(filename));
+            uiDesc.AddCSVFile(filename);
         }
 
-        string[] fileName = Directory.GetFiles(path, "*.cs");
+		string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
         CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileName);
 
         Type[] types = bd.assembly.GetTypes();
@@ -194,7 +217,9 @@ public class StreamManager
     public  static Dictionary<string, string> UIDictionary = new Dictionary<string, string>();
 
     public static Dictionary<string, EVENT_HD> eventDict = new Dictionary<string, EVENT_HD>();
-    public static Dictionary<string, Tools.Cvs> cvsDict = new Dictionary<string, Cvs>();
+    public static Dictionary<string, string> cvsDict = new Dictionary<string, string>();
+
+    public static UIDesc uiDesc = new UIDesc("CHI");
 
 #pragma warning disable 414
     private static StreamManager wInst = new StreamManager();

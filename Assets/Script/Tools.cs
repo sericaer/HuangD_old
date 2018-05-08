@@ -189,65 +189,85 @@ namespace Tools
 
     public class Cvs
     {
-        public Cvs(string filename)
-        {
-            this.filename = filename;
+		public static Dictionary<Tuple<string, string>, string> Anaylze(string filename)
+		{
+			Dictionary<Tuple<string, string>, string> result = new Dictionary<Tuple<string, string>, string>();
+                     
+			string[] lineArray = System.IO.File.ReadAllLines(filename);
+			string[] colum = lineArray[0].Split(',');
 
-            //读取csv二进制文件  
-            TextAsset binAsset = Resources.Load(filename, typeof(TextAsset)) as TextAsset;
+			for (int i = 1; i < lineArray.Length; i++)
+			{
+				string[] raw = lineArray[i].Split(',');
+                
+				for (int j = 1; j < raw.Length; j++)
+				{
+					result.Add(Tuple.Create(raw[0], colum[j]), raw[j]);
+				}            
+			}
 
-            //读取每一行的内容  
-            string[] lineArray = binAsset.text.Split('\r');
+			return result;
+		}
 
-            m_colIndex = lineArray[0].Replace("ID,", "").Split(',');
+        //public Cvs(string filename)
+        //{
+        //    /this.filename = filename;
 
-            m_rowIndex = new string[lineArray.Length - 1];
-            m_ArrayData = new string[lineArray.Length - 1][];
+        //    //读取csv二进制文件  
+        //    TextAsset binAsset = Resources.Load(filename, typeof(TextAsset)) as TextAsset;
 
-            for (int i = 0; i < lineArray.Length - 1; i++)
-            {
-                string[] raw = lineArray[i + 1].Split(',');
-                m_rowIndex[i] = raw[0];
+        //    //读取每一行的内容  
+        //    string[] lineArray = binAsset.text.Split('\r');
 
-                m_ArrayData[i] = new string[raw.Length - 1];
-                Array.Copy(raw, 1, m_ArrayData[i], 0, raw.Length - 1);
-            }
-        }
+        //    m_colIndex = lineArray[0].Replace("ID,", "").Split(',');
 
-        public string Get(string row, string column)
-        {
-            try
-            {
-#if NITY_EDITOR_OSX
-			    return row+"_"+column;
-#else
-                int iRow = Array.FindIndex(m_rowIndex, s => s == row);
-                int iCol = Array.FindIndex(m_colIndex, s => s == column);
+        //    m_rowIndex = new string[lineArray.Length - 1];
+        //    m_ArrayData = new string[lineArray.Length - 1][];
 
-                return m_ArrayData[iRow][iCol];
-#endif
-            }
-            catch (Exception e)
-            {
-                Debug.Log(filename + ":" + row + "," + column);
-                throw;
-            }
-        }
+        //    for (int i = 0; i < lineArray.Length - 1; i++)
+        //    {
+        //        string[] raw = lineArray[i + 1].Split(',');
+        //        m_rowIndex[i] = raw[0];
 
-        public string Get(string row)
-        {
-            return Get(row, "CHI");
-        }
+        //        m_ArrayData[i] = new string[raw.Length - 1];
+        //        Array.Copy(raw, 1, m_ArrayData[i], 0, raw.Length - 1);
+        //    }
+        //}
 
-        public int RowLength()
-        {
-            return m_rowIndex.Length;
-        }
+//        public string Get(string row, string column)
+//        {
+//            try
+//            {
+//#if NITY_EDITOR_OSX
+//			    return row+"_"+column;
+//#else
+//                int iRow = Array.FindIndex(m_rowIndex, s => s == row);
+//                int iCol = Array.FindIndex(m_colIndex, s => s == column);
 
-        private string[] m_rowIndex;
-        private string[] m_colIndex;
-        private string[][] m_ArrayData;
-        private string filename;
+//                return m_ArrayData[iRow][iCol];
+//#endif
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.Log(filename + ":" + row + "," + column);
+        //        throw;
+        //    }
+        //}
+
+        //public string Get(string row)
+        //{
+        //    return Get(row, "CHI");
+        //}
+
+        //public int RowLength()
+        //{
+        //    return m_rowIndex.Length;
+        //}
+
+        //private string[] m_rowIndex;
+        //private string[] m_colIndex;
+        //private string[][] m_ArrayData;
+        //private string filename;
     }
 
     [Serializable]  
