@@ -62,7 +62,14 @@ namespace HuangDAPI
 		string name { get; }
 	}
 
-	public interface BySelector
+    public interface Status
+    {
+        string name { get; }
+        string desc { get; }
+        object param { get; }
+    }
+
+    public interface BySelector
     {
 		BySelector ByPerson(params string[] key);
 		BySelector ByOffice(params string[] key);
@@ -238,6 +245,48 @@ namespace HuangDAPI
         {
 			Faction[] f = GetFactions(selector);
 			return f[Probability.GetRandomNum(0, f.Length - 1)];
+        }
+
+        public class TianWenStatus
+        {
+
+            public static void Add(string name)
+            {
+                MyGame.Inst.listStatus.Add(new MyGame.TWStatus(name));
+            }
+
+            public static void Remove(string name)
+            {
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                if (index == -1)
+                {
+                    return;
+                }
+
+                MyGame.Inst.listStatus.RemoveAt(index);
+            }
+
+            public static bool Contains(string name)
+            {
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                if(index == -1)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public static Status Get(string name)
+            {
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                if (index == -1)
+                {
+                    throw new ArgumentException(string.Format("can not find %s in status list", name));
+                }
+
+                return MyGame.Inst.listStatus[index];
+            }
         }
 
         public class GlobalFlag

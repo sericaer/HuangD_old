@@ -19,7 +19,7 @@ namespace native
 				GMData.TianWenStatus.Add("YHSX");
 
 				param = "1";
-                nxtEvent = "EVENT_STAB_DEC";
+                //nxtEvent = "EVENT_STAB_DEC";
 			}
 		}
     }
@@ -28,7 +28,7 @@ namespace native
     {
         bool Precondition()
         {
-			if (GMData.TianWenStatus.Contains("YHSX"))
+			if (!GMData.TianWenStatus.Contains("YHSX"))
                 return false; 
             if (Probability.IsProbOccur(0.08))
                 return true;

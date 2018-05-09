@@ -10,6 +10,9 @@ using Tools;
 using System.Linq;
 
 [Serializable]
+public class StatusList : SerialList<HuangDAPI.Status> { };
+
+[Serializable]
 public partial class MyGame
 {
 	[NonSerialized]
@@ -380,8 +383,47 @@ public partial class MyGame
 	public string yearName;
 	public GameTime date;
 
+    public class TWStatus : HuangDAPI.Status
+    {
+        public TWStatus(string name)
+        {
+            _name = name;
+        }
+
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+        }
+
+        public object param
+        {
+            get
+            {
+                return _param;
+            }
+        }
+
+        public string desc
+        {
+            get
+            {
+                return StreamManager.uiDesc.Get("STATUS_" + name);
+            }
+        }
+
+
+        private string _name;
+        private object _param;
+    }
+
+    public List<HuangDAPI.Status> listStatus = new List<HuangDAPI.Status>();
+
     [SerializeField]
     private StringSerialDictionary DictFlag;
+
 
     [SerializeField]
     private string historyRecord;

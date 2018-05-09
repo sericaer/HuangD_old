@@ -22,31 +22,43 @@ public class MainScene : MonoBehaviour
         btnEmp = GameObject.Find("Canvas/PanelTop/BtnEmp");
         btnEmpDetail = GameObject.Find("Canvas/PanelTop/BtnEmp/BtnEmpDetail");
 
+        btnDyn = GameObject.Find("Canvas/PanelTop/BtnDyn");
+        btnDynDetail = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail");
+        
+        txtDynastyName = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail/Dyname").GetComponent<Text>();
 
-		panelCenter = GameObject.Find ("Canvas/PanelCenter");
+        GameObject statusPanel = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail/Panel");
+        listDyStatus = new List<Text>(statusPanel.GetComponentsInChildren<Text>());
 
-        ZhoujTable =  GameObject.Find ("Canvas/ZhoujTable").GetComponent<WDataTable>();
+        panelCenter = GameObject.Find ("Canvas/PanelCenter");
 
-        ZhoujTable.gameObject.SetActive(false);
+        GameObject.Find("Canvas/PanelTop/BtnDyn/Text").GetComponent<Text>().text = MyGame.Inst.dynastyName;
+        txtDynastyName.text = MyGame.Inst.dynastyName;
 
-        List<string> colums = new List<string>{ "aaa", "bbb", "ccc"};
-        List<IList<object>> data = new List<IList<object>>();
-        data.Add(new List<object>{ 1, 2, 3 });
-        ZhoujTable.InitDataTable(data, colums);
-        ZhoujTable.InitDataTable(data, colums);
+        //ZhoujTable =  GameObject.Find ("Canvas/ZhoujTable").GetComponent<WDataTable>();
+
+        // ZhoujTable.gameObject.SetActive(false);
+
+        // List<string> colums = new List<string>{ "aaa", "bbb", "ccc"};
+        // List<IList<object>> data = new List<IList<object>>();
+        // data.Add(new List<object>{ 1, 2, 3 });
+        // ZhoujTable.InitDataTable(data, colums);
+        // ZhoujTable.InitDataTable(data, colums);
 
 
         btnEmp.transform.SetAsFirstSibling();
         btnEmpDetail.transform.SetAsFirstSibling();
-        ZhoujTable.transform.SetAsFirstSibling();
+        //ZhoujTable.transform.SetAsFirstSibling();
 
-        panelCenter.transform.SetAsLastSibling ();
+        panelCenter.transform.SetAsLastSibling();
     }
 
     void Start()
     {
 		panelCenter.SetActive (false);
 		btnEmpDetail.SetActive(false);
+        btnDynDetail.SetActive(false);
+
         SceneManager.LoadSceneAsync("TianXScene", LoadSceneMode.Additive);
         //ZhoujTable.gameObject.SetActive(true);
 
@@ -86,6 +98,18 @@ public class MainScene : MonoBehaviour
         }
     }
 
+    public void onDynastyButtonClick()
+    {
+        if (btnDynDetail.activeSelf)
+        {
+            btnDynDetail.SetActive(false);
+        }
+        else
+        {
+            btnDynDetail.SetActive(true);
+        }
+    }
+
     public void onEmperorButtonClick()
     {
         if (btnEmpDetail.activeSelf)
@@ -98,7 +122,7 @@ public class MainScene : MonoBehaviour
         }
     }
 
-	public void OnSave()
+    public void OnSave()
 	{
 		GameFrame.GetInstance ().OnSave ();
 		panelCenter.SetActive (false);
@@ -120,6 +144,21 @@ public class MainScene : MonoBehaviour
         txtEmpName.text = MyGame.Inst.empName;
         txtEmpAge.text = MyGame.Inst.empAge.ToString();
         sldEmpHeath.value = MyGame.Inst.empHeath;
+
+        if(btnDynDetail.activeSelf)
+        {
+            for(int i=1; i< listDyStatus.Count; i++)
+            {
+                if(i > MyGame.Inst.listStatus.Count)
+                {
+                    listDyStatus[i].text = "";
+                    continue;
+                }
+
+                listDyStatus[i].text = MyGame.Inst.listStatus[i-1].desc;
+            }
+        }
+ 
     }
 
 	private void OnKeyBoard()
@@ -143,6 +182,9 @@ public class MainScene : MonoBehaviour
     GameObject btnEmp;
     GameObject btnEmpDetail;
 
+    GameObject btnDyn;
+    GameObject btnDynDetail;
+
     Text Stability;
     Text Economy;
     Text Military;
@@ -151,6 +193,9 @@ public class MainScene : MonoBehaviour
 	Text txtEmpAge;
 	Text txtTime;
 	Slider sldEmpHeath;
+
+    Text txtDynastyName;
+    List<Text> listDyStatus;
 
 	GameObject panelCenter;
     WDataTable  ZhoujTable;
