@@ -7,7 +7,7 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-    public class Person
+	public class Person : HuangDAPI.Person
     {
         public Person()
         {
@@ -47,6 +47,18 @@ public partial class MyGame
             }
         }
 
+        public int press
+        {
+            get
+            {
+                return _press;
+            }
+            set
+            {
+                _press = value;
+            }
+        }
+
         public int score
         {
             get
@@ -75,6 +87,9 @@ public partial class MyGame
 
         [SerializeField]
         int _score;
+
+        [SerializeField]
+        int _press;
     }
 
     public class PersonManager

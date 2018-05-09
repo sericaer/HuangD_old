@@ -127,7 +127,7 @@ public partial class MyGame
                 listPersonName.Add(p.name);
             }
 
-            BySelector selectbyPerson = Selector.ByPerson(listPersonName.ToArray());
+			BySelector selectbyPerson = (BySelector)(new BySelector().ByPerson(listPersonName.ToArray()));
 
             lstResult = relFaction2Person.GetFactionBySelector(selectbyPerson.persons, lstResult);
         }
@@ -171,7 +171,7 @@ public partial class MyGame
                 listPersonName.Add(p.name);
             }
 
-            BySelector selectbyPerson = Selector.ByPerson(listPersonName.ToArray());
+			BySelector selectbyPerson = (BySelector)(new BySelector().ByPerson(listPersonName.ToArray()));
 
             lstResult = relOffice2Person.GetOfficeBySelector(selectbyPerson.persons, lstResult);
         }

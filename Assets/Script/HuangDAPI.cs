@@ -11,19 +11,65 @@ namespace HuangDAPI
     {
 
     }
-    public class Person : MyGame.Person
+
+	public class Selector
     {
-        
+		private Selector()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static BySelector ByPerson(params string[] key)
+        {
+			return new MyGame.BySelector().ByPerson(key);
+        }
+
+        public static BySelector ByOffice(params string[] key)
+        {
+			return new MyGame.BySelector().ByOffice(key);
+        }
+
+        public static BySelector ByFaction(params string[] key)
+        {
+			return new MyGame.BySelector().ByFaction(key);
+        }
+
+        public static BySelector ByPersonNOT(params string[] key)
+        {
+			return new MyGame.BySelector().ByPersonNOT(key);
+        }
+
+        public static BySelector ByOfficeNOT(params string[] key)
+        {
+			return new MyGame.BySelector().ByOfficeNOT(key);
+        }
+
+        public static BySelector ByFactionNOT(params string[] key)
+        {
+			return new MyGame.BySelector().ByFactionNOT(key);
+        }
     }
 
-    public class Selector : MyGame.Selector
-    {
 
+    public interface Person
+    {
+		string name { get; }
+		int press { get; set; }
     }
 
-    public class BySelector : MyGame.BySelector
-    {
+	public interface Faction
+	{
+		string name { get; }
+	}
 
+	public interface BySelector
+    {
+		BySelector ByPerson(params string[] key);
+		BySelector ByOffice(params string[] key);
+		BySelector ByFaction(params string[] key);
+		BySelector ByPersonNOT(params string[] key);
+        BySelector ByOfficeNOT(params string[] key);
+        BySelector ByFactionNOT(params string[] key);
     }
 
     public class ReflectBase
@@ -98,9 +144,9 @@ namespace HuangDAPI
 				{
 					continue;
 				}
-
-				EVENT_HD.Option.OUTTER = this;
+                
 				EVENT_HD.Option option = (EVENT_HD.Option)Activator.CreateInstance(nestedTypes[i]);
+				option.Initialize(this);
 				listOptions.Add(option);
 			}
 		}
@@ -114,26 +160,37 @@ namespace HuangDAPI
 		}
 
 		public abstract class Option : ReflectBase
-		{
+		{   
 			public Option()
 			{
-				desc = StreamManager.uiDesc.Get(OUTTER.GetType().Name + "_" + this.GetType().Name + "_DESC");
+			}
+
+			internal void Initialize(EVENT_HD outter)
+			{
+				FieldInfo[] fields = _subFields.Where(x => x.Name == "OUTTER").ToArray();
+				if(fields.Length != 0)
+				{
+					fields.First().SetValue(this, outter);
+				}
+
+				desc = StreamManager.uiDesc.Get(outter.GetType().Name + "_" + this.GetType().Name + "_DESC");
 
 				_funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
-																  () =>
-																  {
-																	  return true;
-																  });
-				_funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
-												() =>
-												{
-													FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
-													return (string)field.GetValue(this);
-												});
-				_funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
-												(ref string nxtEvent, ref string param) =>
-												{
-												});
+                                                  () =>
+                                                  {
+                                                      return true;
+                                                  });
+                _funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+                                                () =>
+                                                {
+                                                    FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
+                                                    return (string)field.GetValue(this);
+                                                });
+                _funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
+                                                (ref string nxtEvent, ref string param) =>
+                                                {
+                                                });
+
 			}
 
 			public delegate void DelegateSelected(ref string nxtEvent, ref string param);
@@ -142,7 +199,7 @@ namespace HuangDAPI
 			public Func<string> _funcDesc;
 			public DelegateSelected _funcSelected;
 
-			public static EVENT_HD OUTTER;
+			//public EVENT_HD OUTTER;
             
 			protected string desc;
 		}
@@ -163,10 +220,24 @@ namespace HuangDAPI
 
 	public class GMData
 	{
-        public Person GetPerson(BySelector selector)
+		public static Person[] GetPersons(BySelector selector)
         {
-            Person[] p = (Person[])MyGame.Inst.GetPerson(selector);
+            return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
+        }
+		public static Faction[] GetFactions(BySelector selector)
+        {
+			return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
+        }
+
+        public static Person GetPerson(BySelector selector)
+        {
+			Person[] p = GetPersons(selector);
             return p[Probability.GetRandomNum(0, p.Length - 1)];
+        }
+		public static Faction GetFaction(BySelector selector)
+        {
+			Faction[] f = GetFactions(selector);
+			return f[Probability.GetRandomNum(0, f.Length - 1)];
         }
 
         public class GlobalFlag
@@ -193,5 +264,8 @@ namespace HuangDAPI
         }
     }
 
-    
+	public class PersonStatusAttrib : Attribute
+    {
+        public int press;
+    }
 }

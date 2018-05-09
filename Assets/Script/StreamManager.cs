@@ -124,7 +124,7 @@ public class StreamManager
 
 		string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
         CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileName);
-
+       
         Type[] types = bd.assembly.GetTypes();
 
         LoadName(types);

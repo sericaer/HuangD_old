@@ -8,7 +8,7 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-    public class Faction
+	public class Faction : HuangDAPI.Faction
     {
         public Faction(string name)
         {
