@@ -7,9 +7,13 @@ namespace native
 	{
 		bool Precondition()
 		{
-			if (GMData.TianxiangStatus.Get(TIANXIANG.YHSX) == "" && GMData.GetPerson(Selector.ByOffice("JQ1")) != null)
-				return true;
-			return false;
+            if (!GMData.TianWenStatus.Contains("YHSX"))
+                return false;
+            if (GMData.GetPerson(Selector.ByOffice("JQ1")) == null)
+                return false;
+            if (GMData.TianWenStatus.Get("YHSX") != null)
+                return false;
+            return true;
 		}
 
 		void Initialize(string param)
@@ -21,7 +25,7 @@ namespace native
 		{
 			void Selected(ref string nxtEvent, ref string param)
 			{
-				GMData.GlobalFlag.Set("yhsx", "Stab");
+                GMData.TianWenStatus.Set("YHSX", "YHSX_STAB");
 			}
 		}
 
@@ -36,8 +40,8 @@ namespace native
 
 			void Selected(ref string nxtEvent, ref string param)
 			{
-				GMData.GlobalFlag.Set("yhsx", OUTTER.suggestPerson.name);
-                OUTTER.suggestPerson.AddStatus(PERSON_STATUS.Sacrifice);
+                GMData.TianWenStatus.Set("YHSX", "YHSX_PERSON."+OUTTER.suggestPerson.name);
+                //OUTTER.suggestPerson.AddStatus(PERSON_STATUS.Sacrifice);
 			}
 
 			EVENT_JQ1_DEAL_YHSX OUTTER;
@@ -47,7 +51,7 @@ namespace native
 		{
             void Selected(ref string nxtEvent, ref string param)
             {
-                GMData.GlobalFlag.Set("yhsx", "Stab");
+                GMData.GlobalFlag.Set("YHSX", "YHSX_SELF");
             }
         }
 

@@ -437,16 +437,41 @@ public partial class MyGame
             {
                 return _param;
             }
+            set
+            {
+                _param = value;
+            }
         }
 
         public string desc
         {
             get
             {
-                return StreamManager.uiDesc.Get("STATUS_" + name);
+                string result = StreamManager.uiDesc.Get("STATUS_" + name);
+                if(_param != null)
+                {
+                    result += "\n";
+                    result += StreamManager.uiDesc.Get("STATUS_" + name + "_PARAM_" + _param.ToString());
+                }
+
+                return result;
             }
         }
 
+        public string detail
+        {
+            get
+            {
+                string result = StreamManager.uiDesc.Get("STATUS_" + name + "_DETAIL");
+                if (_param != null)
+                {
+                    result += "\n";
+                    result += StreamManager.uiDesc.Get("STATUS_" + name + "_PARAM_" + _param.ToString());
+                }
+
+                return result;
+            }
+        }
 
         private string _name;
         private object _param;

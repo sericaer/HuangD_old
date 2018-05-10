@@ -9,7 +9,7 @@ namespace HuangDAPI
 {
     public class Probability : Tools.Probability
     {
-
+        
     }
 
 	public class Selector
@@ -66,7 +66,9 @@ namespace HuangDAPI
     {
         string name { get; }
         string desc { get; }
-        object param { get; }
+        string detail { get; }
+        object param { get; set; }
+
     }
 
     public interface BySelector
@@ -277,7 +279,7 @@ namespace HuangDAPI
                 return true;
             }
 
-            public static Status Get(string name)
+            public static object Get(string name)
             {
                 int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
                 if (index == -1)
@@ -285,7 +287,18 @@ namespace HuangDAPI
                     throw new ArgumentException(string.Format("can not find %s in status list", name));
                 }
 
-                return MyGame.Inst.listStatus[index];
+                return MyGame.Inst.listStatus[index].param;
+            }
+
+            public static void Set(string name, object value)
+            {
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                if (index == -1)
+                {
+                    throw new ArgumentException(string.Format("can not find %s in status list", name));
+                }
+
+                MyGame.Inst.listStatus[index].param = value;
             }
         }
 
