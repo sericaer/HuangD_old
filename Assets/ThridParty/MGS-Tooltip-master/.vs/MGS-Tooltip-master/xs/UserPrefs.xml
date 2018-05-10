@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{9CD8661F-FD59-4753-5443-16D62948B4ED}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/MGS-Tooltip/Readme.txt">
+    <Files>
+      <File FileName="Assets/MGS-Tooltip/Scripts/TooltipTrigger.cs" Line="40" Column="19" />
+      <File FileName="Assets/MGS-Tooltip/Scripts/TooltipAgent.cs" Line="38" Column="20" />
+      <File FileName="Assets/MGS-Tooltip/Scripts/TooltipUI.cs" Line="1" Column="1" />
+      <File FileName="Assets/MGS-CommonCode/Singleton/SingleMonoBehaviour.cs" Line="22" Column="46" />
+      <File FileName="Assets/MGS-Tooltip/Scripts/Tooltip.cs" Line="1" Column="1" />
+      <File FileName="Assets/MGS-Tooltip/Readme.txt" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MGS-Tooltip-master PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
