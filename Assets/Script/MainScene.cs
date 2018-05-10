@@ -88,14 +88,14 @@ public class MainScene : MonoBehaviour
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).name);
         SceneManager.LoadSceneAsync(toggle.name, LoadSceneMode.Additive);
 
-        if (toggle.name == "TianXScene")
-        {
-            //ZhoujTable.gameObject.SetActive(true);
-        }
-        else
-        {
-            ZhoujTable.gameObject.SetActive(false);
-        }
+        //if (toggle.name == "TianXScene")
+        //{
+        //    ZhoujTable.gameObject.SetActive(true);
+        //}
+        //else
+        //{
+        //    ZhoujTable.gameObject.SetActive(false);
+        //}
     }
 
     public void onDynastyButtonClick()
@@ -198,5 +198,4 @@ public class MainScene : MonoBehaviour
     List<Text> listDyStatus;
 
 	GameObject panelCenter;
-    WDataTable  ZhoujTable;
 }

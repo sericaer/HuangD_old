@@ -36,7 +36,7 @@ public partial class MyGame
 		dynastyName = strDynastyName;
         date = new GameTime();
 
-        zhoujManager = new ZhoujManager();
+        provManager = new ProvinceManager();
 
 		officeManager = new OfficeManager ();
 		//femaleOfficeManager = new OfficeManager (typeof(ENUM_OFFICE_FEMALE));
@@ -190,7 +190,36 @@ public partial class MyGame
         return lstResult.ToArray ();
     }
 
-    public void   SetFlag(string key, string value="")
+    public Province[] GetProvince(BySelector selecor)
+    {
+        List<Province> lstResult = null;
+
+        if (selecor == null)
+        {
+            return provManager.provinces;
+        }
+
+        if (selecor.empty)
+        {
+            throw new ArgumentException ("seletor is empty!");
+        }
+
+        Debug.Log(String.Format("GetProvince {0}", selecor.ToString()));
+
+
+        //if (!selecor.provbuffs.empty)
+        //{
+        //    lstResult = provManager.GetProvinceBySelector(selecor.provbuffs);
+        //}
+
+        return lstResult.ToArray();
+    }
+
+//    public Province[] GetProvince(BySelector selecor)
+//    {
+//    }
+
+    public void   SetFlag(string key, string value)
     {
         DictFlag[key] = value;
     }
@@ -341,7 +370,7 @@ public partial class MyGame
     private void InitZhouj2Office()
     {
 
-            foreach (Zhouj z in zhoujManager)
+            foreach (Province z in provManager)
             {
 
             }
@@ -357,6 +386,10 @@ public partial class MyGame
 		}
 	}
 
+    public Province.STATUS[] GetProvinceDebuff()
+    {
+        return Province.GetDebuffStatus();
+    }
 
 
     public bool   gameEnd;
@@ -378,7 +411,7 @@ public partial class MyGame
 
 	public FactionManager factionManager;
 
-    public ZhoujManager zhoujManager;
+    public ProvinceManager provManager;
 
 	public string yearName;
 	public GameTime date;
