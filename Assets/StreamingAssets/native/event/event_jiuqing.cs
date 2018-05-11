@@ -25,7 +25,7 @@ namespace native
 		{
 			void Selected(ref string nxtEvent, ref string param)
 			{
-                GMData.TianWenStatus.Set("YHSX", "YHSX_STAB");
+                GMData.TianWenStatus.Set("YHSX", "STAB");
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace native
 
 			void Selected(ref string nxtEvent, ref string param)
 			{
-                GMData.TianWenStatus.Set("YHSX", "YHSX_PERSON."+OUTTER.suggestPerson.name);
+                GMData.TianWenStatus.Set("YHSX", "PERSON|"+OUTTER.suggestPerson.name);
                 //OUTTER.suggestPerson.AddStatus(PERSON_STATUS.Sacrifice);
 			}
 
@@ -51,7 +51,7 @@ namespace native
 		{
             void Selected(ref string nxtEvent, ref string param)
             {
-                GMData.GlobalFlag.Set("YHSX", "YHSX_SELF");
+                GMData.GlobalFlag.Set("YHSX", "SELF");
             }
         }
 
