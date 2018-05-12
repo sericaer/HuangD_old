@@ -418,16 +418,16 @@ public partial class MyGame
 
     public class TWStatus : HuangDAPI.Status
     {
-        public TWStatus(string name)
+        public TWStatus(string ID)
         {
-            _name = name;
+            _ID = ID;
         }
 
-        public string name
+        public string ID
         {
             get
             {
-                return _name;
+                return _ID;
             }
         }
 
@@ -443,37 +443,30 @@ public partial class MyGame
             }
         }
 
+        public string name
+        {
+            get
+            {
+                return StreamManager.uiDesc.Get(ID);
+            }
+        }
+
         public string desc
         {
             get
             {
-                string result = StreamManager.uiDesc.Get("STATUS_" + name);
-                if(_param != null)
-                {
-                    result += "\n";
-                    result += StreamManager.uiDesc.Get("STATUS_" + name + "_PARAM_" + _param.ToString());
-                }
-
-                return result;
-            }
-        }
-
-        public string detail
-        {
-            get
-            {
-                string result = StreamManager.uiDesc.Get("STATUS_" + name + "_DETAIL");
+                string result = StreamManager.uiDesc.Get(ID + "_DESC");
                 if (_param != null)
                 {
                     result += "\n";
-                    result += StreamManager.uiDesc.Get("STATUS_" + name + "_PARAM_" + _param.ToString());
+                    result += StreamManager.uiDesc.Get( _param.ToString());
                 }
 
                 return result;
             }
         }
 
-        private string _name;
+        private string _ID;
         private object _param;
     }
 

@@ -7,27 +7,29 @@ namespace native
 	{
 		bool Precondition()
 		{
-            if (!GMData.TianWenStatus.Contains("YHSX"))
+            if (!GMData.TianWenStatus.Contains("STATUS_YHSX"))
                 return false;
-            if (GMData.GetPerson(Selector.ByOffice("JQ1")) == null)
+            if (GMData.TianWenStatus.Get("STATUS_YHSX") != null)
                 return false;
-            if (GMData.TianWenStatus.Get("YHSX") != null)
-                return false;
-            return true;
-		}
 
-		void Initialize(string param)
-		{
-			suggestPerson = GetSuggestPerson();
+            jq1Person = GMData.GetPerson(Selector.ByOffice("JQ1"));
+            if (jq1Person == null)
+                return false;
+
+            suggestPerson = GetSuggestPerson();
+
+            return true;
 		}
 
 		class OPTION1 : Option
 		{
 			void Selected(ref string nxtEvent, ref string param)
 			{
-                GMData.TianWenStatus.Set("YHSX", "STAB");
-			}
-		}
+                GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_STAB"));
+            }
+
+            EVENT_JQ1_DEAL_YHSX OUTTER;
+        }
 
 		class OPTION2 : Option
         {
@@ -40,9 +42,8 @@ namespace native
 
 			void Selected(ref string nxtEvent, ref string param)
 			{
-                GMData.TianWenStatus.Set("YHSX", "PERSON|"+OUTTER.suggestPerson.name);
-                //OUTTER.suggestPerson.AddStatus(PERSON_STATUS.Sacrifice);
-			}
+                GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
+            }
 
 			EVENT_JQ1_DEAL_YHSX OUTTER;
         }
@@ -51,22 +52,23 @@ namespace native
 		{
             void Selected(ref string nxtEvent, ref string param)
             {
-                GMData.GlobalFlag.Set("YHSX", "SELF");
+                GMData.TianWenStatus.Set("STATUS_YHSX", "STATUS_YHSX_PARAM_EMP");
             }
         }
 
 		Person GetSuggestPerson()
 		{
 			Faction factionJQ1 = GMData.GetFaction(Selector.ByOffice("JQ1"));
-			Person  p = GMData.GetPersons(Selector.ByOffice("SGX").ByFactionNOT(factionJQ1.name)).First();
+			Person  p = GMData.GetPerson(Selector.ByOffice("SGX").ByFactionNOT(factionJQ1.name));
 			if (p == null)
 			{
-				p = GMData.GetPersons(Selector.ByOffice("SGX")).Last();
+				p = GMData.GetPerson(Selector.ByOffice("SGX"));
 			}
 
 			return p;
 		}
 
-		Person suggestPerson;
+        Person jq1Person;
+        Person suggestPerson;
 	}
 }

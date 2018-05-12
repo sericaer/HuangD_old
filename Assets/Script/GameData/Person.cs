@@ -7,6 +7,41 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
+    public class PersonProcess
+    {
+        public PersonProcess(string name, Person opp, params object[] tag)
+        {
+            this.name = name;
+            this.opp = opp;
+
+            this.tag = new List<object>(tag);
+        }
+
+        public override string ToString()
+        {
+            if(tag.Count == 0)
+            {
+                return string.Format(StreamManager.uiDesc.Get(name), opp.name);
+            }
+
+            List<string> lstString = new List<string> { opp.name };
+            for (int i = 0; i < tag.Count; i++)
+            {
+                lstString.Add(tag[i].ToString());
+            }
+
+            return string.Format(StreamManager.uiDesc.Get(name), lstString.ToArray());
+
+            //for(int i=0; i< tag.Count; i++)
+            //string.Format(StreamManager.uiDesc.Get(name), opp.name, );
+        }
+
+        public string name;
+        public Person opp;
+        public List<object> tag;
+    }
+
+    [Serializable]
 	public class Person : HuangDAPI.Person
     {
         public Person()
@@ -65,6 +100,22 @@ public partial class MyGame
             {
                 return _score;
             }
+        }
+
+        public override string ToString()
+        {
+            Office office = MyGame.Inst.relOffice2Person.GetOffice(this);
+            if(office != null)
+            {
+                return office.name + name;
+            }
+
+            return name;
+        }
+
+        public PersonProcess Process(string name, params object[] param)
+        {
+            return new PersonProcess(name, this, param);
         }
 
         public void Die()

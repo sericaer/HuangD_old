@@ -55,6 +55,7 @@ namespace HuangDAPI
     {
 		string name { get; }
 		int press { get; set; }
+        MyGame.PersonProcess Process(string name, params object[] param);
     }
 
 	public interface Faction
@@ -64,9 +65,9 @@ namespace HuangDAPI
 
     public interface Status
     {
+        string ID { get; }
         string name { get; }
         string desc { get; }
-        string detail { get; }
         object param { get; set; }
 
     }
@@ -241,6 +242,11 @@ namespace HuangDAPI
         public static Person GetPerson(BySelector selector)
         {
 			Person[] p = GetPersons(selector);
+            if(p == null || p.Length == 0)
+            {
+                return null;
+            }
+
             return p[Probability.GetRandomNum(0, p.Length - 1)];
         }
 		public static Faction GetFaction(BySelector selector)
@@ -252,14 +258,14 @@ namespace HuangDAPI
         public class TianWenStatus
         {
 
-            public static void Add(string name)
+            public static void Add(string ID)
             {
-                MyGame.Inst.listStatus.Add(new MyGame.TWStatus(name));
+                MyGame.Inst.listStatus.Add(new MyGame.TWStatus(ID));
             }
 
-            public static void Remove(string name)
+            public static void Remove(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
                     return;
@@ -268,9 +274,9 @@ namespace HuangDAPI
                 MyGame.Inst.listStatus.RemoveAt(index);
             }
 
-            public static bool Contains(string name)
+            public static bool Contains(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if(index == -1)
                 {
                     return false;
@@ -279,23 +285,23 @@ namespace HuangDAPI
                 return true;
             }
 
-            public static object Get(string name)
+            public static object Get(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
-                    throw new ArgumentException(string.Format("can not find %s in status list", name));
+                    throw new ArgumentException(string.Format("can not find %s in status list", ID));
                 }
 
                 return MyGame.Inst.listStatus[index].param;
             }
 
-            public static void Set(string name, object value)
+            public static void Set(string ID, object value)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.name == name);
+                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
-                    throw new ArgumentException(string.Format("can not find %s in status list", name));
+                    throw new ArgumentException(string.Format("can not find %s in status list", ID));
                 }
 
                 MyGame.Inst.listStatus[index].param = value;

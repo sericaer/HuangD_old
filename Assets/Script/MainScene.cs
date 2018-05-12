@@ -155,8 +155,8 @@ public class MainScene : MonoBehaviour
                     continue;
                 }
 
-                listDyStatus[i].text = MyGame.Inst.listStatus[i-1].desc;
-                string detail = MyGame.Inst.listStatus[i - 1].detail;
+                listDyStatus[i].text = MyGame.Inst.listStatus[i-1].name;
+                string detail = MyGame.Inst.listStatus[i - 1].desc;
                 listDyStatus[i].GetComponent< TooltipTrigger >().mDisplayText = detail;
             }
         }
