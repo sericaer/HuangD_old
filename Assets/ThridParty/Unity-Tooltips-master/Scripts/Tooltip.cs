@@ -67,23 +67,23 @@ public class Tooltip : MonoBehaviour
         float mWidth = mRectTransform.sizeDelta[0];
         float mHeight = mRectTransform.sizeDelta[1];
 
-        float mXShift = -mWidth / 2 - 25;
+        float mXShift = -mWidth / 2-15;
         mCornerImage.anchorMin = new Vector2(0, 1);
         mCornerImage.anchorMax = new Vector2(0, 1);
         mCornerImage.localRotation = Quaternion.Euler(0, 0, 0);
         mCornerImage.anchoredPosition = Vector2.zero;
-        float mYShift = mHeight / 2 + 30;
+        float mYShift = mHeight / 2+20;
 
-        if (mScaler != null)
-        {
-            //Get the different in our base res and the scaled res
-            Vector2 screenSizeDifference = new Vector2(mScaler.referenceResolution.x - Screen.width, mScaler.referenceResolution.y - Screen.height);
-            //newPos = new Vector3(newPos.x - screenSizeDifference.x, newPos.y - screenSizeDifference.y, 0);
-            //Get the ratio?
-            float ratio = Screen.width / mScaler.referenceResolution.x;
-            mXShift *= ratio;
-            mYShift *= ratio;
-        }
+        //if (mScaler != null)
+        //{
+        //    //Get the different in our base res and the scaled res
+        //    Vector2 screenSizeDifference = new Vector2(mScaler.referenceResolution.x - Screen.width, mScaler.referenceResolution.y - Screen.height);
+        //    //newPos = new Vector3(newPos.x - screenSizeDifference.x, newPos.y - screenSizeDifference.y, 0);
+        //    //Get the ratio?
+        //    float ratio = Screen.width / mScaler.referenceResolution.x;
+        //    mXShift *= ratio;
+        //    mYShift *= ratio;
+        //}
 
         return Input.mousePosition - new Vector3(mXShift, mYShift, 0f);
     }
