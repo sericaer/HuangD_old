@@ -21,7 +21,12 @@ namespace native
             return true;
 		}
 
-		class OPTION1 : Option
+        string Desc()
+        {
+            return UI.Format("EVENT_JQ1_DEAL_YHSX_DESC", jq1Person.ToString());
+        }
+
+        class OPTION1 : Option
 		{
 			void Selected(ref string nxtEvent, ref string param)
 			{
@@ -40,7 +45,12 @@ namespace native
                 return false;
             }
 
-			void Selected(ref string nxtEvent, ref string param)
+            string Desc()
+            {
+                return UI.Format("EVENT_JQ1_DEAL_YHSX_OPTION2_DESC", OUTTER.suggestPerson.ToString());
+            }
+
+            void Selected(ref string nxtEvent, ref string param)
 			{
                 GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
             }

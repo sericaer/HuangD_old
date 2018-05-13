@@ -21,10 +21,10 @@ public partial class MyGame
         {
             if(tag.Count == 0)
             {
-                return string.Format(StreamManager.uiDesc.Get(name), opp.name);
+                return string.Format(StreamManager.uiDesc.Get(name), opp.ToString());
             }
 
-            List<string> lstString = new List<string> { opp.name };
+            List<string> lstString = new List<string> { opp.ToString() };
             for (int i = 0; i < tag.Count; i++)
             {
                 lstString.Add(tag[i].ToString());
@@ -107,7 +107,7 @@ public partial class MyGame
             Office office = MyGame.Inst.relOffice2Person.GetOffice(this);
             if(office != null)
             {
-                return office.name + name;
+                return StreamManager.uiDesc.Get(office.name) + name;
             }
 
             return name;

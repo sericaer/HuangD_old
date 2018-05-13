@@ -19,7 +19,7 @@ namespace native
 				GMData.TianWenStatus.Add("STATUS_YHSX");
 
 				param = "1";
-                //nxtEvent = "EVENT_STAB_DEC";
+                nxtEvent = "EVENT_STAB_DEC";
 			}
 		}
     }

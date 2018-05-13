@@ -10,11 +10,6 @@ namespace native
 			return false;
         }
 
-		void Initialize(string param)
-		{
-			
-		}
-
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref string param)

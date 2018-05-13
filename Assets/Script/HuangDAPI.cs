@@ -336,4 +336,12 @@ namespace HuangDAPI
     {
         public int press;
     }
+
+    public class UI
+    {
+        public static string Format(string format, params string[] param)
+        {
+            return string.Format(StreamManager.uiDesc.Get(format), param);
+        }
+    }
 }
