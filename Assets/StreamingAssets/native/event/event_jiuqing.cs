@@ -102,6 +102,11 @@ namespace native
             return false;
         }
 
+        string Desc()
+        {
+            return UI.Format("EVENT_PERSON_SUICDIE_DESC", currPerson.ToString());
+        }
+
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref string param)
