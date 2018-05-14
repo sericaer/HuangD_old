@@ -145,6 +145,8 @@ public class StreamManager
         {
             eventDict.Add(type.Name, (EVENT_HD)Activator.CreateInstance(type));
         }
+
+        Debug.Log("Load event count:" + eventDict.Count);
     }
 
     private void AnaylizeDynastyName(Type[] types)
