@@ -7,10 +7,11 @@ namespace native
 	{
 		bool Precondition()
 		{
-            if (!GMData.TianWenStatus.Contains("STATUS_YHSX"))
+            StatusParam param = GMData.TianWenStatus.Get("STATUS_YHSX");
+            if (param == null || param.ID != "")
+            {
                 return false;
-            if (GMData.TianWenStatus.Get("STATUS_YHSX") != null)
-                return false;
+            }
 
             jq1Person = GMData.GetPerson(Selector.ByOffice("JQ1"));
             if (jq1Person == null)
@@ -62,7 +63,7 @@ namespace native
 		{
             void Selected(ref string nxtEvent, ref string param)
             {
-                GMData.TianWenStatus.Set("STATUS_YHSX", "STATUS_YHSX_PARAM_EMP");
+                GMData.TianWenStatus.Set("STATUS_YHSX", new StatusParam("STATUS_YHSX_PARAM_EMP"));
             }
         }
 

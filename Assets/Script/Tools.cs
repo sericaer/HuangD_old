@@ -18,7 +18,7 @@ namespace Tools
 
             if (Math.Abs(prob-1.0D) < Double.Epsilon)
             {
-                return false;
+                return true;
             }
 
             int prb = (int)(prob * 1000);

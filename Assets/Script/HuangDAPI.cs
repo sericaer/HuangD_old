@@ -68,8 +68,31 @@ namespace HuangDAPI
         string ID { get; }
         string name { get; }
         string desc { get; }
-        object param { get; set; }
+        StatusParam param { get; set; }
 
+    }
+
+    public class StatusParam
+    {
+        public StatusParam(string ID)
+        {
+            mID = ID;
+        }
+
+        public string ID 
+        { 
+            get
+            {
+                return mID;
+            }
+        }
+
+        public override string ToString()
+        {
+            return mID;
+        }
+
+        string mID;
     }
 
     public interface BySelector
@@ -285,23 +308,23 @@ namespace HuangDAPI
                 return true;
             }
 
-            public static object Get(string ID)
+            public static StatusParam Get(string ID)
             {
                 int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
-                    throw new ArgumentException(string.Format("can not find %s in status list", ID));
+                    return null;
                 }
 
                 return MyGame.Inst.listStatus[index].param;
             }
 
-            public static void Set(string ID, object value)
+            public static void Set(string ID, StatusParam value)
             {
                 int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
-                    throw new ArgumentException(string.Format("can not find %s in status list", ID));
+                    throw new ArgumentException(string.Format("can not find {0} in status list", ID));
                 }
 
                 MyGame.Inst.listStatus[index].param = value;

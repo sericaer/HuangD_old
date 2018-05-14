@@ -421,6 +421,7 @@ public partial class MyGame
         public TWStatus(string ID)
         {
             _ID = ID;
+            _param = new HuangDAPI.StatusParam("");
         }
 
         public string ID
@@ -431,7 +432,7 @@ public partial class MyGame
             }
         }
 
-        public object param
+        public HuangDAPI.StatusParam param
         {
             get
             {
@@ -467,7 +468,7 @@ public partial class MyGame
         }
 
         private string _ID;
-        private object _param;
+        private HuangDAPI.StatusParam _param;
     }
 
     public List<HuangDAPI.Status> listStatus = new List<HuangDAPI.Status>();

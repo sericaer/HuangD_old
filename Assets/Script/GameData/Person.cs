@@ -7,11 +7,10 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-    public class PersonProcess
+    public class PersonProcess : HuangDAPI.StatusParam
     {
-        public PersonProcess(string name, Person opp, params object[] tag)
+        public PersonProcess(string name, Person opp, params object[] tag) : base(name)
         {
-            this.name = name;
             this.opp = opp;
 
             this.tag = new List<object>(tag);
@@ -19,9 +18,9 @@ public partial class MyGame
 
         public override string ToString()
         {
-            if(tag.Count == 0)
+            if (tag.Count == 0)
             {
-                return string.Format(StreamManager.uiDesc.Get(name), opp.ToString());
+                return string.Format(StreamManager.uiDesc.Get(ID), opp.ToString());
             }
 
             List<string> lstString = new List<string> { opp.ToString() };
@@ -30,13 +29,12 @@ public partial class MyGame
                 lstString.Add(tag[i].ToString());
             }
 
-            return string.Format(StreamManager.uiDesc.Get(name), lstString.ToArray());
+            return string.Format(StreamManager.uiDesc.Get(ID), lstString.ToArray());
 
             //for(int i=0; i< tag.Count; i++)
             //string.Format(StreamManager.uiDesc.Get(name), opp.name, );
         }
 
-        public string name;
         public Person opp;
         public List<object> tag;
     }
