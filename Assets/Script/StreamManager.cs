@@ -116,6 +116,7 @@ public class StreamManager
     
     private void LoadMod(string path)
     {
+        Debug.Log(string.Format("*****************Start Load mod {0}********************", path));
         string[] csvNames = Directory.GetFiles(path + "/static", "*.csv");
         foreach(string filename in csvNames)
         {
@@ -129,6 +130,8 @@ public class StreamManager
 
         LoadName(types);
         LoadEvent(types);
+
+        Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
 
     private void LoadName(Type[] types)
