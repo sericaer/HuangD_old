@@ -54,6 +54,7 @@ namespace native
             void Selected(ref string nxtEvent, ref string param)
 			{
                 GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
+                OUTTER.suggestPerson.press += 5;
             }
 
 			EVENT_JQ1_DEAL_YHSX OUTTER;
@@ -82,4 +83,93 @@ namespace native
         Person jq1Person;
         Person suggestPerson;
 	}
+
+    class EVENT_PERSON_SUICDIE : EVENT_HD
+    {
+        bool Precondition()
+        {
+            Person[] persons = GMData.GetPersons();
+            foreach(Person p in persons)
+            {
+                float prob = CalcProb(p.press);
+                if (Probability.IsProbOccur(prob))
+                {
+                    currPerson = p;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                Office office = GMData.GetOffice(Selector.ByPerson(OUTTER.currPerson.name));
+                OUTTER.currPerson.Die();
+
+                if (office.name == "SG1" || office.name == "SG2" || office.name == "SG3")
+                {
+                    nxtEvent = "EVENT_STAB_DEC";
+                }
+            }
+
+            EVENT_PERSON_SUICDIE OUTTER;
+        }
+
+        float CalcProb(int press)
+        {
+            switch(press)
+            {
+                case 5:
+                case 6:
+                    return 0.03f;
+                case 7:
+                    return 0.05f;
+                case 8:
+                    return 0.08f;
+                case 9:
+                    return 0.12f;
+                case 10:
+                    return 0.2f;
+                default:
+                    return 0.0f;
+            }
+        }
+
+        private Person currPerson;
+    }
+
+    class EVENT_EMP_HEATH_DEC : EVENT_HD
+    {
+        bool Precondition()
+        {
+            float prob = CalcProb();
+
+            if (Probability.IsProbOccur(prob))
+                return true;
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.Emp.Heath--;
+            }
+        }
+
+        float CalcProb()
+        {
+            float prob = 0.001f;
+            if (GMData.TianWenStatus.Contains("STATUS_YHSX"))
+            {
+                prob = 0.05f;
+            }
+
+            return prob;
+        }
+    }
 }

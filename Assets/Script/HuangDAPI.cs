@@ -55,7 +55,20 @@ namespace HuangDAPI
     {
 		string name { get; }
 		int press { get; set; }
+
+        void Die();
         MyGame.PersonProcess Process(string name, params object[] param);
+    }
+
+    public interface PersonProcess
+    {
+        Person opp { get; }
+        List<object> tag { get; }
+    }
+
+    public interface Office
+    {
+        string name { get; }
     }
 
 	public interface Faction
@@ -253,13 +266,17 @@ namespace HuangDAPI
 
 	public class GMData
 	{
-		public static Person[] GetPersons(BySelector selector)
+        public static Person[] GetPersons(BySelector selector = null)
         {
             return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
         }
-		public static Faction[] GetFactions(BySelector selector)
+        public static Faction[] GetFactions(BySelector selector = null)
         {
 			return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
+        }
+        public static Office[] GetOffices(BySelector selector = null)
+        {
+            return (Office[])MyGame.Inst.GetOffice((MyGame.BySelector)selector);
         }
 
         public static Person GetPerson(BySelector selector)
@@ -277,29 +294,35 @@ namespace HuangDAPI
 			Faction[] f = GetFactions(selector);
 			return f[Probability.GetRandomNum(0, f.Length - 1)];
         }
+        public static Office GetOffice(BySelector selector)
+        {
+            Office[] o = GetOffices(selector);
+            return o[Probability.GetRandomNum(0, o.Length - 1)];
+        }
+
 
         public class TianWenStatus
         {
 
             public static void Add(string ID)
             {
-                MyGame.Inst.listStatus.Add(new MyGame.TWStatus(ID));
+                MyGame.Inst.statusManager.listStatus.Add(new MyGame.TWStatus(ID));
             }
 
             public static void Remove(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
+                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
                     return;
                 }
 
-                MyGame.Inst.listStatus.RemoveAt(index);
+                MyGame.Inst.statusManager.listStatus.RemoveAt(index);
             }
 
             public static bool Contains(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
+                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
                 if(index == -1)
                 {
                     return false;
@@ -310,24 +333,39 @@ namespace HuangDAPI
 
             public static StatusParam Get(string ID)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
+                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
                     return null;
                 }
 
-                return MyGame.Inst.listStatus[index].param;
+                return MyGame.Inst.statusManager.listStatus[index].param;
             }
 
             public static void Set(string ID, StatusParam value)
             {
-                int index = MyGame.Inst.listStatus.FindIndex(x => x.ID == ID);
+                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
                 if (index == -1)
                 {
                     throw new ArgumentException(string.Format("can not find {0} in status list", ID));
                 }
 
-                MyGame.Inst.listStatus[index].param = value;
+                MyGame.Inst.statusManager.listStatus[index].param = value;
+            }
+        }
+
+        public class Emp
+        {
+            public static int Heath
+            {
+                get
+                {
+                    return MyGame.Inst.empHeath;
+                }
+                set
+                {
+                    MyGame.Inst.empHeath = value;
+                }
             }
         }
 
@@ -341,6 +379,7 @@ namespace HuangDAPI
 
 			public static Action<string> Clear = MyGame.Inst.ClearFlag;
 		}
+
 
         public static int Stability
         {

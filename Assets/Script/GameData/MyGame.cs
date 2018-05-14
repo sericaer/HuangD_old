@@ -47,6 +47,7 @@ public partial class MyGame
 		personManager.Sort ((p1,p2)=> -(p1.score.CompareTo(p2.score)));
 
         femalePersonManager = new PersonManager (officeManager.CountFemale, false);
+        statusManager = new StatusManager();
 
         DictFlag = new StringSerialDictionary();
 
@@ -65,9 +66,14 @@ public partial class MyGame
 		
 	public Person[] GetPerson(BySelector selecor)
 	{
+        if(selecor == null)
+        {
+            return personManager.GetRange(0, personManager.Count);
+        }
+
 		if (selecor.empty)
 		{
-			throw new ArgumentException ("seletor is empty!");
+            throw new ArgumentException("seletor is empty!");
 		}
 
         Debug.Log(String.Format("GetPerson {0}", selecor.ToString()));
@@ -413,65 +419,10 @@ public partial class MyGame
 
     public ProvinceManager provManager;
 
+    public StatusManager statusManager;
+
 	public string yearName;
 	public GameTime date;
-
-    public class TWStatus : HuangDAPI.Status
-    {
-        public TWStatus(string ID)
-        {
-            _ID = ID;
-            _param = new HuangDAPI.StatusParam("");
-        }
-
-        public string ID
-        {
-            get
-            {
-                return _ID;
-            }
-        }
-
-        public HuangDAPI.StatusParam param
-        {
-            get
-            {
-                return _param;
-            }
-            set
-            {
-                _param = value;
-            }
-        }
-
-        public string name
-        {
-            get
-            {
-                return StreamManager.uiDesc.Get(ID);
-            }
-        }
-
-        public string desc
-        {
-            get
-            {
-                string result = StreamManager.uiDesc.Get(ID + "_DESC");
-                if (_param != null)
-                {
-                    result += "\n";
-                    result += StreamManager.uiDesc.Get( _param.ToString());
-                }
-
-                return result;
-            }
-        }
-
-        private string _ID;
-        private HuangDAPI.StatusParam _param;
-    }
-
-    public List<HuangDAPI.Status> listStatus = new List<HuangDAPI.Status>();
 
     [SerializeField]
     private StringSerialDictionary DictFlag;

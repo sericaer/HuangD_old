@@ -149,14 +149,14 @@ public class MainScene : MonoBehaviour
         {
             for(int i=1; i< listDyStatus.Count; i++)
             {
-                if(i > MyGame.Inst.listStatus.Count)
+                if(i > MyGame.Inst.statusManager.listStatus.Count)
                 {
                     listDyStatus[i].text = "";
                     continue;
                 }
 
-                listDyStatus[i].text = MyGame.Inst.listStatus[i-1].name;
-                string detail = MyGame.Inst.listStatus[i - 1].desc;
+                listDyStatus[i].text = MyGame.Inst.statusManager.listStatus[i-1].name;
+                string detail = MyGame.Inst.statusManager.listStatus[i - 1].desc;
                 listDyStatus[i].GetComponent< TooltipTrigger >().mDisplayText = detail;
             }
         }

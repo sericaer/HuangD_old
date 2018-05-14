@@ -7,26 +7,41 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-    public class PersonProcess : HuangDAPI.StatusParam
+    public class PersonProcess : HuangDAPI.StatusParam, HuangDAPI.PersonProcess 
     {
         public PersonProcess(string name, Person opp, params object[] tag) : base(name)
         {
-            this.opp = opp;
+            this._opp = opp;
 
-            this.tag = new List<object>(tag);
+            this._tag = new List<object>(tag);
+        }
+
+        public HuangDAPI.Person opp 
+        {
+            get
+            {
+                return _opp;
+            }
+        }
+        public List<object> tag 
+        {
+            get
+            {
+                return _tag;
+            }
         }
 
         public override string ToString()
         {
-            if (tag.Count == 0)
+            if (_tag.Count == 0)
             {
-                return string.Format(StreamManager.uiDesc.Get(ID), opp.ToString());
+                return string.Format(StreamManager.uiDesc.Get(ID), _opp.ToString());
             }
 
-            List<string> lstString = new List<string> { opp.ToString() };
-            for (int i = 0; i < tag.Count; i++)
+            List<string> lstString = new List<string> { _opp.ToString() };
+            for (int i = 0; i < _tag.Count; i++)
             {
-                lstString.Add(tag[i].ToString());
+                lstString.Add(_tag[i].ToString());
             }
 
             return string.Format(StreamManager.uiDesc.Get(ID), lstString.ToArray());
@@ -35,8 +50,8 @@ public partial class MyGame
             //string.Format(StreamManager.uiDesc.Get(name), opp.name, );
         }
 
-        public Person opp;
-        public List<object> tag;
+        public Person _opp;
+        public List<object> _tag;
     }
 
     [Serializable]
@@ -113,7 +128,7 @@ public partial class MyGame
 
         public PersonProcess Process(string name, params object[] param)
         {
-            return new PersonProcess(name, this, param);
+            return  new PersonProcess(name, this, param);
         }
 
         public void Die()
@@ -130,6 +145,7 @@ public partial class MyGame
         }
 
         public static List<Action<object, string>> ListListener = new List<Action<object, string>>();
+        public static List<PersonProcess> ListProcess = new List<PersonProcess>();
 
         [SerializeField]
         string _name;

@@ -30,7 +30,7 @@ namespace native
         {
 			if (!GMData.TianWenStatus.Contains("STATUS_YHSX"))
                 return false; 
-            if (Probability.IsProbOccur(0.08))
+            if (Probability.IsProbOccur(0.05))
                 return true;
 
             return false;
@@ -40,6 +40,14 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref string param)
             {
+                StatusParam statusParam = GMData.TianWenStatus.Get("STATUS_YHSX");
+                if (statusParam.ID == "STATUS_YHSX_PARAM_PERSON")
+                {
+                    PersonProcess process = statusParam as PersonProcess;
+                    Person p = process.tag[0] as Person;
+                    p.press = p.press - 5;
+                }
+
 				GMData.TianWenStatus.Remove("STATUS_YHSX");
             }
         }

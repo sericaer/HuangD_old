@@ -12,7 +12,7 @@ using System.Linq;
 public partial class MyGame
 {
     [Serializable]
-    public class Office
+    public class Office : HuangDAPI.Office
     {
         public Office(string name, int power)
         {
