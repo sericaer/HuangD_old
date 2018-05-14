@@ -54,7 +54,7 @@ namespace native
             void Selected(ref string nxtEvent, ref string param)
 			{
                 GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
-                OUTTER.suggestPerson.press += 5;
+                OUTTER.suggestPerson.press += 10;
             }
 
 			EVENT_JQ1_DEAL_YHSX OUTTER;
@@ -122,6 +122,11 @@ namespace native
         {
             switch(press)
             {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    return 0.0f;
                 case 5:
                 case 6:
                     return 0.03f;
@@ -130,9 +135,9 @@ namespace native
                 case 8:
                     return 0.08f;
                 case 9:
-                    return 0.12f;
-                case 10:
                     return 0.2f;
+                case 10:
+                    return 0.4f;
                 default:
                     return 0.0f;
             }
@@ -173,42 +178,42 @@ namespace native
         }
     }
 
-    class EVENT_SG_EMPTY : EVENT_HD
-    {
-        bool Precondition()
-        {
-            emptyOffice = GMData.GetOffice(Selector.ByOffice("SGX").ByPerson(null));
-            if (emptyOffice != null)
-            {
-                Person[] persons = GMData.GetPersons(Selector.ByOffice("JQX")));
+    //class EVENT_SG_EMPTY : EVENT_HD
+    //{
+    //    bool Precondition()
+    //    {
+    //        emptyOffice = GMData.GetOffice(Selector.ByOffice("SGX").ByPerson(null));
+    //        if (emptyOffice != null)
+    //        {
+    //            Person[] persons = GMData.GetPersons(Selector.ByOffice("JQX")));
 
-                persons.Where();
+    //            persons.Where();
 
-                return true;
-            }
+    //            return true;
+    //        }
                 
-            return false;         
-        }
+    //        return false;         
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected(ref string nxtEvent, ref string param)
-            {
-                GMData.Emp.Heath--;
-            }
-        }
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected(ref string nxtEvent, ref string param)
+    //        {
+    //            GMData.Emp.Heath--;
+    //        }
+    //    }
 
-        float CalcProb()
-        {
-            float prob = 0.001f;
-            if (GMData.TianWenStatus.Contains("STATUS_YHSX"))
-            {
-                prob = 0.05f;
-            }
+    //    float CalcProb()
+    //    {
+    //        float prob = 0.001f;
+    //        if (GMData.TianWenStatus.Contains("STATUS_YHSX"))
+    //        {
+    //            prob = 0.05f;
+    //        }
 
-            return prob;
-        }
+    //        return prob;
+    //    }
 
-        private Office emptyOffice;
-    }
+    //    private Office emptyOffice;
+    //}
 }

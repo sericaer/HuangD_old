@@ -82,7 +82,7 @@ public partial class MyGame
 
                             if (process.opp == obj)
                             {
-                                listStatus.RemoveAt(i);
+                                listStatus[i].param = null;
                                 continue;
                             }
 
@@ -91,7 +91,7 @@ public partial class MyGame
                                 process.tag.Remove(obj);
                                 if (process.tag.Count == 0)
                                 {
-                                    listStatus.RemoveAt(i);
+                                    listStatus[i].param = null;
                                 }
                             }
                         }
