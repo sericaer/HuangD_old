@@ -266,6 +266,28 @@ namespace HuangDAPI
 
 	public class GMData
 	{
+        public class OfficeMapElem
+        {
+            Office office;
+            Person person;
+        }
+
+        public class FactionMapElem
+        {
+            Faction faction;
+            Person person;
+        }
+
+        public static List<OfficeMapElem> OfficeMap
+        {
+            get {; }
+        }
+
+        public static List<FactionMapElem> FactionMap
+        {
+            get {; }
+        }
+
         public static Person[] GetPersons(BySelector selector = null)
         {
             return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);

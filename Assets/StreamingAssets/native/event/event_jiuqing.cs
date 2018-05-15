@@ -70,6 +70,11 @@ namespace native
 
 		Person GetSuggestPerson()
 		{
+            var q = from x in GMData.OfficeMap
+                    join c in GMData.FactionMap on x.person equals y.person
+                    where c.office.name == "JQ1"
+                    select c.faction
+
 			Faction factionJQ1 = GMData.GetFaction(Selector.ByOffice("JQ1"));
 			Person  p = GMData.GetPerson(Selector.ByOffice("SGX").ByFactionNOT(factionJQ1.name));
 			if (p == null)
