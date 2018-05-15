@@ -17,6 +17,14 @@ class ListSerialDictionary : SerialDictionary<string, NameList>{};
 
 partial class MyGame
 {
+    public class RelationManager
+    {
+        public List<HuangDAPI.GMData.RelationMapElem>  GetRelationMap()
+        {
+
+        }
+    }
+
 	[NonSerialized]
 	public RelationOffice2Person relOffice2Person = new RelationOffice2Person();
 

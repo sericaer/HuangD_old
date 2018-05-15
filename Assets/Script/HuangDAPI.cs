@@ -266,10 +266,11 @@ namespace HuangDAPI
 
 	public class GMData
 	{
-        public class OfficeMapElem
+        public class RelationMapElem
         {
             Office office;
             Person person;
+            Faction faction;
         }
 
         public class FactionMapElem
@@ -278,14 +279,12 @@ namespace HuangDAPI
             Person person;
         }
 
-        public static List<OfficeMapElem> OfficeMap
+        public static List<RelationMapElem> RelationMap
         {
-            get {; }
-        }
-
-        public static List<FactionMapElem> FactionMap
-        {
-            get {; }
+            get
+            {
+                return MyGame.Inst.RelationMap;
+            }
         }
 
         public static Person[] GetPersons(BySelector selector = null)

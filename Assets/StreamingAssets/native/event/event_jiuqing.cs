@@ -70,16 +70,23 @@ namespace native
 
 		Person GetSuggestPerson()
 		{
-            var q = from x in GMData.OfficeMap
-                    join c in GMData.FactionMap on x.person equals y.person
-                    where c.office.name == "JQ1"
-                    select c.faction
+            //获取JQ1对应的faction
+            Faction factionJQ1 = (from x in GMData.RelationMap
+                                  where c.office.name == "JQ1"
+                                  select c.faction).FirstOrDefault();
 
-			Faction factionJQ1 = GMData.GetFaction(Selector.ByOffice("JQ1"));
-			Person  p = GMData.GetPerson(Selector.ByOffice("SGX").ByFactionNOT(factionJQ1.name));
+            //获取SG中faction和JQ1的faction不相同的
+            Person p = (from x in GMData.RelationMap
+                        where c.office.name.Contains("SG")
+                        where c.faction != factionJQ1
+                        select c.person).FirstOrDefault();
+            ;
 			if (p == null)
 			{
-				p = GMData.GetPerson(Selector.ByOffice("SGX"));
+                //获取任意一个SGperson
+				p = (from x in GMData.OfficeMap
+                     where x.office.name.Contains("SG")
+                     select c.person).FirstOrDefault();
 			}
 
 			return p;

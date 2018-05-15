@@ -38,7 +38,9 @@ public partial class MyGame
 
         provManager = new ProvinceManager();
 
-		officeManager = new OfficeManager ();
+        relationManager = new RelationManager();
+
+        officeManager = new OfficeManager ();
 		//femaleOfficeManager = new OfficeManager (typeof(ENUM_OFFICE_FEMALE));
 
 		factionManager = new FactionManager ();
@@ -64,8 +66,16 @@ public partial class MyGame
 
         InitZhouj2Office();
     }
-		
-	public Person[] GetPerson(BySelector selecor)
+
+    public List<HuangDAPI.GMData.RelationMapElem> RelationMap
+    {
+        get
+        {
+            return relationManager.GetRelationMap();
+        }
+    }
+
+    public Person[] GetPerson(BySelector selecor)
 	{
         if(selecor == null)
         {
@@ -410,7 +420,8 @@ public partial class MyGame
     public int    Economy;
     public int    Military;
 
-	public PersonManager personManager;
+    public RelationManager relationManager;
+    public PersonManager personManager;
 	public PersonManager femalePersonManager;
 
 	public OfficeManager officeManager;
