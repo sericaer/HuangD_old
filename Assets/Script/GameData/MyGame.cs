@@ -58,6 +58,7 @@ public partial class MyGame
 		Person.ListListener.Add (personManager.Listen);
 		Person.ListListener.Add (femalePersonManager.Listen);
         Person.ListListener.Add (statusManager.Listen);
+        Person.ListListener.Add (relationManager.Listen);
 
         InitRelationOffice2Person ();
 		InitRelationFaction2Person ();

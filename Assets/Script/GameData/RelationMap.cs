@@ -24,7 +24,7 @@ partial class MyGame
             
         }
 
-        public void SetOffice2Person(Office officeParam, Person ppersonParam)
+        public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
         {
             var elem = listOffice2Person.Find(x => x.office == officeParam);
             if(elem == null)
@@ -41,7 +41,7 @@ partial class MyGame
             elem.person = ppersonParam;
         }
 
-        public void SetFaction2Person(Faction factionParam, Person personParam)
+        public void SetFaction2Person(HuangDAPI.Faction factionParam, HuangDAPI.Person personParam)
         {
             var elem = listFaction2Person.Find(x => x.person == personParam);
             if (elem == null)

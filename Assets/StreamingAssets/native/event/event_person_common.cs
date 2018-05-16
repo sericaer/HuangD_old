@@ -7,7 +7,7 @@ namespace native
     {
         bool Precondition()
         {
-            Person[] persons = (from x in GMData.OfficeMap
+            Person[] persons = (from x in GMData.RelationManager.OfficeMap
                                 select x.person).ToArray();
             
             foreach(Person p in persons)
@@ -32,7 +32,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref string param)
             {
-                Office office = (from x in GMData.OfficeMap
+                Office office = (from x in GMData.RelationManager.OfficeMap
                                  where x.person == OUTTER.currPerson
                                  select x.office).FirstOrDefault();
                 
@@ -66,7 +66,7 @@ namespace native
                 case 9:
                     return 0.2f;
                 case 10:
-                    return 0.4f;
+                    return 1.0f;
                 default:
                     return 0.0f;
             }

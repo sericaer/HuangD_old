@@ -285,29 +285,38 @@ namespace HuangDAPI
             public Person person;
         }
 
-        public static List<RelationMapElem> RelationMap
+        public class RelationManager
         {
-            get
+            public static List<RelationMapElem> RelationMap
             {
-                return MyGame.Inst.relationManager.GetRelationMap();
+                get
+                {
+                    return MyGame.Inst.relationManager.GetRelationMap();
+                }
+            }
+
+            public static List<OfficeMapElem> OfficeMap
+            {
+                get
+                {
+                    return MyGame.Inst.relationManager.GetOfficeMap();
+                }
+            }
+
+            public static List<FactionMapElem> FactionMap
+            {
+                get
+                {
+                    return MyGame.Inst.relationManager.GetFactionMap();
+                }
+            }
+
+            public static void SetOffice(Person person, Office office)
+            {
+                MyGame.Inst.relationManager.SetOffice2Person(office, person);
             }
         }
 
-        public static List<OfficeMapElem> OfficeMap
-        {
-            get
-            {
-                return MyGame.Inst.relationManager.GetOfficeMap();
-            }
-        }
-
-        public static List<FactionMapElem> FactionMap
-        {
-            get
-            {
-                return MyGame.Inst.relationManager.GetFactionMap();
-            }
-        }
 
    //     public static Person[] GetPersons(BySelector selector = null)
    //     {

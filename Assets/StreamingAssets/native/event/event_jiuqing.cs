@@ -13,7 +13,7 @@ namespace native
                 return false;
             }
 
-            jq1Person = (from x in GMData.OfficeMap
+            jq1Person = (from x in GMData.RelationManager.OfficeMap
                          where x.office.name == "JQ1"
                          select x.person).FirstOrDefault();
 
@@ -74,12 +74,12 @@ namespace native
 		Person GetSuggestPerson()
 		{
             //获取JQ1对应的faction
-            Faction factionJQ1 = (from x in GMData.RelationMap
+            Faction factionJQ1 = (from x in GMData.RelationManager.RelationMap
                                   where x.office.name == "JQ1"
                                   select x.faction).FirstOrDefault();
 
             //获取SG中faction和JQ1的faction不相同的
-            Person p = (from x in GMData.RelationMap
+            Person p = (from x in GMData.RelationManager.RelationMap
                         where x.office.name.Contains("SG")
                         where x.faction != factionJQ1
                         select x.person).FirstOrDefault();
@@ -87,7 +87,7 @@ namespace native
 			if (p == null)
 			{
                 //获取任意一个SGperson
-                p = (from x in GMData.OfficeMap
+                p = (from x in GMData.RelationManager.OfficeMap
                      where x.office.name.Contains("SG")
                      select x.person).LastOrDefault();
 			}
