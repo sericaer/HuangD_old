@@ -26,7 +26,13 @@ partial class MyGame
 
         public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
         {
-            var elem = listOffice2Person.Find(x => x.office == officeParam);
+            var elem = listOffice2Person.Find(x => x.person == ppersonParam);
+            if (elem != null)
+            {
+                elem.person = null;
+            }
+
+            elem = listOffice2Person.Find(x => x.office == officeParam);
             if(elem == null)
             {
                 listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = officeParam, person = ppersonParam });

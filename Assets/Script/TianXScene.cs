@@ -46,7 +46,10 @@ public class TianXScene: MonoBehaviour
 
             strStatus.TrimEnd(", ".ToCharArray());
 
-            data.Add(new List<object>(){ zj.name, zj.economy, strStatus, elem.person.name, "", elem.faction.name, elem.person.score});
+            if (elem != null)
+                data.Add(new List<object>(){ zj.name, zj.economy, strStatus, elem.person.name, "", elem.faction.name, elem.person.score});
+            else
+                data.Add(new List<object>() { zj.name, zj.economy, strStatus, "", "", "", 0 });
         }
 
         wdataTable.InitDataTable(data, colums);
