@@ -455,7 +455,10 @@ namespace HuangDAPI
     {
         public static string Format(string format, params string[] param)
         {
-            return string.Format(StreamManager.uiDesc.Get(format), param);
+            string[] trans = (from x in param
+                              select StreamManager.uiDesc.Get(x)).ToArray();
+
+            return string.Format(StreamManager.uiDesc.Get(format), trans);
         }
     }
 }

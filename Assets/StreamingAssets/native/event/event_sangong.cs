@@ -37,6 +37,11 @@ namespace native
             return false; 
         }
 
+        string Desc()
+        {
+            return UI.Format("EVENT_SG_EMPTY_DESC", emptyOffice.name);
+        }
+
         class OPTION1 : Option
         {
             string Desc()
@@ -46,7 +51,7 @@ namespace native
                              where x.person == p
                              select x.faction).FirstOrDefault();
 
-                return string.Format("{0}[{1}]", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
             void Selected(ref string nxtEvent, ref string param)
             {
@@ -69,7 +74,7 @@ namespace native
                              where x.person == p
                              select x.faction).FirstOrDefault();
 
-                return string.Format("{0}[{1}]", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
             void Selected(ref string nxtEvent, ref string param)
@@ -94,7 +99,7 @@ namespace native
                              where x.person == p
                              select x.faction).FirstOrDefault();
 
-                return string.Format("{0}[{1}]", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
             void Selected(ref string nxtEvent, ref string param)
