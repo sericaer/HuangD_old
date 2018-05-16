@@ -15,9 +15,10 @@ namespace native
                            where x.person == null
                            select x.office).FirstOrDefault();
 
+            listPerson = new List<Person>();
+
             if (emptyOffice != null)
             {
-                listPerson = new List<Person>();
                 var q = from x in GMData.RelationManager.RelationMap
                         where x.office.name.Contains("JQ")
                         group x by x.faction into g
@@ -40,7 +41,12 @@ namespace native
         {
             string Desc()
             {
-                return OUTTER.listPerson[0].name;
+                Person p = OUTTER.listPerson[0];
+                Faction f = (from x in GMData.RelationManager.FactionMap
+                             where x.person == p
+                             select x.faction).FirstOrDefault();
+
+                return string.Format("{0}[{1}]", p.ToString(), f.name);
             }
             void Selected(ref string nxtEvent, ref string param)
             {
@@ -58,7 +64,12 @@ namespace native
 
             string Desc()
             {
-                return OUTTER.listPerson[1].name;
+                Person p = OUTTER.listPerson[1];
+                Faction f = (from x in GMData.RelationManager.FactionMap
+                             where x.person == p
+                             select x.faction).FirstOrDefault();
+
+                return string.Format("{0}[{1}]", p.ToString(), f.name);
             }
 
             void Selected(ref string nxtEvent, ref string param)
@@ -78,7 +89,12 @@ namespace native
 
             string Desc()
             {
-                return OUTTER.listPerson[2].name;
+                Person p = OUTTER.listPerson[2];
+                Faction f = (from x in GMData.RelationManager.FactionMap
+                             where x.person == p
+                             select x.faction).FirstOrDefault();
+
+                return string.Format("{0}[{1}]", p.ToString(), f.name);
             }
 
             void Selected(ref string nxtEvent, ref string param)

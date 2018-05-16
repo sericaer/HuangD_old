@@ -8,6 +8,7 @@ namespace native
         bool Precondition()
         {
             Person[] persons = (from x in GMData.RelationManager.OfficeMap
+                                where x.person != null
                                 select x.person).ToArray();
             
             foreach(Person p in persons)
