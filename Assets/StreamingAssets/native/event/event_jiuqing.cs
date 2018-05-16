@@ -13,7 +13,10 @@ namespace native
                 return false;
             }
 
-            jq1Person = GMData.GetPerson(Selector.ByOffice("JQ1"));
+            jq1Person = (from x in GMData.OfficeMap
+                         where x.office.name == "JQ1"
+                         select x.person).FirstOrDefault();
+
             if (jq1Person == null)
                 return false;
 
@@ -72,24 +75,24 @@ namespace native
 		{
             //获取JQ1对应的faction
             Faction factionJQ1 = (from x in GMData.RelationMap
-                                  where c.office.name == "JQ1"
-                                  select c.faction).FirstOrDefault();
+                                  where x.office.name == "JQ1"
+                                  select x.faction).FirstOrDefault();
 
             //获取SG中faction和JQ1的faction不相同的
             Person p = (from x in GMData.RelationMap
-                        where c.office.name.Contains("SG")
-                        where c.faction != factionJQ1
-                        select c.person).FirstOrDefault();
-            ;
+                        where x.office.name.Contains("SG")
+                        where x.faction != factionJQ1
+                        select x.person).FirstOrDefault();
+            
 			if (p == null)
 			{
                 //获取任意一个SGperson
-				p = (from x in GMData.OfficeMap
+                p = (from x in GMData.OfficeMap
                      where x.office.name.Contains("SG")
-                     select c.person).FirstOrDefault();
+                     select x.person).LastOrDefault();
 			}
 
-			return p;
+            return p;
 		}
 
         Person jq1Person;

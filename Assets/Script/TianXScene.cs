@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,8 +31,12 @@ public class TianXScene: MonoBehaviour
         foreach (MyGame.Province zj in MyGame.Inst.provManager)
         {
             List<MyGame.Office> offices = MyGame.Inst.relZhouj2Office.GetOffices(zj.name);
-            MyGame.Person p = MyGame.Inst.relOffice2Person.GetPerson(offices[0]);
-            MyGame.Faction f = MyGame.Inst.relFaction2Person.GetFaction(p);
+            var elem =(from x in MyGame.Inst.relationManager.GetRelationMap()
+                       where x.office == offices[0]
+                       select x).FirstOrDefault();
+            
+            //MyGame.Person p = MyGame.Inst.relOffice2Person.GetPerson(offices[0]);
+            //MyGame.Faction f = MyGame.Inst.relFaction2Person.GetFaction(p);
 
             string strStatus = "";
             foreach(MyGame.Province.STATUS status in zj.status)
@@ -41,7 +46,7 @@ public class TianXScene: MonoBehaviour
 
             strStatus.TrimEnd(", ".ToCharArray());
 
-            data.Add(new List<object>(){ zj.name, zj.economy, strStatus, p.name, "", f.name, p.score});
+            data.Add(new List<object>(){ zj.name, zj.economy, strStatus, elem.person.name, "", elem.faction.name, elem.person.score});
         }
 
         wdataTable.InitDataTable(data, colums);
@@ -66,3 +71,6 @@ public class TianXScene: MonoBehaviour
     //private List<Text> _listBtnText;
 }
 
+internal class f
+{
+}

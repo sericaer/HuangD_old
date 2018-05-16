@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,7 +66,9 @@ class ChaoChenUI
 
 	public void Refresh()
 	{
-		MyGame.Person p  = MyGame.Inst.relOffice2Person.GetPerson (office);
+        HuangDAPI.Person p = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+                              where x.office == office
+                              select x.person).FirstOrDefault();
 		if (p == null) 
 		{
 			personName.text = "--";
@@ -74,7 +77,9 @@ class ChaoChenUI
 			return;
 		}
 
-		MyGame.Faction f = MyGame.Inst.relFaction2Person. GetFaction(p);
+        HuangDAPI.Faction f = (from x in MyGame.Inst.relationManager.GetFactionMap()
+                            where x.person == p
+                            select x.faction).FirstOrDefault();
 
 		personName.text = p.name;
 

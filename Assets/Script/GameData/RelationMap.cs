@@ -19,354 +19,422 @@ partial class MyGame
 {
     public class RelationManager
     {
+        public RelationManager()
+        {
+            
+        }
+
+        public void SetOffice2Person(Office officeParam, Person ppersonParam)
+        {
+            var elem = listOffice2Person.Find(x => x.office == officeParam);
+            if(elem == null)
+            {
+                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = officeParam, person = ppersonParam });
+                return;
+            }
+
+            if(elem.person != null)
+            {
+                throw new ArgumentException(string.Format("office {0} already has person {1}", elem.office.name, elem.person.name));
+            }
+
+            elem.person = ppersonParam;
+        }
+
+        public void SetFaction2Person(Faction factionParam, Person personParam)
+        {
+            var elem = listFaction2Person.Find(x => x.person == personParam);
+            if (elem == null)
+            {
+                listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = factionParam, person = personParam });
+                return;
+            }
+
+            elem.faction = factionParam;
+        }
+
+        public List<HuangDAPI.GMData.OfficeMapElem> GetOfficeMap()
+        {
+            return listOffice2Person;
+        }
+
+        public List<HuangDAPI.GMData.FactionMapElem> GetFactionMap()
+        {
+            return listFaction2Person;
+        }
+
         public List<HuangDAPI.GMData.RelationMapElem>  GetRelationMap()
         {
+            var q = from a in listOffice2Person
+                    where a.person != null
+                    join b in listFaction2Person on a.person equals b.person
+                    select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = b.faction };
 
+            return q.ToList();
         }
+
+        public void Listen(object obj, string cmd)
+        {
+            switch (cmd)
+            {
+                case "DIE":
+                    {
+                        Person p = (Person)obj;
+                        listOffice2Person.Find(x => x.person == p).person = null;
+                        listFaction2Person.RemoveAll(x => x.person == p);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        List<HuangDAPI.GMData.OfficeMapElem> listOffice2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
+        List<HuangDAPI.GMData.FactionMapElem> listFaction2Person = new List<HuangDAPI.GMData.FactionMapElem>();
     }
 
-	[NonSerialized]
-	public RelationOffice2Person relOffice2Person = new RelationOffice2Person();
+	//[NonSerialized]
+	//public RelationOffice2Person relOffice2Person = new RelationOffice2Person();
 
-	[NonSerialized]
-	public RelationFaction2Person relFaction2Person = new RelationFaction2Person();
+	//[NonSerialized]
+	//public RelationFaction2Person relFaction2Person = new RelationFaction2Person();
 
     [NonSerialized]
     public RelationZhouj2Office relZhouj2Office = new RelationZhouj2Office();
 
-	[SerializeField]
-	private StringSerialDictionary DictOffce2Person = new StringSerialDictionary ();
+	//[SerializeField]
+	//private StringSerialDictionary DictOffce2Person = new StringSerialDictionary ();
 
-	[SerializeField]
-	private  ListSerialDictionary DictFaction2Person = new ListSerialDictionary ();
+	//[SerializeField]
+	//private  ListSerialDictionary DictFaction2Person = new ListSerialDictionary ();
 
     [SerializeField]
     private  ListSerialDictionary DictZhouj2Office = new ListSerialDictionary ();
 
-	public class RelationOffice2Person
-	{
-		public RelationOffice2Person()
-		{
-		}
+	//public class RelationOffice2Person
+	//{
+	//	public RelationOffice2Person()
+	//	{
+	//	}
 
-		public void Set(Person p, Office o)
-		{
-            string oldoffice = "";
-            foreach (KeyValuePair<string, string> of in Inst.DictOffce2Person) 
-            {
-                if (of.Value == p.name) 
-                {
-                    oldoffice = of.Key;
-                }
-            }
+	//	public void Set(Person p, Office o)
+	//	{
+ //           string oldoffice = "";
+ //           foreach (KeyValuePair<string, string> of in Inst.DictOffce2Person) 
+ //           {
+ //               if (of.Value == p.name) 
+ //               {
+ //                   oldoffice = of.Key;
+ //               }
+ //           }
 
-            if (oldoffice != "")
-            {
-                Inst.DictOffce2Person[oldoffice] = "";
-            }
+ //           if (oldoffice != "")
+ //           {
+ //               Inst.DictOffce2Person[oldoffice] = "";
+ //           }
 
-			Inst.DictOffce2Person[o.name]=p.name;
-		}
+	//		Inst.DictOffce2Person[o.name]=p.name;
+	//	}
 
-		public Person GetPerson(Office o)
-		{
-			return GetPerson (o.name);
-		}
+	//	public Person GetPerson(Office o)
+	//	{
+	//		return GetPerson (o.name);
+	//	}
 
-		public Person GetPerson(string office)
-		{
-			string personName = Inst.DictOffce2Person [office];
-			Person p = Inst.personManager.GetByName (personName);
-			if (p == null) 
-			{
-				p = Inst.femalePersonManager.GetByName (personName);
-			}
+	//	public Person GetPerson(string office)
+	//	{
+	//		string personName = Inst.DictOffce2Person [office];
+	//		Person p = Inst.personManager.GetByName (personName);
+	//		if (p == null) 
+	//		{
+	//			p = Inst.femalePersonManager.GetByName (personName);
+	//		}
 
-			return p;
-		}
+	//		return p;
+	//	}
 
-		public List<Person> GetPerson(Office[] offices)
-		{
-			List<Person> listResult = new List<Person> ();
-			foreach (Office o in offices) 
-			{
-				Person p = GetPerson (o);
-				if (p == null) 
-				{
-					continue;
-				}
+	//	public List<Person> GetPerson(Office[] offices)
+	//	{
+	//		List<Person> listResult = new List<Person> ();
+	//		foreach (Office o in offices) 
+	//		{
+	//			Person p = GetPerson (o);
+	//			if (p == null) 
+	//			{
+	//				continue;
+	//			}
 
-				listResult.Add (p);
-			}
+	//			listResult.Add (p);
+	//		}
 
-            return listResult;
-		}
+ //           return listResult;
+	//	}
 
-		public List<Person> GetPersonBySelector(SelectElem Selector, List<Person> ListPerson)
-		{
-            Office[] Offices = null;
-            if (ListPerson == null)
-            {
-                Offices = Inst.officeManager.GetByName(Inst.DictOffce2Person.Keys.ToArray());
-            }
-            else
-            {
-                Offices = GetOffice(ListPerson.ToArray()).ToArray();
-            }
+	//	public List<Person> GetPersonBySelector(SelectElem Selector, List<Person> ListPerson)
+	//	{
+ //           Office[] Offices = null;
+ //           if (ListPerson == null)
+ //           {
+ //               Offices = Inst.officeManager.GetByName(Inst.DictOffce2Person.Keys.ToArray());
+ //           }
+ //           else
+ //           {
+ //               Offices = GetOffice(ListPerson.ToArray()).ToArray();
+ //           }
 
-            List<Office> SelectOffices = Offices.Where(Selector.Complie<Office>()).ToList();
+ //           List<Office> SelectOffices = Offices.Where(Selector.Complie<Office>()).ToList();
 
-            return GetPerson(SelectOffices.ToArray());
-		}
+ //           return GetPerson(SelectOffices.ToArray());
+	//	}
 
-        public List<Office> GetOfficeBySelector(SelectElem Selector, List<Office> ListOffice)
-        {
-            Person[] Persons = null;
-            if (ListOffice == null)
-            {
-                Persons = Inst.personManager.GetByName(Inst.DictOffce2Person.Values.ToArray());
-            }
-            else
-            {
-                Persons = GetPerson(ListOffice.ToArray()).ToArray();
-            }
+ //       public List<Office> GetOfficeBySelector(SelectElem Selector, List<Office> ListOffice)
+ //       {
+ //           Person[] Persons = null;
+ //           if (ListOffice == null)
+ //           {
+ //               Persons = Inst.personManager.GetByName(Inst.DictOffce2Person.Values.ToArray());
+ //           }
+ //           else
+ //           {
+ //               Persons = GetPerson(ListOffice.ToArray()).ToArray();
+ //           }
 
-            List<Person> SelectPerson = Persons.Where(Selector.Complie<Person>()).ToList();
+ //           List<Person> SelectPerson = Persons.Where(Selector.Complie<Person>()).ToList();
 
-            List<Office> ret = GetOffice(SelectPerson.ToArray());
+ //           List<Office> ret = GetOffice(SelectPerson.ToArray());
 
-            if (Selector.needNull)
-            {
-                string officeName = GetOffice("");
+ //           if (Selector.needNull)
+ //           {
+ //               string officeName = GetOffice("");
 
-                if(ListOffice != null && ListOffice.Find(x=>x.name == officeName) == null)
-                {
-                    return ret;
-                }
+ //               if(ListOffice != null && ListOffice.Find(x=>x.name == officeName) == null)
+ //               {
+ //                   return ret;
+ //               }
 
 
-                Office  office = Inst.officeManager.GetByName (officeName);
-                if (office != null)
-                {
-                    ret.Add(office);
-                }
-            }
+ //               Office  office = Inst.officeManager.GetByName (officeName);
+ //               if (office != null)
+ //               {
+ //                   ret.Add(office);
+ //               }
+ //           }
 
-            return ret;
-        }
+ //           return ret;
+ //       }
 
-		public Office GetOffice(Person p)
-        {
-            string officeName = GetOffice(p.name);
-			if (officeName == "") 
-			{
-				return null;
-			}
+	//	public Office GetOffice(Person p)
+ //       {
+ //           string officeName = GetOffice(p.name);
+	//		if (officeName == "") 
+	//		{
+	//			return null;
+	//		}
 
-			Office  office = Inst.officeManager.GetByName (officeName);
-			return office;
-		}
+	//		Office  office = Inst.officeManager.GetByName (officeName);
+	//		return office;
+	//	}
 
-        public string GetOffice(string p)
-        {
-            foreach (KeyValuePair<string, string> kvp in Inst.DictOffce2Person)
-            {
-                if (kvp.Value.Equals(p))
-                { 
-                    return kvp.Key;
-                }
-            }
+ //       public string GetOffice(string p)
+ //       {
+ //           foreach (KeyValuePair<string, string> kvp in Inst.DictOffce2Person)
+ //           {
+ //               if (kvp.Value.Equals(p))
+ //               { 
+ //                   return kvp.Key;
+ //               }
+ //           }
 
-            return "";
-        }
+ //           return "";
+ //       }
 
-        public List<Office> GetOffice(Person[] Persons)
-        {
-            List<Office> listResult = new List<Office>();
-            foreach(Person p in Persons)
-            {
-                Office o = GetOffice(p);
-                if(o != null)
-                {
-                    listResult.Add(o);
-                }
-            }
+ //       public List<Office> GetOffice(Person[] Persons)
+ //       {
+ //           List<Office> listResult = new List<Office>();
+ //           foreach(Person p in Persons)
+ //           {
+ //               Office o = GetOffice(p);
+ //               if(o != null)
+ //               {
+ //                   listResult.Add(o);
+ //               }
+ //           }
 
-            return listResult;
+ //           return listResult;
 
-        }
+ //       }
 
-        public void Listen(object obj, string cmd)
-		{
-			switch (cmd) 
-			{
-			case "DIE":
-				{
-					Office o = GetOffice ((Person) obj);
-					if (o == null)
-					{
-						break;
-					}
-					Inst.DictOffce2Person [o.name] = "";
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
+ //       public void Listen(object obj, string cmd)
+	//	{
+	//		switch (cmd) 
+	//		{
+	//		case "DIE":
+	//			{
+	//				Office o = GetOffice ((Person) obj);
+	//				if (o == null)
+	//				{
+	//					break;
+	//				}
+	//				Inst.DictOffce2Person [o.name] = "";
+	//			}
+	//			break;
+	//		default:
+	//			break;
+	//		}
+	//	}
+	//}
 
-	public class RelationFaction2Person
-	{
-		public void Set(Faction f, Person p)
-		{
-			if (!Inst.DictFaction2Person.ContainsKey (f.name))
-			{
-				Inst.DictFaction2Person.Add (f.name, new NameList());
-			}
+	//public class RelationFaction2Person
+	//{
+	//	public void Set(Faction f, Person p)
+	//	{
+	//		if (!Inst.DictFaction2Person.ContainsKey (f.name))
+	//		{
+	//			Inst.DictFaction2Person.Add (f.name, new NameList());
+	//		}
 
-			Inst.DictFaction2Person [f.name].ToList().Add (p.name);
-		}
+	//		Inst.DictFaction2Person [f.name].ToList().Add (p.name);
+	//	}
 
-		public Person[] GetPerson(Faction f)
-		{
-			return GetPerson (f.name);
-		}
+	//	public Person[] GetPerson(Faction f)
+	//	{
+	//		return GetPerson (f.name);
+	//	}
 
-		public Person[] GetPerson(string f)
-		{
-			string[] personNames = Inst.DictFaction2Person [f].ToList().ToArray();
+	//	public Person[] GetPerson(string f)
+	//	{
+	//		string[] personNames = Inst.DictFaction2Person [f].ToList().ToArray();
 
-			return Inst.personManager.GetByName (personNames).ToArray();
-		}
+	//		return Inst.personManager.GetByName (personNames).ToArray();
+	//	}
 
-		public Person[] GetPerson(Faction[] factions)
-		{
-			List<Person> listResult = new List<Person> ();
-			foreach (Faction o in factions) 
-			{
-				Person[] p = GetPerson (o);
+	//	public Person[] GetPerson(Faction[] factions)
+	//	{
+	//		List<Person> listResult = new List<Person> ();
+	//		foreach (Faction o in factions) 
+	//		{
+	//			Person[] p = GetPerson (o);
 
-				listResult.AddRange (p);
-			}
+	//			listResult.AddRange (p);
+	//		}
 
-			return listResult.ToArray();
-		}
+	//		return listResult.ToArray();
+	//	}
 
-		public Faction GetFaction(Person p)
-		{
-			return GetFaction(p.name);
-		}
+	//	public Faction GetFaction(Person p)
+	//	{
+	//		return GetFaction(p.name);
+	//	}
 
-		public Faction GetFaction(string pname)
-		{
-			foreach (KeyValuePair<string, NameList> kvp in Inst.DictFaction2Person)
-			{
-				if (kvp.Value.ToList().Contains(pname))
-				{ 
-					return Inst.factionManager.GetByName (kvp.Key);
-				}
-			}
+	//	public Faction GetFaction(string pname)
+	//	{
+	//		foreach (KeyValuePair<string, NameList> kvp in Inst.DictFaction2Person)
+	//		{
+	//			if (kvp.Value.ToList().Contains(pname))
+	//			{ 
+	//				return Inst.factionManager.GetByName (kvp.Key);
+	//			}
+	//		}
 
-			return null;
-		}
+	//		return null;
+	//	}
 
-		public Faction[] GetFaction(Person[] Persons)
-		{
-			List<string> listFactionName = new List<string> ();
+	//	public Faction[] GetFaction(Person[] Persons)
+	//	{
+	//		List<string> listFactionName = new List<string> ();
 			
-			foreach (KeyValuePair<string, NameList> kvp in Inst.DictFaction2Person)
-			{
-				foreach (Person p in Persons)
-				{
-					if (kvp.Value.ToList().Contains(p.name))
-					{ 
-						if (!listFactionName.Contains (kvp.Key)) 
-						{
-							listFactionName.Add (kvp.Key);
-						}
-					}
-				}
-			}
+	//		foreach (KeyValuePair<string, NameList> kvp in Inst.DictFaction2Person)
+	//		{
+	//			foreach (Person p in Persons)
+	//			{
+	//				if (kvp.Value.ToList().Contains(p.name))
+	//				{ 
+	//					if (!listFactionName.Contains (kvp.Key)) 
+	//					{
+	//						listFactionName.Add (kvp.Key);
+	//					}
+	//				}
+	//			}
+	//		}
 
-            return Inst.factionManager.GetByName(listFactionName.ToArray());
-		}
+ //           return Inst.factionManager.GetByName(listFactionName.ToArray());
+	//	}
 
-        public List<Person> GetPersonBySelector(SelectElem Selector, List<Person> ListPerson)
-        {
-            if (ListPerson == null)
-            {
-                Faction[] Factions = Inst.factionManager.GetByName(Inst.DictFaction2Person.Keys.ToArray());
+ //       public List<Person> GetPersonBySelector(SelectElem Selector, List<Person> ListPerson)
+ //       {
+ //           if (ListPerson == null)
+ //           {
+ //               Faction[] Factions = Inst.factionManager.GetByName(Inst.DictFaction2Person.Keys.ToArray());
 
-                Faction[] SelectFactions = Factions.Where(Selector.Complie<Faction>()).ToList().ToArray();
-                return GetPerson(SelectFactions).ToList();
-            }
-            else
-            {
-                ListPerson.RemoveAll(delegate(Person p){
-                    return !Selector.Complie<Faction>().Invoke(GetFaction(p));
-                    });
+ //               Faction[] SelectFactions = Factions.Where(Selector.Complie<Faction>()).ToList().ToArray();
+ //               return GetPerson(SelectFactions).ToList();
+ //           }
+ //           else
+ //           {
+ //               ListPerson.RemoveAll(delegate(Person p){
+ //                   return !Selector.Complie<Faction>().Invoke(GetFaction(p));
+ //                   });
 
-                return ListPerson;
-            }
-        }
+ //               return ListPerson;
+ //           }
+ //       }
 
-        public List<Faction> GetFactionBySelector(SelectElem Selector, List<Faction> ListFaction)
-        {
-            if (ListFaction == null)
-            {
-                List<string> listPerson = new List<string>();
-                foreach(NameList list in Inst.DictFaction2Person.Values)
-                {
-                    listPerson.AddRange(list.ToList());
-                }
+ //       public List<Faction> GetFactionBySelector(SelectElem Selector, List<Faction> ListFaction)
+ //       {
+ //           if (ListFaction == null)
+ //           {
+ //               List<string> listPerson = new List<string>();
+ //               foreach(NameList list in Inst.DictFaction2Person.Values)
+ //               {
+ //                   listPerson.AddRange(list.ToList());
+ //               }
 
-                Person[] Persons = Inst.personManager.GetByName(listPerson.ToArray()).ToArray();
+ //               Person[] Persons = Inst.personManager.GetByName(listPerson.ToArray()).ToArray();
 
-                Person[] SelectPersons = Persons.Where(Selector.Complie<Person>()).ToList().ToArray();
+ //               Person[] SelectPersons = Persons.Where(Selector.Complie<Person>()).ToList().ToArray();
 
-                return GetFaction(SelectPersons).ToList();
-            }
-            else
-            {
-                for (int i = 0; i < ListFaction.Count; i++)
-                {
-                    Person[] Persons = GetPerson(ListFaction[i]);
+ //               return GetFaction(SelectPersons).ToList();
+ //           }
+ //           else
+ //           {
+ //               for (int i = 0; i < ListFaction.Count; i++)
+ //               {
+ //                   Person[] Persons = GetPerson(ListFaction[i]);
 
-                    foreach(Person p in Persons)
-                    {
-                       if(!Selector.Complie<Person>().Invoke(p))
-                        {
-                            ListFaction.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
+ //                   foreach(Person p in Persons)
+ //                   {
+ //                      if(!Selector.Complie<Person>().Invoke(p))
+ //                       {
+ //                           ListFaction.RemoveAt(i);
+ //                           break;
+ //                       }
+ //                   }
+ //               }
 
-                return ListFaction;
-            }
-        }
+ //               return ListFaction;
+ //           }
+ //       }
 
-        public void Listen(object obj, string cmd)
-		{
-			switch (cmd) 
-			{
-			case "DIE":
-				{
-					Person p = (Person)obj;
-					Faction o = GetFaction (p);
-					if (o == null)
-					{
-						break;
-					}
-					Inst.DictFaction2Person [o.name].ToList ().Remove (p.name);
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
+ //       public void Listen(object obj, string cmd)
+	//	{
+	//		switch (cmd) 
+	//		{
+	//		case "DIE":
+	//			{
+	//				Person p = (Person)obj;
+	//				Faction o = GetFaction (p);
+	//				if (o == null)
+	//				{
+	//					break;
+	//				}
+	//				Inst.DictFaction2Person [o.name].ToList ().Remove (p.name);
+	//			}
+	//			break;
+	//		default:
+	//			break;
+	//		}
+	//	}
+	//}
 
     public class RelationZhouj2Office
     {

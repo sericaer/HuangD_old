@@ -7,7 +7,9 @@ namespace native
     {
         bool Precondition()
         {
-            Person[] persons = GMData.GetPersons();
+            Person[] persons = (from x in GMData.OfficeMap
+                                select x.person).ToArray();
+            
             foreach(Person p in persons)
             {
                 float prob = CalcProb(p.press);
@@ -30,7 +32,10 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref string param)
             {
-                Office office = GMData.GetOffice(Selector.ByPerson(OUTTER.currPerson.name));
+                Office office = (from x in GMData.OfficeMap
+                                 where x.person == OUTTER.currPerson
+                                 select x.office).FirstOrDefault();
+                
                 OUTTER.currPerson.Die();
 
                 if (office.name == "SG1" || office.name == "SG2" || office.name == "SG3")

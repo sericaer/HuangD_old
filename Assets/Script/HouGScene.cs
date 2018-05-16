@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,8 +63,17 @@ class HouFeiUI
 
 	public void Refresh()
 	{
-		MyGame.Person p  = MyGame.Inst.relOffice2Person.GetPerson (office);
+        HuangDAPI.Person p  = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+                            where x.office == office
+                            select x.person).FirstOrDefault();
 		//Faction f = MyGame.Inst.relFaction2Person. GetFaction(p);
+
+        if (p == null)
+        {
+            personName.text = "--";
+            personScore.gameObject.SetActive(false);
+            return;
+        }
 
 		personName.text = p.name;
 		personScore.text = p.score.ToString();

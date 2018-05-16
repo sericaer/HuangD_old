@@ -112,11 +112,17 @@ public partial class MyGame
             {
                 return _score;
             }
+            set
+            {
+                _score = value;
+            }
         }
 
         public override string ToString()
         {
-            Office office = MyGame.Inst.relOffice2Person.GetOffice(this);
+            HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+                             where x.person == this
+                             select x.office).FirstOrDefault();
             if(office != null)
             {
                 return StreamManager.uiDesc.Get(office.name) + name;

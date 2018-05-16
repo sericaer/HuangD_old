@@ -55,7 +55,7 @@ namespace HuangDAPI
     {
 		string name { get; }
 		int press { get; set; }
-
+        int score { get; set; }
         void Die();
         MyGame.PersonProcess Process(string name, params object[] param);
     }
@@ -268,58 +268,80 @@ namespace HuangDAPI
 	{
         public class RelationMapElem
         {
-            Office office;
-            Person person;
-            Faction faction;
+            public Office office;
+            public Person person;
+            public Faction faction;
         }
 
         public class FactionMapElem
         {
-            Faction faction;
-            Person person;
+            public Faction faction;
+            public Person person;
+        }
+
+        public class OfficeMapElem
+        {
+            public Office office;
+            public Person person;
         }
 
         public static List<RelationMapElem> RelationMap
         {
             get
             {
-                return MyGame.Inst.RelationMap;
+                return MyGame.Inst.relationManager.GetRelationMap();
             }
         }
 
-        public static Person[] GetPersons(BySelector selector = null)
+        public static List<OfficeMapElem> OfficeMap
         {
-            return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
-        }
-        public static Faction[] GetFactions(BySelector selector = null)
-        {
-			return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
-        }
-        public static Office[] GetOffices(BySelector selector = null)
-        {
-            return (Office[])MyGame.Inst.GetOffice((MyGame.BySelector)selector);
-        }
-
-        public static Person GetPerson(BySelector selector)
-        {
-			Person[] p = GetPersons(selector);
-            if(p == null || p.Length == 0)
+            get
             {
-                return null;
+                return MyGame.Inst.relationManager.GetOfficeMap();
             }
+        }
 
-            return p[Probability.GetRandomNum(0, p.Length - 1)];
-        }
-		public static Faction GetFaction(BySelector selector)
+        public static List<FactionMapElem> FactionMap
         {
-			Faction[] f = GetFactions(selector);
-			return f[Probability.GetRandomNum(0, f.Length - 1)];
+            get
+            {
+                return MyGame.Inst.relationManager.GetFactionMap();
+            }
         }
-        public static Office GetOffice(BySelector selector)
-        {
-            Office[] o = GetOffices(selector);
-            return o[Probability.GetRandomNum(0, o.Length - 1)];
-        }
+
+   //     public static Person[] GetPersons(BySelector selector = null)
+   //     {
+   //         return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
+   //     }
+   //     public static Faction[] GetFactions(BySelector selector = null)
+   //     {
+			//return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
+        //}
+        //public static Office[] GetOffices(BySelector selector = null)
+        //{
+        //    return (Office[])MyGame.Inst.GetOffice((MyGame.BySelector)selector);
+        //}
+
+  //      public static Person GetPerson(BySelector selector)
+  //      {
+		//	Person[] p = GetPersons(selector);
+  //          if(p == null || p.Length == 0)
+  //          {
+  //              return null;
+  //          }
+
+  //          return p[Probability.GetRandomNum(0, p.Length - 1)];
+  //      }
+		//public static Faction GetFaction(BySelector selector)
+   //     {
+			//Faction[] f = GetFactions(selector);
+			//return f[Probability.GetRandomNum(0, f.Length - 1)];
+        //}
+        //public static Office GetOffice(BySelector selector)
+        //{
+        //    Office[] o = GetOffices(selector);
+        //    return o[Probability.GetRandomNum(0, o.Length - 1)];
+        //}
 
 
         public class TianWenStatus
