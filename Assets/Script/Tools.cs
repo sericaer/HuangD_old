@@ -342,4 +342,79 @@ namespace Tools
 			return false;
 		}
 	}
+
+    public static class MyExtensions
+    {
+        public static void nth_elementFront<T>(this IList<T> array, int nthToSeek)
+        {
+            nth_element<T>(array, 0, nthToSeek, null);
+        }
+
+        public static void nth_elementFront<T>(this IList<T> array, int nthToSeek, Comparison<T> comparison)
+        {
+            nth_element<T>(array, 0, nthToSeek, comparison);
+        }
+
+        public static void nth_element<T>(this IList<T> array, int startIndex, int nthToSeek)
+        {
+            nth_element<T>(array, startIndex, nthToSeek, null);
+        }
+
+        public static void nth_element<T>(this IList<T> array, int startIndex, int nthToSeek, Comparison<T> comparison)
+        {
+            int from = startIndex;
+            int to = array.Count-1;
+
+            if (comparison == null)
+            {
+                comparison = delegate (T x, T y)
+                {
+                    return ((IComparable<T>)x).CompareTo(y);
+                };
+            }
+
+            // if from == to we reached the kth element
+            while (from < to)
+            {
+                int r = from, w = to;
+                T mid = array[(r + w) / 2];
+
+                // stop if the reader and writer meets
+                while (r < w)
+                {
+                    if (comparison(array[r], mid) > -1)
+                    { // put the large values at the end
+                        T tmp = array[w];
+                        array[w] = array[r];
+                        array[r] = tmp;
+                        w--;
+                    }
+                    else
+                    { // the value is smaller than the pivot, skip
+                        r++;
+                    }
+                }
+
+                // if we stepped up (r++) we need to step one down
+                if (comparison(array[r], mid) > 0)
+                {
+                    r--;
+                }
+
+                // the r pointer is on the end of the first k elements
+                if (nthToSeek <= r)
+                {
+                    to = r;
+                }
+                else
+                {
+                    from = r + 1;
+                }
+            }
+
+            return;
+        }
+
+    }   
+
 }
