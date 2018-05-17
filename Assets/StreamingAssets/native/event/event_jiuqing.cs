@@ -130,7 +130,7 @@ namespace native
                  
                 var q = (from x in GMData.RelationManager.RelationMap
                         where x.office.name.Contains("CS")
-                        select new { person = x.person, score = (x.faction == factionSG1) ? x.person.score+5 : x.person.score } into g
+                        select new { person = x.person, score = (x.faction == factionSG1) ? x.person.score+1 : x.person.score } into g
                         select g).OrderByDescending(y=>y.score).Take(3);
 
                 foreach (var v in q)

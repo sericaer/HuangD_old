@@ -56,7 +56,7 @@ class ChaoChenUI
 		personScore = tran.Find("score");
 		factionName = tran.Find("faction");
 
-		office = MyGame.Inst.officeManager.GetByName (UIKey);
+        office = (MyGame.Office)MyGame.Inst.relationManager.Offices.Where(x => x.name == UIKey).First();
 		officeName.text = office.name;
 
 		tran.Find ("reserve1").gameObject.SetActive (false);

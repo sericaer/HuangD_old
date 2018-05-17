@@ -271,21 +271,21 @@ public partial class MyGame
 
         delegate bool delCompare(MyGame.Province.STATUS a);
 
-        public List<Province> GetProvinceBySelector(SelectElem selectElem)
-        {
-            List<Province> lstResult = new List<Province>();
+        //public List<Province> GetProvinceBySelector(SelectElem selectElem)
+        //{
+        //    List<Province> lstResult = new List<Province>();
 
-            foreach(Province  prov in lstProvince)
-            {
-                List<Province.STATUS> lst = prov.listStatus.Where(selectElem.Complie<Province.STATUS>()).ToList();
-                if (lst.Count != 0)
-                {
-                    lstResult.Add(prov);
-                }
-            }
+        //    foreach(Province  prov in lstProvince)
+        //    {
+        //        List<Province.STATUS> lst = prov.listStatus.Where(selectElem.Complie<Province.STATUS>()).ToList();
+        //        if (lst.Count != 0)
+        //        {
+        //            lstResult.Add(prov);
+        //        }
+        //    }
 
-            return lstResult;
-        }
+        //    return lstResult;
+        //}
 
         public Province GetByName(string name)
         {

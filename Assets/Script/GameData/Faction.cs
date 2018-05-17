@@ -105,12 +105,12 @@ public partial class MyGame
             return lstFaction.GetRange(start, end - start).ToArray();
         }
 
-        internal List<Faction> factionBySelector(SelectElem Selector)
-        {
-            List<Faction> lstResult = lstFaction.Where(Selector.Complie<Faction>()).ToList();
+        //internal List<Faction> factionBySelector(SelectElem Selector)
+        //{
+        //    List<Faction> lstResult = lstFaction.Where(Selector.Complie<Faction>()).ToList();
 
-            return lstResult;
-        }
+        //    return lstResult;
+        //}
 
         [SerializeField]
         private List<Faction> lstFaction = new List<Faction>();

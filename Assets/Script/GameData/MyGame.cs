@@ -39,6 +39,7 @@ public partial class MyGame
         provManager = new ProvinceManager();
 
         relationManager = new RelationManager();
+        relationManager.Init();
 
         officeManager = new OfficeManager ();
 		//femaleOfficeManager = new OfficeManager (typeof(ENUM_OFFICE_FEMALE));
@@ -60,10 +61,10 @@ public partial class MyGame
         Person.ListListener.Add (statusManager.Listen);
         Person.ListListener.Add (relationManager.Listen);
 
-        InitRelationOffice2Person ();
-		InitRelationFaction2Person ();
+        //InitRelationOffice2Person ();
+		//InitRelationFaction2Person ();
 
-		InitRelationFemaleOffice2Person ();
+		//InitRelationFemaleOffice2Person ();
 
         InitZhouj2Office();
     }
@@ -208,30 +209,30 @@ public partial class MyGame
     //    return lstResult.ToArray ();
     //}
 
-    public Province[] GetProvince(BySelector selecor)
-    {
-        List<Province> lstResult = null;
+    //public Province[] GetProvince(BySelector selecor)
+    //{
+    //    List<Province> lstResult = null;
 
-        if (selecor == null)
-        {
-            return provManager.provinces;
-        }
+    //    if (selecor == null)
+    //    {
+    //        return provManager.provinces;
+    //    }
 
-        if (selecor.empty)
-        {
-            throw new ArgumentException ("seletor is empty!");
-        }
+    //    if (selecor.empty)
+    //    {
+    //        throw new ArgumentException ("seletor is empty!");
+    //    }
 
-        Debug.Log(String.Format("GetProvince {0}", selecor.ToString()));
+    //    Debug.Log(String.Format("GetProvince {0}", selecor.ToString()));
 
 
-        //if (!selecor.provbuffs.empty)
-        //{
-        //    lstResult = provManager.GetProvinceBySelector(selecor.provbuffs);
-        //}
+    //    //if (!selecor.provbuffs.empty)
+    //    //{
+    //    //    lstResult = provManager.GetProvinceBySelector(selecor.provbuffs);
+    //    //}
 
-        return lstResult.ToArray();
-    }
+    //    return lstResult.ToArray();
+    //}
 
 //    public Province[] GetProvince(BySelector selecor)
 //    {
@@ -419,6 +420,10 @@ public partial class MyGame
         return Province.GetDebuffStatus();
     }
 
+    //public Person NewPerson(Faction faction)
+    //{
+    //    Person
+    //}
 
     public bool   gameEnd;
 
@@ -430,6 +435,7 @@ public partial class MyGame
     public int    Stability;
     public int    Economy;
     public int    Military;
+
 
     public RelationManager relationManager;
     public PersonManager personManager;

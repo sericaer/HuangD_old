@@ -345,7 +345,7 @@ namespace Tools
 
     public static class MyExtensions
     {
-        public static void nth_elementFront<T>(this IList<T> array, int nthToSeek)
+        public static void nth_elementFront<T>(this List<T> array, int nthToSeek)
         {
             nth_element<T>(array, 0, nthToSeek, null);
         }

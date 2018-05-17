@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,98 @@ partial class MyGame
         public RelationManager()
         {
             
+        }
+
+        public void Init()
+        {
+            
+            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_CENTER)))
+            {
+
+                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
+                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+
+                Office newOffice = new Office(eOffice.ToString(), attribute.Power);
+
+                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem{office = newOffice, person = null});
+            }
+
+            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_LOCAL)))
+            {
+                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
+                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+
+                foreach (var eZhouj in Enum.GetValues(typeof(Province.ENUM_PROV)))
+                {
+
+                    Office newOffice = new Office(string.Format("{0}|{1}", eZhouj.ToString(), eOffice.ToString()), attribute.Power);
+
+                    listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
+                }
+            }
+
+
+            List<HuangDAPI.Person> listPerson = new List<HuangDAPI.Person>();
+            while (listPerson.Count < listOffice2Person.Count)
+            {
+                Person p = new Person(true);
+                if (listPerson.Find(x => x.name.Equals(p.name)) != null)
+                {
+                    continue;
+                }
+
+                listPerson.Add(p);
+            }
+
+            listPerson.nth_element(0, 3, (x, y) => -(x.score.CompareTo(y.score)));
+            listPerson.nth_element(3, 3+9, (x, y) => -(x.score.CompareTo(y.score)));
+            listPerson.nth_element(3+9, listPerson.Count, (x, y) => -(x.score.CompareTo(y.score)));
+
+            listOffice2Person.Sort((x, y) => -(x.office.power.CompareTo(y.office.power)));
+            for (int i = 0; i < listPerson.Count; i++)
+            {
+                listOffice2Person[i].person = listPerson[i];
+            }
+
+            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_FEMALE)))
+            {
+
+                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
+                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+
+                Office newOffice = new Office(eOffice.ToString(), attribute.Power);
+
+                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
+            }
+
+
+            List<Faction> listFaction = new List<Faction>{
+                new Faction(FactionManager.ENUM_FACTION.SHI.ToString()),
+                new Faction(FactionManager.ENUM_FACTION.XUN.ToString()),
+                new Faction(FactionManager.ENUM_FACTION.WAI.ToString()),
+            };
+
+
+            foreach (Person p in listPerson)
+            {
+                Faction f = null;
+
+                int iRandom = Probability.GetRandomNum(0, 100);
+                if (iRandom < 60)
+                {
+                    f = listFaction.Find(x => x.name == "SHI");
+                }
+                else if (iRandom < 90)
+                {
+                    f = listFaction.Find(x => x.name == "XUN");
+                }
+                else
+                {
+                    f = listFaction.Find(x => x.name == "WAI");
+                }
+
+                listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = f, person = p });
+            }
         }
 
         public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
@@ -57,6 +150,44 @@ partial class MyGame
             }
 
             elem.faction = factionParam;
+        }
+
+        public HuangDAPI.Person[] Persons
+        {
+            get
+            {
+                List<HuangDAPI.Person> listPerson1 = (from x in listOffice2Person
+                                                    select x.person).ToList();
+
+                List<HuangDAPI.Person> listPerson2 = (from x in listFaction2Person
+                                                     select x.person).ToList();
+
+                if( listPerson1.Except(listPerson2).Count() != 0)
+                {
+                    throw new SystemException("person in FactionMap and OfficeMap not same!");
+                }
+
+                return listPerson1.ToArray();
+            }
+        }
+
+        public HuangDAPI.Faction[] Factions
+        {
+            get
+            {
+                return (from x in listFaction2Person
+                        select x.faction).ToArray();
+            }
+
+        }
+
+        public HuangDAPI.Office[] Offices
+        {
+            get
+            {
+                return (from x in listOffice2Person
+                        select x.office).ToArray();
+            }
         }
 
         public List<HuangDAPI.GMData.OfficeMapElem> GetOfficeMap()

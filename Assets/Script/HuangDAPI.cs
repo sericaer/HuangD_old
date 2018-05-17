@@ -12,43 +12,43 @@ namespace HuangDAPI
         
     }
 
-	public class Selector
-    {
-		private Selector()
-        {
-            throw new NotImplementedException();
-        }
+	//public class Selector
+  //  {
+		//private Selector()
+   //     {
+   //         throw new NotImplementedException();
+   //     }
 
-        public static BySelector ByPerson(params string[] key)
-        {
-			return new MyGame.BySelector().ByPerson(key);
-        }
+   //     public static BySelector ByPerson(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByPerson(key);
+   //     }
 
-        public static BySelector ByOffice(params string[] key)
-        {
-			return new MyGame.BySelector().ByOffice(key);
-        }
+   //     public static BySelector ByOffice(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByOffice(key);
+   //     }
 
-        public static BySelector ByFaction(params string[] key)
-        {
-			return new MyGame.BySelector().ByFaction(key);
-        }
+   //     public static BySelector ByFaction(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByFaction(key);
+   //     }
 
-        public static BySelector ByPersonNOT(params string[] key)
-        {
-			return new MyGame.BySelector().ByPersonNOT(key);
-        }
+   //     public static BySelector ByPersonNOT(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByPersonNOT(key);
+   //     }
 
-        public static BySelector ByOfficeNOT(params string[] key)
-        {
-			return new MyGame.BySelector().ByOfficeNOT(key);
-        }
+   //     public static BySelector ByOfficeNOT(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByOfficeNOT(key);
+   //     }
 
-        public static BySelector ByFactionNOT(params string[] key)
-        {
-			return new MyGame.BySelector().ByFactionNOT(key);
-        }
-    }
+   //     public static BySelector ByFactionNOT(params string[] key)
+   //     {
+			//return new MyGame.BySelector().ByFactionNOT(key);
+    //    }
+    //}
 
 
     public interface Person
@@ -69,11 +69,13 @@ namespace HuangDAPI
     public interface Office
     {
         string name { get; }
+        int power { get; }
     }
 
 	public interface Faction
 	{
 		string name { get; }
+
 	}
 
     public interface Status
@@ -108,15 +110,15 @@ namespace HuangDAPI
         string mID;
     }
 
-    public interface BySelector
-    {
-		BySelector ByPerson(params string[] key);
-		BySelector ByOffice(params string[] key);
-		BySelector ByFaction(params string[] key);
-		BySelector ByPersonNOT(params string[] key);
-        BySelector ByOfficeNOT(params string[] key);
-        BySelector ByFactionNOT(params string[] key);
-    }
+  //  public interface BySelector
+  //  {
+		//BySelector ByPerson(params string[] key);
+		//BySelector ByOffice(params string[] key);
+		//BySelector ByFaction(params string[] key);
+		//BySelector ByPersonNOT(params string[] key);
+    //    BySelector ByOfficeNOT(params string[] key);
+    //    BySelector ByFactionNOT(params string[] key);
+    //}
 
     public class ReflectBase
 	{
@@ -421,16 +423,21 @@ namespace HuangDAPI
             }
         }
 
-        public class GlobalFlag
-		{
-			public static Func<string, string> Get = MyGame.Inst.GetFlag;
-			public static void Set(string name, string value = "")
-			{
-				MyGame.Inst.SetFlag(name, value);
-			}
+        //public static Person NewPerson(Faction faction)
+        //{
+        //    return MyGame.Inst.NewPerson(faction);
+        //}
 
-			public static Action<string> Clear = MyGame.Inst.ClearFlag;
-		}
+  //      public class GlobalFlag
+		//{
+		//	public static Func<string, string> Get = MyGame.Inst.GetFlag;
+		//	public static void Set(string name, string value = "")
+		//	{
+		//		MyGame.Inst.SetFlag(name, value);
+		//	}
+
+		//	public static Action<string> Clear = MyGame.Inst.ClearFlag;
+		//}
 
 
         public static int Stability

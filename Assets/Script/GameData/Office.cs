@@ -314,11 +314,11 @@ public partial class MyGame
             return lstResult.ToArray();
         }
 
-        public List<Office> GetOfficeBySelector(SelectElem Selector)
-        {
-            List<Office> lstResult = DictName2Office.Values.Where(Selector.Complie<Office>()).ToList();
-            return lstResult;
-        }
+        //public List<Office> GetOfficeBySelector(SelectElem Selector)
+        //{
+        //    List<Office> lstResult = DictName2Office.Values.Where(Selector.Complie<Office>()).ToList();
+        //    return lstResult;
+        //}
 
         [SerializeField]
         private List<Office> lstOfficeCenter = new List<Office>();

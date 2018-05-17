@@ -195,12 +195,12 @@ public partial class MyGame
             return lstPerson.GetRange(start, end - start).ToArray();
         }
 
-        public List<Person> GetPersonBySelector(SelectElem Selector)
-        {
-            List<Person> lstResult = lstPerson.Where(Selector.Complie<Person>()).ToList();
+        //public List<Person> GetPersonBySelector(SelectElem Selector)
+        //{
+        //    List<Person> lstResult = lstPerson.Where(Selector.Complie<Person>()).ToList();
 
-            return lstResult;
-        }
+        //    return lstResult;
+        //}
 
         public Person GetByName(string name)
         {
