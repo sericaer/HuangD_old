@@ -51,6 +51,7 @@ namespace HuangDAPI
     //}
 
 
+
     public interface Person
     {
 		string name { get; }
@@ -77,6 +78,12 @@ namespace HuangDAPI
 		string name { get; }
 
 	}
+
+    public interface Province
+    {
+        string name { get; }
+        string economy { get; }
+    }
 
     public interface Status
     {
@@ -287,6 +294,12 @@ namespace HuangDAPI
             public Person person;
         }
 
+        public class ProvinceMapElem
+        {
+            public Province province;
+            public Office office;
+        }
+
         public class RelationManager
         {
             public static List<RelationMapElem> RelationMap
@@ -310,6 +323,14 @@ namespace HuangDAPI
                 get
                 {
                     return MyGame.Inst.relationManager.GetFactionMap();
+                }
+            }
+
+            public static List<ProvinceMapElem> ProvinceMap
+            {
+                get
+                {
+                    return MyGame.Inst.relationManager.GetProvinceMap();
                 }
             }
 

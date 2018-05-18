@@ -52,7 +52,7 @@ class HouFeiUI
 		//factionName = tran.Find("faction/value").GetComponent<Text> ();
 
 		Debug.Log ("Key:" + UIKey);
-		office = MyGame.Inst.officeManager.GetByName (UIKey);
+        office = MyGame.Inst.relationManager.Hougongs.Where (x=>x.name == UIKey).First();
 		officeName.text = office.name;
 		Debug.Log ("Text:" + officeName.text);
 
@@ -63,7 +63,7 @@ class HouFeiUI
 
 	public void Refresh()
 	{
-        HuangDAPI.Person p  = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+        HuangDAPI.Person p  = (from x in MyGame.Inst.relationManager.GetHougongMap()
                             where x.office == office
                             select x.person).FirstOrDefault();
 		//Faction f = MyGame.Inst.relFaction2Person. GetFaction(p);
@@ -87,5 +87,5 @@ class HouFeiUI
 	Text personScore;
 	//Text factionName;
 
-	MyGame.Office office;
+    HuangDAPI.Office office;
 }

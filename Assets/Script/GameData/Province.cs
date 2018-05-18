@@ -12,7 +12,7 @@ using System.Linq;
 public partial class MyGame
 {
     [Serializable]
-    public class Province
+    public class Province : HuangDAPI.Province
     {
         public static STATUS[] GetDebuffStatus()
         {

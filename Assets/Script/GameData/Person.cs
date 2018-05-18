@@ -61,6 +61,39 @@ public partial class MyGame
             throw new NotImplementedException();
         }
 
+        public static Person NewPerson(Boolean isMale)
+        {
+            do
+            {
+                Person person = new Person(isMale);
+
+                int Count = 0;
+                if(isMale)
+                {
+                    Count = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+                             where x.person != null
+                                 where x.person.name == person.name
+                                 select x.person).Count();
+                }
+                else
+                {
+                    Count = (from x in MyGame.Inst.relationManager.GetHougongMap()
+                             where x.person != null
+                                 where x.person.name == person.name
+                                 select x.person).Count();
+                }
+
+
+                if(Count != 0)
+                {
+                    continue;
+                }
+
+                return person;
+
+            } while (true);
+        }
+
         public Person(Boolean isMale) : this(isMale, Tools.Probability.GetRandomNum(10, 90))
         {
             

@@ -44,12 +44,17 @@ partial class MyGame
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
                 OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
 
-                foreach (var eZhouj in Enum.GetValues(typeof(Province.ENUM_PROV)))
+                foreach (var eProv in Enum.GetValues(typeof(Province.ENUM_PROV)))
                 {
 
-                    Office newOffice = new Office(string.Format("{0}|{1}", eZhouj.ToString(), eOffice.ToString()), attribute.Power);
-
+                    Office newOffice = new Office(string.Format("{0}|{1}", eProv.ToString(), eOffice.ToString()), attribute.Power);
                     listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
+
+                    field = eProv.GetType().GetField(eProv.ToString());
+                    Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
+
+                    Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
+                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice });
                 }
             }
 
@@ -57,13 +62,7 @@ partial class MyGame
             List<HuangDAPI.Person> listPerson = new List<HuangDAPI.Person>();
             while (listPerson.Count < listOffice2Person.Count)
             {
-                Person p = new Person(true);
-                if (listPerson.Find(x => x.name.Equals(p.name)) != null)
-                {
-                    continue;
-                }
-
-                listPerson.Add(p);
+                listPerson.Add(Person.NewPerson(true));
             }
 
             listPerson.nth_element(0, 3, (x, y) => -(x.score.CompareTo(y.score)));
@@ -84,7 +83,7 @@ partial class MyGame
 
                 Office newOffice = new Office(eOffice.ToString(), attribute.Power);
 
-                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
+                listHougong2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = Person.NewPerson(false) });
             }
 
 
@@ -190,6 +189,15 @@ partial class MyGame
             }
         }
 
+        public HuangDAPI.Office[] Hougongs
+        {
+            get
+            {
+                return (from x in listHougong2Person
+                        select x.office).ToArray();
+            }
+        }
+
         public List<HuangDAPI.GMData.OfficeMapElem> GetOfficeMap()
         {
             return listOffice2Person;
@@ -203,11 +211,20 @@ partial class MyGame
         public List<HuangDAPI.GMData.RelationMapElem>  GetRelationMap()
         {
             var q = from a in listOffice2Person
-                    where a.person != null
                     join b in listFaction2Person on a.person equals b.person
-                    select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = b.faction };
-
+                    select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = (a.person != null ? b.faction : null) };
+            
             return q.ToList();
+        }
+
+        public List<HuangDAPI.GMData.ProvinceMapElem> GetProvinceMap()
+        {
+            return listProvince2Office;
+        }
+
+        public List<HuangDAPI.GMData.OfficeMapElem> GetHougongMap()
+        {
+            return listHougong2Person;
         }
 
         public void Listen(object obj, string cmd)
@@ -227,7 +244,9 @@ partial class MyGame
         }
 
         List<HuangDAPI.GMData.OfficeMapElem> listOffice2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
+        List<HuangDAPI.GMData.OfficeMapElem> listHougong2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
         List<HuangDAPI.GMData.FactionMapElem> listFaction2Person = new List<HuangDAPI.GMData.FactionMapElem>();
+        List<HuangDAPI.GMData.ProvinceMapElem> listProvince2Office = new List<HuangDAPI.GMData.ProvinceMapElem>();
     }
 
 	//[NonSerialized]
