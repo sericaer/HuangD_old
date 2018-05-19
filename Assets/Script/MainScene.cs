@@ -22,17 +22,15 @@ public class MainScene : MonoBehaviour
         btnEmp = GameObject.Find("Canvas/PanelTop/BtnEmp");
         btnEmpDetail = GameObject.Find("Canvas/PanelTop/BtnEmp/BtnEmpDetail");
 
-        btnDyn = GameObject.Find("Canvas/PanelTop/BtnDyn");
-        btnDynDetail = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail");
+        btnDynDetail = GameObject.Find("Canvas/PanelTop/Detail");
         
-        txtDynastyName = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail/Dyname").GetComponent<Text>();
+        txtDynastyName = GameObject.Find("Canvas/PanelTop/Detail/Dyname").GetComponent<Text>();
 
-        GameObject statusPanel = GameObject.Find("Canvas/PanelTop/BtnDyn/Detail/Panel");
+        GameObject statusPanel = GameObject.Find("Canvas/PanelTop/Detail/Panel");
         listDyStatus = new List<Text>(statusPanel.GetComponentsInChildren<Text>());
 
         panelCenter = GameObject.Find ("Canvas/PanelCenter");
 
-        GameObject.Find("Canvas/PanelTop/BtnDyn/Text").GetComponent<Text>().text = MyGame.Inst.dynastyName;
         txtDynastyName.text = MyGame.Inst.dynastyName;
 
         //ZhoujTable =  GameObject.Find ("Canvas/ZhoujTable").GetComponent<WDataTable>();
@@ -112,13 +110,22 @@ public class MainScene : MonoBehaviour
 
     public void onEmperorButtonClick()
     {
-        if (btnEmpDetail.activeSelf)
+        //if (btnEmpDetail.activeSelf)
+        //{
+        //    btnEmpDetail.SetActive(false);
+        //}
+        //else
+        //{
+        //    btnEmpDetail.SetActive(true);
+        //}
+        if (btnDynDetail.activeSelf)
         {
-            btnEmpDetail.SetActive(false);
+            btnDynDetail.SetActive(false);
         }
         else
         {
-            btnEmpDetail.SetActive(true);
+            btnDynDetail.SetActive(true);
+            btnEmp.transform.SetAsLastSibling();
         }
     }
 
