@@ -213,8 +213,14 @@ partial class MyGame
             var q = from a in listOffice2Person
                     join b in listFaction2Person on a.person equals b.person
                     select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = (a.person != null ? b.faction : null) };
-            
-            return q.ToList();
+            var e = from x in listOffice2Person
+                    where x.person == null
+                    select new HuangDAPI.GMData.RelationMapElem() { office = x.office, person = null, faction = null };
+
+            List<HuangDAPI.GMData.RelationMapElem> result = q.ToList();
+            result.AddRange(e.ToList());
+
+            return result;
         }
 
         public List<HuangDAPI.GMData.ProvinceMapElem> GetProvinceMap()
