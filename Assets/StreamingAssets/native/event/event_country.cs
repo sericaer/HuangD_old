@@ -29,7 +29,7 @@ namespace native
             StatusParam param = GMData.TianWenStatus.Get("STATUS_YHSX");
             if (param != null && param.ID == "STATUS_YHSX_PARAM_STAB")
             {
-                prob = 1f;
+                prob += 0.08f;
             }
 
             return prob;
