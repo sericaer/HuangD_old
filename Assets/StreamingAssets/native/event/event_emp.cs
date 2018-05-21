@@ -41,7 +41,7 @@ namespace native
         {
             float prob = CalcProb();
 
-            if (Probability.IsProbOccur(1.0))
+            if (Probability.IsProbOccur(prob))
                 return true;
 
             return false;

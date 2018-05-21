@@ -336,6 +336,13 @@ namespace HuangDAPI
 
             public static void SetOffice(Person person, Office office)
             {
+                NewPersonInfo personInfo = listTemPerson.Find((obj) => obj._person == person);
+
+                if(personInfo != null)
+                {
+                    MyGame.Inst.relationManager.SetFaction2Person(personInfo._faction, person);
+                }
+
                 MyGame.Inst.relationManager.SetOffice2Person(office, person);
             }
         }
@@ -449,6 +456,22 @@ namespace HuangDAPI
             }
         }
 
+        public static Person NewMalePerson(HuangDAPI.Faction faction)
+        {
+            Person person =  MyGame.Inst.NewPerson(true);
+            listNewPersonInfo.Add(new NewPersonInfo{ _person = person, _faction = faction });
+
+            return person;
+        }
+
+        public static Person NewFemalePerson(HuangDAPI.Faction faction)
+        {
+            Person person = MyGame.Inst.NewPerson(false);
+            //listTemPerson.Add(new TempPersonInfo{ _person = person, _faction = faction });
+
+            return person;
+        }
+
         //public static Person NewPerson(Faction faction)
         //{
         //    return MyGame.Inst.NewPerson(faction);
@@ -477,6 +500,14 @@ namespace HuangDAPI
                 MyGame.Inst.Stability = value;
             }
         }
+
+        class NewPersonInfo
+        {
+            public Person _person;
+            public Faction _faction;
+        }
+
+        private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
     }
 
 	public class PersonStatusAttrib : Attribute

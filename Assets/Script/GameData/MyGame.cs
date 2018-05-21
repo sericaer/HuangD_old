@@ -312,6 +312,11 @@ public partial class MyGame
         return person;
     }
 
+    public Person NewPerson(bool v)
+    {
+        return Person.NewPerson(v);
+    }
+
     private MyGame()
     {
     }

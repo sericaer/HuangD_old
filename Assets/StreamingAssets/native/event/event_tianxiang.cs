@@ -8,9 +8,9 @@ namespace native
     {
         bool Precondition()
         {
-			if(GMData.TianWenStatus.Contains("STATUS_YHSX"))
+			if(!GMData.TianWenStatus.Contains("STATUS_YHSX"))
             {
-                if(Probability.IsProbOccur(0.001))
+                if(Probability.IsProbOccur(1.0))
                 {
                     return true;
                 }
