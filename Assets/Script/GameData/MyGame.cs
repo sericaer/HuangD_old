@@ -420,6 +420,11 @@ public partial class MyGame
         return Province.GetDebuffStatus();
     }
 
+    public void EmpDie()
+    {
+        gameEnd = true;
+    }
+
     //public Person NewPerson(Faction faction)
     //{
     //    Person

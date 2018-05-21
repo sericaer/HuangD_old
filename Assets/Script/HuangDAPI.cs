@@ -442,6 +442,11 @@ namespace HuangDAPI
                     MyGame.Inst.empHeath = value;
                 }
             }
+
+            public static void Die()
+            {
+                MyGame.Inst.EmpDie();
+            }
         }
 
         //public static Person NewPerson(Faction faction)
