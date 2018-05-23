@@ -190,7 +190,7 @@ public partial class MyGame
                 foreach(var eZhouj in Enum.GetValues(typeof(Province.ENUM_PROV)))
                 {
 
-                    Office office = new Office(eZhouj.ToString() + eOffice.ToString(), attribute.Power);
+                    Office office = new Office(eZhouj.ToString() + "|" + eOffice.ToString(), attribute.Power);
                     lstOfficeLocal.Add(office);
 
                     DictName2Office.Add(office.name, office);

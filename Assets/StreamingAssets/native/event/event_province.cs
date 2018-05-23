@@ -11,17 +11,19 @@ namespace native
     {
         bool Precondition()
         {
-            Debug.Log("EVENT_CS_EMPTY 1");
-
             emptyOffice = (from x in GMData.RelationManager.OfficeMap
                            where x.office.name.Contains("CS")
                            where x.person == null
                            select x.office).FirstOrDefault();
 
+            
+
             if (emptyOffice == null)
             {
                 return false;
             }
+
+            Debug.Log(emptyOffice.name);
 
             Faction factionSG1 = (from x in GMData.RelationManager.RelationMap
                               where x.office.name == "SG1"
@@ -30,8 +32,6 @@ namespace native
             {
                 return false;
             }
-
-            Debug.Log("EVENT_CS_EMPTY 2");
 
             listPerson.Add(GMData.NewMalePerson(factionSG1));
             listPerson.Add(GMData.NewMalePerson(factionSG1));

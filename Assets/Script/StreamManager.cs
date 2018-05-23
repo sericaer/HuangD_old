@@ -84,12 +84,21 @@ public class StreamManager
 #if UNITY_EDITOR_OSX
 			return key;
 #endif
-            if (!dict.ContainsKey(new Tuple<string, string>(key, envLang)))
+            string[] keys = key.Split('|');
+
+            string result = "";
+            foreach(string k in keys)
             {
-                return key;
+                if (!dict.ContainsKey(new Tuple<string, string>(k, envLang)))
+                {
+                    result += k;
+                    continue;
+                }
+
+                result += dict[new Tuple<string, string>(k, envLang)];
             }
 
-			return dict[new Tuple<string, string>(key, envLang)];
+			return result;
 		}
 
 		private string envLang;
