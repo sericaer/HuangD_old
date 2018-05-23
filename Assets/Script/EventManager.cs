@@ -187,6 +187,8 @@ public class EventManager
 		{
             Debug.Log("percondition event"+ie._funcTitle());
 
+            ie.LoadMemento();
+
             if (!ie._funcPrecondition())
 			{
 				continue;

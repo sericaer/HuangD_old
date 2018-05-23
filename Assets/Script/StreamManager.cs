@@ -146,7 +146,10 @@ public class StreamManager
         Type[] EventTypes = types.Where(x => x.BaseType == typeof(EVENT_HD)).ToArray() ;
         foreach(Type type in EventTypes)
         {
-            eventDict.Add(type.Name, (EVENT_HD)Activator.CreateInstance(type));
+            EVENT_HD ie = Activator.CreateInstance(type) as EVENT_HD;
+            ie.SetMemento();
+
+            eventDict.Add(type.Name, ie);
         }
 
         Debug.Log("Load event count:" + eventDict.Count);

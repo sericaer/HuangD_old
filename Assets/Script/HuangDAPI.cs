@@ -206,6 +206,42 @@ namespace HuangDAPI
 			}
 		}
 
+        internal void LoadMemento()
+        {
+            Dictionary<string, object> dict =_mementoDict[this.GetType().Name];
+
+            for (int i = 0; i < _subFields.Count; i++)
+            {
+                if(dict.ContainsKey(_subFields[i].Name))
+                {
+                    _subFields[i].SetValue(this, dict[_subFields[i].Name]);
+                }
+            }
+           
+        }
+
+        internal void SetMemento()
+        {
+            List<FieldInfo> _superFields = this.GetType().BaseType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
+            List<FieldInfo> subFields = new List<FieldInfo>();
+
+            foreach(FieldInfo fsub in _subFields)
+            {
+                if(_superFields.Find(x=>x.Name == fsub.Name) == null)
+                {
+                    subFields.Add(fsub);
+                }
+            }
+            
+            Dictionary<string, object> attribDic = new Dictionary<string, object>();
+            foreach(FieldInfo field in subFields)
+            {
+                Debug.Log(field.Name);
+                attribDic.Add(field.Name, field.GetValue(this));
+            }
+            _mementoDict.Add(this.GetType().Name, attribDic);
+        }
+
 		internal Option[] options
 		{
 			get
@@ -257,6 +293,7 @@ namespace HuangDAPI
 			//public EVENT_HD OUTTER;
             
 			protected string desc;
+           
 		}
 
 
@@ -271,6 +308,7 @@ namespace HuangDAPI
 		protected string desc;
 
 		private List<Option> listOptions;
+        private static Dictionary<string, Dictionary<string, object>> _mementoDict = new Dictionary<string, Dictionary<string, object>>();
 	}
 
 	public class GMData
@@ -336,7 +374,7 @@ namespace HuangDAPI
 
             public static void SetOffice(Person person, Office office)
             {
-                NewPersonInfo personInfo = listTemPerson.Find((obj) => obj._person == person);
+                NewPersonInfo personInfo = listNewPersonInfo.Find((obj) => obj._person == person);
 
                 if(personInfo != null)
                 {
