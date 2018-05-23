@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 222668933941453046}
   - component: {fileID: 114122704249958808}
   - component: {fileID: 114294817999794924}
+  - component: {fileID: 114302997904331230}
   m_Layer: 5
   m_Name: Dialog_4Btn
   m_TagString: Untagged
@@ -384,6 +385,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3989304978b18140ab5e0dfe4f36741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114302997904331230
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1151549021261108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8e682c07edf446b962890ac7622d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114347310027011188
