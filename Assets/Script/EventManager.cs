@@ -185,8 +185,6 @@ public class EventManager
 	{  
 		foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
 		{
-            Debug.Log("percondition event"+ie._funcTitle());
-
             ie.LoadMemento();
 
             if (!ie._funcPrecondition())

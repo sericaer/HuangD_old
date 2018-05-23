@@ -236,7 +236,6 @@ namespace HuangDAPI
             Dictionary<string, object> attribDic = new Dictionary<string, object>();
             foreach(FieldInfo field in subFields)
             {
-                Debug.Log(field.Name);
                 attribDic.Add(field.Name, field.GetValue(this));
             }
             _mementoDict.Add(this.GetType().Name, attribDic);
