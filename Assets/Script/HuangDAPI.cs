@@ -527,6 +527,7 @@ namespace HuangDAPI
 		//}
 
 
+
         public static int Stability
         {
             get
@@ -539,10 +540,18 @@ namespace HuangDAPI
             }
         }
 
-        class NewPersonInfo
+        public class NewPersonInfo
         {
             public Person _person;
             public Faction _faction;
+        }
+
+        public static List<NewPersonInfo> ListNewPersonInfo
+        {
+            get
+            {
+                return listNewPersonInfo;
+            }
         }
 
         private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
