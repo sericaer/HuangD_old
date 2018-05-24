@@ -30,14 +30,23 @@ public class TianXScene: MonoBehaviour
 
         var q = from a in MyGame.Inst.relationManager.GetProvinceMap()
                                 join b in MyGame.Inst.relationManager.GetRelationMap() on a.office equals b.office
-                                select new {a.province, a.office, b.person, b.faction};
+                                select new {a.province, a.office, a.debuffList, b.person, b.faction};
         
         foreach(var v in q)
         {
+            string status = "";
+
+            foreach(HuangDAPI.Disaster disaster in v.debuffList)
+            {
+                status += StreamManager.uiDesc.Get(disaster.name) + " ";
+            }
+
+            status.TrimEnd();
+
             if (v.person != null)
-                data.Add(new List<object>() { v.province.name, v.province.economy, null, v.person.name, "", v.faction.name, v.person.score });
+                data.Add(new List<object>() { StreamManager.uiDesc.Get(v.province.name), StreamManager.uiDesc.Get(v.province.economy), status, v.person.name, "", StreamManager.uiDesc.Get(v.faction.name), v.person.score });
             else
-                data.Add(new List<object>() { v.province.name, v.province.economy, null, "", "", "", 0 });
+                data.Add(new List<object>() { StreamManager.uiDesc.Get(v.province.name), StreamManager.uiDesc.Get(v.province.economy), StreamManager.uiDesc.Get(status), "", "", "", 0 });
         }
         
         //foreach (MyGame.Province zj in MyGame.Inst.provManager)

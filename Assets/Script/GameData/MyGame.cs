@@ -317,6 +317,11 @@ public partial class MyGame
         return Person.NewPerson(v);
     }
 
+    public Disaster NewDisaster()
+    {
+        return Disaster.NewDisaster();
+    }
+
     private MyGame()
     {
     }

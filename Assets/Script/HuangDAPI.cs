@@ -85,6 +85,11 @@ namespace HuangDAPI
         string economy { get; }
     }
 
+    public interface Disaster
+    {
+        string name { get; }
+    }
+
     public interface Status
     {
         string ID { get; }
@@ -335,7 +340,10 @@ namespace HuangDAPI
         {
             public Province province;
             public Office office;
+            public List<Disaster> debuffList;
         }
+
+
 
         public class RelationManager
         {
@@ -381,6 +389,11 @@ namespace HuangDAPI
                 }
 
                 MyGame.Inst.relationManager.SetOffice2Person(office, person);
+            }
+
+            public static void SetProvinceBuff(Province province, Disaster disaster)
+            {
+                MyGame.Inst.relationManager.SetProvinceBuff(province, disaster);
             }
         }
 
@@ -509,21 +522,27 @@ namespace HuangDAPI
             return person;
         }
 
+        public static Disaster NewDisaster()
+        {
+            Disaster disaster = MyGame.Inst.NewDisaster();
+            return disaster;
+        }
+
         //public static Person NewPerson(Faction faction)
         //{
         //    return MyGame.Inst.NewPerson(faction);
         //}
 
-  //      public class GlobalFlag
-		//{
-		//	public static Func<string, string> Get = MyGame.Inst.GetFlag;
-		//	public static void Set(string name, string value = "")
-		//	{
-		//		MyGame.Inst.SetFlag(name, value);
-		//	}
+        //      public class GlobalFlag
+        //{
+        //	public static Func<string, string> Get = MyGame.Inst.GetFlag;
+        //	public static void Set(string name, string value = "")
+        //	{
+        //		MyGame.Inst.SetFlag(name, value);
+        //	}
 
-		//	public static Action<string> Clear = MyGame.Inst.ClearFlag;
-		//}
+        //	public static Action<string> Clear = MyGame.Inst.ClearFlag;
+        //}
 
 
 

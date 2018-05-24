@@ -54,7 +54,7 @@ partial class MyGame
                     Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
 
                     Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
-                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice });
+                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice, debuffList = new List<HuangDAPI.Disaster>() });
                 }
             }
 
@@ -149,6 +149,12 @@ partial class MyGame
             }
 
             elem.faction = factionParam;
+        }
+
+        public void SetProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
+        {
+            var elem = listProvince2Office.Find(x => x.province == province);
+            elem.debuffList.Add(disaster);
         }
 
         public HuangDAPI.Person[] Persons

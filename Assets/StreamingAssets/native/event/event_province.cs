@@ -121,7 +121,59 @@ namespace native
         private List<Person> listPerson = new List<Person>();
     }
 
-    //class EVENT_CS_EMPTY : EVENT_HD
-    //{
-    //}
+    class EVENT_PROV_DISASTER_START : EVENT_HD
+    {
+        bool Precondition()
+        {
+            Province[] provinces = (from x in GMData.RelationManager.ProvinceMap
+                                    select x.province).ToArray();
+            foreach (Province p in provinces)
+            {
+                disaster = CalcDisater(p);
+                if(disaster != null)
+                {
+                    province = p;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_PROV_DISASTER_START_DESC", province.name, disaster.name);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.RelationManager.SetProvinceBuff(OUTTER.province, OUTTER.disaster);
+            }
+
+            EVENT_PROV_DISASTER_START OUTTER;
+        }
+
+        private Disaster CalcDisater(Province province)
+        {
+            var debuffList = (from x in GMData.RelationManager.ProvinceMap
+                where x.province == province
+                select x.debuffList).FirstOrDefault();
+
+            if (debuffList.Count != 0)
+            {
+                return null;
+            }
+
+            if (Probability.IsProbOccur(1.0))
+            {
+                return GMData.NewDisaster();
+            }
+
+            return null;
+        }
+
+        private Disaster disaster;
+        private Province province;
+    }
 }
