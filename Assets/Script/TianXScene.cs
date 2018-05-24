@@ -38,7 +38,14 @@ public class TianXScene: MonoBehaviour
 
             foreach(HuangDAPI.Disaster disaster in v.debuffList)
             {
-                status += StreamManager.uiDesc.Get(disaster.name) + " ";
+
+                status += StreamManager.uiDesc.Get(disaster.name);
+                if(disaster.recover)
+                {
+                    status += StreamManager.uiDesc.Get("RECOVER");
+                }
+                status  += " ";
+
             }
 
             status.TrimEnd();

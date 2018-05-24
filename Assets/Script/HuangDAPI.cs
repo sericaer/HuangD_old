@@ -88,6 +88,7 @@ namespace HuangDAPI
     public interface Disaster
     {
         string name { get; }
+        bool recover { get; set; }
     }
 
     public interface Status

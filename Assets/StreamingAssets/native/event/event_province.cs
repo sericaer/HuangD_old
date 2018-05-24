@@ -176,4 +176,67 @@ namespace native
         private Disaster disaster;
         private Province province;
     }
+
+    class EVENT_PROV_DISASTER_RECOVER : EVENT_HD
+    {
+        bool Precondition()
+        {
+            var query = from x in GMData.RelationManager.ProvinceMap
+                                    select x.province;
+            foreach (var v in query)
+            {
+                disaster = CalcDisaterRecover(v);
+                if (disaster != null)
+                {
+                    province = v;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        string Desc()
+        {
+            var q = (from a in GMData.RelationManager.ProvinceMap
+                    join b in GMData.RelationManager.OfficeMap on a.office equals b.office
+                    select new { b.office, b.person}).FirstOrDefault();
+
+            return UI.Format("EVENT_PROV_DISASTER_RECOVER_DESC", province.name, disaster.name, q.office.name, q.person.name);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                OUTTER.disaster.recover = true;
+            }
+
+            EVENT_PROV_DISASTER_RECOVER OUTTER;
+        }
+
+        private Disaster CalcDisaterRecover(Province province)
+        {
+            var debuffList = (from x in GMData.RelationManager.ProvinceMap
+                              where x.province == province
+                              select x.debuffList).FirstOrDefault();
+
+            if (debuffList.Count == 0)
+            {
+                return null;
+            }
+
+            foreach(var disa in debuffList)
+            {
+                if (Probability.IsProbOccur(1.0))
+                {
+                    return disa;
+                }
+            }
+
+            return null;
+        }
+
+        private Disaster disaster;
+        private Province province;
+    }
 }
