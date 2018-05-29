@@ -396,6 +396,11 @@ namespace HuangDAPI
             {
                 MyGame.Inst.relationManager.SetProvinceBuff(province, disaster);
             }
+
+            public static void RemoveProvinceBuff(Province province, Disaster disaster)
+            {
+                MyGame.Inst.relationManager.RemoveProvinceBuff(province, disaster);
+            }
         }
 
 

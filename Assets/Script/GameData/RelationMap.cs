@@ -157,6 +157,12 @@ partial class MyGame
             elem.debuffList.Add(disaster);
         }
 
+        public void RemoveProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
+        {
+            var elem = listProvince2Office.Find(x => x.province == province);
+            elem.debuffList.Remove(disaster);
+        }
+
         public HuangDAPI.Person[] Persons
         {
             get

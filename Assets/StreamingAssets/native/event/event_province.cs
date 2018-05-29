@@ -217,16 +217,80 @@ namespace native
         private Disaster CalcDisaterRecover(Province province)
         {
             var debuffList = (from x in GMData.RelationManager.ProvinceMap
-                              where x.province == province
+                              where x.province == province && x.debuffList.Count != 0
                               select x.debuffList).FirstOrDefault();
-
-            if (debuffList.Count == 0)
-            {
-                return null;
-            }
 
             foreach(var disa in debuffList)
             {
+                if(disa.recover)
+                {
+                    continue;
+                }
+
+                if (Probability.IsProbOccur(1.0))
+                {
+                    return disa;
+                }
+            }
+
+            return null;
+        }
+
+        private Disaster disaster;
+        private Province province;
+    }
+
+    class EVENT_PROV_DISASTER_END : EVENT_HD
+    {
+        bool Precondition()
+        {
+            var query = from x in GMData.RelationManager.ProvinceMap
+                        select x.province;
+            foreach (var v in query)
+            {
+                disaster = CalcDisaterEnd(v);
+                if (disaster != null)
+                {
+                    province = v;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        string Desc()
+        {
+            var q = (from a in GMData.RelationManager.ProvinceMap
+                     join b in GMData.RelationManager.OfficeMap on a.office equals b.office
+                     select new { b.office, b.person }).FirstOrDefault();
+
+            return UI.Format("EVENT_PROV_DISASTER_END_DESC", province.name, disaster.name, q.office.name, q.person.name);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.RelationManager.RemoveProvinceBuff(OUTTER.province, OUTTER.disaster);
+            }
+
+            EVENT_PROV_DISASTER_END OUTTER;
+        }
+
+        private Disaster CalcDisaterEnd(Province province)
+        {
+            var debuffList = (from x in GMData.RelationManager.ProvinceMap
+                              where x.province == province && x.debuffList.Count != 0
+                              select x.debuffList).FirstOrDefault();
+
+
+            foreach (var disa in debuffList)
+            {
+                if(!disa.recover)
+                {
+                    continue;
+                }
+
                 if (Probability.IsProbOccur(1.0))
                 {
                     return disa;
