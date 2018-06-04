@@ -317,4 +317,80 @@ namespace native
         private Disaster disaster;
         private Province province;
     }
+
+    class EVENT_PROV_YEAR_INCOME : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if(GMData.Date.month == 8 && GMData.Date.Day == 1)
+            {
+                incomeMap = new Dictionary<Province, int>();
+                foreach (ProvinceStatusElem elem in GMData.RelationManager.ProvinceStatusMap)
+                {
+                    incomeMap.Add(elem.province, CalcIncome(elem));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        string Desc()
+        {
+            string strDesc = UI.Format("EVENT_PROV_YEAR_INCOME_DESC_TOTAL", incomeMap.Values.Sum().ToString()) + "\n";
+
+            foreach(var elem in incomeMap)
+            {
+                strDesc += UI.Format("EVENT_PROV_DISASTER_END_DESC_PER_PROV", elem.Key.name, elem.Value.ToString());
+                strDesc += "\n";
+            }
+
+            strDesc.TrimEnd("\n".ToCharArray());
+            return strDesc;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {}
+
+            EVENT_PROV_DISASTER_END OUTTER;
+        }
+
+        private int CalcIncome(ProvinceStatusElem elem)
+        {
+
+                int incomeBase = 10;
+                if(elem.province.economy == "HIGH")
+                {
+                    incomeBase += 10;
+                }
+                else if (elem.province.economy == "MID")
+                {
+
+                }
+                else if (elem.province.economy == "LOW")
+                {
+                    incomeBase = incomeBase - 5;
+                }
+
+                if(elem.disaster == null)
+                {
+                    return incomeBase;
+                }
+
+                if(elem.diaster.recover)
+                {
+                    return incomeBase * 0.3;
+                }
+                else
+                {
+                    return 0;
+                }
+
+        }
+
+        private Dictionary<Province, int> incomeMap = null;
+    }
 }

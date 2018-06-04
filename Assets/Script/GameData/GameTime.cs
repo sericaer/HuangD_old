@@ -4,7 +4,7 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-	public class GameTime
+    public class GameTime : HuangDAPI.GMDate
 	{
 		public GameTime()
 		{

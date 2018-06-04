@@ -102,6 +102,14 @@ namespace HuangDAPI
 
     }
 
+    public interface GMDate
+    {
+        int year { get; }
+        int month { get; }
+        int day { get; }
+
+    }
+
     public class StatusParam
     {
         public StatusParam(string ID)
@@ -318,8 +326,8 @@ namespace HuangDAPI
         private static Dictionary<string, Dictionary<string, object>> _mementoDict = new Dictionary<string, Dictionary<string, object>>();
 	}
 
-	public class GMData
-	{
+    public class GMData
+    {
         public class RelationMapElem
         {
             public Office office;
@@ -399,7 +407,7 @@ namespace HuangDAPI
             {
                 NewPersonInfo personInfo = listNewPersonInfo.Find((obj) => obj._person == person);
 
-                if(personInfo != null)
+                if (personInfo != null)
                 {
                     MyGame.Inst.relationManager.SetFaction2Person(personInfo._faction, person);
                 }
@@ -419,33 +427,33 @@ namespace HuangDAPI
         }
 
 
-   //     public static Person[] GetPersons(BySelector selector = null)
-   //     {
-   //         return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
-   //     }
-   //     public static Faction[] GetFactions(BySelector selector = null)
-   //     {
-			//return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
+        //     public static Person[] GetPersons(BySelector selector = null)
+        //     {
+        //         return (Person[])MyGame.Inst.GetPerson((MyGame.BySelector)selector);
+        //     }
+        //     public static Faction[] GetFactions(BySelector selector = null)
+        //     {
+        //return (Faction[])MyGame.Inst.GetFaction((MyGame.BySelector)selector);
         //}
         //public static Office[] GetOffices(BySelector selector = null)
         //{
         //    return (Office[])MyGame.Inst.GetOffice((MyGame.BySelector)selector);
         //}
 
-  //      public static Person GetPerson(BySelector selector)
-  //      {
-		//	Person[] p = GetPersons(selector);
-  //          if(p == null || p.Length == 0)
-  //          {
-  //              return null;
-  //          }
+        //      public static Person GetPerson(BySelector selector)
+        //      {
+        //	Person[] p = GetPersons(selector);
+        //          if(p == null || p.Length == 0)
+        //          {
+        //              return null;
+        //          }
 
-  //          return p[Probability.GetRandomNum(0, p.Length - 1)];
-  //      }
-		//public static Faction GetFaction(BySelector selector)
-   //     {
-			//Faction[] f = GetFactions(selector);
-			//return f[Probability.GetRandomNum(0, f.Length - 1)];
+        //          return p[Probability.GetRandomNum(0, p.Length - 1)];
+        //      }
+        //public static Faction GetFaction(BySelector selector)
+        //     {
+        //Faction[] f = GetFactions(selector);
+        //return f[Probability.GetRandomNum(0, f.Length - 1)];
         //}
         //public static Office GetOffice(BySelector selector)
         //{
@@ -476,7 +484,7 @@ namespace HuangDAPI
             public static bool Contains(string ID)
             {
                 int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
-                if(index == -1)
+                if (index == -1)
                 {
                     return false;
                 }
@@ -529,8 +537,8 @@ namespace HuangDAPI
 
         public static Person NewMalePerson(HuangDAPI.Faction faction)
         {
-            Person person =  MyGame.Inst.NewPerson(true);
-            listNewPersonInfo.Add(new NewPersonInfo{ _person = person, _faction = faction });
+            Person person = MyGame.Inst.NewPerson(true);
+            listNewPersonInfo.Add(new NewPersonInfo { _person = person, _faction = faction });
 
             return person;
         }
@@ -588,6 +596,14 @@ namespace HuangDAPI
             set
             {
                 MyGame.Inst.Economy = value;
+            }
+        }
+
+        public static GMDate Date
+        {
+            get
+            {
+                return MyGame.Inst.date;
             }
         }
 
