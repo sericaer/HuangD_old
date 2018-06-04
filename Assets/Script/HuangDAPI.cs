@@ -88,7 +88,9 @@ namespace HuangDAPI
     public interface Disaster
     {
         string name { get; }
+        string saved { get; set; }
         bool recover { get; set; }
+
     }
 
     public interface Status
@@ -341,9 +343,14 @@ namespace HuangDAPI
         {
             public Province province;
             public Office office;
-            public List<Disaster> debuffList;
+            //public List<Disaster> debuffList;
         }
 
+        public class ProvinceStatusElem
+        {
+            public Province province;
+            public Disaster debuff;
+        }
 
 
         public class RelationManager
@@ -377,6 +384,14 @@ namespace HuangDAPI
                 get
                 {
                     return MyGame.Inst.relationManager.GetProvinceMap();
+                }
+            }
+
+            public static List<ProvinceStatusElem> ProvinceStatusMap
+            {
+                get
+                {
+                    return MyGame.Inst.relationManager.GetProvinceStatusMap();
                 }
             }
 
@@ -564,6 +579,18 @@ namespace HuangDAPI
             }
         }
 
+        public static int Economy
+        {
+            get
+            {
+                return MyGame.Inst.Economy;
+            }
+            set
+            {
+                MyGame.Inst.Economy = value;
+            }
+        }
+
         public class NewPersonInfo
         {
             public Person _person;
@@ -579,6 +606,8 @@ namespace HuangDAPI
         }
 
         private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
+
+
     }
 
 	public class PersonStatusAttrib : Attribute

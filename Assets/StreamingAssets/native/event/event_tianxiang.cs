@@ -10,7 +10,7 @@ namespace native
         {
 			if(!GMData.TianWenStatus.Contains("STATUS_YHSX"))
             {
-                if(Probability.IsProbOccur(1.0))
+                if(Probability.IsProbOccur(0.001))
                 {
                     return true;
                 }

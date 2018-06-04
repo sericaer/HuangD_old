@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 
 using Tools;
+using HuangDAPI;
 
 [Serializable]
 class StringSerialDictionary : SerialDictionary<string,string>{};
@@ -54,7 +55,7 @@ partial class MyGame
                     Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
 
                     Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
-                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice, debuffList = new List<HuangDAPI.Disaster>() });
+                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice, });//debuffList = new List<HuangDAPI.Disaster>() });
                 }
             }
 
@@ -98,7 +99,7 @@ partial class MyGame
             {
                 Faction f = null;
 
-                int iRandom = Probability.GetRandomNum(0, 100);
+                int iRandom = Tools.Probability.GetRandomNum(0, 100);
                 if (iRandom < 60)
                 {
                     f = listFaction.Find(x => x.name == "SHI");
@@ -151,16 +152,15 @@ partial class MyGame
             elem.faction = factionParam;
         }
 
-        public void SetProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
+        public void SetProvinceBuff(HuangDAPI.Province provincep, HuangDAPI.Disaster disaster)
         {
-            var elem = listProvince2Office.Find(x => x.province == province);
-            elem.debuffList.Add(disaster);
+            listProvince2Status.Add(new GMData.ProvinceStatusElem { province = provincep, debuff = disaster });
         }
 
         public void RemoveProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
         {
-            var elem = listProvince2Office.Find(x => x.province == province);
-            elem.debuffList.Remove(disaster);
+            var elem = listProvince2Status.Find(x => x.province == province && x.debuff == disaster);
+            listProvince2Status.Remove(elem);
         }
 
         public HuangDAPI.Person[] Persons
@@ -245,6 +245,11 @@ partial class MyGame
             return listHougong2Person;
         }
 
+        public List<GMData.ProvinceStatusElem> GetProvinceStatusMap()
+        {
+            return listProvince2Status;
+        }
+
         public void Listen(object obj, string cmd)
         {
             switch (cmd)
@@ -265,6 +270,9 @@ partial class MyGame
         List<HuangDAPI.GMData.OfficeMapElem> listHougong2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
         List<HuangDAPI.GMData.FactionMapElem> listFaction2Person = new List<HuangDAPI.GMData.FactionMapElem>();
         List<HuangDAPI.GMData.ProvinceMapElem> listProvince2Office = new List<HuangDAPI.GMData.ProvinceMapElem>();
+        List<HuangDAPI.GMData.ProvinceStatusElem> listProvince2Status = new List<HuangDAPI.GMData.ProvinceStatusElem>();
+
+
     }
 
 	//[NonSerialized]

@@ -55,13 +55,29 @@ public partial class MyGame
             }
         }
 
+        public string saved
+        {
+            get
+            {
+                return _saved;
+            }
+
+            set
+            {
+                _saved = value;
+            }
+        }
+
         private Disaster(string name)
         {
             _name = name;
+            _recover = false;
+            _saved = "";
         }
 
         private string _name;
         private bool _recover;
+        private string _saved;
 
     }
 }

@@ -30,13 +30,16 @@ public class TianXScene: MonoBehaviour
 
         var q = from a in MyGame.Inst.relationManager.GetProvinceMap()
                                 join b in MyGame.Inst.relationManager.GetRelationMap() on a.office equals b.office
-                                select new {a.province, a.office, a.debuffList, b.person, b.faction};
+                                select new {a.province, a.office, b.person, b.faction};
         
         foreach(var v in q)
         {
             string status = "";
 
-            foreach(HuangDAPI.Disaster disaster in v.debuffList)
+            var qd = from a in MyGame.Inst.relationManager.GetProvinceStatusMap()
+                     where a.province == v.province
+                     select a.debuff;
+            foreach(HuangDAPI.Disaster disaster in qd)
             {
 
                 status += StreamManager.uiDesc.Get(disaster.name);

@@ -221,4 +221,117 @@ namespace native
         private Office emptyOffice;
         private List<Person> listPerson;
     }
+
+    class EVENT_JQ_SAVE_DISASTER : EVENT_HD
+    {
+        bool Precondition()
+        {
+            var q = (from x in GMData.RelationManager.ProvinceStatusMap
+                     where x.debuff.saved == ""
+                     select new {x.province, x.debuff}).FirstOrDefault();
+
+            if (q == null)
+            {
+                return false;
+            }
+
+            disaster = q.debuff;
+            province = q.province;
+
+            return true;
+        }
+
+        string Desc()
+        {
+            var q = (from a in GMData.RelationManager.ProvinceMap
+                     where a.province == province
+                     join b in GMData.RelationManager.OfficeMap on a.office equals b.office
+                     select new { b.office, b.person }).FirstOrDefault();
+
+            return UI.Format("EVENT_JQ_SAVE_DISASTER", province.name, disaster.name, q.office.name, q.person.name);
+        }
+
+        class OPTION1 : Option
+        {
+            bool Precondition()
+            {
+                if(GMData.Economy > 20)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.Economy = GMData.Economy - 20;
+                OUTTER.disaster.saved = "MAX";
+            }
+
+            EVENT_JQ_SAVE_DISASTER OUTTER;
+        }
+
+        class OPTION2 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Economy > 10)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.Economy = GMData.Economy - 10;
+                OUTTER.disaster.saved = "MID";
+            }
+
+            EVENT_JQ_SAVE_DISASTER OUTTER;
+
+        }
+
+        class OPTION3 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Economy > 5)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                GMData.Economy = GMData.Economy - 5;
+                OUTTER.disaster.saved = "MIN";
+            }
+
+            EVENT_JQ_SAVE_DISASTER OUTTER;
+
+        }
+
+        class OPTION4 : Option
+        {
+            void Selected(ref string nxtEvent, ref string param)
+            {
+                OUTTER.disaster.saved = "DELAY";
+
+                if (Probability.IsProbOccur(0.1))
+                {
+                    nxtEvent = "EVENT_STAB_DEC";
+                }
+            }
+
+            EVENT_JQ_SAVE_DISASTER OUTTER;
+        }
+
+        private Disaster disaster;
+        private Province province;
+    }
 }

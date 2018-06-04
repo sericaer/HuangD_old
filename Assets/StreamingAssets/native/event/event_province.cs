@@ -156,11 +156,11 @@ namespace native
 
         private Disaster CalcDisater(Province province)
         {
-            var debuffList = (from x in GMData.RelationManager.ProvinceMap
+            var debuff = (from x in GMData.RelationManager.ProvinceStatusMap
                 where x.province == province
-                select x.debuffList).FirstOrDefault();
+                select x.debuff).FirstOrDefault();
 
-            if (debuffList.Count != 0)
+            if (debuff != null)
             {
                 return null;
             }
@@ -216,9 +216,9 @@ namespace native
 
         private Disaster CalcDisaterRecover(Province province)
         {
-            var debuffList = (from x in GMData.RelationManager.ProvinceMap
-                              where x.province == province && x.debuffList.Count != 0
-                              select x.debuffList).FirstOrDefault();
+            var debuffList = (from x in GMData.RelationManager.ProvinceStatusMap
+                              where x.province == province
+                              select x.debuff);
 
             foreach(var disa in debuffList)
             {
@@ -227,7 +227,7 @@ namespace native
                     continue;
                 }
 
-                if (Probability.IsProbOccur(1.0))
+                if (Probability.IsProbOccur(0.08))
                 {
                     return disa;
                 }
@@ -279,9 +279,9 @@ namespace native
 
         private Disaster CalcDisaterEnd(Province province)
         {
-            var debuffList = (from x in GMData.RelationManager.ProvinceMap
-                              where x.province == province && x.debuffList.Count != 0
-                              select x.debuffList).FirstOrDefault();
+            var debuffList = from x in GMData.RelationManager.ProvinceStatusMap
+                              where x.province == province
+                              select x.debuff;
 
 
             foreach (var disa in debuffList)
@@ -291,7 +291,21 @@ namespace native
                     continue;
                 }
 
-                if (Probability.IsProbOccur(1.0))
+                float prob = 0.0005f;
+                if(disa.saved == "MAX")
+                {
+                    prob += 0.001f;
+                }
+                else if (disa.saved == "MID")
+                {
+                    prob += 0.0005f;
+                }
+                else if (disa.saved == "MIN")
+                {
+                    prob += 0.0003f;
+                }
+
+                if (Probability.IsProbOccur(prob))
                 {
                     return disa;
                 }
