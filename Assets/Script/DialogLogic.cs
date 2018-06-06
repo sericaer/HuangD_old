@@ -23,7 +23,7 @@ public class DialogLogic : MonoBehaviour
 
 
 
-    public delegate void DelegateProcess (string op, ref string nextEvent, ref string nextParam);
+    public delegate void DelegateProcess (string op, ref string nextEvent, ref object nextParam);
     public delegate string DelegateHistory ();
 
     public static GameObject newDialogInstace(string title, object content, KeyValuePair<string, string>[] options, DelegateProcess delegateProcess, DelegateHistory delegateHistory)
@@ -105,7 +105,7 @@ public class DialogLogic : MonoBehaviour
 		}
 	}
 
-	public string nexparam
+    public object nexparam
 	{
 		get
 		{
@@ -134,7 +134,7 @@ public class DialogLogic : MonoBehaviour
 
     private string title;
 	private string _result;
-	private string _nexparam;
+    private object _nexparam;
     private string _historyrecord;
     private Dictionary<string, string> optionName2KeyDict = new Dictionary<string, string>();
     private List<List<object>> _table;

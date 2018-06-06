@@ -34,7 +34,7 @@ namespace native
 
         class OPTION1 : Option
 		{
-			void Selected(ref string nxtEvent, ref string param)
+			void Selected(ref string nxtEvent, ref object param)
 			{
                 GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_STAB"));
             }
@@ -56,7 +56,7 @@ namespace native
                 return UI.Format("EVENT_JQ1_DEAL_YHSX_OPTION2_DESC", OUTTER.suggestPerson.ToString());
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
 			{
                 GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
                 OUTTER.suggestPerson.press += 10;
@@ -67,7 +67,7 @@ namespace native
 
 		class OPTION3 : Option
 		{
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.TianWenStatus.Set("STATUS_YHSX", new StatusParam("STATUS_YHSX_PARAM_EMP"));
             }
@@ -161,7 +161,7 @@ namespace native
 
                 return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
             }
@@ -185,7 +185,7 @@ namespace native
                 return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
             }
@@ -210,7 +210,7 @@ namespace native
                 return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
             }
@@ -263,7 +263,7 @@ namespace native
                 return false;
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.Economy = GMData.Economy - 20;
                 OUTTER.disaster.saved = "MAX";
@@ -284,7 +284,7 @@ namespace native
                 return false;
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.Economy = GMData.Economy - 10;
                 OUTTER.disaster.saved = "MID";
@@ -306,7 +306,7 @@ namespace native
                 return false;
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.Economy = GMData.Economy - 5;
                 OUTTER.disaster.saved = "MIN";
@@ -318,7 +318,7 @@ namespace native
 
         class OPTION4 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 OUTTER.disaster.saved = "DELAY";
 

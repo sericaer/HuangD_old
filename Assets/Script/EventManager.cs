@@ -13,14 +13,14 @@ public interface ItfEvent
     bool isChecked { get; }
 
     void Initlize();
-    void SelectOption(string opKey, ref string nxtEvent, ref string ret);
+    void SelectOption(string opKey, ref string nxtEvent, ref object ret);
     string History();
 
 }
 
 public class GMEvent : ItfEvent
 {
-    public GMEvent(EVENT_HD ie, string param)
+    public GMEvent(EVENT_HD ie, object param)
     {
         this._isChecked = false;
         this.ie = ie;
@@ -106,7 +106,7 @@ public class GMEvent : ItfEvent
 		//}
 	}
 
-    public void SelectOption(string opKey, ref string nxtEvent, ref string ret)
+    public void SelectOption(string opKey, ref string nxtEvent, ref object ret)
 	{
         _isChecked = true;
 
@@ -123,7 +123,7 @@ public class GMEvent : ItfEvent
     private bool _isChecked;
     private Dictionary<string, EVENT_HD.Option> optionDic;
 
-	private string param;
+    private object param;
 }
 
 public class TableEvent : ItfEvent
@@ -165,7 +165,7 @@ public class TableEvent : ItfEvent
     {
     }
 
-    public void  SelectOption(string opKey, ref string nxtEvent, ref string ret)
+    public void  SelectOption(string opKey, ref string nxtEvent, ref object ret)
     {
         _isChecked = true;
     }
@@ -210,7 +210,7 @@ public class EventManager
 		yield break;
 	}  
 
-	public void Insert(string key, string param)
+    public void Insert(string key, object param)
 	{
 		if (key.Length == 0) 
 		{

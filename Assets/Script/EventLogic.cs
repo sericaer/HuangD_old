@@ -43,7 +43,7 @@ public class EventLogic : MonoBehaviour
             MyGame.Inst.HistoryRecord(history);
 
 			string key = dialog.GetComponent<DialogLogic> ().result;
-			string param = dialog.GetComponent<DialogLogic> ().nexparam;
+            object param = dialog.GetComponent<DialogLogic> ().nexparam;
             List<List<object>> showTable = dialog.GetComponent<DialogLogic>().table;
             			
 			Destroy (dialog);

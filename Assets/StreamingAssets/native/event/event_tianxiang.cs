@@ -20,7 +20,7 @@ namespace native
 
         class OPTION1 : Option
 		{
-			void Selected(ref string nxtEvent, ref string param)
+			void Selected(ref string nxtEvent, ref object param)
 			{
 				GMData.TianWenStatus.Add("STATUS_YHSX");
 
@@ -44,7 +44,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
 
                 StatusParam statusParam = GMData.TianWenStatus.Get("STATUS_YHSX");

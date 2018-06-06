@@ -17,7 +17,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.Emp.Heath--;
             }
@@ -49,7 +49,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.Emp.Die();
             }

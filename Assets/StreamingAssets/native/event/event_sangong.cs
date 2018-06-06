@@ -53,7 +53,7 @@ namespace native
 
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
             }
@@ -77,7 +77,7 @@ namespace native
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
             }
@@ -102,7 +102,7 @@ namespace native
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
             }

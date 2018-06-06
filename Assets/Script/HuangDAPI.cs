@@ -188,22 +188,22 @@ namespace HuangDAPI
 																FieldInfo field = _subFields.Where(x => x.Name == "title").First();
 																return (string)field.GetValue(this);
 															});
-			_funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+            _funcDesc = GetDelegateInSubEvent<Func<object>>("Desc",
 															() =>
 															{
 																FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
-																return (string)field.GetValue(this);
+																return field.GetValue(this);
 															});
 			_funcHistorRecord = GetDelegateInSubEvent<Func<string>>("HistorRecord",
 																	() =>
 																	{
 																		return null;
 																	});
-			_funcInitialize = GetDelegateInSubEvent<Action<string>>("Initialize",
-																  (param) =>
-																  {
-																	  return;
-																  });
+            _funcInitialize = GetDelegateInSubEvent<Action<object>>("Initialize",
+    																  (aaa) =>
+    																  {
+    																	  return;
+    																  });
 
 			listOptions = new List<Option>();
 
@@ -293,13 +293,13 @@ namespace HuangDAPI
                                                     return (string)field.GetValue(this);
                                                 });
                 _funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
-                                                (ref string nxtEvent, ref string param) =>
+                                                                        (ref string nxtEvent, ref object param) =>
                                                 {
                                                 });
 
 			}
 
-			public delegate void DelegateSelected(ref string nxtEvent, ref string param);
+            public delegate void DelegateSelected(ref string nxtEvent, ref object param);
 
 			public Func<bool> _funcPrecondition;
 			public Func<string> _funcDesc;
@@ -315,9 +315,9 @@ namespace HuangDAPI
 
 		public Func<bool> _funcPrecondition;
 		public Func<string> _funcTitle;
-		public Func<string> _funcDesc;
+        public Func<object> _funcDesc;
 		public Func<string> _funcHistorRecord;
-		public Action<string> _funcInitialize;
+        public Action<object> _funcInitialize;
 
 		protected string title;
 		protected string desc;

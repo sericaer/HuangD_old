@@ -69,7 +69,7 @@ namespace native
 
                 return UI.Format("EVENT_CS_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
             }
@@ -89,7 +89,7 @@ namespace native
                 return UI.Format("EVENT_CS_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
             }
@@ -109,7 +109,7 @@ namespace native
                 return UI.Format("EVENT_CS_EMPTY_OPTION1_DESC", p.ToString(), f.name);
             }
 
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
             }
@@ -146,7 +146,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.SetProvinceBuff(OUTTER.province, OUTTER.disaster);
             }
@@ -206,7 +206,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 OUTTER.disaster.recover = true;
             }
@@ -269,7 +269,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 GMData.RelationManager.RemoveProvinceBuff(OUTTER.province, OUTTER.disaster);
             }
@@ -322,7 +322,7 @@ namespace native
     {
         bool Precondition()
         {
-            if(GMData.Date.month == 1 && GMData.Date.day == 3)
+            if(GMData.Date.month == 1 && GMData.Date.day == 2)
             {
                 incomeMap = new Dictionary<Province, int>();
                 foreach (GMData.ProvinceStatusElem elem in GMData.RelationManager.ProvinceStatusMap)
@@ -352,8 +352,19 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
-            {}
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_PROV_YEAR_INCOME_DETAL";
+
+                List<List<object>> lists = new List<List<object>>();
+                lists.Add(new List<object> { "NAME", "VALUE" });
+
+                foreach (var elem in OUTTER.incomeMap)
+                {
+                    lists.Add(new List<object> { elem.Key.name, elem.Value });
+                }
+                param = lists;
+            }
 
             EVENT_PROV_YEAR_INCOME OUTTER;
         }
@@ -392,5 +403,29 @@ namespace native
         }
 
         private Dictionary<Province, int> incomeMap = null;
+    }
+
+    class EVENT_PROV_YEAR_INCOME_DETAL : EVENT_HD
+    {
+        void Initialize(object param)
+        {
+            lists = param as List<List<object>>;
+        }
+
+        List<List<object>> Desc()
+        {
+            return lists;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+
+            }
+
+        }
+
+        List<List<object>> lists = null;
     }
 }

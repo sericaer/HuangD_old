@@ -31,7 +31,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(ref string nxtEvent, ref string param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 Office office = (from x in GMData.RelationManager.OfficeMap
                                  where x.person == OUTTER.currPerson
