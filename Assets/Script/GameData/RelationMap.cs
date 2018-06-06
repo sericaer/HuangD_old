@@ -28,7 +28,15 @@ partial class MyGame
 
         public void Init()
         {
-            
+            foreach (var eProv in Enum.GetValues(typeof(Province.ENUM_PROV)))
+            {
+                FieldInfo field = eProv.GetType().GetField(eProv.ToString());
+                Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
+
+                Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
+                listProvince2Status.Add(new HuangDAPI.GMData.ProvinceStatusElem { province = newProvince, debuff = null, });//debuffList = new List<HuangDAPI.Disaster>() });
+            }
+
             foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_CENTER)))
             {
 
@@ -45,19 +53,16 @@ partial class MyGame
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
                 OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
 
-                foreach (var eProv in Enum.GetValues(typeof(Province.ENUM_PROV)))
+                foreach(var elem in listProvince2Status)
                 {
 
-                    Office newOffice = new Office(string.Format("{0}|{1}", eProv.ToString(), eOffice.ToString()), attribute.Power);
+                    Office newOffice = new Office(string.Format("{0}|{1}", elem.province.name.ToString(), eOffice.ToString()), attribute.Power);
                     listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
 
-                    field = eProv.GetType().GetField(eProv.ToString());
-                    Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
-
-                    Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
-                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = newProvince, office = newOffice, });//debuffList = new List<HuangDAPI.Disaster>() });
+                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = elem.province, office = newOffice, });//debuffList = new List<HuangDAPI.Disaster>() });
                 }
             }
+
 
 
             List<HuangDAPI.Person> listPerson = new List<HuangDAPI.Person>();
@@ -154,13 +159,14 @@ partial class MyGame
 
         public void SetProvinceBuff(HuangDAPI.Province provincep, HuangDAPI.Disaster disaster)
         {
-            listProvince2Status.Add(new GMData.ProvinceStatusElem { province = provincep, debuff = disaster });
+            var elem = listProvince2Status.Find(x => x.province == provincep);
+            elem.debuff = disaster;
         }
 
         public void RemoveProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
         {
             var elem = listProvince2Status.Find(x => x.province == province && x.debuff == disaster);
-            listProvince2Status.Remove(elem);
+            elem.debuff = null;
         }
 
         public HuangDAPI.Person[] Persons

@@ -37,7 +37,7 @@ public class TianXScene: MonoBehaviour
             string status = "";
 
             var qd = from a in MyGame.Inst.relationManager.GetProvinceStatusMap()
-                     where a.province == v.province
+                     where a.province == v.province && a.debuff != null
                      select a.debuff;
             foreach(HuangDAPI.Disaster disaster in qd)
             {

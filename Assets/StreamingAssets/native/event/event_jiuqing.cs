@@ -227,7 +227,7 @@ namespace native
         bool Precondition()
         {
             var q = (from x in GMData.RelationManager.ProvinceStatusMap
-                     where x.debuff.saved == ""
+                     where x.debuff != null && x.debuff.saved == ""
                      select new {x.province, x.debuff}).FirstOrDefault();
 
             if (q == null)
@@ -243,12 +243,11 @@ namespace native
 
         string Desc()
         {
-            var q = (from a in GMData.RelationManager.ProvinceMap
-                     where a.province == province
-                     join b in GMData.RelationManager.OfficeMap on a.office equals b.office
-                     select new { b.office, b.person }).FirstOrDefault();
+            var q = (from a in GMData.RelationManager.OfficeMap
+                     where a.office.name == "JQ9"
+                     select a).FirstOrDefault();
 
-            return UI.Format("EVENT_JQ_SAVE_DISASTER", province.name, disaster.name, q.office.name, q.person.name);
+            return UI.Format("EVENT_JQ_SAVE_DISASTER_DESC", province.name, disaster.name, q.office.name, q.person.name);
         }
 
         class OPTION1 : Option

@@ -217,7 +217,7 @@ namespace native
         private Disaster CalcDisaterRecover(Province province)
         {
             var debuffList = (from x in GMData.RelationManager.ProvinceStatusMap
-                              where x.province == province
+                              where x.province == province && x.debuff != null
                               select x.debuff);
 
             foreach(var disa in debuffList)
@@ -280,8 +280,8 @@ namespace native
         private Disaster CalcDisaterEnd(Province province)
         {
             var debuffList = from x in GMData.RelationManager.ProvinceStatusMap
-                              where x.province == province
-                              select x.debuff;
+                              where x.province == province && x.debuff != null
+                             select x.debuff;
 
 
             foreach (var disa in debuffList)
@@ -340,13 +340,6 @@ namespace native
         {
             string strDesc = UI.Format("EVENT_PROV_YEAR_INCOME_DESC_TOTAL", incomeMap.Values.Sum().ToString()) + "\n";
 
-            foreach(var elem in incomeMap)
-            {
-                strDesc += UI.Format("EVENT_PROV_DISASTER_END_DESC_PER_PROV", elem.Key.name, elem.Value.ToString());
-                strDesc += "\n";
-            }
-
-            strDesc.TrimEnd("\n".ToCharArray());
             return strDesc;
         }
 
