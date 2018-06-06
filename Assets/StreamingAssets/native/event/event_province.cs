@@ -322,10 +322,10 @@ namespace native
     {
         bool Precondition()
         {
-            if(GMData.Date.month == 8 && GMData.Date.Day == 1)
+            if(GMData.Date.month == 1 && GMData.Date.day == 3)
             {
                 incomeMap = new Dictionary<Province, int>();
-                foreach (ProvinceStatusElem elem in GMData.RelationManager.ProvinceStatusMap)
+                foreach (GMData.ProvinceStatusElem elem in GMData.RelationManager.ProvinceStatusMap)
                 {
                     incomeMap.Add(elem.province, CalcIncome(elem));
                 }
@@ -355,10 +355,10 @@ namespace native
             void Selected(ref string nxtEvent, ref string param)
             {}
 
-            EVENT_PROV_DISASTER_END OUTTER;
+            EVENT_PROV_YEAR_INCOME OUTTER;
         }
 
-        private int CalcIncome(ProvinceStatusElem elem)
+        private int CalcIncome(GMData.ProvinceStatusElem elem)
         {
 
                 int incomeBase = 10;
@@ -375,14 +375,14 @@ namespace native
                     incomeBase = incomeBase - 5;
                 }
 
-                if(elem.disaster == null)
+                if(elem.debuff == null)
                 {
                     return incomeBase;
                 }
 
-                if(elem.diaster.recover)
+                if(elem.debuff.recover)
                 {
-                    return incomeBase * 0.3;
+                    return (int)(incomeBase * 0.3);
                 }
                 else
                 {
