@@ -13,6 +13,9 @@ JQ8,大司农,
 JQ9,少府,
 CS,刺史,
 
+PROVINCE_NAME,州名,
+INCOME,收入,
+
 ZHOUJ1,冀州,
 ZHOUJ2,青州,
 ZHOUJ3,徐州,
@@ -22,6 +25,9 @@ ZHOUJ6,豫州,
 ZHOUJ7,荆州,
 ZHOUJ8,雍州,
 ZHOUJ9,益州,
+
+FACTION,派系,
+SCORE,功勋,
 
 SHI,士族,
 XUN,勋贵,

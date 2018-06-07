@@ -50,13 +50,24 @@ public class DialogLogic : MonoBehaviour
             IList<IList<object>> data = new List<IList<object>>();
             for (int i = 1; i < raw.Count; i++)
             {
+                for(int j=0; j < raw[i].Count; j++)
+                {
+                    object obj = raw[i][j];
+                    string temp = obj as string;
+                    if(temp != null)
+                    {
+                        raw[i][j] = StreamManager.uiDesc.Get(temp);
+                    }
+                }
+                
+
                 data.Add(raw[i]);
             }
 
             List<string> colums = new List<string>();
             for (int i = 0; i < raw[0].Count; i++)
             {
-                colums.Add((string)raw[0][i]);
+                colums.Add(StreamManager.uiDesc.Get((string)raw[0][i]));
             }
 
             Action<Button> t = new Action<Button>(dialog.GetComponent<DialogLogic> ().OnEventButton);
