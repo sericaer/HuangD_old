@@ -167,6 +167,11 @@ public partial class MyGame
                 return listStatus.ToArray();
             }
         }
+
+        public override string ToString()
+        {
+            return name;
+        }
 //
 //        public void SetBuff(string buff)
 //        {

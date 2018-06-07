@@ -347,14 +347,25 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
+                GMData.Economy += OUTTER.incomeMap.Values.Sum();
+
                 nxtEvent = "EVENT_PROV_YEAR_INCOME_DETAL";
 
                 List<List<object>> lists = new List<List<object>>();
-                lists.Add(new List<object> { "NAME", "VALUE" });
+                lists.Add(new List<object> { "PROVINCE_NAME", "INCOME", "CS", "FACTION", "SCORE"});
 
                 foreach (var elem in OUTTER.incomeMap)
                 {
-                    lists.Add(new List<object> { elem.Key.name, elem.Value });
+                    var office = (from x in GMData.RelationManager.ProvinceMap
+                                  where x.province == elem.Key
+                                  select x.office).First();
+                    var rela   = (from x in GMData.RelationManager.RelationMap
+                                  where x.office == office
+                                  select x).First();
+
+                    rela.person.score += 3;
+
+                    lists.Add(new List<object> { elem.Key, elem.Value, rela.person, rela.faction, 3 });
                 }
                 param = lists;
             }

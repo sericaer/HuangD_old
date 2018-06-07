@@ -153,13 +153,13 @@ public partial class MyGame
 
         public override string ToString()
         {
-            HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
-                             where x.person == this
-                             select x.office).FirstOrDefault();
-            if(office != null)
-            {
-                return StreamManager.uiDesc.Get(office.name) + name;
-            }
+            //HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+            //                 where x.person == this
+            //                 select x.office).FirstOrDefault();
+            //if(office != null)
+            //{
+            //    return StreamManager.uiDesc.Get(office.name) + name;
+            //}
 
             return name;
         }
