@@ -165,7 +165,7 @@ namespace native
                 return null;
             }
 
-            if (Probability.IsProbOccur(1.0))
+            if (Probability.IsProbOccur(0.003))
             {
                 return GMData.NewDisaster();
             }
@@ -338,11 +338,7 @@ namespace native
 
         string Desc()
         {
-            var persion = (from x in GMData.RelationManager.OfficeMap
-                           where x.office.name == "JQ8"
-                           select x.person).First();
-
-            string strDesc = UI.Format("EVENT_PROV_YEAR_INCOME_DESC", "JQ8", persion.name, incomeMap.Values.Sum().ToString());
+            string strDesc = UI.Format("EVENT_PROV_YEAR_INCOME_DESC_TOTAL", incomeMap.Values.Sum().ToString()) + "\n";
 
             return strDesc;
         }
@@ -353,7 +349,7 @@ namespace native
             {
                 GMData.Economy += OUTTER.incomeMap.Values.Sum();
 
-                nxtEvent = "EVENT_PROV_YEAR_INCOME_DETAIL";
+                nxtEvent = "EVENT_PROV_YEAR_INCOME_DETAL";
 
                 List<List<object>> lists = new List<List<object>>();
                 lists.Add(new List<object> { "PROVINCE_NAME", "INCOME", "CS", "FACTION", "SCORE"});
@@ -369,7 +365,7 @@ namespace native
 
                     rela.person.score += 3;
 
-                    lists.Add(new List<object> { elem.Key.name, elem.Value, rela.person.name, rela.faction.name, 3 });
+                    lists.Add(new List<object> { elem.Key, elem.Value, rela.person, rela.faction, 3 });
                 }
                 param = lists;
             }
@@ -413,7 +409,7 @@ namespace native
         private Dictionary<Province, int> incomeMap = null;
     }
 
-    class EVENT_PROV_YEAR_INCOME_DETAIL : EVENT_HD
+    class EVENT_PROV_YEAR_INCOME_DETAL : EVENT_HD
     {
         void Initialize(object param)
         {
