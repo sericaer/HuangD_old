@@ -8,7 +8,7 @@ namespace native
     {
         bool Precondition()
         {
-			if(!GMData.TianWenStatus.Contains("STATUS_YHSX"))
+			if(!GMData.CountryFlags.Contains("STATUS_YHSX"))
             {
                 if(Probability.IsProbOccur(0.001))
                 {
@@ -22,7 +22,7 @@ namespace native
 		{
 			void Selected(ref string nxtEvent, ref object param)
 			{
-				GMData.TianWenStatus.Add("STATUS_YHSX");
+                GMData.CountryFlags.Add("STATUS_YHSX");
 
 				param = "1";
                 nxtEvent = "EVENT_STAB_DEC";
@@ -34,7 +34,7 @@ namespace native
     {
         bool Precondition()
         {
-			if (!GMData.TianWenStatus.Contains("STATUS_YHSX"))
+            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
                 return false; 
             if (Probability.IsProbOccur(0.05))
                 return true;
@@ -46,19 +46,15 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
+                GMData.CountryFlags.Remove("STATUS_YHSX");
+                GMData.ImpWorks.Remove("DEAL_YHSX");
 
-                StatusParam statusParam = GMData.TianWenStatus.Get("STATUS_YHSX");
-                if (statusParam != null && statusParam.ID == "STATUS_YHSX_PARAM_PERSON")
+                var query = from x in GMData.RelationManager.OfficeMap
+                            select x.person;
+                foreach(var person in query)
                 {
-                    PersonProcess process = statusParam as PersonProcess;
-                    if(process != null)
-                    {
-                        Person p = process.tag[0] as Person;
-                        p.press = p.press - 5;
-                    }
+                    person.Flags.Remove("DST_YHSX");
                 }
-
-				GMData.TianWenStatus.Remove("STATUS_YHSX");
             }
         }
     }

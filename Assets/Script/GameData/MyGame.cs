@@ -451,6 +451,8 @@ public partial class MyGame
     public int    Economy;
     public int    Military;
 
+    public List<string> CountryFlags = new List<string>();
+    public List<HuangDAPI.ImpWork> ImpWorks = new List<HuangDAPI.ImpWork>();
 
     public RelationManager relationManager;
     public PersonManager personManager;

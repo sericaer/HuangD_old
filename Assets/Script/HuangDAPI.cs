@@ -9,8 +9,48 @@ namespace HuangDAPI
 {
     public class Probability : Tools.Probability
     {
-        
+
     }
+
+
+    public static class ExtentionMethods
+    {
+        public static void Add(this List<PersonFlag> list, string name, string op)
+        {
+            list.Add(new MyGame.PersonFlag(name, op));
+        }
+
+        public static void Remove(this List<PersonFlag> list, string name)
+        {
+            list.RemoveAll(x => x.name == name);
+        }
+
+        public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src)
+        {
+            listImpWork.Add(new MyGame.ImpWork(name, detail, src));
+        }
+
+        public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src, object dest)
+        {
+            listImpWork.Add(new MyGame.ImpWork(name, detail, src, dest));
+        }
+
+        public static ImpWork Find(this List<ImpWork> listImpWork, string name)
+        {
+            return listImpWork.Find(x => x.name == name);
+        }
+
+        public static bool Contains(this List<ImpWork> listImpWork, string name)
+        {
+            return listImpWork.Any(x => x.name == name);
+        }
+
+        public static void Remove(this List<ImpWork> listImpWork, string name)
+        {
+            listImpWork.RemoveAll(x => x.name == name);
+        }
+    }
+
 
 	//public class Selector
   //  {
@@ -57,8 +97,16 @@ namespace HuangDAPI
 		string name { get; }
 		int press { get; set; }
         int score { get; set; }
+        List<PersonFlag> Flags { get; set; }
+
         void Die();
+
         MyGame.PersonProcess Process(string name, params object[] param);
+    }
+
+    public interface PersonFlag
+    {
+        string name { get; }
     }
 
     public interface PersonProcess
@@ -100,6 +148,14 @@ namespace HuangDAPI
         string desc { get; }
         StatusParam param { get; set; }
 
+    }
+
+    public interface ImpWork
+    {
+        string name { get; set;}
+        string detail { get; set;}
+        object src { get; set;}
+        object dest {get; set;}
     }
 
     public interface GMDate
@@ -607,6 +663,22 @@ namespace HuangDAPI
             }
         }
 
+        public static List<string> CountryFlags
+        {
+            get
+            {
+                return MyGame.Inst.CountryFlags;
+            }
+        }
+
+        public static List<ImpWork> ImpWorks
+        {
+            get
+            {
+                return MyGame.Inst.ImpWorks;
+            }
+        }
+
         public class NewPersonInfo
         {
             public Person _person;
@@ -620,6 +692,7 @@ namespace HuangDAPI
                 return listNewPersonInfo;
             }
         }
+
 
         private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
 

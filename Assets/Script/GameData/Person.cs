@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using HuangDAPI;
 
 public partial class MyGame
 {
@@ -151,6 +152,19 @@ public partial class MyGame
             }
         }
 
+        public List<HuangDAPI.PersonFlag> Flags
+        {
+            get
+            {
+                return _Flags;
+            }
+
+            set
+            {
+                _Flags = value;
+            }
+        }
+
         public override string ToString()
         {
             //HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
@@ -193,6 +207,10 @@ public partial class MyGame
 
         [SerializeField]
         int _press;
+
+        List<HuangDAPI.PersonFlag> _Flags = new List<HuangDAPI.PersonFlag>();
+
+
     }
 
     public class PersonManager

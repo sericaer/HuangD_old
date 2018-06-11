@@ -9,8 +9,12 @@ namespace native
 	{
 		bool Precondition()
 		{
-            StatusParam param = GMData.TianWenStatus.Get("STATUS_YHSX");
-            if (param == null || param.ID != "")
+            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
+            {
+                return false;
+            }
+
+            if (GMData.ImpWorks.Contains("DEAL_YHSX"))
             {
                 return false;
             }
@@ -34,9 +38,9 @@ namespace native
 
         class OPTION1 : Option
 		{
-			void Selected(ref string nxtEvent, ref object param)
-			{
-                GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_STAB"));
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Add("DEAL_YHSX", "DEAL_YHSX_PARAM_STAB", OUTTER.jq1Person);
             }
 
             EVENT_JQ1_DEAL_YHSX OUTTER;
@@ -58,8 +62,8 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
 			{
-                GMData.TianWenStatus.Set("STATUS_YHSX", OUTTER.jq1Person.Process("STATUS_YHSX_PARAM_PERSON", OUTTER.suggestPerson));
-                OUTTER.suggestPerson.press += 10;
+                GMData.ImpWorks.Add("DEAL_YHSX", "STATUS_YHSX_PARAM_PERSON", OUTTER.jq1Person, OUTTER.suggestPerson);
+                OUTTER.suggestPerson.Flags.Add("DST_YHSX", "Press:-5");
             }
 
 			EVENT_JQ1_DEAL_YHSX OUTTER;
@@ -69,8 +73,10 @@ namespace native
 		{
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.TianWenStatus.Set("STATUS_YHSX", new StatusParam("STATUS_YHSX_PARAM_EMP"));
+                GMData.ImpWorks.Add("DEAL_YHSX", "STATUS_YHSX_PARAM_STAB", OUTTER.jq1Person);
             }
+
+            EVENT_JQ1_DEAL_YHSX OUTTER;
         }
 
 		Person GetSuggestPerson()
@@ -100,6 +106,179 @@ namespace native
         Person jq1Person;
         Person suggestPerson;
 	}
+
+    class EVENT_JQ1_DEAL_JS : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.Date.month == 1 && GMData.Date.day == 5)
+            {
+                jq1Person = (from x in GMData.RelationManager.OfficeMap
+                             where x.office.name == "JQ1"
+                             select x.person).FirstOrDefault();
+
+                if (jq1Person == null)
+                    return false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_JQ1_DEAL_JS_DESC", jq1Person.ToString());
+        }
+
+        class OPTION1 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Economy > 15)
+                    return true;
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_BIG", OUTTER.jq1Person);
+                GMData.Economy -= 15;
+            }
+
+            EVENT_JQ1_DEAL_JS OUTTER;
+        }
+
+        class OPTION2 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Economy > 10 )
+                    return true;
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_MID", OUTTER.jq1Person);
+                GMData.Economy -= 10;
+            }
+
+            EVENT_JQ1_DEAL_JS OUTTER;
+        }
+
+        class OPTION3 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Economy > 5)
+                    return true;
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_LOW", OUTTER.jq1Person);
+                GMData.Economy -= 5;
+            }
+
+            EVENT_JQ1_DEAL_JS OUTTER;
+        }
+
+        class OPTION4 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_STAB_DEC";
+            }
+        }
+
+        Person jq1Person;
+    }
+
+    class EVENT_JQ1_JS_END : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.Date.month == 2 && GMData.Date.day == 1)
+            {
+                if (GMData.ImpWorks.Contains("DEAL_JS"))
+                    return true;
+            }
+
+            return false;
+        }
+        string Desc()
+        {
+            var jq1Person = (from x in GMData.RelationManager.OfficeMap
+                         where x.office.name == "JQ1"
+                         select x.person).First();
+            return UI.Format("EVENT_JQ1_JS_END_DESC", jq1Person.ToString(), GMData.ImpWorks.Find("DEAL_JS").detail);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                var detail = GMData.ImpWorks.Find(x=>x.name == "DEAL_JS").detail;
+                if(detail == "DEAL_JS_PARAM_BIG")
+                {
+                    nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                }
+                else if(detail == "DEAL_JS_PARAM_MID")
+                {
+                    if (Probability.IsProbOccur(0.7))
+                    {
+                        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                    }
+                }
+                else if (detail == "DEAL_JS_PARAM_LOW")
+                {
+                    if (Probability.IsProbOccur(0.7))
+                    {
+                        nxtEvent = "EVENT_JQ1_JS_FAILED";
+                    }
+                }
+
+                GMData.ImpWorks.Remove("DEAL_JS");
+            }
+        }
+    }
+
+
+    class EVENT_JQ1_JS_SUCCESS : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_STAB_INC";
+            }
+        }
+
+    }
+
+    class EVENT_JQ1_JS_FAILED : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_STAB_DEC";
+            }
+        }
+
+    }
 
     class EVENT_JQ_EMPTY : EVENT_HD
     {
