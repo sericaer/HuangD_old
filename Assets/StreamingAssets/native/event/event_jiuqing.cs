@@ -196,6 +196,56 @@ namespace native
         Person jq1Person;
     }
 
+    class EVENT_JQ1_JS_GOOD_EVENT : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (!GMData.ImpWorks.Contains("DEAL_JS"))
+                return false;
+            
+            var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
+            if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT") || detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
+                return false;
+            
+            if (Probability.IsProbOccur(0.005))
+                return true;
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Find("DEAL_JS").detail += "|EVENT_JQ1_JS_GOOD_EVENT";
+                nxtEvent = "EVENT_STAB_INC";
+            }
+        }
+    }
+
+    class EVENT_JQ1_JS_BAD_EVENT : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (!GMData.ImpWorks.Contains("DEAL_JS"))
+                return false;
+            var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
+            if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT") || detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
+                return false;
+            if (Probability.IsProbOccur(0.005))
+                return true;
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Find("DEAL_JS").detail += "|EVENT_JQ1_JS_BAD_EVENT";
+                nxtEvent = "EVENT_STAB_DEC";
+            }
+        }
+    }
+
     class EVENT_JQ1_JS_END : EVENT_HD
     {
         bool Precondition()
@@ -220,27 +270,50 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                var detail = GMData.ImpWorks.Find(x=>x.name == "DEAL_JS").detail;
-                if(detail == "DEAL_JS_PARAM_BIG")
+                var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
+                GMData.ImpWorks.Remove("DEAL_JS");
+
+                if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
                 {
                     nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                    return;
                 }
-                else if(detail == "DEAL_JS_PARAM_MID")
+                else if (detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
+                {
+                    nxtEvent = "EVENT_JQ1_JS_FAILED";
+                    return;
+                }
+                else if(detail.Contains("DEAL_JS_PARAM_BIG"))
+                {
+                    nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                    return;
+                }
+                else if(detail.Contains("DEAL_JS_PARAM_MID"))
                 {
                     if (Probability.IsProbOccur(0.7))
                     {
                         nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                        return;
+                    }
+                    if (Probability.IsProbOccur(0.3))
+                    {
+                        nxtEvent = "EVENT_JQ1_JS_FAILED";
+                        return;
                     }
                 }
-                else if (detail == "DEAL_JS_PARAM_LOW")
+                else if (detail.Contains("DEAL_JS_PARAM_LOW"))
                 {
                     if (Probability.IsProbOccur(0.7))
                     {
                         nxtEvent = "EVENT_JQ1_JS_FAILED";
+                        return;
+                    }
+                    else
+                    {
+                        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+                        return;
                     }
                 }
-
-                GMData.ImpWorks.Remove("DEAL_JS");
             }
         }
     }
