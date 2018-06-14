@@ -19,7 +19,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.Emp.Heath--;
+                GMData.Emp.heath--;
             }
         }
 
@@ -58,7 +58,7 @@ namespace native
         float CalcProb()
         {
             float prob = 0.0f;
-            switch(GMData.Emp.Heath)
+            switch(GMData.Emp.heath)
             {
                 case 0:
                     prob = 1.0f;

@@ -97,6 +97,8 @@ namespace HuangDAPI
 		string name { get; }
 		int press { get; set; }
         int score { get; set; }
+        int heath { get; set; }
+        int age   { get; set; }
         List<PersonFlag> Flags { get; set; }
 
         void Die();
@@ -571,26 +573,27 @@ namespace HuangDAPI
             }
         }
 
-        public class Emp
-        {
-            public static int Heath
-            {
-                get
-                {
-                    return MyGame.Inst.empHeath;
-                }
-                set
-                {
-                    MyGame.Inst.empHeath = value;
-                }
-            }
+        //public class Emp
+        //{
+        //    public static int Heath
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.empHeath;
+        //        }
+        //        set
+        //        {
+        //            MyGame.Inst.empHeath = value;
+        //        }
+        //    }
 
-            public static void Die()
-            {
-                MyGame.Inst.EmpDie();
-            }
-        }
+        //    public static void Die()
+        //    {
+        //        MyGame.Inst.EmpDie();
+        //    }
+        //}
 
+        //public 
         public static Person NewMalePerson(HuangDAPI.Faction faction)
         {
             Person person = MyGame.Inst.NewPerson(true);
@@ -630,6 +633,13 @@ namespace HuangDAPI
         //}
 
 
+        public static Person Emp
+        {
+            get
+            {
+                return MyGame.Inst.Emp;
+            }
+        }
 
         public static int Stability
         {
@@ -652,6 +662,18 @@ namespace HuangDAPI
             set
             {
                 MyGame.Inst.Economy = value;
+            }
+        }
+
+        public static int Military
+        {
+            get
+            {
+                return MyGame.Inst.Military;
+            }
+            set
+            {
+                MyGame.Inst.Military = value;
             }
         }
 
@@ -706,12 +728,23 @@ namespace HuangDAPI
 
     public class UI
     {
-        public static string Format(string format, params string[] param)
+        public static string Format(string format, params object[] param)
         {
-            string[] trans = (from x in param
-                              select StreamManager.uiDesc.Get(x)).ToArray();
+            List<string> tran = new List<string>();
+            for (int i = 0; i < param.Length; i++)
+            {
+                string temp = param[i] as string;
+                if(temp != null)
+                {
+                    tran.Add(StreamManager.uiDesc.Get(temp));
+                }
+                else
+                {
+                    tran.Add(param[i].ToString());
+                }
+            }
 
-            return string.Format(StreamManager.uiDesc.Get(format), trans);
+            return string.Format(StreamManager.uiDesc.Get(format), tran.ToArray());
         }
     }
 }

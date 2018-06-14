@@ -62,6 +62,12 @@ public partial class MyGame
             throw new NotImplementedException();
         }
 
+        public Person(string name) : this(true, Tools.Probability.GetRandomNum(10, 90))
+        {
+            _name = name;
+        }
+
+
         public static Person NewPerson(Boolean isMale)
         {
             do
@@ -152,6 +158,30 @@ public partial class MyGame
             }
         }
 
+        public int heath
+        {
+            get
+            {
+                return _heath;
+            }
+            set
+            {
+                _heath = value;
+            }
+        }
+
+        public int age
+        {
+            get
+            {
+                return _age;
+            }
+            set
+            {
+                _age = value;
+            }
+        }
+
         public List<HuangDAPI.PersonFlag> Flags
         {
             get
@@ -207,6 +237,12 @@ public partial class MyGame
 
         [SerializeField]
         int _press;
+
+        [SerializeField]
+        int _heath;
+
+        [SerializeField]
+        int _age;
 
         List<HuangDAPI.PersonFlag> _Flags = new List<HuangDAPI.PersonFlag>();
 

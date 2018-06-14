@@ -68,4 +68,124 @@ namespace native
         }
     }
 
+    class EVENT_ECO_INC : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        void Initializ(object param)
+        {
+            inc = (int)param;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_ECO_INC", inc);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Economy += OUTTER.inc;
+            }
+
+            EVENT_ECO_INC OUTTER;
+        }
+
+        int inc = 1;
+    }
+
+    class EVENT_ECO_DEC : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        void Initializ(object param)
+        {
+            dec = (int)param;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_ECO_DEC", dec);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Economy -= OUTTER.dec;
+            }
+
+            EVENT_ECO_DEC OUTTER;
+        }
+
+        int dec = 1;
+    }
+
+    class EVENT_MIL_INC : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        void Initializ(object param)
+        {
+            inc = (int)param;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_MIL_INC", inc);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Military += OUTTER.inc;
+            }
+
+            EVENT_MIL_INC OUTTER;
+        }
+
+        int inc = 1;
+    }
+
+    class EVENT_MIL_DEC : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        void Initializ(object param)
+        {
+            dec = (int)param;
+        }
+
+        string Desc()
+        {
+            return UI.Format("EVENT_MIL_DEC", dec);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Military -= OUTTER.dec;
+
+            }
+
+            EVENT_MIL_DEC OUTTER;
+        }
+
+        int dec = 1;
+    }
 }

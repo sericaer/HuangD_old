@@ -183,6 +183,17 @@ public class EventManager
 {
     public IEnumerable<ItfEvent> GetEvent()
 	{  
+        while (nextEvent != null)
+        {
+            nextEvent.Initlize();
+
+            ItfEvent currEvent = nextEvent;
+            yield return currEvent;
+
+            if (currEvent == nextEvent)
+                nextEvent = null;
+        }
+        
 		foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
 		{
             ie.LoadMemento();
@@ -195,16 +206,6 @@ public class EventManager
             GMEvent eventobj = new GMEvent (ie, null);
 			eventobj.Initlize ();
 			yield return eventobj;
-
-			if (nextEvent == null)
-			{
-				continue;
-			}
-
-			nextEvent.Initlize ();
-			yield return nextEvent;
-
-			nextEvent = null;
 		}
 
 		yield break;

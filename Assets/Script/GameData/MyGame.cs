@@ -24,6 +24,10 @@ public partial class MyGame
 
         historyRecord = "";
 
+        Emp = new Person(strEmpName);
+        Emp.age = Probability.GetRandomNum(16, 40);
+        Emp.heath = Probability.GetRandomNum(5, 8);
+
         empName  = strEmpName;
         empAge   = Probability.GetRandomNum (16, 40);
 		empHeath = Probability.GetRandomNum (5, 8);
@@ -442,6 +446,7 @@ public partial class MyGame
 
     public bool   gameEnd;
 
+    public Person Emp;
 	public string empName;
 	public int    empAge;
 	public int    empHeath;

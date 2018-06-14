@@ -113,4 +113,283 @@ namespace native
         private Office emptyOffice;
         private List<Person> listPerson;
     }
+
+    class EVENT_SG2_DEAL_TL : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.Date.month == 10 && GMData.Date.day == 5)
+            {
+                sg2Person = (from x in GMData.RelationManager.OfficeMap
+                             where x.office.name == "SG2"
+                             select x.person).FirstOrDefault();
+
+                if (sg2Person == null)
+                    return false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            bool Precondition()
+            {
+                if (GMData.Emp.heath > 5)
+                    return true;
+                return false;
+            }
+
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.ImpWorks.Add("DEAL_TL", "DEAL_TL_PARAM", OUTTER.sg2Person);
+                nxtEvent = "EVENT_ECO_DEC";
+                param = 5;
+            }
+
+            EVENT_SG2_DEAL_TL OUTTER;
+        }
+        class OPTION2 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Military -= 5;
+            }
+        }
+
+        Person sg2Person;
+    }
+
+    class EVENT_SG2_TL_END : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.Date.month == 10 && GMData.Date.day == 20)
+            {
+                if (GMData.ImpWorks.Contains("DEAL_TL"))
+                    return true;
+            }
+
+            return false;
+        }
+        string Desc()
+        {
+            var jq1Person = (from x in GMData.RelationManager.OfficeMap
+                             where x.office.name == "SG2"
+                             select x.person).First();
+            return UI.Format("EVENT_SG2_TL_END", jq1Person.ToString(), GMData.ImpWorks.Find("DEAL_TL").detail);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+            //    var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
+            //    GMData.ImpWorks.Remove("DEAL_JS");
+
+            //    if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
+            //    {
+            //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+            //        return;
+            //    }
+            //    else if (detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
+            //    {
+            //        nxtEvent = "EVENT_JQ1_JS_FAILED";
+            //        return;
+            //    }
+            //    else if (detail.Contains("DEAL_JS_PARAM_BIG"))
+            //    {
+            //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+            //        return;
+            //    }
+            //    else if (detail.Contains("DEAL_JS_PARAM_MID"))
+            //    {
+            //        if (Probability.IsProbOccur(0.7))
+            //        {
+            //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+            //            return;
+            //        }
+            //        if (Probability.IsProbOccur(0.3))
+            //        {
+            //            nxtEvent = "EVENT_JQ1_JS_FAILED";
+            //            return;
+            //        }
+            //    }
+            //    else if (detail.Contains("DEAL_JS_PARAM_LOW"))
+            //    {
+            //        if (Probability.IsProbOccur(0.7))
+            //        {
+            //            nxtEvent = "EVENT_JQ1_JS_FAILED";
+            //            return;
+            //        }
+            //        else
+            //        {
+            //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+            //            return;
+            //        }
+            //    }
+            }
+        }
+    }
+
+        
+    class EVENT_SG2_TL_TIGER_EVENT : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (!GMData.ImpWorks.Contains("DEAL_TL"))
+                return false;
+            //if (Probability.IsProbOccur(0.005))
+                return true;
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                if (Probability.IsProbOccur(0.6))
+                {
+                    //GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
+                    nxtEvent = "EVENT_TIGER_BITE_EMP";
+                    return;
+                }
+                if (Probability.IsProbOccur(0.4))
+                {
+                    //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+                    nxtEvent = "EVENT_TIGER_KILLER_EMP";
+                    return;
+                }
+            }
+        }
+        class OPTION2 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                if (Probability.IsProbOccur(0.4))
+                {
+                    nxtEvent = "EVENT_TIGER_BITE_SG2";
+                    return;
+                }
+                if (Probability.IsProbOccur(0.4))
+                {
+                    //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+                    nxtEvent = "EVENT_TIGER_KILLER_SG2";
+                    return;
+                }
+                if (Probability.IsProbOccur(0.1))
+                {
+                    //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+                    nxtEvent = "EVENT_TIGER_KILLER_EMP";
+                    return;
+                }
+                if (Probability.IsProbOccur(0.1))
+                {
+                    nxtEvent = "EVENT_TIGER_BITE_EMP";
+                    return;
+                }
+            }
+        }
+        class OPTION3 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_TIGER_LOSER_EMP";
+            }
+        }
+    }
+
+    class EVENT_TIGER_BITE_EMP : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
+                nxtEvent = "EVENT_STAB_DEC";
+            }
+        }
+    }
+
+    class EVENT_TIGER_KILLER_EMP : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+
+            }
+        }
+    }
+
+    class EVENT_TIGER_BITE_SG2 : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                var sg2Person = (from x in GMData.RelationManager.OfficeMap
+                                 where x.office.name == "SG2"
+                                 select x.person).First();
+                
+                sg2Person.Flags.Add("TIGER_BITE", "heath:-4");
+
+            }
+        }
+    }
+
+    class EVENT_TIGER_KILLER_SG2 : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                var sg2Person = (from x in GMData.RelationManager.OfficeMap
+                                 where x.office.name == "SG2"
+                                 select x.person).First();
+
+                sg2Person.Flags.Add("TIGER_KILLER", "power:+5");
+
+            }
+        }
+    }
+
+    class EVENT_TIGER_LOSER_EMP : EVENT_HD
+    {
+        bool Precondition()
+        {
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.Emp.Flags.Add("TIGER_LOSER", "power:-4");
+            }
+        }
+    }
 }
