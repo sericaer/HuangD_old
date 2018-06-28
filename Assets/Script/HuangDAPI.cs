@@ -51,59 +51,36 @@ namespace HuangDAPI
         }
     }
 
-
-	//public class Selector
-  //  {
-		//private Selector()
-   //     {
-   //         throw new NotImplementedException();
-   //     }
-
-   //     public static BySelector ByPerson(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByPerson(key);
-   //     }
-
-   //     public static BySelector ByOffice(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByOffice(key);
-   //     }
-
-   //     public static BySelector ByFaction(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByFaction(key);
-   //     }
-
-   //     public static BySelector ByPersonNOT(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByPersonNOT(key);
-   //     }
-
-   //     public static BySelector ByOfficeNOT(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByOfficeNOT(key);
-   //     }
-
-   //     public static BySelector ByFactionNOT(params string[] key)
-   //     {
-			//return new MyGame.BySelector().ByFactionNOT(key);
-    //    }
-    //}
-
-
-
-    public interface Person
+    public abstract class Person
     {
-		string name { get; }
-		int press { get; set; }
-        int score { get; set; }
-        int heath { get; set; }
-        int age   { get; set; }
-        List<PersonFlag> Flags { get; set; }
+        public abstract string name { get; }
+        public abstract int press { get; set; }
+        public abstract int score { get; set; }
+        public abstract int heath { get; set; }
+        public abstract int age   { get; set; }
+        public abstract List<PersonFlag> Flags { get; set; }
+        public Faction faction
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.FactionMap
+                        where x.person.name == name
+                        select x.faction).SingleOrDefault();
+            }
+        }
+        public Office office
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.OfficeMap
+                        where x.person.name == name
+                        select x.office).SingleOrDefault();
+            }
+        }
 
-        void Die();
-
-        MyGame.PersonProcess Process(string name, params object[] param);
+        public abstract void Die();
+        
+        //MyGame.PersonProcess Process(string name, params object[] param);
     }
 
     public interface PersonFlag
@@ -117,10 +94,23 @@ namespace HuangDAPI
         List<object> tag { get; }
     }
 
-    public interface Office
+    public abstract class Office
     {
-        string name { get; }
-        int power { get; }
+        public abstract string name { get; }
+        public abstract int power { get; }
+        public Person person
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.OfficeMap
+                        where x.office.name == name
+                        select x.person).SingleOrDefault();
+            }
+            set
+            {
+                GMData.RelationManager.OfficeMap.Find(x => x.office.name == name).person = value;
+            }
+        }
     }
 
 	public interface Faction
@@ -129,17 +119,49 @@ namespace HuangDAPI
 
 	}
 
-    public interface Province
+    public abstract class Province
     {
-        string name { get; }
-        string economy { get; }
+        public abstract string name { get; }
+        public abstract string economy { get; }
+        public Office mainOffice
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.ProvinceMap
+                        where x.province.name == name
+                        select x.office).SingleOrDefault();
+            }
+        }
+        public Disaster debuff
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.ProvinceStatusMap
+                        where x.province == this
+                        select x.debuff).SingleOrDefault();
+            }
+            set
+            {
+                GMData.RelationManager.ProvinceStatusMap.Find(x => x.province.name == name).debuff = value;
+            }
+
+        }
     }
 
-    public interface Disaster
+    public abstract class Disaster
     {
-        string name { get; }
-        string saved { get; set; }
-        bool recover { get; set; }
+        public abstract string name { get; }
+        public abstract string saved { get; set; }
+        public abstract bool recover { get; set; }
+        public Province[] provinces
+        {
+            get
+            {
+                return (from x in GMData.RelationManager.ProvinceStatusMap
+                        where x.debuff == this
+                        select x.province).ToArray();
+            }
+        }
 
     }
 
@@ -190,16 +212,6 @@ namespace HuangDAPI
 
         string mID;
     }
-
-  //  public interface BySelector
-  //  {
-		//BySelector ByPerson(params string[] key);
-		//BySelector ByOffice(params string[] key);
-		//BySelector ByFaction(params string[] key);
-		//BySelector ByPersonNOT(params string[] key);
-    //    BySelector ByOfficeNOT(params string[] key);
-    //    BySelector ByFactionNOT(params string[] key);
-    //}
 
     public class ReflectBase
 	{
@@ -386,6 +398,106 @@ namespace HuangDAPI
 
     public class GMData
     {
+        public class Offices
+        {
+            public static Office[] JQ
+            {
+                get
+                {
+                    List<Office> list = (from x in RelationManager.OfficeMap
+                                         where x.office.name.Contains("JQ")
+                                         orderby x.office.name
+                                         select x.office).ToList();
+
+                    return list.ToArray();
+                }
+            }
+
+            public static Office[] SG
+            {
+                get
+                {
+                    List<Office> list = (from x in RelationManager.OfficeMap
+                            where x.office.name.Contains("SG")
+                            orderby x.office.name
+                            select x.office).ToList();
+
+                    return list.ToArray();
+                }
+            }
+
+            public static Office[] CS
+            {
+                get
+                {
+                    List<Office> list = (from x in RelationManager.OfficeMap
+                                         where x.office.name.Contains("CS")
+                                         orderby x.office.name
+                                         select x.office).ToList();
+                    return list.ToArray();
+                }
+            }
+
+            public static Office[] All
+            {
+                get
+                {
+                    List<Office> list = (from x in RelationManager.OfficeMap
+                                         select x.office).ToList();
+                    return list.ToArray();
+                }
+            }
+        }
+
+        public class Provinces
+        {
+            public static Province[] All
+            {
+                get
+                {
+                    List<Province> list = (from x in RelationManager.ProvinceMap
+                                         select x.province).ToList();
+                    return list.ToArray();
+                }
+            }
+        }
+
+        public class Disasters
+        {
+            public static Disaster[] All
+            {
+                get
+                {
+                    List<Disaster> list = (from x in RelationManager.ProvinceStatusMap
+                                           where x.debuff != null
+                                           select x.debuff).ToList();
+                    return list.ToArray();
+                }
+            }
+        }
+
+        public class Factions
+        {
+            public static Faction[] All
+            {
+                get
+                {
+                    List<Faction> list = (from x in RelationManager.FactionMap
+                                           
+                                           select x.faction).ToList();
+                    return list.ToArray();
+                }
+            }
+
+            public static Faction Random()
+            {
+                return (from x in RelationManager.FactionMap
+                        orderby (Guid.NewGuid())
+                        select x.faction).First();
+              
+            }
+        }
+
         public class RelationMapElem
         {
             public Office office;

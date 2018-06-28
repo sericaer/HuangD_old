@@ -126,7 +126,7 @@ public partial class MyGame
             _score = p.score;
         }
 
-        public string name
+        public override string name
         {
             get
             {
@@ -134,7 +134,7 @@ public partial class MyGame
             }
         }
 
-        public int press
+        public override int press
         {
             get
             {
@@ -146,7 +146,7 @@ public partial class MyGame
             }
         }
 
-        public int score
+        public override int score
         {
             get
             {
@@ -158,7 +158,7 @@ public partial class MyGame
             }
         }
 
-        public int heath
+        public override int heath
         {
             get
             {
@@ -170,7 +170,7 @@ public partial class MyGame
             }
         }
 
-        public int age
+        public override int age
         {
             get
             {
@@ -182,7 +182,7 @@ public partial class MyGame
             }
         }
 
-        public List<HuangDAPI.PersonFlag> Flags
+        public override List<HuangDAPI.PersonFlag> Flags
         {
             get
             {
@@ -213,7 +213,7 @@ public partial class MyGame
             return  new PersonProcess(name, this, param);
         }
 
-        public void Die()
+        public override void Die()
         {
             foreach (Action<object, string> listener in ListListener)
             {

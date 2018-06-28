@@ -20,7 +20,7 @@ public partial class MyGame
             _power = power;
         }
 
-        public string name
+        public override string name
         {
             get
             {
@@ -28,7 +28,7 @@ public partial class MyGame
             }
         }
 
-        public int power
+        public override int power
         {
             get
             {

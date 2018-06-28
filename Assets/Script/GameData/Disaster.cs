@@ -34,7 +34,7 @@ public partial class MyGame
             return new Disaster(enumDisaster.ToString());
         }
 
-        public string name
+        public override string name
         {
             get
             {
@@ -42,7 +42,7 @@ public partial class MyGame
             }
         }
 
-        public bool recover
+        public override bool recover
         {
             get
             {
@@ -55,7 +55,7 @@ public partial class MyGame
             }
         }
 
-        public string saved
+        public override string saved
         {
             get
             {

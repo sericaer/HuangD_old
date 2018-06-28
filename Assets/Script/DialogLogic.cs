@@ -7,7 +7,6 @@ using WDT;
 
 public class DialogLogic : MonoBehaviour
 {
-
 	// Use this for initialization
 	void Start ()
     {

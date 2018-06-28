@@ -1,4 +1,5 @@
 ﻿using HuangDAPI;
+using UnityEngine;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,19 +15,25 @@ namespace native
                 return false;
             }
 
+            Debug.Log("STATUS_YHSX");
+
             if (GMData.ImpWorks.Contains("DEAL_YHSX"))
             {
                 return false;
             }
 
-            jq1Person = (from x in GMData.RelationManager.OfficeMap
-                         where x.office.name == "JQ1"
-                         select x.person).FirstOrDefault();
+            Debug.Log("DEAL_YHSX");
 
-            if (jq1Person == null)
+            jq1Person = GMData.Offices.JQ[0].person;
+            if(jq1Person == null)
+            {
                 return false;
+            }
+
 
             suggestPerson = GetSuggestPerson();
+
+
 
             return true;
 		}
@@ -81,25 +88,19 @@ namespace native
 
 		Person GetSuggestPerson()
 		{
-            //获取JQ1对应的faction
-            Faction factionJQ1 = (from x in GMData.RelationManager.RelationMap
-                                  where x.office.name == "JQ1"
-                                  select x.faction).FirstOrDefault();
+            Faction factionJQ1 = jq1Person.faction;
 
-            //获取SG中faction和JQ1的faction不相同的
-            Person p = (from x in GMData.RelationManager.RelationMap
-                        where x.office.name.Contains("SG")
-                        where x.faction != factionJQ1
-                        select x.person).FirstOrDefault();
-            
-			if (p == null)
-			{
-                //获取任意一个SGperson
-                p = (from x in GMData.RelationManager.OfficeMap
-                     where x.office.name.Contains("SG")
+            Person p = (from x in GMData.Offices.SG
+                       where x.person != null && x.person.faction != factionJQ1
+                       select x.person).FirstOrDefault();
+
+            if(p == null)
+            {
+                p = (from x in GMData.Offices.SG
+                     where x.person != null
                      select x.person).LastOrDefault();
-			}
-
+            }
+            
             return p;
 		}
 
@@ -113,10 +114,7 @@ namespace native
         {
             if (GMData.Date.month == 1 && GMData.Date.day == 5)
             {
-                jq1Person = (from x in GMData.RelationManager.OfficeMap
-                             where x.office.name == "JQ1"
-                             select x.person).FirstOrDefault();
-
+                jq1Person = GMData.Offices.JQ[0].person;
                 if (jq1Person == null)
                     return false;
 
@@ -260,9 +258,7 @@ namespace native
         }
         string Desc()
         {
-            var jq1Person = (from x in GMData.RelationManager.OfficeMap
-                         where x.office.name == "JQ1"
-                         select x.person).First();
+            var jq1Person = GMData.Offices.JQ[0].person;
             return UI.Format("EVENT_JQ1_JS_END_DESC", jq1Person.ToString(), GMData.ImpWorks.Find("DEAL_JS").detail);
         }
 
@@ -357,39 +353,37 @@ namespace native
     {
         bool Precondition()
         {
-             
-
-            emptyOffice = (from x in GMData.RelationManager.OfficeMap
-                           where x.office.name.Contains("JQ")
+            emptyOffice = (from x in GMData.Offices.JQ
                            where x.person == null
-                           select x.office).FirstOrDefault();
+                           select x).FirstOrDefault();
             if(emptyOffice == null)
             {
                 return false;
             }
 
-            var factionSG1 = (from x in GMData.RelationManager.RelationMap
-                              where x.office.name == "SG1"
-                              select x.faction).FirstOrDefault();
+            Debug.Log("emptyOffice");
+
+            var factionSG1 = GMData.Offices.SG[1].person.faction;
             if(factionSG1 == null)
             {
                 return false;
             }
 
+            Debug.Log("factionSG1");
+
             listPerson = new List<Person>();
             if (emptyOffice != null)
             {
                  
-                var q = (from x in GMData.RelationManager.RelationMap
-                        where x.office.name.Contains("CS")
-                        select new { person = x.person, score = (x.faction == factionSG1) ? x.person.score+1 : x.person.score } into g
-                        select g).OrderByDescending(y=>y.score).Take(3);
+                var q = (from x in GMData.Offices.CS
+                        select new { person = x.person, score = (x.person.faction == factionSG1) ? x.person.score+2 : x.person.score }).OrderByDescending(y=>y.score).Take(3);
 
                 foreach (var v in q)
                 {
                     listPerson.Add(v.person);
                 }
             }
+            Debug.Log("listPerson");
 
             if (listPerson.Count != 0)
                 return true;
@@ -407,11 +401,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[0];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
             void Selected(ref string nxtEvent, ref object param)
             {
@@ -430,11 +420,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[1];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
 
             void Selected(ref string nxtEvent, ref object param)
@@ -455,11 +441,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[2];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_JQ_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
 
             void Selected(ref string nxtEvent, ref object param)
@@ -474,32 +456,31 @@ namespace native
         private List<Person> listPerson;
     }
 
-    class EVENT_JQ_SAVE_DISASTER : EVENT_HD
+    class EVENT_JQ9_SAVE_DISASTER : EVENT_HD
     {
         bool Precondition()
         {
-            var q = (from x in GMData.RelationManager.ProvinceStatusMap
-                     where x.debuff != null && x.debuff.saved == ""
-                     select new {x.province, x.debuff}).FirstOrDefault();
+            disaster = (from x in GMData.Disasters.All
+                     where x.saved == ""
+                     select x).FirstOrDefault();
 
-            if (q == null)
+            if (disaster == null)
             {
                 return false;
             }
 
-            disaster = q.debuff;
-            province = q.province;
+            personJQ9 = GMData.Offices.JQ[8].person;
+            if(personJQ9 == null)
+            {
+                return false;
+            }
 
             return true;
         }
 
         string Desc()
         {
-            var q = (from a in GMData.RelationManager.OfficeMap
-                     where a.office.name == "JQ9"
-                     select a).FirstOrDefault();
-
-            return UI.Format("EVENT_JQ_SAVE_DISASTER_DESC", province.name, disaster.name, q.office.name, q.person.name);
+            return UI.Format("EVENT_JQ_SAVE_DISASTER_DESC", disaster.provinces[0].name, disaster.name, "JQ9", personJQ9.name);
         }
 
         class OPTION1 : Option
@@ -520,7 +501,7 @@ namespace native
                 OUTTER.disaster.saved = "MAX";
             }
 
-            EVENT_JQ_SAVE_DISASTER OUTTER;
+            EVENT_JQ9_SAVE_DISASTER OUTTER;
         }
 
         class OPTION2 : Option
@@ -541,7 +522,7 @@ namespace native
                 OUTTER.disaster.saved = "MID";
             }
 
-            EVENT_JQ_SAVE_DISASTER OUTTER;
+            EVENT_JQ9_SAVE_DISASTER OUTTER;
 
         }
 
@@ -563,7 +544,7 @@ namespace native
                 OUTTER.disaster.saved = "MIN";
             }
 
-            EVENT_JQ_SAVE_DISASTER OUTTER;
+            EVENT_JQ9_SAVE_DISASTER OUTTER;
 
         }
 
@@ -579,10 +560,10 @@ namespace native
                 }
             }
 
-            EVENT_JQ_SAVE_DISASTER OUTTER;
+            EVENT_JQ9_SAVE_DISASTER OUTTER;
         }
 
         private Disaster disaster;
-        private Province province;
+        private Person personJQ9;
     }
 }

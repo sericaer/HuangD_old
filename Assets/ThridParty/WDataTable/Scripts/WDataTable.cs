@@ -268,7 +268,13 @@ namespace WDT
 
             for (int i = 0; i < datas.Count; i++)
             {
-                var rowObject = new GameObject(datas[i][0].ToString());
+                object o = datas[i][0];
+                string desc = datas[i][0] as string;
+                if(desc == null)
+                {
+                    desc = datas[i][0].ToString();
+                }
+                var rowObject = new GameObject(desc);
                 rowObject.AddComponent<HorizontalLayoutGroup>();
                 rowObject.transform.SetParent(_contentObject.transform, false);
 

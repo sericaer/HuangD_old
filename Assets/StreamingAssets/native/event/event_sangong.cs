@@ -10,18 +10,16 @@ namespace native
     {
         bool Precondition()
         {
-            emptyOffice = (from x in GMData.RelationManager.OfficeMap
-                           where x.office.name.Contains("SG")
+            emptyOffice = (from x in GMData.Offices.SG
                            where x.person == null
-                           select x.office).FirstOrDefault();
+                           select x).FirstOrDefault();
 
             listPerson = new List<Person>();
 
             if (emptyOffice != null)
             {
-                var q = from x in GMData.RelationManager.RelationMap
-                        where x.office.name.Contains("JQ")
-                        group x by x.faction into g
+                var q = from x in GMData.Offices.JQ
+                        group x by x.person.faction into g
                         select g.OrderByDescending(y => y.person.score).FirstOrDefault().person;
 
                 foreach (var m in q)
@@ -47,11 +45,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[0];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
             void Selected(ref string nxtEvent, ref object param)
             {
@@ -70,11 +64,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[1];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
 
             void Selected(ref string nxtEvent, ref object param)
@@ -95,11 +85,7 @@ namespace native
             string Desc()
             {
                 Person p = OUTTER.listPerson[2];
-                Faction f = (from x in GMData.RelationManager.FactionMap
-                             where x.person == p
-                             select x.faction).FirstOrDefault();
-
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), f.name);
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
             }
 
             void Selected(ref string nxtEvent, ref object param)
@@ -120,9 +106,7 @@ namespace native
         {
             if (GMData.Date.month == 10 && GMData.Date.day == 5)
             {
-                sg2Person = (from x in GMData.RelationManager.OfficeMap
-                             where x.office.name == "SG2"
-                             select x.person).FirstOrDefault();
+                sg2Person = GMData.Offices.SG[1].person;
 
                 if (sg2Person == null)
                     return false;
@@ -176,10 +160,8 @@ namespace native
         }
         string Desc()
         {
-            var jq1Person = (from x in GMData.RelationManager.OfficeMap
-                             where x.office.name == "SG2"
-                             select x.person).First();
-            return UI.Format("EVENT_SG2_TL_END", jq1Person.ToString(), GMData.ImpWorks.Find("DEAL_TL").detail);
+            var p = GMData.Offices.SG[1].person;
+            return UI.Format("EVENT_SG2_TL_END", p.ToString(), GMData.ImpWorks.Find("DEAL_TL").detail);
         }
 
         class OPTION1 : Option
@@ -234,14 +216,33 @@ namespace native
         }
     }
 
-        
+    class EVENT_SG2_TL_WHITE_DEER : EVENT_HD
+    {
+        bool Precondition()
+        {
+            if (GMData.ImpWorks.Contains("DEAL_TL"))
+                return false;
+            if (Probability.IsProbOccur(0.005))
+                return true;
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_STAB_INC";
+            }
+        }
+    }
+
     class EVENT_SG2_TL_TIGER_EVENT : EVENT_HD
     {
         bool Precondition()
         {
             if (!GMData.ImpWorks.Contains("DEAL_TL"))
                 return false;
-            //if (Probability.IsProbOccur(0.005))
+            if (Probability.IsProbOccur(0.005))
                 return true;
             return false;
         }
@@ -346,10 +347,8 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                var sg2Person = (from x in GMData.RelationManager.OfficeMap
-                                 where x.office.name == "SG2"
-                                 select x.person).First();
-                
+                var sg2Person = GMData.Offices.SG[1].person;
+
                 sg2Person.Flags.Add("TIGER_BITE", "heath:-4");
 
             }
@@ -367,9 +366,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                var sg2Person = (from x in GMData.RelationManager.OfficeMap
-                                 where x.office.name == "SG2"
-                                 select x.person).First();
+                var sg2Person = GMData.Offices.SG[1].person;
 
                 sg2Person.Flags.Add("TIGER_KILLER", "power:+5");
 

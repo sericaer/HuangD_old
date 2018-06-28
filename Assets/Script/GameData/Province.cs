@@ -121,22 +121,6 @@ public partial class MyGame
 
         }
 
-//        public static STATUS[] GetStatusArray(bool isBufff)
-//        {
-//            List<string> result = new List<string>();
-//            foreach (ENUM_PROV_STATUS status in listStatus)
-//            {
-//                FieldInfo field = status.GetType().GetField(status.ToString());
-//                ProvStatusAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvStatusAttribute)) as ProvStatusAttribute;
-//                if (!attribute.isBuff)
-//                {
-//                    result.Add(status.ToString());
-//                }
-//            }
-//
-//            return result.ToArray();
-//        }
-
         public Province(string name, ENUM_ECONOMY economy)
         {
             _name = name;
@@ -144,7 +128,7 @@ public partial class MyGame
             listStatus = new List<STATUS>();
         }
 
-        public string name
+        public override string name
         {
             get
             {
@@ -152,7 +136,7 @@ public partial class MyGame
             }
         }
 
-        public string economy
+        public override string economy
         {
             get
             {
@@ -168,68 +152,11 @@ public partial class MyGame
             }
         }
 
-        public override string ToString()
+        public override  string ToString()
         {
             return name;
         }
-//
-//        public void SetBuff(string buff)
-//        {
-//            ENUM_PROV_STATUS e = (ENUM_PROV_STATUS)Enum.Parse(typeof(ENUM_PROV_STATUS), buff);
-//            if(!listStatus.Contains(e))
-//            {
-//                listStatus.Add(e);
-//            }
-//        }
-//
-//        public void ClearBuff(string buff)
-//        {
-//            ENUM_PROV_STATUS e = (ENUM_PROV_STATUS)Enum.Parse(typeof(ENUM_PROV_STATUS), buff);
-//            listStatus.Remove(e);
-//        }
-//
-//        public bool HasBuff(string buff)
-//        {
-//            if(buff == null)
-//            {
-//                foreach (ENUM_PROV_STATUS status in listStatus)
-//                {
-//                    FieldInfo field = status.GetType().GetField(status.ToString());
-//                    ProvStatusAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvStatusAttribute)) as ProvStatusAttribute;
-//                    if(attribute.buffType == ENUM_BUFF_TYPE.BUFF)
-//                    {
-//                        return true;
-//                    }
-//                }
-//
-//                return false;
-//            }
-//
-//            ENUM_PROV_STATUS e = (ENUM_PROV_STATUS)Enum.Parse(typeof(ENUM_PROV_STATUS), buff);
-//            return listStatus.Contains(e);
-//        }
-//
-//        public bool HasDebuff(string buff)
-//        {
-//            if (buff == null)
-//            {
-//                foreach (ENUM_PROV_STATUS status in listStatus)
-//                {
-//                    FieldInfo field = status.GetType().GetField(status.ToString());
-//                    ProvStatusAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvStatusAttribute)) as ProvStatusAttribute;
-//                    if (attribute.buffType == ENUM_BUFF_TYPE.DEBUFF)
-//                    {
-//                        return true;
-//                    }
-//                }
-//
-//                return false;
-//            }
-//
-//            ENUM_PROV_STATUS e = (ENUM_PROV_STATUS)Enum.Parse(typeof(ENUM_PROV_STATUS), buff);
-//            return listStatus.Contains(e);
-//        }
-//
+
         public STATUS[] GetBuffArray(bool isBuff)
         {
             List<STATUS> result = new List<STATUS>();

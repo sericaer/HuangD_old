@@ -56,7 +56,7 @@ partial class MyGame
                 foreach(var elem in listProvince2Status)
                 {
 
-                    Office newOffice = new Office(string.Format("{0}|{1}", elem.province.name.ToString(), eOffice.ToString()), attribute.Power);
+                    Office newOffice = new Office(string.Format("{0}|{1}", elem.province.name, eOffice.ToString()), attribute.Power);
                     listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
 
                     listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = elem.province, office = newOffice, });//debuffList = new List<HuangDAPI.Disaster>() });
