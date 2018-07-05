@@ -139,6 +139,7 @@ public class StreamManager
 
         LoadName(types);
         LoadEvent(types);
+        LoadDecision(types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
@@ -162,6 +163,20 @@ public class StreamManager
         }
 
         Debug.Log("Load event count:" + eventDict.Count);
+    }
+
+    private void LoadDecision(Type[] types)
+    {
+        Type[] DecisonTypes = types.Where(x => x.BaseType == typeof(DECISION)).ToArray();
+        foreach (Type type in DecisonTypes)
+        {
+            DECISION decision = Activator.CreateInstance(type) as DECISION;
+            //decision.SetMemento();
+
+            decisionDict.Add(type.Name, decision);
+        }
+
+        Debug.Log("Load decision count:" + decisionDict.Count);
     }
 
     private void AnaylizeDynastyName(Type[] types)
@@ -242,6 +257,7 @@ public class StreamManager
     public  static Dictionary<string, string> UIDictionary = new Dictionary<string, string>();
 
     public static Dictionary<string, EVENT_HD> eventDict = new Dictionary<string, EVENT_HD>();
+    public static Dictionary<string, DECISION> decisionDict = new Dictionary<string, DECISION>();
     public static Dictionary<string, string> cvsDict = new Dictionary<string, string>();
 
     public static UIDesc uiDesc = new UIDesc("CHI");

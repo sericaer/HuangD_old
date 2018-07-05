@@ -11,7 +11,16 @@ public class ChaoTScene : MonoBehaviour
 	{
 		AddOfficeToDict ("Canvas/Panel/SanG");
 		AddOfficeToDict ("Canvas/Panel/JiuQ");
-	}
+
+
+        foreach(var elem in StreamManager.decisionDict)
+        {
+            GameObject decisionPanel = GameObject.Find("Canvas/Panel/PanelDecision").gameObject;
+            var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), decisionPanel.transform) as GameObject;
+            decisionUI.name = elem.Key;
+            decisionUI.transform.Find("Text").GetComponent<Text>().text = elem.Value._funcTitle();
+        }
+    }
 
 	// Use this for initialization
 	void Start () 

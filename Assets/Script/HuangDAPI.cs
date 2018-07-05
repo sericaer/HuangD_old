@@ -396,6 +396,25 @@ namespace HuangDAPI
         private static Dictionary<string, Dictionary<string, object>> _mementoDict = new Dictionary<string, Dictionary<string, object>>();
 	}
 
+    public abstract class DECISION : ReflectBase
+    {
+        public DECISION()
+        {
+            title = StreamManager.uiDesc.Get(this.GetType().Name + "_TITLE");
+
+            _funcTitle = GetDelegateInSubEvent<Func<string>>("Title",
+                                                () =>
+                                                {
+                                                    FieldInfo field = _subFields.Where(x => x.Name == "title").First();
+                                                    return (string)field.GetValue(this);
+                                                });
+        }
+
+        public Func<string> _funcTitle;
+
+        protected string title;
+    }
+
     public class GMData
     {
         public class Offices
