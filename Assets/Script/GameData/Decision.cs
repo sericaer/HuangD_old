@@ -74,6 +74,12 @@ public partial class MyGame
                 }
             }
         }
+
+        internal static void DecisionDo(string name)
+        {
+            MyGame.Inst.DecisionPlans.RemoveAll(x => x.name == name);
+            MyGame.Inst.DecisionProcs.Add(new DecisionProc(name));
+        }
     }
 
 

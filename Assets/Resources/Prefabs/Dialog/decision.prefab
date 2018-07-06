@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 224527406498188234}
   - component: {fileID: 222846006798404532}
   - component: {fileID: 114918838293248794}
+  - component: {fileID: 114142562526386284}
   m_Layer: 5
   m_Name: decision
   m_TagString: Untagged
@@ -113,6 +114,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!114 &114142562526386284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1615582794215240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00a5444dae476364f9a4fbf694fa0de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114162526271442670
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -12,8 +12,8 @@ public class ChaoTScene : MonoBehaviour
 		AddOfficeToDict ("Canvas/Panel/SanG");
 		AddOfficeToDict ("Canvas/Panel/JiuQ");
 
-        PanelDecision = GameObject.Find("Canvas/Panel/PanelDecision").gameObject;
-        PanelProcess = GameObject.Find("Canvas/Panel/PanelDecProcess").gameObject;
+        PanelDecision = GameObject.Find("Canvas/Panel/PanelDecision");
+        PanelProcess = GameObject.Find("Canvas/Panel/PanelDecProcess");
     }
 
 	// Use this for initialization
@@ -59,7 +59,7 @@ public class ChaoTScene : MonoBehaviour
         List<string> newPlans = (from x in MyGame.DecisionManager.Plans
                                  select x.name).ToList();
 
-        List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<Transform>()
+        List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<DecisionLogic>()
                                  select x.name).ToList();
 
         foreach (var addPlan in newPlans.Except(oldPlans))
@@ -72,7 +72,7 @@ public class ChaoTScene : MonoBehaviour
         foreach (var delPlan in oldPlans.Except(newPlans))
         {
             var decisionUI = PanelDecision.transform.Find(delPlan);
-            Destroy(decisionUI);
+            Destroy(decisionUI.gameObject);
         }
     }
 
@@ -81,20 +81,20 @@ public class ChaoTScene : MonoBehaviour
         List<string> newProcs = (from x in MyGame.DecisionManager.Procs
                                  select x.name).ToList();
 
-        List<string> oldProcs = (from x in PanelProcess.GetComponentsInChildren<Transform>()
+        List<string> oldProcs = (from x in PanelProcess.GetComponentsInChildren<ProcessLogic>()
                                  select x.name).ToList();
 
-        foreach (var addPlan in newProcs.Except(oldProcs))
+        foreach (var addProc in newProcs.Except(oldProcs))
         {
             var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/process"), PanelProcess.transform) as GameObject;
-            decisionUI.name = addPlan;
-            decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addPlan]._funcTitle();
+            decisionUI.name = addProc;
+            decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addProc]._funcTitle();
         }
 
-        foreach (var delPlan in oldProcs.Except(newProcs))
+        foreach (var delProc in oldProcs.Except(newProcs))
         {
-            var decisionUI = PanelProcess.transform.Find(delPlan);
-            Destroy(decisionUI);
+            var decisionUI = PanelProcess.transform.Find(delProc);
+            Destroy(decisionUI.gameObject);
         }
     }
 
