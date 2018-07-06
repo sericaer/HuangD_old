@@ -62,7 +62,15 @@ public partial class MyGame
             {
                 if (elem.Value._funcPrecondition())
                 {
-                    MyGame.Inst.DecisionPlans.Add(new DecisionPlan(elem.Key));
+                    if(!MyGame.Inst.DecisionPlans.Exists(x=>x.name == elem.Key)
+                        && !MyGame.Inst.DecisionProcs.Exists(x => x.name == elem.Key))
+                    {
+                        MyGame.Inst.DecisionPlans.Add(new DecisionPlan(elem.Key));
+                    }
+                }
+                else
+                {
+                    MyGame.Inst.DecisionPlans.RemoveAll(x => x.name == elem.Key);
                 }
             }
         }
