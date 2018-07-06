@@ -12,14 +12,8 @@ public class ChaoTScene : MonoBehaviour
 		AddOfficeToDict ("Canvas/Panel/SanG");
 		AddOfficeToDict ("Canvas/Panel/JiuQ");
 
-
-        foreach(var elem in StreamManager.decisionDict)
-        {
-            GameObject decisionPanel = GameObject.Find("Canvas/Panel/PanelDecision").gameObject;
-            var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), decisionPanel.transform) as GameObject;
-            decisionUI.name = elem.Key;
-            decisionUI.transform.Find("Text").GetComponent<Text>().text = elem.Value._funcTitle();
-        }
+        PanelDecision = GameObject.Find("Canvas/Panel/PanelDecision").gameObject;
+        PanelProcess = GameObject.Find("Canvas/Panel/PanelDecProcess").gameObject;
     }
 
 	// Use this for initialization
@@ -32,6 +26,7 @@ public class ChaoTScene : MonoBehaviour
 	void Update ()
 	{
         RefreshOffice();
+        RefreshDecision();
     }
 
 	private void AddOfficeToDict(string path)
@@ -43,7 +38,7 @@ public class ChaoTScene : MonoBehaviour
         }
 	}
 
-	void RefreshOffice()
+	private void RefreshOffice()
 	{
 		foreach(ChaoChenUI obj in lstChaoc)
 		{
@@ -51,7 +46,62 @@ public class ChaoTScene : MonoBehaviour
 		}
 	}
 
-	private List<ChaoChenUI> lstChaoc = new List<ChaoChenUI>();
+    private void RefreshDecision()
+    {
+        MyGame.DecisionManager.Update();
+
+        RefreshDecisionPlan();
+        RefreshDecisionProc();
+    }
+
+    private void RefreshDecisionPlan()
+    {
+        List<string> newPlans = (from x in MyGame.DecisionManager.Plans
+                                 select x.name).ToList();
+
+        List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<Transform>()
+                                 select x.name).ToList();
+
+        foreach (var addPlan in newPlans.Except(oldPlans))
+        {
+            var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), PanelDecision.transform) as GameObject;
+            decisionUI.name = addPlan;
+            decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addPlan]._funcTitle();
+        }
+
+        foreach (var delPlan in oldPlans.Except(newPlans))
+        {
+            var decisionUI = PanelDecision.transform.Find(delPlan);
+            Destroy(decisionUI);
+        }
+    }
+
+    private void RefreshDecisionProc()
+    {
+        List<string> newProcs = (from x in MyGame.DecisionManager.Procs
+                                 select x.name).ToList();
+
+        List<string> oldProcs = (from x in PanelProcess.GetComponentsInChildren<Transform>()
+                                 select x.name).ToList();
+
+        foreach (var addPlan in newProcs.Except(oldProcs))
+        {
+            var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/process"), PanelProcess.transform) as GameObject;
+            decisionUI.name = addPlan;
+            decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addPlan]._funcTitle();
+        }
+
+        foreach (var delPlan in oldProcs.Except(newProcs))
+        {
+            var decisionUI = PanelProcess.transform.Find(delPlan);
+            Destroy(decisionUI);
+        }
+    }
+
+    private List<ChaoChenUI> lstChaoc = new List<ChaoChenUI>();
+
+    private GameObject PanelDecision;
+    private GameObject PanelProcess;
 }
 
 class ChaoChenUI

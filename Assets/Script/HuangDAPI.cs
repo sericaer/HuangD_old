@@ -408,8 +408,14 @@ namespace HuangDAPI
                                                     FieldInfo field = _subFields.Where(x => x.Name == "title").First();
                                                     return (string)field.GetValue(this);
                                                 });
+            _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
+                                  () =>
+                                  {
+                                      return true;
+                                  });
         }
 
+        public Func<bool> _funcPrecondition;
         public Func<string> _funcTitle;
 
         protected string title;
