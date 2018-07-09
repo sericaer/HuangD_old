@@ -39,7 +39,9 @@ public partial class MyGame
 			{
 				_day++;
 			}
-		}
+
+            incDayEvent();
+        }
 
 		public int year
 		{
@@ -137,6 +139,8 @@ public partial class MyGame
 
             return result;
         }
+
+        public event Action<> incDayEvent;
 
         [SerializeField]
 		private int _year;

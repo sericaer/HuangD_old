@@ -46,8 +46,9 @@ public partial class MyGame
                 {
                     throw new ArgumentException("error arg " + elem);
                 }
-
             }
+
+            MyGame.Inst.date.incDayEvent += DayIncrease;
         }
 
         public int maxDay
@@ -80,6 +81,17 @@ public partial class MyGame
             }
         }
 
+        public void DayIncrease()
+        {
+            currDay++;
+            if(currDay >= maxDay)
+            {
+                MyGame.Inst.date.incDayEvent -= DayIncrease;
+                MyGame.Inst.DecisionProcs.Remove(this);
+            }
+        }
+
+        public int currDay;
         public string name;
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
         private GameTime _startTime;

@@ -193,8 +193,19 @@ public class EventManager
             if (currEvent == nextEvent)
                 nextEvent = null;
         }
-        
-		foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
+
+        while (procEndEvent != null)
+        {
+            procEndEvent.Initlize();
+
+            ItfEvent currEvent = procEndEvent;
+            yield return currEvent;
+
+            if (currEvent == procEndEvent)
+                procEndEvent = null;
+        }
+
+        foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
 		{
             ie.LoadMemento();
 
@@ -221,6 +232,16 @@ public class EventManager
 		nextEvent = new GMEvent (StreamManager.eventDict [key], param);
 	}
 
+    public void InsertProcEnd(string key, object param)
+    {
+        if (key.Length == 0)
+        {
+            return;
+        }
+
+        procEndEvent = new GMEvent(StreamManager.eventDict[key], param);
+    }
+
     public void Insert(List<List<object>> table)
     {
         if (table == null || table.Count == 0) 
@@ -232,4 +253,5 @@ public class EventManager
     }
 
 	private ItfEvent nextEvent = null;
+    private ItfEvent procEndEvent = null;
 }

@@ -65,10 +65,12 @@ public partial class MyGame
         Person.ListListener.Add (statusManager.Listen);
         Person.ListListener.Add (relationManager.Listen);
 
-        //InitRelationOffice2Person ();
-		//InitRelationFaction2Person ();
+        //date.incDayEvent += DecisionManager.DayIncrease;
 
-		//InitRelationFemaleOffice2Person ();
+        //InitRelationOffice2Person ();
+        //InitRelationFaction2Person ();
+
+        //InitRelationFemaleOffice2Person ();
 
         InitZhouj2Office();
     }
