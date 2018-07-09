@@ -6,11 +6,16 @@ using UnityEngine.UI;
 
 public class DecisionLogic : MonoBehaviour
 {
-	// Use this for initialization
-	void Start ()
+    void Awake()
     {
         btnDo = this.transform.Find("Button").GetComponent<Button>();
         btnDo.onClick.AddListener(OnButtonClick);
+    }
+
+	// Use this for initialization
+	void Start ()
+    {
+
     }
 	
 	// Update is called once per frame
@@ -21,7 +26,7 @@ public class DecisionLogic : MonoBehaviour
 
     public void OnButtonClick()
     {
-        Debug.Log("DecisionLogic!");
+        Debug.Log("Do Decision:" + this.name);
 
         MyGame.DecisionManager.DecisionDo(this.name);
     }

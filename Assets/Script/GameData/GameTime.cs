@@ -13,7 +13,14 @@ public partial class MyGame
 			_day = 30;
 		}
 
-		public void Increase()
+        public GameTime(GameTime time)
+        {
+            this._year = time.year;
+            this._month = time.month;
+            this._day = time.day;
+        }
+
+        public void Increase()
 		{
 			if (_day == 30)
 			{
@@ -98,7 +105,40 @@ public partial class MyGame
 			return true;
 		}
 
-		[SerializeField]
+        public static int operator - (GameTime c1, GameTime c2)
+        {
+            int result = 0;
+            if(c1.day < c2.day)
+            {
+                result += c1.day + 30 - c2.day;
+                c1._month--;
+            }
+            else
+            {
+                result += c1.day - c2.day;
+            }
+
+            if(c1.month < c2.month)
+            {
+                result += (c1.month + 12 - c2.month) * 30;
+                c1._year--;
+            }
+            else
+            {
+                result += (c1.month - c2.month) * 30;
+            }
+
+            if(c1.year < c2.year)
+            {
+                throw new ArgumentException(c1 + "is earlier than" + c2);
+            }
+
+            result += (c1.year - c2.year) * 12 * 30;
+
+            return result;
+        }
+
+        [SerializeField]
 		private int _year;
 		[SerializeField]
 		private int _month;

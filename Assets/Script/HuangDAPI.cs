@@ -413,11 +413,13 @@ namespace HuangDAPI
                                   {
                                       return true;
                                   });
+
+            _TimeLine = (string[])_subFields.Where(x => x.Name == "TimeLine").Single().GetValue(this);
         }
 
         public Func<bool> _funcPrecondition;
         public Func<string> _funcTitle;
-
+        public string[] _TimeLine;
         protected string title;
     }
 

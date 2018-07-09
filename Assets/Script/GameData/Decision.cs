@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.CSharp;
 
 using HuangDAPI;
 
@@ -21,12 +22,67 @@ public partial class MyGame
     [Serializable]
     public class DecisionProc
     {
-        public DecisionProc(string key)
+        public DecisionProc(string key, GameTime startTime)
         {
             name = key;
+            _startTime = new GameTime(startTime);
+
+            DECISION decisionDef = StreamManager.decisionDict[key];
+            for (int i = 0; i < decisionDef._TimeLine.Length; i++)
+            {
+                string elem = decisionDef._TimeLine[i];
+                try
+                {
+                    string[] kv = elem.Split("|".ToCharArray());
+
+                    if (kv.Length != 2)
+                    {
+                        throw new ArgumentException("error arg " + elem);
+                    }
+
+                    _timeline.Add(new Tuple<string, int>(kv[0], Convert.ToInt32(kv[1])));
+                }
+                catch (Exception e)
+                {
+                    throw new ArgumentException("error arg " + elem);
+                }
+
+            }
+        }
+
+        public int maxDay
+        {
+            get
+            {
+                int sum = 0;
+                foreach (var elem in timeline)
+                {
+                    sum += elem.Item2;
+                }
+
+                return sum;
+            }
+        }
+        
+        public Tuple<string, int>[] timeline
+        {
+            get
+            {
+                return _timeline.ToArray();
+            }
+        }
+
+        public GameTime startTime
+        {
+            get
+            {
+                return _startTime;
+            }
         }
 
         public string name;
+        private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
+        private GameTime _startTime;
     }
 
     private List<DecisionPlan> DecisionPlans = new List<DecisionPlan>();
@@ -78,7 +134,7 @@ public partial class MyGame
         internal static void DecisionDo(string name)
         {
             MyGame.Inst.DecisionPlans.RemoveAll(x => x.name == name);
-            MyGame.Inst.DecisionProcs.Add(new DecisionProc(name));
+            MyGame.Inst.DecisionProcs.Add(new DecisionProc(name, MyGame.Inst.date));
         }
     }
 
