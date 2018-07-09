@@ -474,6 +474,8 @@ public partial class MyGame
 
     public StatusManager statusManager;
 
+    public EventManager eventManager;
+
 	public string yearName;
 	public GameTime date;
 

@@ -10,6 +10,8 @@ public class EventLogic : MonoBehaviour
 	{
 		eventManager = new EventManager ();
 
+        MyGame.Inst.eventManager = eventManager;
+
 		m_fWaitTime = 1.0F;
 		StartCoroutine(OnTimer());  
 

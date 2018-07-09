@@ -415,10 +415,27 @@ namespace HuangDAPI
                                   });
 
             _TimeLine = (string[])_subFields.Where(x => x.Name == "TimeLine").Single().GetValue(this);
+
+            var fieldInfo = _subFields.Where(x => x.Name == "FinishEvent").SingleOrDefault();
+            if(fieldInfo != null)
+            {
+                _finEvent = (string)fieldInfo.GetValue(this);
+            }
+
+            fieldInfo = _subFields.Where(x => x.Name == "FinishEventParam").SingleOrDefault();
+            if (fieldInfo != null)
+            {
+                _finEventParam = (string)fieldInfo.GetValue(this);
+            }
+
         }
 
         public Func<bool> _funcPrecondition;
         public Func<string> _funcTitle;
+
+        public string _finEvent = "";
+        public string _finEventParam = "";
+
         public string[] _TimeLine;
         protected string title;
     }

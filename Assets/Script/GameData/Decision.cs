@@ -88,6 +88,9 @@ public partial class MyGame
             {
                 MyGame.Inst.date.incDayEvent -= DayIncrease;
                 MyGame.Inst.DecisionProcs.Remove(this);
+
+                DECISION decisionDef = StreamManager.decisionDict[name];
+                MyGame.Inst.eventManager.InsertProcEnd(decisionDef._finEvent, decisionDef._finEventParam);
             }
         }
 
