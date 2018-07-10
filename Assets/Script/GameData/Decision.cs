@@ -16,6 +16,12 @@ public partial class MyGame
             name = key;
         }
 
+        public bool IsEnable()
+        {
+            DECISION decisionDef = StreamManager.decisionDict[name];
+            return decisionDef._funcEnable();
+        }
+
         public string name;
     }
 
@@ -28,25 +34,27 @@ public partial class MyGame
             _startTime = new GameTime(startTime);
 
             DECISION decisionDef = StreamManager.decisionDict[key];
-            for (int i = 0; i < decisionDef._TimeLine.Length; i++)
-            {
-                string elem = decisionDef._TimeLine[i];
-                try
-                {
-                    string[] kv = elem.Split("|".ToCharArray());
+            decisionDef.Flags = this.Flags;
 
-                    if (kv.Length != 2)
-                    {
-                        throw new ArgumentException("error arg " + elem);
-                    }
+            //for (int i = 0; i < decisionDef._TimeLine.Length; i++)
+            //{
+            //    string elem = decisionDef._TimeLine[i];
+            //    try
+            //    {
+            //        string[] kv = elem.Split("|".ToCharArray());
 
-                    _timeline.Add(new Tuple<string, int>(kv[0], Convert.ToInt32(kv[1])));
-                }
-                catch (Exception e)
-                {
-                    throw new ArgumentException("error arg " + elem);
-                }
-            }
+            //        if (kv.Length != 2)
+            //        {
+            //            throw new ArgumentException("error arg " + elem);
+            //        }
+
+            //        _timeline.Add(new Tuple<string, int>(kv[0], Convert.ToInt32(kv[1])));
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        throw new ArgumentException("error arg " + elem);
+            //    }
+            //}
 
             MyGame.Inst.date.incDayEvent += DayIncrease;
         }
@@ -55,13 +63,16 @@ public partial class MyGame
         {
             get
             {
-                int sum = 0;
-                foreach (var elem in timeline)
-                {
-                    sum += elem.Item2;
-                }
+                //int sum = 0;
+                //foreach (var elem in timeline)
+                //{
+                //    sum += elem.Item2;
+                //}
 
-                return sum;
+                //return sum;
+
+                DECISION decisionDef = StreamManager.decisionDict[name];
+                return decisionDef._CostDay;
             }
         }
         
@@ -90,12 +101,13 @@ public partial class MyGame
                 MyGame.Inst.DecisionProcs.Remove(this);
 
                 DECISION decisionDef = StreamManager.decisionDict[name];
-                MyGame.Inst.eventManager.InsertProcEnd(decisionDef._finEvent, decisionDef._finEventParam);
+                MyGame.Inst.eventManager.InsertProcEnd(decisionDef._funcFinishEvent(), "");
             }
         }
 
         public int currDay;
         public string name;
+        private List<string> Flags = new List<string>();
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
         private GameTime _startTime;
     }
@@ -131,7 +143,7 @@ public partial class MyGame
         {
             foreach (var elem in StreamManager.decisionDict)
             {
-                if (elem.Value._funcPrecondition())
+                if (elem.Value._funcVisable())
                 {
                     if(!MyGame.Inst.DecisionPlans.Exists(x=>x.name == elem.Key)
                         && !MyGame.Inst.DecisionProcs.Exists(x => x.name == elem.Key))

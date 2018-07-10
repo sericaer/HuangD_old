@@ -33,8 +33,6 @@ namespace native
 
             suggestPerson = GetSuggestPerson();
 
-
-
             return true;
 		}
 

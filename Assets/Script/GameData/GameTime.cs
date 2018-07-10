@@ -9,8 +9,8 @@ public partial class MyGame
 		public GameTime()
 		{
 			_year = 1;
-			_month = 9;
-			_day = 30;
+			_month = 1;
+			_day = 1;
 		}
 
         public GameTime(GameTime time)

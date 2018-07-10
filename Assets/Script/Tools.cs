@@ -133,6 +133,42 @@ namespace Tools
 			return resultList;
 		}
 
+        public static void ProbGroup(double prob1, Action action1,
+                              double prob2, Action action2,
+                              double prob3=0.0, Action action3 = null,
+                              double prob4=0.0, Action action4 = null)
+        {
+            
+
+            int p1 = (int)(prob1 * 1000);
+            int p2 = (int)((prob2 + prob1) * 1000);
+            int p3 = (int)((prob3 + prob2 + prob1) * 1000);
+            int p4 = (int)((prob4 + prob2 + prob1) * 1000);
+
+            if(p4 > 1000)
+            {
+                throw new ArgumentException("Total prob cout > 1.0");
+            }
+
+            int rad = GetRandomNum(0, 1000);
+            if(rad < p1)
+            {
+                action1();
+            }
+            else if (rad < p2)
+            {
+                action2();
+            }
+            else if (rad < p3)
+            {
+                action3();
+            }
+            else if (rad < p4)
+            {
+                action4();
+            }
+        }
+
         private static int GetRandomSeed()
         {
             byte[] bytes = new byte[4];

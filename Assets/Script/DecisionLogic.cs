@@ -15,7 +15,8 @@ public class DecisionLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-
+        decplan = MyGame.DecisionManager.Plans.Find(x => x.name == this.name);
+        btnDo.interactable = decplan.IsEnable();
     }
 	
 	// Update is called once per frame
@@ -32,4 +33,5 @@ public class DecisionLogic : MonoBehaviour
     }
 
     private Button btnDo;
+    private MyGame.DecisionPlan decplan;
 }
