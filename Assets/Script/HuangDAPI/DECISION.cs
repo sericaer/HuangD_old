@@ -18,6 +18,11 @@ namespace HuangDAPI
                                                      FieldInfo field = _subFields.Where(x => x.Name == "title").First();
                                                      return (string)field.GetValue(this);
                                                  });
+            _funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+                                                 () =>
+                                                 {
+                                                     return this.GetType().Name + "_DESC";
+                                                 });
             _funcVisable = GetDelegateInSubEvent<Func<bool>>("Visable",
                                                   () =>
                                                   {
@@ -72,6 +77,7 @@ namespace HuangDAPI
         public Func<bool> _funcEnable;
 
         public Func<string> _funcTitle;
+        public Func<string> _funcDesc;
 
         public Func<string> _funcEnableEvent;
         public Func<string> _funcDisableEvent;
