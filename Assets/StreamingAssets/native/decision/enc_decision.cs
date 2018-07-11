@@ -83,7 +83,7 @@ namespace native
             return false;
         }
 
-        int CostDay = 3;
+        int CostDay = 20;
 
         string Responsible = "JQ1";
 
@@ -116,7 +116,7 @@ namespace native
             }
 
             var probFail = 0.0;
-            var probSucc = 1.0;
+            var probSucc = 0.0;
             if (Flags.Contains("PARAM_JQ1_JS_MAX"))
             {
                 probFail = 0.1;

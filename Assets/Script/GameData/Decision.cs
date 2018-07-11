@@ -59,7 +59,7 @@ public partial class MyGame
 
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[key];
 
-            resPerson = HuangDAPI.GMData.Offices.All.First(x=>x.name==key).person;
+            resPerson = HuangDAPI.GMData.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
 
             decisionDef.Flags = this.Flags;
 
@@ -99,7 +99,7 @@ public partial class MyGame
         {
             get
             {
-                return Flags;
+                return _Flags;
             }
          }
 
@@ -139,12 +139,15 @@ public partial class MyGame
         public void DayIncrease()
         {
             currDay++;
-            if(currDay >= maxDay)
+
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+
+            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+
+            if (currDay >= maxDay)
             {
                 MyGame.Inst.date.incDayEvent -= DayIncrease;
                 MyGame.Inst.DecisionProcs.Remove(this.name);
-
-                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
                 MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
             }
         }
