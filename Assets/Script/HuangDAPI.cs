@@ -51,6 +51,17 @@ namespace HuangDAPI
         }
     }
 
+    public interface DecisionProc
+    {
+         Person ResponsiblePerson { get; }
+         List<string> Flags { get; }
+    }
+
+    public interface DecisionPlan
+    {
+         void process();
+    }
+
     public abstract class Person
     {
         public abstract string name { get; }
@@ -444,9 +455,21 @@ namespace HuangDAPI
                                                       return "";
                                                   });
 
+            var fieldInfo = _subFields.Where(x => x.Name == "CostDay").SingleOrDefault();
+            if (fieldInfo != null)
+            {
+                _CostDay = (int)fieldInfo.GetValue(this);
+            }
+
+            fieldInfo = _subFields.Where(x => x.Name == "Responsible").SingleOrDefault();
+            if (fieldInfo != null)
+            {
+                _Responsible = (string)fieldInfo.GetValue(this);
+            }
+
             //_TimeLine = (string[])_subFields.Where(x => x.Name == "TimeLine").Single().GetValue(this);
 
-            _CostDay = (int)_subFields.Where(x => x.Name == "CostDay").Single().GetValue(this);
+            //_CostDay = (int)_subFields.Where(x => x.Name == "CostDay").Single().GetValue(this);
 
             //var fieldInfo = _subFields.Where(x => x.Name == "FinishEvent").SingleOrDefault();
             //if(fieldInfo != null)
@@ -477,7 +500,8 @@ namespace HuangDAPI
 
         public string _funcFinishEventParam;
 
-        public int _CostDay;
+        public int _CostDay = 0;
+        public string _Responsible ="";
         //public string[] _TimeLine;
         protected string title;
         public IList<string> Flags;
@@ -915,6 +939,22 @@ namespace HuangDAPI
             }
         }
 
+        public static Dictionary<string, DecisionProc> DecisionProcs
+        {
+            get
+            {
+                return MyGame.DecisionManager.Procs;
+            }
+        }
+
+
+        public static Dictionary<string, DecisionPlan> DecisionPlans
+        {
+            get
+            {
+                return MyGame.DecisionManager.Plans;
+            }
+        }
 
         private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
 

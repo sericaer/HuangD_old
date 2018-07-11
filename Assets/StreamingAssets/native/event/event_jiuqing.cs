@@ -106,25 +106,54 @@ namespace native
         Person suggestPerson;
 	}
 
-    class EVENT_JQ1_DEAL_JS : EVENT_HD
+    class EVENT_JQ1_SUGGEST_JS_FIRST : EVENT_HD
     {
-        bool Precondition()
-        {
-            if (GMData.Date.month == 1 && GMData.Date.day == 5)
-            {
-                jq1Person = GMData.Offices.JQ[0].person;
-                if (jq1Person == null)
-                    return false;
-
-                return true;
-            }
-
-            return false;
-        }
-
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_DEAL_JS_DESC", jq1Person.ToString());
+            return UI.Format("EVENT_JQ1_SUGGEST_JS_FIRST", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.DecisionPlans["DECISION_JS"].process();
+            }
+        }
+        class OPTION2 : Option
+        {
+
+        }
+    }
+
+    class EVENT_JQ1_SUGGEST_JS_LAST : EVENT_HD
+    {
+        string Desc()
+        {
+            return UI.Format("EVENT_JQ1_SUGGEST_JS_LAST", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.DecisionPlans["DECISION_JS"].process();
+            }
+        }
+        class OPTION2 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                nxtEvent = "EVENT_STAB_DEC";
+            }
+        }
+    }
+
+    class EVENT_JQ1_START_JS : EVENT_HD
+    {
+        string Desc()
+        {
+            return UI.Format("EVENT_JQ1_DEAL_JS_DESC", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
         }
 
         class OPTION1 : Option
@@ -138,29 +167,25 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_BIG", OUTTER.jq1Person);
+                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MAX");
                 GMData.Economy -= 15;
             }
-
-            EVENT_JQ1_DEAL_JS OUTTER;
         }
 
         class OPTION2 : Option
         {
             bool Precondition()
             {
-                if (GMData.Economy > 10 )
+                if (GMData.Economy > 10)
                     return true;
                 return false;
             }
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_MID", OUTTER.jq1Person);
+                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MID");
                 GMData.Economy -= 10;
             }
-
-            EVENT_JQ1_DEAL_JS OUTTER;
         }
 
         class OPTION3 : Option
@@ -174,45 +199,18 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Add("DEAL_JS", "DEAL_JS_PARAM_LOW", OUTTER.jq1Person);
+                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MIN");
                 GMData.Economy -= 5;
             }
-
-            EVENT_JQ1_DEAL_JS OUTTER;
         }
-
-        class OPTION4 : Option
-        {
-            void Selected(ref string nxtEvent, ref object param)
-            {
-                nxtEvent = "EVENT_STAB_DEC";
-            }
-        }
-
-        Person jq1Person;
     }
 
     class EVENT_JQ1_JS_GOOD_EVENT : EVENT_HD
     {
-        bool Precondition()
-        {
-            if (!GMData.ImpWorks.Contains("DEAL_JS"))
-                return false;
-            
-            var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
-            if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT") || detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
-                return false;
-            
-            if (Probability.IsProbOccur(0.005))
-                return true;
-            return false;
-        }
-
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Find("DEAL_JS").detail += "|EVENT_JQ1_JS_GOOD_EVENT";
                 nxtEvent = "EVENT_STAB_INC";
             }
         }
@@ -220,106 +218,17 @@ namespace native
 
     class EVENT_JQ1_JS_BAD_EVENT : EVENT_HD
     {
-        bool Precondition()
-        {
-            if (!GMData.ImpWorks.Contains("DEAL_JS"))
-                return false;
-            var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
-            if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT") || detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
-                return false;
-            if (Probability.IsProbOccur(0.005))
-                return true;
-            return false;
-        }
-
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Find("DEAL_JS").detail += "|EVENT_JQ1_JS_BAD_EVENT";
                 nxtEvent = "EVENT_STAB_DEC";
             }
         }
     }
 
-    class EVENT_JQ1_JS_END : EVENT_HD
-    {
-        bool Precondition()
-        {
-            if (GMData.Date.month == 2 && GMData.Date.day == 1)
-            {
-                if (GMData.ImpWorks.Contains("DEAL_JS"))
-                    return true;
-            }
-
-            return false;
-        }
-        string Desc()
-        {
-            var jq1Person = GMData.Offices.JQ[0].person;
-            return UI.Format("EVENT_JQ1_JS_END_DESC", jq1Person.ToString(), GMData.ImpWorks.Find("DEAL_JS").detail);
-        }
-
-        class OPTION1 : Option
-        {
-            void Selected(ref string nxtEvent, ref object param)
-            {
-                var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
-                GMData.ImpWorks.Remove("DEAL_JS");
-
-                if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
-                {
-                    nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-                    return;
-                }
-                else if (detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
-                {
-                    nxtEvent = "EVENT_JQ1_JS_FAILED";
-                    return;
-                }
-                else if(detail.Contains("DEAL_JS_PARAM_BIG"))
-                {
-                    nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-                    return;
-                }
-                else if(detail.Contains("DEAL_JS_PARAM_MID"))
-                {
-                    if (Probability.IsProbOccur(0.7))
-                    {
-                        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-                        return;
-                    }
-                    if (Probability.IsProbOccur(0.3))
-                    {
-                        nxtEvent = "EVENT_JQ1_JS_FAILED";
-                        return;
-                    }
-                }
-                else if (detail.Contains("DEAL_JS_PARAM_LOW"))
-                {
-                    if (Probability.IsProbOccur(0.7))
-                    {
-                        nxtEvent = "EVENT_JQ1_JS_FAILED";
-                        return;
-                    }
-                    else
-                    {
-                        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-
     class EVENT_JQ1_JS_SUCCESS : EVENT_HD
     {
-        bool Precondition()
-        {
-            return false;
-        }
-
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
@@ -332,11 +241,6 @@ namespace native
 
     class EVENT_JQ1_JS_FAILED : EVENT_HD
     {
-        bool Precondition()
-        {
-            return false;
-        }
-
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
@@ -344,7 +248,6 @@ namespace native
                 nxtEvent = "EVENT_STAB_DEC";
             }
         }
-
     }
 
     class EVENT_JQ_EMPTY : EVENT_HD

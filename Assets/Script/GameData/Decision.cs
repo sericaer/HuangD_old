@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.CSharp;
 
-using HuangDAPI;
+//using HuangDAPI;
 
 public partial class MyGame
 {
     [Serializable]
-    public class DecisionPlan
+    public class DecisionPlan : HuangDAPI.DecisionPlan
     {
         public DecisionPlan(string key)
         {
@@ -18,23 +18,52 @@ public partial class MyGame
 
         public bool IsEnable()
         {
-            DECISION decisionDef = StreamManager.decisionDict[name];
-            return decisionDef._funcEnable();
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+            bool isEnable =  decisionDef._funcEnable();
+
+            if(oldState != null && oldState != isEnable)
+            {
+                if(isEnable == true)
+                {
+                    MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcEnableEvent(), "");
+                }
+                if(isEnable == false)
+                {
+                    MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcDisableEvent(), "");
+                }
+            }
+
+            return isEnable;
+        }
+
+        public void process()
+        {
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), "");
+
+            MyGame.Inst.DecisionProcs.Add(name, new DecisionProc(name));
+            MyGame.Inst.DecisionPlans.Remove(name);
         }
 
         public string name;
+        private bool? oldState = null;
     }
 
     [Serializable]
-    public class DecisionProc
+    public class DecisionProc : HuangDAPI.DecisionProc
     {
-        public DecisionProc(string key, GameTime startTime)
+        public DecisionProc(string key)
         {
             name = key;
-            _startTime = new GameTime(startTime);
+            _startTime = new GameTime(MyGame.Inst.date);
 
-            DECISION decisionDef = StreamManager.decisionDict[key];
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[key];
+
+            resPerson = HuangDAPI.GMData.Offices.All.First(x=>x.name==key).person;
+
             decisionDef.Flags = this.Flags;
+
+            
 
             //for (int i = 0; i < decisionDef._TimeLine.Length; i++)
             //{
@@ -59,6 +88,21 @@ public partial class MyGame
             MyGame.Inst.date.incDayEvent += DayIncrease;
         }
 
+        public HuangDAPI.Person ResponsiblePerson
+        {
+            get
+            {
+                return resPerson;
+            }
+        }
+        public List<string> Flags
+        {
+            get
+            {
+                return Flags;
+            }
+         }
+
         public int maxDay
         {
             get
@@ -71,7 +115,7 @@ public partial class MyGame
 
                 //return sum;
 
-                DECISION decisionDef = StreamManager.decisionDict[name];
+                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
                 return decisionDef._CostDay;
             }
         }
@@ -98,23 +142,23 @@ public partial class MyGame
             if(currDay >= maxDay)
             {
                 MyGame.Inst.date.incDayEvent -= DayIncrease;
-                MyGame.Inst.DecisionProcs.Remove(this);
+                MyGame.Inst.DecisionProcs.Remove(this.name);
 
-                DECISION decisionDef = StreamManager.decisionDict[name];
-                MyGame.Inst.eventManager.InsertProcEnd(decisionDef._funcFinishEvent(), "");
+                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
             }
         }
 
         public int currDay;
         public string name;
-        private List<string> Flags = new List<string>();
+        private List<string> _Flags = new List<string>();
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
+        private HuangDAPI.Person resPerson = null;
         private GameTime _startTime;
     }
 
-    private List<DecisionPlan> DecisionPlans = new List<DecisionPlan>();
-
-    private List<DecisionProc> DecisionProcs = new List<DecisionProc>();
+    private Dictionary<string, HuangDAPI.DecisionPlan> DecisionPlans = new Dictionary<string, HuangDAPI.DecisionPlan>();
+    private Dictionary<string, HuangDAPI.DecisionProc> DecisionProcs = new Dictionary<string, HuangDAPI.DecisionProc>();
 
     public static class DecisionManager
     {
@@ -123,7 +167,7 @@ public partial class MyGame
             Update();
         }
 
-        public static List<DecisionPlan> Plans
+        public static Dictionary<string, HuangDAPI.DecisionPlan> Plans
         {
             get
             {
@@ -131,7 +175,7 @@ public partial class MyGame
             }
         }
 
-        public static List<DecisionProc> Procs
+        public static Dictionary<string, HuangDAPI.DecisionProc> Procs
         {
             get
             {
@@ -145,25 +189,18 @@ public partial class MyGame
             {
                 if (elem.Value._funcVisable())
                 {
-                    if(!MyGame.Inst.DecisionPlans.Exists(x=>x.name == elem.Key)
-                        && !MyGame.Inst.DecisionProcs.Exists(x => x.name == elem.Key))
+                    if(!MyGame.Inst.DecisionPlans.ContainsKey(elem.Key)
+                        && !MyGame.Inst.DecisionProcs.ContainsKey(elem.Key))
                     {
-                        MyGame.Inst.DecisionPlans.Add(new DecisionPlan(elem.Key));
+                        MyGame.Inst.DecisionPlans.Add(elem.Key, new DecisionPlan(elem.Key));
                     }
                 }
                 else
                 {
-                    MyGame.Inst.DecisionPlans.RemoveAll(x => x.name == elem.Key);
+                    MyGame.Inst.DecisionPlans.Remove(elem.Key);
                 }
             }
         }
-
-        internal static void DecisionDo(string name)
-        {
-            MyGame.Inst.DecisionPlans.RemoveAll(x => x.name == name);
-            MyGame.Inst.DecisionProcs.Add(new DecisionProc(name, MyGame.Inst.date));
-        }
     }
-
 
 }

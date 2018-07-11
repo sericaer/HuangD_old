@@ -194,15 +194,15 @@ public class EventManager
                 nextEvent = null;
         }
 
-        while (procEndEvent != null)
+        while (decisionEvent != null)
         {
-            procEndEvent.Initlize();
+            decisionEvent.Initlize();
 
-            ItfEvent currEvent = procEndEvent;
+            ItfEvent currEvent = decisionEvent;
             yield return currEvent;
 
-            if (currEvent == procEndEvent)
-                procEndEvent = null;
+            if (currEvent == decisionEvent)
+                decisionEvent = null;
         }
 
         foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
@@ -232,14 +232,14 @@ public class EventManager
 		nextEvent = new GMEvent (StreamManager.eventDict [key], param);
 	}
 
-    public void InsertProcEnd(string key, object param)
+    public void InsertDecisionEvent(string key, object param)
     {
         if (key.Length == 0)
         {
             return;
         }
 
-        procEndEvent = new GMEvent(StreamManager.eventDict[key], param);
+        decisionEvent = new GMEvent(StreamManager.eventDict[key], param);
     }
 
     public void Insert(List<List<object>> table)
@@ -253,5 +253,5 @@ public class EventManager
     }
 
 	private ItfEvent nextEvent = null;
-    private ItfEvent procEndEvent = null;
+    private ItfEvent decisionEvent = null;
 }

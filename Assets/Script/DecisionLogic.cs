@@ -15,7 +15,7 @@ public class DecisionLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        decplan = MyGame.DecisionManager.Plans.Find(x => x.name == this.name);
+        decplan = MyGame.DecisionManager.Plans[this.name] as MyGame.DecisionPlan;
         btnDo.interactable = decplan.IsEnable();
     }
 	
@@ -28,8 +28,7 @@ public class DecisionLogic : MonoBehaviour
     public void OnButtonClick()
     {
         Debug.Log("Do Decision:" + this.name);
-
-        MyGame.DecisionManager.DecisionDo(this.name);
+        decplan.process();
     }
 
     private Button btnDo;

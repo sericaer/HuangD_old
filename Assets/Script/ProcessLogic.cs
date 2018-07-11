@@ -14,7 +14,7 @@ public class ProcessLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        decpro = MyGame.DecisionManager.Procs.Find(x => x.name == this.name);
+        decpro = MyGame.DecisionManager.Procs[this.name] as MyGame.DecisionProc;
         mainSlider.maxValue = decpro.maxDay;
         mainSlider.value = decpro.currDay;
     }

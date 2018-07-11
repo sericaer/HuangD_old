@@ -3,13 +3,65 @@ using System.Linq;
 
 namespace native
 {
-    class DECISION_TEST : DECISION
-    {
-        string[] TimeLine = { "TEST|10" };
-        string FinishEvent = "EVENT_STAB_DEC";
+    //class DECISION_YHSX : DECISION
+    //{
+    //    bool Enable()
+    //    {
+    //        if (GMData.CountryFlags.Contains("STATUS_YHSX"))
+    //        {
+    //            return true;
+    //        }
 
-        int CostDay = 3;
-    }
+    //        return false;
+    //    }
+
+    //    bool ProcFinish()
+    //    {
+    //        if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
+    //        {
+    //            return true;
+    //        }
+
+    //        return false;
+    //    }
+
+    //    int CostDay = 0;
+    //    string Response = "";
+
+    //    string EnableEvent()
+    //    {
+    //        return "EVENT_JQ1_SUGGEST_YHSX_FIRST";
+    //    }
+
+    //    string StartEvent()
+    //    {
+    //        return "EVENT_JQ1_START_YHSX";
+    //    }
+
+    //    string FinishEvent()
+    //    {
+    //    }
+
+    //    string ProcEvent()
+    //    {
+    //        if (Flags.Contains("EVENT_JQ1_JS_BAD_EVENT") || Flags.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
+    //        {
+    //            return "";
+    //        }
+
+    //        if (Probability.IsProbOccur(0.2))
+    //        {
+    //            var procEvent = "";
+    //            Probability.ProbGroup(0.5, () => { procEvent = "EVENT_JQ1_JS_BAD_EVENT"; },
+    //                                  0.5, () => { procEvent = "EVENT_JQ1_JS_GOOD_EVENT"; });
+
+    //            Flags.Add(procEvent);
+    //            return procEvent;
+    //        }
+
+    //        return "";
+    //    }
+    //}
 
     class DECISION_TEST2 : DECISION
     {
@@ -33,7 +85,7 @@ namespace native
 
         int CostDay = 3;
 
-        string mainResponse = "";
+        string Responsible = "JQ1";
 
         //string[] TimeLine = { "JS_PROCESSING|20" };
 
@@ -65,7 +117,7 @@ namespace native
 
             var probFail = 0.0;
             var probSucc = 1.0;
-            if (Flags.Contains("PARAM_JQ1_JS_BIG"))
+            if (Flags.Contains("PARAM_JQ1_JS_MAX"))
             {
                 probFail = 0.1;
                 probSucc = 0.9;
@@ -75,7 +127,7 @@ namespace native
                 probFail = 0.2;
                 probSucc = 0.8;
             }
-            else if (Flags.Contains("PARAM_JQ1_JS_LOW"))
+            else if (Flags.Contains("PARAM_JQ1_JS_MIN"))
             {
                 probFail = 0.4;
                 probSucc = 0.6;
