@@ -16,6 +16,11 @@ public class ProcessLogic : MonoBehaviour
     {
         decpro = MyGame.DecisionManager.Procs[this.name] as MyGame.DecisionProc;
         mainSlider.maxValue = decpro.maxDay;
+        if (decpro.maxDay == 0)
+        {
+            mainSlider.maxValue = decpro.currDay;
+        }
+        
         mainSlider.value = decpro.currDay;
     }
 	
@@ -23,6 +28,10 @@ public class ProcessLogic : MonoBehaviour
 	void Update ()
     {
         mainSlider.value = decpro.currDay;
+        if (decpro.maxDay == 0)
+        {
+            mainSlider.maxValue = decpro.currDay;
+        }
     }
 
     private Slider mainSlider;

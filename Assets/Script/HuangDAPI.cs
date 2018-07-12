@@ -60,6 +60,7 @@ namespace HuangDAPI
     public interface DecisionPlan
     {
          void process();
+         Office ResponsibleOffice { get; }
     }
 
     public abstract class Person

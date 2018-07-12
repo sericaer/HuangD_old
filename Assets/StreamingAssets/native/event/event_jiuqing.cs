@@ -6,111 +6,103 @@ using System.Collections.Generic;
 
 namespace native
 {
-	class EVENT_JQ1_DEAL_YHSX : EVENT_HD
-	{
-		bool Precondition()
-		{
-            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
-            {
-                return false;
-            }
-
-            Debug.Log("STATUS_YHSX");
-
-            if (GMData.ImpWorks.Contains("DEAL_YHSX"))
-            {
-                return false;
-            }
-
-            Debug.Log("DEAL_YHSX");
-
-            jq1Person = GMData.Offices.JQ[0].person;
-            if(jq1Person == null)
-            {
-                return false;
-            }
-
-
-            suggestPerson = GetSuggestPerson();
-
-            return true;
-		}
-
+    class EVENT_JQ1_SUGGEST_YHSX_FIRST : EVENT_HD
+    {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_DEAL_YHSX_DESC", jq1Person.ToString());
+            return UI.Format("EVENT_JQ1_DEAL_YHSX_DESC", GMData.DecisionPlans["DECISION_YHSX"].ResponsibleOffice.person);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                GMData.DecisionPlans["DECISION_YHSX"].process();
+            }
+        }
+
+        class OPTION2 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                param = "REFUSE_SUGGEST_YHSX";
+                nxtEvent = "EVENT_EMP_PRESS_INC";//GMData.emp.Flags.Add("REFUSE_SUGGEST_YHSX", "press:+5");
+            }
+        }
+    }
+
+    class EVENT_JQ1_START_YHSX : EVENT_HD
+	{
+        string Desc()
+        {
+            return UI.Format("EVENT_JQ1_START_YHSX", GMData.DecisionProcs["DECISION_YHSX"].ResponsiblePerson);
         }
 
         class OPTION1 : Option
 		{
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.ImpWorks.Add("DEAL_YHSX", "DEAL_YHSX_PARAM_STAB", OUTTER.jq1Person);
-            }
+                GMData.DecisionProcs["DECISION_YHSX"].Flags.Add("STATIC");
 
-            EVENT_JQ1_DEAL_YHSX OUTTER;
+                //if(GMData.Emp.Flags.Contains("REFUSE_SUGGEST_YHSX"))
+                //{
+                //    param = "REFUSE_SUGGEST_YHSX";
+                //    nxtEvent = "EVENT_EMP_PRESS_DEC";
+                //}
+            }
         }
 
 		class OPTION2 : Option
         {
 			bool Precondition()
             {
-				if (OUTTER.suggestPerson != null)
-                    return true;
-                return false;
+                suggestPerson = GetSuggestPerson();
+                return (suggestPerson != null);
             }
 
             string Desc()
             {
-                return UI.Format("EVENT_JQ1_DEAL_YHSX_OPTION2_DESC", OUTTER.suggestPerson.ToString());
+                return UI.Format("EVENT_JQ1_START_YHSX_OPTION2_DESC", suggestPerson.ToString());
             }
 
             void Selected(ref string nxtEvent, ref object param)
 			{
-                GMData.ImpWorks.Add("DEAL_YHSX", "STATUS_YHSX_PARAM_PERSON", OUTTER.jq1Person, OUTTER.suggestPerson);
-                OUTTER.suggestPerson.Flags.Add("DST_YHSX", "Press:-5");
+                //suggestPerson.Flags.Add("TARGET_YHSX", "press:+10");
+
+                //if (GMData.emp.Flags.Contains("REFUSE_SUGGEST_YHSX"))
+                //{
+                //    param = "REFUSE_SUGGEST_YHSX";
+                //    nxtEvent = "EVENT_EMP_PRESS_DEC";
+                //}
             }
 
-			EVENT_JQ1_DEAL_YHSX OUTTER;
-        }
-
-		class OPTION3 : Option
-		{
-            void Selected(ref string nxtEvent, ref object param)
+            Person GetSuggestPerson()
             {
-                GMData.ImpWorks.Add("DEAL_YHSX", "STATUS_YHSX_PARAM_STAB", OUTTER.jq1Person);
+                Faction factionJQ1 = GMData.DecisionProcs["DECISION_YHSX"].ResponsiblePerson.faction;
+
+                Person p = (from x in GMData.Offices.SG
+                            where x.person != null && x.person.faction != factionJQ1
+                            select x.person).FirstOrDefault();
+
+                if (p == null)
+                {
+                    p = (from x in GMData.Offices.SG
+                         where x.person != null
+                         select x.person).LastOrDefault();
+                }
+
+                return p;
             }
 
-            EVENT_JQ1_DEAL_YHSX OUTTER;
+            Person suggestPerson = null;
         }
-
-		Person GetSuggestPerson()
-		{
-            Faction factionJQ1 = jq1Person.faction;
-
-            Person p = (from x in GMData.Offices.SG
-                       where x.person != null && x.person.faction != factionJQ1
-                       select x.person).FirstOrDefault();
-
-            if(p == null)
-            {
-                p = (from x in GMData.Offices.SG
-                     where x.person != null
-                     select x.person).LastOrDefault();
-            }
-            
-            return p;
-		}
-
-        Person jq1Person;
-        Person suggestPerson;
 	}
 
     class EVENT_JQ1_SUGGEST_JS_FIRST : EVENT_HD
     {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_SUGGEST_JS_FIRST", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
+            return UI.Format("EVENT_JQ1_SUGGEST_JS_FIRST", GMData.DecisionPlans["DECISION_JS"].ResponsibleOffice.person);
         }
 
         class OPTION1 : Option

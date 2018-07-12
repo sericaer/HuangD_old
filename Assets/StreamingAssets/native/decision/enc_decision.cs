@@ -3,72 +3,64 @@ using System.Linq;
 
 namespace native
 {
-    //class DECISION_YHSX : DECISION
-    //{
-    //    bool Enable()
-    //    {
-    //        if (GMData.CountryFlags.Contains("STATUS_YHSX"))
-    //        {
-    //            return true;
-    //        }
-
-    //        return false;
-    //    }
-
-    //    bool ProcFinish()
-    //    {
-    //        if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
-    //        {
-    //            return true;
-    //        }
-
-    //        return false;
-    //    }
-
-    //    int CostDay = 0;
-    //    string Response = "";
-
-    //    string EnableEvent()
-    //    {
-    //        return "EVENT_JQ1_SUGGEST_YHSX_FIRST";
-    //    }
-
-    //    string StartEvent()
-    //    {
-    //        return "EVENT_JQ1_START_YHSX";
-    //    }
-
-    //    string FinishEvent()
-    //    {
-    //    }
-
-    //    string ProcEvent()
-    //    {
-    //        if (Flags.Contains("EVENT_JQ1_JS_BAD_EVENT") || Flags.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
-    //        {
-    //            return "";
-    //        }
-
-    //        if (Probability.IsProbOccur(0.2))
-    //        {
-    //            var procEvent = "";
-    //            Probability.ProbGroup(0.5, () => { procEvent = "EVENT_JQ1_JS_BAD_EVENT"; },
-    //                                  0.5, () => { procEvent = "EVENT_JQ1_JS_GOOD_EVENT"; });
-
-    //            Flags.Add(procEvent);
-    //            return procEvent;
-    //        }
-
-    //        return "";
-    //    }
-    //}
-
-    class DECISION_TEST2 : DECISION
+    class DECISION_YHSX : DECISION
     {
-        string[] TimeLine = { "TEST|3" };
-        string FinishEvent = "EVENT_STAB_INC";
+        bool Visable()
+        {
+            if (GMData.CountryFlags.Contains("STATUS_YHSX"))
+            {
+                return true;
+            }
 
-        int CostDay = 3;
+            return false;
+        }
+
+        bool ProcFinish()
+        {
+            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        int CostDay = 0;
+        string Responsible = "JQ1";
+        string EnableEvent()
+        {
+            return "EVENT_JQ1_SUGGEST_YHSX_FIRST";
+        }
+
+        string StartEvent()
+        {
+            return "EVENT_JQ1_START_YHSX";
+        }
+
+        string ProcEvent()
+        {
+            if (Flags.Contains("STATIC"))
+            {
+                if (Probability.IsProbOccur(0.02))
+                {
+                    return "EVENT_STAB_INC";
+                }
+            }
+            //else if (Flags.Count != 0)
+            //{
+            //    if (Probability.IsProbOccur(0.02))
+            //    {
+            //        Flags.Clear();
+
+            //        var procEvent = "";
+            //        Probability.ProbGroup(0.5, () => { procEvent = "EVENT_JQ1_JS_FAILED"; param = Flags.First(); },
+            //                              0.5, () => { procEvent = "EVENT_JQ1_JS_SUCCESS"; param = Flags.First(); });
+            //        return procEvent;
+            //    }
+            //}
+
+            return "";
+        }
     }
 
     class DECISION_JS : DECISION
@@ -146,7 +138,7 @@ namespace native
                 return "";
             }
 
-            if (Probability.IsProbOccur(0.2))
+            if (Probability.IsProbOccur(0.01))
             {
                 var procEvent = "";
                 Probability.ProbGroup(0.5, () => { procEvent = "EVENT_JQ1_JS_BAD_EVENT"; },

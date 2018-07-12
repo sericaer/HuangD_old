@@ -10,7 +10,7 @@ namespace native
         {
 			if(!GMData.CountryFlags.Contains("STATUS_YHSX"))
             {
-                if(Probability.IsProbOccur(0.001))
+                if(Probability.IsProbOccur(1.0))
                 {
                     return true;
                 }

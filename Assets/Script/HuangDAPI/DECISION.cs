@@ -33,6 +33,8 @@ namespace HuangDAPI
                                                   {
                                                       return true;
                                                   });
+            _funcProcFinish = GetDelegateInSubEvent<Func<bool>>("ProcFinish", null);
+
             _funcEnableEvent = GetDelegateInSubEvent<Func<string>>("EnableEvent",
                                                   () =>
                                                   {
@@ -75,6 +77,7 @@ namespace HuangDAPI
 
         public Func<bool> _funcVisable;
         public Func<bool> _funcEnable;
+        public Func<bool> _funcProcFinish;
 
         public Func<string> _funcTitle;
         public Func<string> _funcDesc;

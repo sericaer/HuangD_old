@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.CSharp;
 
+using UnityEngine;
 //using HuangDAPI;
 
 public partial class MyGame
@@ -21,15 +22,21 @@ public partial class MyGame
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
             bool isEnable =  decisionDef._funcEnable();
 
-            if(oldState != null && oldState != isEnable)
+            if(oldState != isEnable)
             {
                 if(isEnable == true)
                 {
-                    MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcEnableEvent(), "");
+                    string eventName = decisionDef._funcEnableEvent();
+                    Debug.Log("Add " + eventName);
+
+                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, "");
                 }
                 if(isEnable == false)
                 {
-                    MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcDisableEvent(), "");
+                    string eventName = decisionDef._funcDisableEvent();
+                    Debug.Log("Remove" + eventName);
+
+                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, "");
                 }
             }
 
@@ -46,6 +53,15 @@ public partial class MyGame
         }
 
         public string name;
+        public HuangDAPI.Office ResponsibleOffice
+        {
+            get
+            {
+                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+                return HuangDAPI.GMData.Offices.All.First(x => x.name == decisionDef._Responsible);
+            }
+        }
+
         private bool? oldState = null;
     }
 
@@ -57,7 +73,7 @@ public partial class MyGame
             name = key;
             _startTime = new GameTime(MyGame.Inst.date);
 
-            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[key];
+            decisionDef = StreamManager.decisionDict[key];
 
             resPerson = HuangDAPI.GMData.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
 
@@ -115,7 +131,7 @@ public partial class MyGame
 
                 //return sum;
 
-                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+                
                 return decisionDef._CostDay;
             }
         }
@@ -140,15 +156,20 @@ public partial class MyGame
         {
             currDay++;
 
-            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-
             MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
 
-            if (currDay >= maxDay)
+            if (currDay >= maxDay && maxDay != 0)
             {
                 MyGame.Inst.date.incDayEvent -= DayIncrease;
                 MyGame.Inst.DecisionProcs.Remove(this.name);
                 MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+                return;
+            }
+            if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
+            {
+                MyGame.Inst.DecisionProcs.Remove(this.name);
+                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+                return;
             }
         }
 
@@ -158,6 +179,7 @@ public partial class MyGame
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
         private HuangDAPI.Person resPerson = null;
         private GameTime _startTime;
+        private HuangDAPI.DECISION decisionDef;
     }
 
     private Dictionary<string, HuangDAPI.DecisionPlan> DecisionPlans = new Dictionary<string, HuangDAPI.DecisionPlan>();
