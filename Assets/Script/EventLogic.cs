@@ -64,6 +64,7 @@ public class EventLogic : MonoBehaviour
 			costtime += 0.1f;
 		}
 
+        MyGame.Inst.eventManager.isEventDialogExit = false;
 
         yield return new WaitForSeconds(m_fWaitTime - costtime);
 

@@ -22,6 +22,8 @@ public class GMEvent : ItfEvent
 {
     public GMEvent(EVENT_HD ie, object param)
     {
+        MyGame.Inst.eventManager.isEventDialogExit = true;
+
         this._isChecked = false;
         this.ie = ie;
         ie.param = param;
@@ -256,4 +258,5 @@ public class EventManager
 
 	private ItfEvent nextEvent = null;
     private ItfEvent decisionEvent = null;
+    public bool isEventDialogExit = false;
 }
