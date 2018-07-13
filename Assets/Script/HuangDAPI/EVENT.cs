@@ -132,7 +132,7 @@ namespace HuangDAPI
                                                                         {
                                                                         });
 
-                OUTTER = outter;
+                this.OUTTER = outter;
 
             }
 
@@ -150,7 +150,7 @@ namespace HuangDAPI
             public Func<string> _funcDesc;
             public DelegateSelected _funcSelected;
 
-            public EVENT_HD OUTTER;
+            public dynamic OUTTER;
 
             protected string desc;
 

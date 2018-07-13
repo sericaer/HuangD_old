@@ -31,10 +31,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                Office office = (from x in GMData.RelationManager.OfficeMap
-                                 where x.person == OUTTER.currPerson
-                                 select x.office).FirstOrDefault();
-                
+                Office office = OUTTER.currPerson.office;
                 OUTTER.currPerson.Die();
 
                 if (office.name == "SG1" || office.name == "SG2" || office.name == "SG3")
@@ -42,16 +39,10 @@ namespace native
                     nxtEvent = "EVENT_STAB_DEC";
                 }
             }
-
-            EVENT_PERSON_SUICDIE OUTTER;
         }
 
         float CalcProb(int press)
         {
-            if(press != 0)
-            {
-                Debug.Log(press);
-            }
             switch(press)
             {
                 case 1:
