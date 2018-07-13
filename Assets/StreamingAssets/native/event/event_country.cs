@@ -91,8 +91,6 @@ namespace native
             {
                 GMData.Economy += OUTTER.inc;
             }
-
-            EVENT_ECO_INC OUTTER;
         }
 
         int inc = 1;
@@ -121,8 +119,6 @@ namespace native
             {
                 GMData.Economy -= OUTTER.dec;
             }
-
-            EVENT_ECO_DEC OUTTER;
         }
 
         int dec = 1;
@@ -151,8 +147,6 @@ namespace native
             {
                 GMData.Military += OUTTER.inc;
             }
-
-            EVENT_MIL_INC OUTTER;
         }
 
         int inc = 1;
@@ -182,8 +176,6 @@ namespace native
                 GMData.Military -= OUTTER.dec;
 
             }
-
-            EVENT_MIL_DEC OUTTER;
         }
 
         int dec = 1;

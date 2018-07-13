@@ -242,30 +242,26 @@ namespace native
             {
                 return false;
             }
+            
 
-            Debug.Log("emptyOffice");
-
-            var factionSG1 = GMData.Offices.SG[1].person.faction;
-            if(factionSG1 == null)
+            var factionSG0 = GMData.Offices.SG[0].person.faction;
+            if(factionSG0 == null)
             {
                 return false;
             }
-
-            Debug.Log("factionSG1");
 
             listPerson = new List<Person>();
             if (emptyOffice != null)
             {
                  
                 var q = (from x in GMData.Offices.CS
-                        select new { person = x.person, score = (x.person.faction == factionSG1) ? x.person.score+2 : x.person.score }).OrderByDescending(y=>y.score).Take(3);
+                        select new { person = x.person, score = (x.person.faction == factionSG0) ? x.person.score+2 : x.person.score-1 }).OrderByDescending(y=>y.score).Take(3);
 
                 foreach (var v in q)
                 {
                     listPerson.Add(v.person);
                 }
             }
-            Debug.Log("listPerson");
 
             if (listPerson.Count != 0)
                 return true;
@@ -289,8 +285,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
             }
-
-            EVENT_JQ_EMPTY OUTTER;
         }
         class OPTION2 : Option
         {
@@ -309,8 +303,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
             }
-
-            EVENT_JQ_EMPTY OUTTER;
         }
 
         class OPTION3 : Option
@@ -330,8 +322,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
             }
-
-            EVENT_JQ_EMPTY OUTTER;
         }
 
         private Office emptyOffice;

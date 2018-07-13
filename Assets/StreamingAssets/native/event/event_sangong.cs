@@ -51,8 +51,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
             }
-
-            EVENT_SG_EMPTY OUTTER;
         }
         class OPTION2 : Option
         {
@@ -71,8 +69,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
             }
-
-            EVENT_SG_EMPTY OUTTER;
         }
 
         class OPTION3 : Option
@@ -92,8 +88,6 @@ namespace native
             {
                 GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
             }
-
-            EVENT_SG_EMPTY OUTTER;
         }
 
         private Office emptyOffice;
