@@ -10,14 +10,14 @@ namespace native
     {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_DEAL_YHSX_DESC", GMData.DecisionPlans["DECISION_YHSX"].ResponsibleOffice.person);
+            return UI.Format("EVENT_JQ1_DEAL_YHSX_DESC", AssocDecision.ResponsiblePerson);
         }
 
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionPlans["DECISION_YHSX"].process();
+                AssocDecision.process();
             }
         }
 
@@ -35,14 +35,14 @@ namespace native
 	{
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_START_YHSX", GMData.DecisionProcs["DECISION_YHSX"].ResponsiblePerson);
+            return UI.Format("EVENT_JQ1_START_YHSX", AssocDecision.ResponsiblePerson);
         }
 
         class OPTION1 : Option
 		{
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionProcs["DECISION_YHSX"].Flags.Add("STATIC");
+                AssocDecision.Flags.Add("STATIC");
 
                 //if(GMData.Emp.Flags.Contains("REFUSE_SUGGEST_YHSX"))
                 //{
@@ -78,7 +78,7 @@ namespace native
 
             Person GetSuggestPerson()
             {
-                Faction factionJQ1 = GMData.DecisionProcs["DECISION_YHSX"].ResponsiblePerson.faction;
+                Faction factionJQ1 = AssocDecision.ResponsiblePerson.faction;
 
                 Person p = (from x in GMData.Offices.SG
                             where x.person != null && x.person.faction != factionJQ1
@@ -102,14 +102,14 @@ namespace native
     {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_SUGGEST_JS_FIRST", GMData.DecisionPlans["DECISION_JS"].ResponsibleOffice.person);
+            return UI.Format("EVENT_JQ1_SUGGEST_JS_FIRST", AssocDecision.ResponsiblePerson);
         }
 
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionPlans["DECISION_JS"].process();
+                AssocDecision.process();
             }
         }
         class OPTION2 : Option
@@ -122,14 +122,14 @@ namespace native
     {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_SUGGEST_JS_LAST", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
+            return UI.Format("EVENT_JQ1_SUGGEST_JS_LAST", AssocDecision.ResponsiblePerson);
         }
 
         class OPTION1 : Option
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionPlans["DECISION_JS"].process();
+                AssocDecision.process();
             }
         }
         class OPTION2 : Option
@@ -145,7 +145,7 @@ namespace native
     {
         string Desc()
         {
-            return UI.Format("EVENT_JQ1_DEAL_JS_DESC", GMData.DecisionProcs["DECISION_JS"].ResponsiblePerson);
+            return UI.Format("EVENT_JQ1_DEAL_JS_DESC", AssocDecision.ResponsiblePerson);
         }
 
         class OPTION1 : Option
@@ -159,7 +159,7 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MAX");
+                AssocDecision.Flags.Add("PARAM_JQ1_JS_MAX");
                 GMData.Economy -= 15;
             }
         }
@@ -175,7 +175,7 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MID");
+                AssocDecision.Flags.Add("PARAM_JQ1_JS_MID");
                 GMData.Economy -= 10;
             }
         }
@@ -191,7 +191,7 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.DecisionProcs["DECISION_JS"].Flags.Add("PARAM_JQ1_JS_MIN");
+                AssocDecision.Flags.Add("PARAM_JQ1_JS_MIN");
                 GMData.Economy -= 5;
             }
         }

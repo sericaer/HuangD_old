@@ -97,4 +97,64 @@ namespace HuangDAPI
         public IList<string> Flags;
 
     }
+
+    public class Decision
+    {
+        public Decision(string name)
+        {
+            this._name = name;
+        }
+
+        public Person ResponsiblePerson
+        {
+            get
+            {
+                if(MyGame.DecisionManager.Procs.ContainsKey(_name))
+                {
+                    return MyGame.DecisionManager.Procs[_name].ResponsiblePerson;
+                }
+
+                return MyGame.DecisionManager.Plans[_name].ResponsibleOffice.person;
+
+            }
+        }
+
+        public void process()
+        {
+            if(MyGame.DecisionManager.Procs.ContainsKey(_name))
+            {
+                throw new Exception("decision already process! name:" + _name);
+            }
+
+            MyGame.DecisionManager.Plans[_name].process();
+        }
+
+        public IList<string> Flags
+        {
+            get
+            {
+                if (MyGame.DecisionManager.Procs.ContainsKey(_name))
+                {
+                    return MyGame.DecisionManager.Procs[_name].Flags;
+                }
+
+                throw new Exception("decision not process! name:" + _name);
+            }
+
+        }
+
+        string _name;
+    }
+
+    public interface DecisionProc
+    {
+        Person ResponsiblePerson { get; }
+        List<string> Flags { get; }
+    }
+
+    public interface DecisionPlan
+    {
+        void process();
+        Office ResponsibleOffice { get; }
+    }
 }

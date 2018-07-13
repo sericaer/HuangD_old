@@ -43,21 +43,9 @@ namespace native
             {
                 if (Probability.IsProbOccur(0.02))
                 {
-                    return "EVENT_STAB_INC";
+                    return "EVENT_STAB_DEC";
                 }
             }
-            //else if (Flags.Count != 0)
-            //{
-            //    if (Probability.IsProbOccur(0.02))
-            //    {
-            //        Flags.Clear();
-
-            //        var procEvent = "";
-            //        Probability.ProbGroup(0.5, () => { procEvent = "EVENT_JQ1_JS_FAILED"; param = Flags.First(); },
-            //                              0.5, () => { procEvent = "EVENT_JQ1_JS_SUCCESS"; param = Flags.First(); });
-            //        return procEvent;
-            //    }
-            //}
 
             return "";
         }

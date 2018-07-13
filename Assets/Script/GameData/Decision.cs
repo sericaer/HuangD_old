@@ -29,14 +29,14 @@ public partial class MyGame
                     string eventName = decisionDef._funcEnableEvent();
                     Debug.Log("Add " + eventName);
 
-                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, "");
+                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, name, "");
                 }
                 if(isEnable == false)
                 {
                     string eventName = decisionDef._funcDisableEvent();
-                    Debug.Log("Remove" + eventName);
+                    Debug.Log("Add" + eventName);
 
-                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, "");
+                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, name, "");
                 }
             }
 
@@ -46,7 +46,7 @@ public partial class MyGame
         public void process()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), "");
+            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, "");
 
             MyGame.Inst.DecisionProcs.Add(name, new DecisionProc(name));
             MyGame.Inst.DecisionPlans.Remove(name);
@@ -156,19 +156,19 @@ public partial class MyGame
         {
             currDay++;
 
-            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
 
             if (currDay >= maxDay && maxDay != 0)
             {
                 MyGame.Inst.date.incDayEvent -= DayIncrease;
                 MyGame.Inst.DecisionProcs.Remove(this.name);
-                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
             if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
             {
                 MyGame.Inst.DecisionProcs.Remove(this.name);
-                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), "");
+                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
         }

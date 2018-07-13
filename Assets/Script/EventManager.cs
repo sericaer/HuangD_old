@@ -24,6 +24,7 @@ public class GMEvent : ItfEvent
     {
         this._isChecked = false;
         this.ie = ie;
+        ie.param = param;
         this.param = param;
 
         optionDic = new Dictionary<string, EVENT_HD.Option>();
@@ -119,7 +120,7 @@ public class GMEvent : ItfEvent
         return ie._funcHistorRecord();
     }
 
-    private EVENT_HD ie;
+    internal EVENT_HD ie;
     private bool _isChecked;
     private Dictionary<string, EVENT_HD.Option> optionDic;
 
@@ -232,7 +233,7 @@ public class EventManager
 		nextEvent = new GMEvent (StreamManager.eventDict [key], param);
 	}
 
-    public void InsertDecisionEvent(string key, object param)
+    public void InsertDecisionEvent(string key, string decision, object param)
     {
         if (key.Length == 0)
         {
@@ -240,6 +241,7 @@ public class EventManager
         }
 
         decisionEvent = new GMEvent(StreamManager.eventDict[key], param);
+        ((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
     }
 
     public void Insert(List<List<object>> table)

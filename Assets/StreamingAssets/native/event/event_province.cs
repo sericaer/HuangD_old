@@ -139,7 +139,7 @@ namespace native
                 return null;
             }
 
-            if (Probability.IsProbOccur(0.003))
+            if (Probability.IsProbOccur(0.0))
             {
                 return GMData.NewDisaster();
             }
@@ -271,7 +271,7 @@ namespace native
     {
         bool Precondition()
         {
-            if(GMData.Date.month == 1 && GMData.Date.day == 2)
+            if(GMData.Date.month == 10 && GMData.Date.day == 2)
             {
                 incomeMap = new Dictionary<Province, int>();
                 foreach (var prov in GMData.Provinces.All)

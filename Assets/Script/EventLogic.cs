@@ -30,7 +30,7 @@ public class EventLogic : MonoBehaviour
 		
 	}
 	
-    private IEnumerator OnTimer()
+    public IEnumerator OnTimer()
 	{
 		float costtime = 0.0f;
         foreach(ItfEvent eventobj in eventManager.GetEvent ())
@@ -49,6 +49,8 @@ public class EventLogic : MonoBehaviour
             List<List<object>> showTable = dialog.GetComponent<DialogLogic>().table;
             			
 			Destroy (dialog);
+
+            ((GMEvent)eventobj).ie.LoadMemento();
 
             eventManager.Insert (showTable);
             eventManager.Insert (key, param);
