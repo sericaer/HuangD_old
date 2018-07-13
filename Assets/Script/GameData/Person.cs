@@ -138,11 +138,16 @@ public partial class MyGame
         {
             get
             {
-                return _press;
-            }
-            set
-            {
-                _press = value;
+                int value = 0;
+                foreach(var elem in Flags.Values)
+                {
+                    string[] array = elem.Split(':');
+                    if(array[0] == "press")
+                    {
+                        value += Convert.ToInt32(array[1]);
+                    }
+                }
+                return value;
             }
         }
 
@@ -182,7 +187,7 @@ public partial class MyGame
             }
         }
 
-        public override List<HuangDAPI.PersonFlag> Flags
+        public override Dictionary<string, string> Flags
         {
             get
             {
@@ -244,7 +249,7 @@ public partial class MyGame
         [SerializeField]
         int _age;
 
-        List<HuangDAPI.PersonFlag> _Flags = new List<HuangDAPI.PersonFlag>();
+        Dictionary<string, string> _Flags = new Dictionary<string, string>();
 
 
     }

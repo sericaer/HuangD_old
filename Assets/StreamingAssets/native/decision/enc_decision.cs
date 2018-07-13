@@ -7,7 +7,7 @@ namespace native
     {
         bool Visable()
         {
-            if (GMData.CountryFlags.Contains("STATUS_YHSX"))
+            if (GMData.CountryFlags.Contains("YHSX"))
             {
                 return true;
             }
@@ -17,7 +17,7 @@ namespace native
 
         bool ProcFinish()
         {
-            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
+            if (!GMData.CountryFlags.Contains("YHSX"))
             {
                 return true;
             }

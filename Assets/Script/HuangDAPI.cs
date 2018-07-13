@@ -49,49 +49,23 @@ namespace HuangDAPI
         {
             listImpWork.RemoveAll(x => x.name == name);
         }
-    }
 
-    public abstract class Person
-    {
-        public abstract string name { get; }
-        public abstract int press { get; set; }
-        public abstract int score { get; set; }
-        public abstract int heath { get; set; }
-        public abstract int age   { get; set; }
-        public abstract List<PersonFlag> Flags { get; set; }
-        public Faction faction
+        public static void RemoveAll(this Dictionary<string, string> dict, Predicate<string> match)
         {
-            get
+            List<string> needRemoveKeys = new List<string>();
+            foreach(var key in dict.Keys)
             {
-                return (from x in GMData.RelationManager.FactionMap
-                        where x.person.name == name
-                        select x.faction).SingleOrDefault();
+                if(match(key))
+                {
+                    needRemoveKeys.Add(key);
+                }
+            }
+
+            foreach(var key in needRemoveKeys)
+            {
+                dict.Remove(key);
             }
         }
-        public Office office
-        {
-            get
-            {
-                return (from x in GMData.RelationManager.OfficeMap
-                        where x.person.name == name
-                        select x.office).SingleOrDefault();
-            }
-        }
-
-        public abstract void Die();
-        
-        //MyGame.PersonProcess Process(string name, params object[] param);
-    }
-
-    public interface PersonFlag
-    {
-        string name { get; }
-    }
-
-    public interface PersonProcess
-    {
-        Person opp { get; }
-        List<object> tag { get; }
     }
 
     public abstract class Office

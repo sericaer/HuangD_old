@@ -1,17 +1,15 @@
 ﻿using HuangDAPI;
 using System.Linq;
 
+using UnityEngine;
+
 namespace native
 {
     class EVENT_PERSON_SUICDIE : EVENT_HD
     {
         bool Precondition()
         {
-            Person[] persons = (from x in GMData.RelationManager.OfficeMap
-                                where x.person != null
-                                select x.person).ToArray();
-            
-            foreach(Person p in persons)
+            foreach(Person p in Persons.All)
             {
                 float prob = CalcProb(p.press);
                 if (Probability.IsProbOccur(prob))
@@ -50,6 +48,10 @@ namespace native
 
         float CalcProb(int press)
         {
+            if(press != 0)
+            {
+                Debug.Log(press);
+            }
             switch(press)
             {
                 case 1:

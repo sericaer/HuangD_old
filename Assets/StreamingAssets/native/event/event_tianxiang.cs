@@ -8,7 +8,7 @@ namespace native
     {
         bool Precondition()
         {
-			if(!GMData.CountryFlags.Contains("STATUS_YHSX"))
+			if(!GMData.CountryFlags.Contains("YHSX"))
             {
                 if(Probability.IsProbOccur(1.0))
                 {
@@ -22,7 +22,8 @@ namespace native
 		{
 			void Selected(ref string nxtEvent, ref object param)
 			{
-                GMData.CountryFlags.Add("STATUS_YHSX");
+                GMData.CountryFlags.Add("YHSX");
+                GMData.Emp.Flags.Add("YHSX", "press:+5");
 
 				param = "1";
                 nxtEvent = "EVENT_STAB_DEC";
@@ -34,7 +35,7 @@ namespace native
     {
         bool Precondition()
         {
-            if (!GMData.CountryFlags.Contains("STATUS_YHSX"))
+            if (!GMData.CountryFlags.Contains("YHSX"))
                 return false; 
             if (Probability.IsProbOccur(0.05))
                 return true;
@@ -46,14 +47,12 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                GMData.CountryFlags.Remove("STATUS_YHSX");
-                GMData.ImpWorks.Remove("DEAL_YHSX");
+                GMData.CountryFlags.Remove("YHSX");
+                GMData.Emp.Flags.RemoveAll(x=>x.Contains("YHSX"));
 
-                var query = from x in GMData.RelationManager.OfficeMap
-                            select x.person;
-                foreach(var person in query)
+                foreach(var p in Persons.All)
                 {
-                    person.Flags.Remove("DST_YHSX");
+                    p.Flags.RemoveAll(x => x.Contains("YHSX"));
                 }
             }
         }

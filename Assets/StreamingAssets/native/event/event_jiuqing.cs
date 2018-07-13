@@ -25,8 +25,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                param = "REFUSE_SUGGEST_YHSX";
-                nxtEvent = "EVENT_EMP_PRESS_INC";//GMData.emp.Flags.Add("REFUSE_SUGGEST_YHSX", "press:+5");
+                
             }
         }
     }
@@ -43,12 +42,7 @@ namespace native
             void Selected(ref string nxtEvent, ref object param)
             {
                 AssocDecision.Flags.Add("STATIC");
-
-                //if(GMData.Emp.Flags.Contains("REFUSE_SUGGEST_YHSX"))
-                //{
-                //    param = "REFUSE_SUGGEST_YHSX";
-                //    nxtEvent = "EVENT_EMP_PRESS_DEC";
-                //}
+                GMData.Emp.Flags.Add("TRANSFER_YHSX", "press:-2");
             }
         }
 
@@ -67,13 +61,8 @@ namespace native
 
             void Selected(ref string nxtEvent, ref object param)
 			{
-                //suggestPerson.Flags.Add("TARGET_YHSX", "press:+10");
-
-                //if (GMData.emp.Flags.Contains("REFUSE_SUGGEST_YHSX"))
-                //{
-                //    param = "REFUSE_SUGGEST_YHSX";
-                //    nxtEvent = "EVENT_EMP_PRESS_DEC";
-                //}
+                suggestPerson.Flags.Add("TARGET_YHSX", "press:+8");
+                GMData.Emp.Flags.Add("TRANSFER_YHSX", "press:-2");
             }
 
             Person GetSuggestPerson()
