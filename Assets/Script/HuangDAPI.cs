@@ -87,12 +87,6 @@ namespace HuangDAPI
         }
     }
 
-	public interface Faction
-	{
-		string name { get; }
-
-	}
-
     public abstract class Province
     {
         public abstract string name { get; }
@@ -291,28 +285,6 @@ namespace HuangDAPI
                                            select x.debuff).ToList();
                     return list.ToArray();
                 }
-            }
-        }
-
-        public class Factions
-        {
-            public static Faction[] All
-            {
-                get
-                {
-                    List<Faction> list = (from x in RelationManager.FactionMap
-                                           
-                                           select x.faction).ToList();
-                    return list.ToArray();
-                }
-            }
-
-            public static Faction Random()
-            {
-                return (from x in RelationManager.FactionMap
-                        orderby (Guid.NewGuid())
-                        select x.faction).First();
-              
             }
         }
 

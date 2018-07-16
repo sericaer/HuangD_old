@@ -18,8 +18,18 @@ public class TianXScene: MonoBehaviour
     // Use this for initialization
     void Start () 
     {
+        string test = "";
+        foreach (var faction in HuangDAPI.Factions.All)
+        {
+            test += faction.name + ":" + HuangDAPI.Factions.Power[faction.name] + "\n\t";
+            
+            foreach (var elem in ((MyGame.Faction)faction).powerdetail)
+            {
+                test += "    " + elem.Item1 + ":" + elem.Item2 + "\n";
+            }
+        }
 
-
+        Debug.Log(test);
     }
 
     // Update is called once per frame
