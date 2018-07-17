@@ -145,7 +145,7 @@ public class MainScene : MonoBehaviour
     {
         Stability.text = MyGame.Inst.Stability.ToString();
 
-        Economy.text   = MyGame.Inst.Economy.ToString();
+        Economy.text   = MyGame.Economy.current.ToString();
         Economy.GetComponent<TooltipTrigger>().mDisplayText = MyGame.Economy.Desc();
 
         Military.text  = MyGame.Inst.Military.ToString();

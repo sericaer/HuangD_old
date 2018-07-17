@@ -17,8 +17,8 @@ public partial class MyGame
         {
             get
             {
-                return (from x in MyGame.Inst.relationManager.listProvince2Status
-                        select x.province as Provinces).ToArray();
+                return (from x in MyGame.Inst.relationManager.GetProvinceMap()
+                        select (Province)x.province).ToArray();
             }
         }
     }

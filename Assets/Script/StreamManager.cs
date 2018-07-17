@@ -184,10 +184,10 @@ public class StreamManager
     {
         Type economyDefineType = types.Where(x => x.Name == "ECONOMY_DEFINE").Single();
         FieldInfo[] fields = economyDefineType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.NonPublic);
-        ECONOMY.BASE_TAX = fields.Where(x => x.Name == "BASE_TAX").Single().GetValue(null) as int ;
-        ECONOMY.PROV_LOW = fields.Where(x => x.Name == "PROV_LOW").Single().GetValue(null);
-        ECONOMY.PROV_HIGH = fields.Where(x => x.Name == "PROV_HIGH").Single().GetValue(null);
-        ECONOMY.PROV_MID = fields.Where(x => x.Name == "PROV_MID").Single().GetValue(null);
+        //ECONOMY.BASE_TAX = fields.Where(x => x.Name == "BASE_TAX").Single().GetValue(null) as int ;
+        //ECONOMY.PROV_LOW = fields.Where(x => x.Name == "PROV_LOW").Single().GetValue(null);
+        //ECONOMY.PROV_HIGH = fields.Where(x => x.Name == "PROV_HIGH").Single().GetValue(null);
+        //ECONOMY.PROV_MID = fields.Where(x => x.Name == "PROV_MID").Single().GetValue(null);
     }
 
     private void AnaylizeDynastyName(Type[] types)

@@ -559,11 +559,11 @@ namespace HuangDAPI
         {
             get
             {
-                return MyGame.Inst.Economy;
+                return MyGame.Economy.current;
             }
             set
             {
-                MyGame.Inst.Economy = value;
+                MyGame.Economy.current = value;
             }
         }
 

@@ -39,16 +39,16 @@ public partial class MyGame
             string desc = HuangDAPI.UI.Format("INCOME_PER_MONTH") + ":" + income.Values.Sum() + "\n";
             foreach (var elem in income)
             {
-                desc += "\t" + UI.Format(elem.Key) + ":" + elem.Value + "\n";
+                desc += "\t" + HuangDAPI.UI.Format(elem.Key) + ":" + elem.Value + "\n";
             }
 
-            desc += UI.Format("DECOME_PER_MONTH") + ":" + decome.Values.Sum() + "\n";
+            desc += HuangDAPI.UI.Format("DECOME_PER_MONTH") + ":" + decome.Values.Sum() + "\n";
             foreach (var elem in decome)
             {
-                desc += "\t" + UI.Format(elem.Key) + ":" + elem.Value + "\n";
+                desc += "\t" + HuangDAPI.UI.Format(elem.Key) + ":" + elem.Value + "\n";
             }
 
-            desc += UI.Format("NET_INCOME_PER_MONTH") + ":" + (income.Values.Sum() - decome.Values.Sum());
+            desc += HuangDAPI.UI.Format("NET_INCOME_PER_MONTH") + ":" + (income.Values.Sum() - decome.Values.Sum());
             return desc;
         }
 
