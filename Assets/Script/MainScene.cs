@@ -144,7 +144,10 @@ public class MainScene : MonoBehaviour
     private void onRefresh()
     {
         Stability.text = MyGame.Inst.Stability.ToString();
+
         Economy.text   = MyGame.Inst.Economy.ToString();
+        Economy.GetComponent<TooltipTrigger>().mDisplayText = MyGame.Economy.Desc();
+
         Military.text  = MyGame.Inst.Military.ToString();
         txtTime.text   = MyGame.Inst.time;
 

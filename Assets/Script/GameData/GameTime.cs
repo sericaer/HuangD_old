@@ -28,10 +28,22 @@ public partial class MyGame
 				{
 					_year++;
 					_month = 1;
-				}
+                    if (incMonthEvent != null)
+                    {
+                        incMonthEvent();
+                    }
+                    if (incYearEvent != null)
+                    {
+                        incYearEvent();
+                    }
+                }
 				else
 				{
 					_month++;
+                    if (incMonthEvent != null)
+                    {
+                        incMonthEvent();
+                    }
 				}
 				_day = 1;
 			}
@@ -145,6 +157,8 @@ public partial class MyGame
         }
 
         public event Action incDayEvent;
+        public event Action incMonthEvent;
+        public event Action incYearEvent;
 
         [SerializeField]
 		private int _year;

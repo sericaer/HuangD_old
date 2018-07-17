@@ -140,6 +140,7 @@ public class StreamManager
         LoadName(types);
         LoadEvent(types);
         LoadDecision(types);
+        LoadDefines(types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
@@ -177,6 +178,16 @@ public class StreamManager
         }
 
         Debug.Log("Load decision count:" + decisionDict.Count);
+    }
+
+    private void LoadDefines(Type[] types)
+    {
+        Type economyDefineType = types.Where(x => x.Name == "ECONOMY_DEFINE").Single();
+        FieldInfo[] fields = economyDefineType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.NonPublic);
+        ECONOMY.BASE_TAX = fields.Where(x => x.Name == "BASE_TAX").Single().GetValue(null) as int ;
+        ECONOMY.PROV_LOW = fields.Where(x => x.Name == "PROV_LOW").Single().GetValue(null);
+        ECONOMY.PROV_HIGH = fields.Where(x => x.Name == "PROV_HIGH").Single().GetValue(null);
+        ECONOMY.PROV_MID = fields.Where(x => x.Name == "PROV_MID").Single().GetValue(null);
     }
 
     private void AnaylizeDynastyName(Type[] types)
@@ -262,6 +273,12 @@ public class StreamManager
 
     public static UIDesc uiDesc = new UIDesc("CHI");
 
+    public static class ECONOMY
+    {
+        public static int BASE_TAX;
+        public static double PROV_LOW;
+        public static double PROV_HIGH;
+    }
 #pragma warning disable 414
     private static StreamManager wInst = new StreamManager();
 #pragma warning restore

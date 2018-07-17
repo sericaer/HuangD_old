@@ -11,6 +11,18 @@ using System.Linq;
 
 public partial class MyGame
 {
+    public static class Provinces
+    {
+        public static Province[] All
+        {
+            get
+            {
+                return (from x in MyGame.Inst.relationManager.listProvince2Status
+                        select x.province as Provinces).ToArray();
+            }
+        }
+    }
+
     [Serializable]
     public class Province : HuangDAPI.Province
     {
@@ -167,6 +179,26 @@ public partial class MyGame
             //}
 
             return result.ToArray();
+        }
+
+        public Dictionary<string, int> taxDetail()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            
+            if(_economy == ENUM_ECONOMY.LOW)
+            {
+                result.Add("TAX_BASE", 5);
+            }
+            if (_economy == ENUM_ECONOMY.MID)
+            {
+                result.Add("TAX_BASE", 10);
+            }
+            if (_economy == ENUM_ECONOMY.HIGH)
+            {
+                result.Add("TAX_BASE", 15);
+            }
+
+            return result;
         }
             
 

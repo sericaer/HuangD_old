@@ -33,7 +33,7 @@ public partial class MyGame
 		empHeath = Probability.GetRandomNum (5, 8);
 
         Stability = Probability.GetRandomNum(60, 90);
-        Economy   = Probability.GetRandomNum(60, 90);
+        Economy.current = Probability.GetRandomNum(60, 90);
         Military  = Probability.GetRandomNum(60, 90);
 
         yearName = strYearName;
@@ -58,9 +58,10 @@ public partial class MyGame
 
         DictFlag = new StringSerialDictionary();
 
-		//Person.ListListener.Add (relOffice2Person.Listen);
-		//Person.ListListener.Add (relFaction2Person.Listen);
-		Person.ListListener.Add (personManager.Listen);
+        date.incMonthEvent += Economy.UpDate;
+        //Person.ListListener.Add (relOffice2Person.Listen);
+        //Person.ListListener.Add (relFaction2Person.Listen);
+        Person.ListListener.Add (personManager.Listen);
 		Person.ListListener.Add (femalePersonManager.Listen);
         Person.ListListener.Add (statusManager.Listen);
         Person.ListListener.Add (relationManager.Listen);
@@ -455,7 +456,6 @@ public partial class MyGame
 
 	public string dynastyName;
     public int    Stability;
-    public int    Economy;
     public int    Military;
 
     public List<string> CountryFlags = new List<string>();
