@@ -13,12 +13,12 @@ public partial class MyGame
 {
     public static class Provinces
     {
-        public static Province[] All
+        public static IEnumerable<Provinces> Enumer
         {
             get
             {
                 return (from x in MyGame.Inst.relationManager.GetProvinceMap()
-                        select (Province)x.province).ToArray();
+                        select (Province)x.province);
             }
         }
     }
