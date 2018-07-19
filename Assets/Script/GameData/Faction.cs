@@ -5,6 +5,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using HuangDAPI;
 
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
+
 public partial class MyGame
 {
     [Serializable]

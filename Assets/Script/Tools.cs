@@ -3,7 +3,11 @@ using System.IO;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-//using Mono.CSharp;
+
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
 
 namespace Tools
 {

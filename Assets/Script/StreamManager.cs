@@ -7,7 +7,12 @@ using UnityEngine;
 using System.Linq;
 
 using HuangDAPI;
-//using Mono.CSharp;
+
+
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
 
 public class StreamManager
 {
@@ -108,7 +113,7 @@ public class StreamManager
 	private StreamManager ()
 	{
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
-        csharpLoader.logWriter = new CSharpCompiler.UnityLogTextWriter();
+        csharpLoader.actLog = CSharpCompiler.UnityLogTextWriter.Log;
 
         string[] subDir = Directory.GetDirectories(Application.streamingAssetsPath);
         foreach (string dirname in subDir)

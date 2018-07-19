@@ -69,13 +69,13 @@ namespace native
             {
                 Faction factionJQ1 = AssocDecision.ResponsiblePerson.faction;
 
-                Person p = (from x in GMData.Offices.SG
+                Person p = (from x in Offices.SG
                             where x.person != null && x.person.faction != factionJQ1
                             select x.person).FirstOrDefault();
 
                 if (p == null)
                 {
-                    p = (from x in GMData.Offices.SG
+                    p = (from x in Offices.SG
                          where x.person != null
                          select x.person).LastOrDefault();
                 }
@@ -235,7 +235,7 @@ namespace native
     {
         bool Precondition()
         {
-            emptyOffice = (from x in GMData.Offices.JQ
+            emptyOffice = (from x in Offices.JQ
                            where x.person == null
                            select x).FirstOrDefault();
             if(emptyOffice == null)
@@ -244,7 +244,7 @@ namespace native
             }
             
 
-            var factionSG0 = GMData.Offices.SG[0].person.faction;
+            var factionSG0 = Offices.SG[0].person.faction;
             if(factionSG0 == null)
             {
                 return false;
@@ -254,7 +254,7 @@ namespace native
             if (emptyOffice != null)
             {
                  
-                var q = (from x in GMData.Offices.CS
+                var q = (from x in Offices.CS
                         select new { person = x.person, score = (x.person.faction == factionSG0) ? x.person.score+2 : x.person.score-1 }).OrderByDescending(y=>y.score).Take(3);
 
                 foreach (var v in q)
@@ -341,7 +341,7 @@ namespace native
                 return false;
             }
 
-            personJQ9 = GMData.Offices.JQ[8].person;
+            personJQ9 = Offices.JQ[8].person;
             if(personJQ9 == null)
             {
                 return false;

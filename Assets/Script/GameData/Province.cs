@@ -13,7 +13,7 @@ public partial class MyGame
 {
     public static class Provinces
     {
-        public static IEnumerable<Provinces> Enumer
+        public static IEnumerable<Province> Enumer
         {
             get
             {

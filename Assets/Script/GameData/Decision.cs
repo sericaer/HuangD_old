@@ -2,7 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-//using Mono.CSharp;
+
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
 
 using UnityEngine;
 //using HuangDAPI;
@@ -58,7 +62,7 @@ public partial class MyGame
             get
             {
                 HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-                return HuangDAPI.GMData.Offices.All.First(x => x.name == decisionDef._Responsible);
+                return HuangDAPI.Offices.All.First(x => x.name == decisionDef._Responsible);
             }
         }
 
@@ -75,7 +79,7 @@ public partial class MyGame
 
             decisionDef = StreamManager.decisionDict[key];
 
-            resPerson = HuangDAPI.GMData.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
+            resPerson = HuangDAPI.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
 
             decisionDef.Flags = this.Flags;
 
