@@ -13,5 +13,10 @@ namespace CSharpCompiler
         {
             Debug.Log(value);
         }
+
+        public static void Log(string value)
+        {
+            Debug.Log(value);
+        }
     }
 }

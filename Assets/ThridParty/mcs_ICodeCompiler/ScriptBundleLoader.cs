@@ -13,7 +13,8 @@ namespace CSharpCompiler
         public Func<Type, object> createInstance = (Type type) => { return Activator.CreateInstance(type); };
         public Action<object> destroyInstance = delegate { };
 
-        public TextWriter logWriter = Console.Out;
+        //public TextWriter logWriter = Console.Out;
+        public Action<string> actLog = null;
 
         ISynchronizeInvoke synchronizedInvoke;
         List<ScriptBundle> allFilesBundle = new List<ScriptBundle>();
@@ -59,7 +60,7 @@ namespace CSharpCompiler
                     .Select(a => a.Location)
                     .ToArray();
 
-                manager.logWriter.WriteLine("loading " + string.Join(", ", filePaths.ToArray()));
+                manager.actLog("loading " + string.Join(", ", filePaths.ToArray()));
                 CompileFiles();
                 //CreateFileWatchers();
                 //CreateNewInstances();
@@ -79,7 +80,7 @@ namespace CSharpCompiler
 
                 foreach (var err in result.Errors)
                 {
-                    manager.logWriter.WriteLine(err);
+                    manager.actLog(err.ToString());
                 }
 
                 this.assembly = result.CompiledAssembly;
