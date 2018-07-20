@@ -63,14 +63,28 @@ partial class MyGame
 
         static void InitHougong2Person()
         {
-            Person[] persons = Person.Females.Take(Office.groupCenter1.Length).OrderBy(x => Guid.NewGuid()).ToArray();
-            for (int i = 0; i < Office.groupCenter1.Length; i++)
+            Person[] persons = Person.Females.Take(Hougong.Level1.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Hougong.Level1.Length; i++)
             {
-                mapOffice2Person.Add(new { office = Office.groupCenter1[i], person = persons[i] });
+                mapHougong2Person.Add(new { hougong = Hougong.Level1[i], person = persons[i] });
+            }
+
+            persons = Person.Females.Skip(mapHougong2Person.Count).Take(Hougong.Level2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Hougong.Level2.Length; i++)
+            {
+                mapHougong2Person.Add(new { hougong = Hougong.Level2[i], person = persons[i] });
+            }
+
+            persons = Person.Females.Skip(mapHougong2Person.Count).Take(Hougong.Level3.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Hougong.Level3.Length; i++)
+            {
+                mapHougong2Person.Add(new { hougong = Hougong.Level3[i], person = persons[i] });
             }
         }
+
         public static List<dynamic> mapOffice2Person = new List<dynamic>();
         public static List<dynamic> mapPerson2Faction = new List<dynamic>();
+        public static List<dynamic> mapHougong2Person = new List<dynamic>();
 
         public void Init()
         {
@@ -87,7 +101,7 @@ partial class MyGame
             {
 
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 Office newOffice = new Office(eOffice.ToString(), attribute.Power);
 
@@ -97,7 +111,7 @@ partial class MyGame
             foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_LOCAL)))
             {
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 foreach(var elem in listProvince2Status)
                 {
@@ -131,7 +145,7 @@ partial class MyGame
             {
 
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 Office newOffice = new Office(eOffice.ToString(), attribute.Power);
 

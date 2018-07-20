@@ -15,8 +15,13 @@ public enum HougongGroup
     Level3
 }
 
-public class OfficeAttrAttribute : Attribute
+public class OfficeAttr : Attribute
 {
     public int Power = 0;
     public OfficeGroup group;
+}
+
+public class HougongAttr : Attribute
+{
+    public HougongGroup group;
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,23 +11,27 @@ public class HouGScene : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		AddOfficeToDict ("Canvas/Panel");
-	}
-	
-	// Update is called once per frame
-	void Update () 
+        AddOfficeToDict("Canvas/Panel/Level1", "Level1", MyGame.Hougong.Level1);
+        AddOfficeToDict("Canvas/Panel/Level2", "Level2", MyGame.Hougong.Level2);
+        AddOfficeToDict("Canvas/Panel/Level3", "Level3", MyGame.Hougong.Level3);
+    }
+
+    private void AddOfficeToDict(string path, string prefabname, MyGame.Hougong[] hougongs)
+    {
+        Transform currTransform = GameObject.Find(path).transform;
+        foreach (var hougong in hougongs)
+        {
+            var officeUI = Instantiate(Resources.Load("Prefabs/Office/" + prefabname), currTransform) as GameObject;
+            lstChaoc.Add(new HouFeiUI(officeUI.transform, hougong));
+        }
+    }
+
+    // Update is called once per frame
+    void Update () 
 	{
 		RefreshOffice ();
 	}
 
-	private void AddOfficeToDict(string path)
-	{
-		Transform currTransform = GameObject.Find(path).transform;
-		for(int i=0; i< currTransform.childCount; i++)
-		{
-			lstChaoc.Add (new HouFeiUI (currTransform.GetChild(i)));
-		}
-	}
 
 	void RefreshOffice()
 	{
@@ -42,7 +47,7 @@ public class HouGScene : MonoBehaviour
 
 class HouFeiUI
 {
-	public HouFeiUI(Transform tran)
+	public HouFeiUI(Transform tran, MyGame.Hougong hougong)
 	{
 		UIKey = tran.name;
 
@@ -52,8 +57,8 @@ class HouFeiUI
 		//factionName = tran.Find("faction/value").GetComponent<Text> ();
 
 		Debug.Log ("Key:" + UIKey);
-        office = MyGame.Inst.relationManager.Hougongs.Where (x=>x.name == UIKey).First();
-		officeName.text = office.name;
+        this.hougong = hougong;
+		officeName.text = hougong.name;
 		Debug.Log ("Text:" + officeName.text);
 
 		tran.Find ("reserve1").gameObject.SetActive (false);
@@ -63,11 +68,7 @@ class HouFeiUI
 
 	public void Refresh()
 	{
-        HuangDAPI.Person p  = (from x in MyGame.Inst.relationManager.GetHougongMap()
-                            where x.office == office
-                            select x.person).FirstOrDefault();
-		//Faction f = MyGame.Inst.relFaction2Person. GetFaction(p);
-
+        HuangDAPI.Person p = hougong.person;
         if (p == null)
         {
             personName.text = "--";
@@ -77,7 +78,6 @@ class HouFeiUI
 
 		personName.text = p.name;
 		personScore.text = p.score.ToString();
-		//factionName.text = f.name;
 	}
 
 	string UIKey;
@@ -87,5 +87,5 @@ class HouFeiUI
 	Text personScore;
 	//Text factionName;
 
-    HuangDAPI.Office office;
+    HuangDAPI.Hougong hougong;
 }

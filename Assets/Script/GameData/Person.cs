@@ -77,10 +77,23 @@ public partial class MyGame
                     continue;
                 }
 
-                _Males.Add(new Person(true));
+                _Males.Add(person);
             }
 
             _Males = _Males.OrderByDescending(x=>x.score).ToList();
+
+            while (_Females.Count < MyGame.Hougong.All.Length)
+            {
+                Person person = new Person(false);
+                if (_Males.Any(x => x.name == person.name))
+                {
+                    continue;
+                }
+
+                _Females.Add(person);
+            }
+
+            _Females = _Females.OrderByDescending(x => x.score).ToList();
         }
 
         public static Person[] Males

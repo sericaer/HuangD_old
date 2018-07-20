@@ -24,9 +24,11 @@ public partial class MyGame
 	public void Initialize(string strEmpName, string strYearName, string strDynastyName)
     {
         Office.Initialize();
-        Person.Initialize();
+        Hougong.Initialize();
         Faction.Initialize();
 
+        Person.Initialize();
+        
         RelationManager.Initialize();
 
         gameEnd = false;

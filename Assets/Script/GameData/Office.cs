@@ -34,7 +34,8 @@ public partial class MyGame
 
         public static void Initialize()
         {
-            RuntimeHelpers.RunClassConstructor(StreamManager.OfficesType.TypeHandle);
+            Type type = StreamManager.Types.Where(x => x.Name == "Offices1").Single();
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
         public static Office[] groupCenter1
@@ -58,30 +59,6 @@ public partial class MyGame
             get
             {
                 return _All.Where(x => x._group == OfficeGroup.Local).ToArray();
-            }
-        }
-
-        public static Office[] groupHougong1
-        {
-            get
-            {
-                return _All.Where(x => x._group == OfficeGroup.Hougong1).ToArray();
-            }
-        }
-
-        public static Office[] groupHougong2
-        {
-            get
-            {
-                return _All.Where(x => x._group == OfficeGroup.Hougong2).ToArray();
-            }
-        }
-
-        public static Office[] groupHougong3
-        {
-            get
-            {
-                return _All.Where(x => x._group == OfficeGroup.Hougong3).ToArray();
             }
         }
 
@@ -112,8 +89,8 @@ public partial class MyGame
             get
             {
                 return (from x in MyGame.RelationManager.mapOffice2Person
-                 where x.office == this
-                 select x.person).SingleOrDefault();
+                        where x.office == this
+                        select x.person).SingleOrDefault();
             }
         }
 
@@ -127,52 +104,6 @@ public partial class MyGame
         OfficeGroup _group;
 
         public static List<Office> _All = new List<Office>();
-    }
-
-    [Serializable]
-    public class Hougong : HuangDAPI.Office
-    {
-        public Hougong(string name, HougongGroup group)
-        {
-            _name = name;
-            _group = group;
-
-            _All.Add(this);
-        }
-
-        public static Hougong[] All
-        {
-            get
-            {
-                return _All.ToArray();
-            }
-        }
-
-        public static void Initialize()
-        {
-            RuntimeHelpers.RunClassConstructor(StreamManager.OfficesType.TypeHandle);
-        }
-
-        public static Office[] groupCenter1
-        {
-            get
-            {
-                return _All.Where(x => x._group == OfficeGroup.Center1).ToArray();
-            }
-        }
-
-        [SerializeField]
-        string _name;
-
-        [SerializeField]
-        OfficeGroup _group;
-
-        public static List<Hougong> _All = new List<Hougong>();
-    }
-
-    public class OfficeAttrAttribute : Attribute
-    {
-        public int Power;
     }
 
     public enum ENUM_OFFICE_CENTER
@@ -288,7 +219,7 @@ public partial class MyGame
             {
 
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 Office office = new Office(eOffice.ToString(), attribute.Power);
                 lstOfficeCenter.Add(office);
@@ -301,7 +232,7 @@ public partial class MyGame
             {
 
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 Office office = new Office(eOffice.ToString(), attribute.Power);
                 lstOfficeFemale.Add(office);
@@ -312,7 +243,7 @@ public partial class MyGame
             foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_LOCAL)))
             {
                 FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
                 foreach(var eZhouj in Enum.GetValues(typeof(Province.ENUM_PROV)))
                 {

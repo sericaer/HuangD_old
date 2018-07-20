@@ -54,27 +54,27 @@ namespace native
 
     public enum HOUGONG_DEFINE
     {
-        [OfficeAttr(group = HougongGroup.Level1))]
+        [HougongAttr(group = HougongGroup.Level1)]
         HOU,
 
-        [OfficeAttr(group = HougongGroup.Level2))]
+        [HougongAttr(group = HougongGroup.Level2)]
         GUI1,
-        [OfficeAttr(group = HougongGroup.Level2))]
+        [HougongAttr(group = HougongGroup.Level2)]
         GUI2,
-        [OfficeAttr(group = HougongGroup.Level2))]
+        [HougongAttr(group = HougongGroup.Level2)]
         GUI3,
 
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI1,
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI2,
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI3,
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI4,
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI5,
-        [OfficeAttr(group = HougongGroup.Level3))]
+        [HougongAttr(group = HougongGroup.Level3)]
         FEI6
     }
 }

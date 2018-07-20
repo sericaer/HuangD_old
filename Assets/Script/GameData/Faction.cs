@@ -19,7 +19,8 @@ public partial class MyGame
         
         public static void Initialize()
         {
-            RuntimeHelpers.RunClassConstructor(StreamManager.FactionsType.TypeHandle);
+            Type type = StreamManager.Types.Where(x => x.Name == "Factions1").Single();
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
         public static Faction[] All

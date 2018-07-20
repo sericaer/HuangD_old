@@ -146,16 +146,13 @@ public class StreamManager
         }
 
         CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchSourceBundle(sourceCodes.ToArray());
-       
-        Type[] types = bd.assembly.GetTypes();
 
-        LoadName(types);
-        LoadEvent(types);
-        LoadDecision(types);
-        LoadDefines(types);
+        Types = bd.assembly.GetTypes();
 
-        OfficesType = types.Where(x => x.Name == "Offices1").Single();
-        FactionsType = types.Where(x=> x.Name == "Factions1").Single();
+        LoadName(Types);
+        LoadEvent(Types);
+        LoadDecision(Types);
+        LoadDefines(Types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
@@ -181,6 +178,7 @@ public class StreamManager
 
         defineSourceCodes.Add(officeSourceCode);
         defineSourceCodes.Add(factionSourceCode);
+        defineSourceCodes.Add(hougongSourceCode);
 
         return defineSourceCodes.ToArray();
     }
@@ -192,11 +190,13 @@ public class StreamManager
         var fields = new List<Tuple<string, Type, Type, List<object>>>();
         foreach (var eHougong in Enum.GetValues(officeDefineType))
         {
+            FieldInfo field = eHougong.GetType().GetField(eHougong.ToString());
+            HougongAttr attribute = Attribute.GetCustomAttribute(field, typeof(HougongAttr)) as HougongAttr;
 
-            fields.Add(new Tuple<string, Type, Type, List<object>>(eHougong.ToString(), typeof(HuangDAPI.Hougong), typeof(MyGame.Hougong), new List<object> { eHougong.ToString() }));
+            fields.Add(new Tuple<string, Type, Type, List<object>>(eHougong.ToString(), typeof(HuangDAPI.Hougong), typeof(MyGame.Hougong), new List<object> { eHougong.ToString(), attribute.group }));
         }
 
-        CodeDomGen sourceCodeCreater = new CodeDomGen("Hougong", fields);
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Hougongs", fields);
         return sourceCodeCreater.Create();
     }
 
@@ -208,7 +208,7 @@ public class StreamManager
         foreach (var eoffice in Enum.GetValues(officeDefineType))
         {
             FieldInfo field = eoffice.GetType().GetField(eoffice.ToString());
-            OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+            OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
             fields.Add(new Tuple<string, Type, Type, List<object>> (eoffice.ToString(), typeof(HuangDAPI.Office), typeof(MyGame.Office), new List<object>{eoffice.ToString(), attribute.Power, attribute.group}));
         }
@@ -349,6 +349,8 @@ public class StreamManager
         //}
     }
     //public static Type officeDefineType = null;
+
+    public static Type[] Types;
 
     public static Type OfficesType = null;
     public static Type FactionsType = null;
