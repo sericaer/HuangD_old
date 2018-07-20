@@ -8,12 +8,83 @@ using System.Linq.Expressions;
 using UnityEngine;
 
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public partial class MyGame
 {
     [Serializable]
     public class Office : HuangDAPI.Office
     {
+        public Office(string name, int power, OfficeGroup group)
+        {
+            _name = name;
+            _power = power;
+            _group = group;
+
+            _All.Add(this);
+        }
+
+        public static Office[] All
+        {
+            get
+            {
+                return _All.ToArray();
+            }
+        }
+
+        public static void Initialize()
+        {
+            RuntimeHelpers.RunClassConstructor(StreamManager.OfficesType.TypeHandle);
+        }
+
+        public static Office[] groupCenter1
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Center1).ToArray();
+            }
+        }
+
+        public static Office[] groupCenter2
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Center2).ToArray();
+            }
+        }
+
+        public static Office[] groupLocal
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Local).ToArray();
+            }
+        }
+
+        public static Office[] groupHougong1
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Hougong1).ToArray();
+            }
+        }
+
+        public static Office[] groupHougong2
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Hougong2).ToArray();
+            }
+        }
+
+        public static Office[] groupHougong3
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Hougong3).ToArray();
+            }
+        }
+
         public Office(string name, int power)
         {
             _name = name;
@@ -36,11 +107,67 @@ public partial class MyGame
             }
         }
 
+        public Person person
+        {
+            get
+            {
+                return (from x in MyGame.RelationManager.mapOffice2Person
+                 where x.office == this
+                 select x.person).SingleOrDefault();
+            }
+        }
+
         [SerializeField]
         string _name;
 
         [SerializeField]
         int _power;
+
+        [SerializeField]
+        OfficeGroup _group;
+
+        public static List<Office> _All = new List<Office>();
+    }
+
+    [Serializable]
+    public class Hougong : HuangDAPI.Office
+    {
+        public Hougong(string name, HougongGroup group)
+        {
+            _name = name;
+            _group = group;
+
+            _All.Add(this);
+        }
+
+        public static Hougong[] All
+        {
+            get
+            {
+                return _All.ToArray();
+            }
+        }
+
+        public static void Initialize()
+        {
+            RuntimeHelpers.RunClassConstructor(StreamManager.OfficesType.TypeHandle);
+        }
+
+        public static Office[] groupCenter1
+        {
+            get
+            {
+                return _All.Where(x => x._group == OfficeGroup.Center1).ToArray();
+            }
+        }
+
+        [SerializeField]
+        string _name;
+
+        [SerializeField]
+        OfficeGroup _group;
+
+        public static List<Hougong> _All = new List<Hougong>();
     }
 
     public class OfficeAttrAttribute : Attribute

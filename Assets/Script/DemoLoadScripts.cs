@@ -91,15 +91,15 @@ namespace TEST
         //    }
         }
 
-        private void LoadMod(string path)
-        {
-            string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
-            CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = loader.LoadAndWatchScriptsBundle(fileName);
+        //private void LoadMod(string path)
+        //{
+        //    string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+        //    CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = loader.LoadAndWatchScriptsBundle(fileName);
 
-            Type[] types = bd.assembly.GetTypes();
+        //    Type[] types = bd.assembly.GetTypes();
 
-            LoadName(types);
-        }
+        //    LoadName(types);
+        //}
 
         private void LoadName(Type[] types)
         {

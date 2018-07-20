@@ -6,207 +6,224 @@ using System.Linq;
 
 namespace native
 {
-    class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
-    {
-        bool Precondition()
-        {
-            if (Offices.Get("SG1").faction == "SHI")
-            {
-                levels = CalcSuggestLevel(Factions.Get("SHI").PowerPercent);
-                if (levels == null || levels.Count != 0)
-                {
-                    return true;
-                }
-            }
+    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
+    //{
+    //    bool Precondition()
+    //    {
+    //        if (Offices[SG1].faction == Factions[SHI])
+    //        {
+    //            levels = CalcSuggestLevel(Factions[SHI].PowerPercent);
+    //            if (levels == null || levels.Count != 0)
+    //            {
+    //                return true;
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
+    //}
 
-        class OPTION1 : Option
-        {
-            string Desc()
-            {
-                return UI.Format(OUTTER.levels[0]);
-            }
-            void Selected(ref string nxtEvent, ref object param)
-            {
-                CountryFlags.Add(OUTTER.levels[0]);
-            }
-        }
-        class OPTION2 : Option
-        {
-            bool Precondition()
-            {
-                return (OUTTER.levels.Count == 2);
-            }
+    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
+    //{
+    //    bool Precondition()
+    //    {
+    //        if (Offices.Get("SG1").faction == "SHI")
+    //        {
+    //            levels = CalcSuggestLevel(Factions.Get("SHI").PowerPercent);
+    //            if (levels == null || levels.Count != 0)
+    //            {
+    //                return true;
+    //            }
+    //        }
 
-            string Desc()
-            {
-                return UI.Format(OUTTER.levels[1]);
-            }
+    //        return false;
+    //    }
 
-            void Selected(ref string nxtEvent, ref object param)
-            {
-                if(OUTTER.levels[1] != "LOW_TAX_LEVEL_NULL")
-                {
-                    CountryFlags.Add(OUTTER.levels[1]);
-                }
-            }
-        }
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc()
+    //        {
+    //            return UI.Format(OUTTER.levels[0]);
+    //        }
+    //        void Selected(ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.Add(levels[0]);
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
+    //        bool Precondition()
+    //        {
+    //            return (levels.Count == 2);
+    //        }
 
-        List<string> CalcSuggestLevel(int PowerPercent)
-        {
-            List<string> rslt = new List<string>();
-            double prob = 0.0;
-            if (PowerPercent > 80)
-            {
-                if (CountryFlag.Contains("LOW_TAX_LEVEL_3"))
-                {
-                    return null;
-                }
+    //        string Desc()
+    //        {
+    //            return UI.Format(levels[1]);
+    //        }
 
-                rslt.Add("LOW_TAX_LEVEL_3");
+    //        void Selected(ref string nxtEvent, ref object param)
+    //        {
+    //            if(levels[1] != "LOW_TAX_LEVEL_NULL")
+    //            {
+    //                CountryFlags.Add(levels[1]);
+    //            }
+    //        }
+    //    }
 
-                if(Economy.netIncome >= 30)
-                {
-                    prob = 1.0;
-                }
-                else if (Economy.netIncome >= 20)
-                {
-                    prob = 0.5;
-                }
-                else if (Economy.netIncome >= 10)
-                {
-                    prob = 0.1;
-                }
-                else
-                {
-                    return null;
-                }
+    //    List<string> CalcSuggestLevel(int PowerPercent)
+    //    {
+    //        List<string> rslt = new List<string>();
+    //        double prob = 0.0;
+    //        if (PowerPercent > 80)
+    //        {
+    //            if (CountryFlag.Contains("LOW_TAX_LEVEL_3"))
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.current >= 200)
-                {
-                    prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else if (PowerPercent > 70)
-            {
-                if (CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
-                {
-                    return null;
-                }
+    //            rslt.Add("LOW_TAX_LEVEL_3");
 
-                rslt.AddRange("LOW_TAX_LEVEL_3");
-                rslt.AddRange("LOW_TAX_LEVEL_2");
+    //            if(Economy.netIncome >= 30)
+    //            {
+    //                prob = 1.0;
+    //            }
+    //            else if (Economy.netIncome >= 20)
+    //            {
+    //                prob = 0.5;
+    //            }
+    //            else if (Economy.netIncome >= 10)
+    //            {
+    //                prob = 0.1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.netIncome >= 30)
-                {
-                    prob = 1.0;
-                }
-                else if (Economy.netIncome >= 20)
-                {
-                    prob = 0.5;
-                }
-                else if (Economy.netIncome >= 10)
-                {
-                    prob = 0.1;
-                }
-                else
-                {
-                    return null;
-                }
+    //            if (Economy.current >= 200)
+    //            {
+    //                prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //        }
+    //        else if (PowerPercent > 70)
+    //        {
+    //            if (CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.current >= 200)
-                {
-                    prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else if (PowerPercent > 50)
-            {
-                if (CountryFlag.Contains("LOW_TAX_LEVEL_1") || CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
-                {
-                    return null;
-                }
-                rslt.AddRange("LOW_TAX_LEVEL_2");
-                rslt.AddRange("LOW_TAX_LEVEL_1");
+    //            rslt.AddRange("LOW_TAX_LEVEL_3");
+    //            rslt.AddRange("LOW_TAX_LEVEL_2");
 
-                if (Economy.netIncome >= 40)
-                {
-                    prob = 1.0;
-                }
-                else if (Economy.netIncome >= 30)
-                {
-                    prob = 0.5;
-                }
-                else if (Economy.netIncome >= 20)
-                {
-                    prob = 0.1;
-                }
-                else
-                {
-                    return null;
-                }
+    //            if (Economy.netIncome >= 30)
+    //            {
+    //                prob = 1.0;
+    //            }
+    //            else if (Economy.netIncome >= 20)
+    //            {
+    //                prob = 0.5;
+    //            }
+    //            else if (Economy.netIncome >= 10)
+    //            {
+    //                prob = 0.1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.current >= 300)
-                {
-                    prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else if (PowerPercent > 30)
-            {
-                if(CountryFlag.Contains("LOW_TAX_LEVEL_1") || CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
-                {
-                    return null;
-                }
+    //            if (Economy.current >= 200)
+    //            {
+    //                prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //        }
+    //        else if (PowerPercent > 50)
+    //        {
+    //            if (CountryFlag.Contains("LOW_TAX_LEVEL_1") || CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
+    //            {
+    //                return null;
+    //            }
+    //            rslt.AddRange("LOW_TAX_LEVEL_2");
+    //            rslt.AddRange("LOW_TAX_LEVEL_1");
 
-                rslt.AddRange("LOW_TAX_LEVEL_1");
-                rslt.AddRange("LOW_TAX_LEVEL_NULL");
+    //            if (Economy.netIncome >= 40)
+    //            {
+    //                prob = 1.0;
+    //            }
+    //            else if (Economy.netIncome >= 30)
+    //            {
+    //                prob = 0.5;
+    //            }
+    //            else if (Economy.netIncome >= 20)
+    //            {
+    //                prob = 0.1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.netIncome >= 30)
-                {
-                    prob = 0.1;
-                }
-                else
-                {
-                    return null;
-                }
+    //            if (Economy.current >= 300)
+    //            {
+    //                prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //        }
+    //        else if (PowerPercent > 30)
+    //        {
+    //            if(CountryFlag.Contains("LOW_TAX_LEVEL_1") || CountryFlag.Contains("LOW_TAX_LEVEL_2") || CountryFlag.Contains("LOW_TAX_LEVEL_3"))
+    //            {
+    //                return null;
+    //            }
 
-                if (Economy.current >= 500)
-                {
-                    prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
+    //            rslt.AddRange("LOW_TAX_LEVEL_1");
+    //            rslt.AddRange("LOW_TAX_LEVEL_NULL");
 
-            if (Probability.IsProbOccur(prob))
-            {
-                return rslt.ToArray();
-            }
+    //            if (Economy.netIncome >= 30)
+    //            {
+    //                prob = 0.1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
 
-            return null;
-        }
+    //            if (Economy.current >= 500)
+    //            {
+    //                prob = prob * (Math.Pow((Economy.current / 100), 2.0) * 0.01);
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            return null;
+    //        }
 
-        private List<string> levels = null;
-    }
+    //        if (Probability.IsProbOccur(prob))
+    //        {
+    //            return rslt.ToArray();
+    //        }
+
+    //        return null;
+    //    }
+
+    //    private List<string> levels = null;
+    //}
 
     //class EVENT_SG_EMPTY : EVENT_HD
     //{

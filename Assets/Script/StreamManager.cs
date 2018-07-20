@@ -7,7 +7,12 @@ using UnityEngine;
 using System.Linq;
 
 using HuangDAPI;
-//using Mono.CSharp;
+
+
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
 
 public class StreamManager
 {
@@ -108,7 +113,7 @@ public class StreamManager
 	private StreamManager ()
 	{
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
-        csharpLoader.logWriter = new CSharpCompiler.UnityLogTextWriter();
+        csharpLoader.actLog = CSharpCompiler.UnityLogTextWriter.Log;
 
         string[] subDir = Directory.GetDirectories(Application.streamingAssetsPath);
         foreach (string dirname in subDir)
@@ -127,13 +132,20 @@ public class StreamManager
     {
         Debug.Log(string.Format("*****************Start Load mod {0}********************", path));
         string[] csvNames = Directory.GetFiles(path + "/static", "*.csv");
-        foreach(string filename in csvNames)
+        foreach (string filename in csvNames)
         {
             uiDesc.AddCSVFile(filename);
         }
 
-		string[] fileName = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
-        CSharpCompiler.ScriptBundleLoader.ScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileName);
+        string[] defineSourceCodes = GenerateByDefine(path + "/define");
+
+        List<string> sourceCodes = defineSourceCodes.ToList();
+        foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
+        {
+            sourceCodes.Add(File.ReadAllText(filename));
+        }
+
+        CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchSourceBundle(sourceCodes.ToArray());
        
         Type[] types = bd.assembly.GetTypes();
 
@@ -142,7 +154,82 @@ public class StreamManager
         LoadDecision(types);
         LoadDefines(types);
 
+        OfficesType = types.Where(x => x.Name == "Offices1").Single();
+        FactionsType = types.Where(x=> x.Name == "Factions1").Single();
+
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
+    }
+
+    private string[] GenerateByDefine(string path)
+    {
+        List<string> defineSourceCodes = new List<string>();
+
+        string[] fileNames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+        CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileNames);
+
+        Type[] types = bd.assembly.GetTypes();
+
+        string officeSourceCode = GenerateOfficeCode(types);
+        Debug.Log(officeSourceCode);
+
+        string factionSourceCode = GenerateFactionCode(types);
+        Debug.Log(factionSourceCode);
+
+        string hougongSourceCode = GenerateHougongCode(types);
+        Debug.Log(hougongSourceCode);
+
+
+        defineSourceCodes.Add(officeSourceCode);
+        defineSourceCodes.Add(factionSourceCode);
+
+        return defineSourceCodes.ToArray();
+    }
+
+    private string GenerateHougongCode(Type[] types)
+    {
+        Type officeDefineType = types.Where(x => x.Name == "HOUGONG_DEFINE").Single();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        foreach (var eHougong in Enum.GetValues(officeDefineType))
+        {
+
+            fields.Add(new Tuple<string, Type, Type, List<object>>(eHougong.ToString(), typeof(HuangDAPI.Hougong), typeof(MyGame.Hougong), new List<object> { eHougong.ToString() }));
+        }
+
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Hougong", fields);
+        return sourceCodeCreater.Create();
+    }
+
+    private string GenerateOfficeCode(Type[] types)
+    {
+        Type officeDefineType = types.Where(x => x.Name == "OFFICE_DEFINE").Single();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        foreach (var eoffice in Enum.GetValues(officeDefineType))
+        {
+            FieldInfo field = eoffice.GetType().GetField(eoffice.ToString());
+            OfficeAttrAttribute attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttrAttribute)) as OfficeAttrAttribute;
+
+            fields.Add(new Tuple<string, Type, Type, List<object>> (eoffice.ToString(), typeof(HuangDAPI.Office), typeof(MyGame.Office), new List<object>{eoffice.ToString(), attribute.Power, attribute.group}));
+        }
+
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Offices1", fields);
+        return sourceCodeCreater.Create();
+    }
+
+    private string GenerateFactionCode(Type[] types)
+    {
+        Type officeDefineType = types.Where(x => x.Name == "FACTION_DEFINE").Single();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        foreach (var efaction in Enum.GetValues(officeDefineType))
+        {
+
+            fields.Add(new Tuple<string, Type, Type, List<object>>(efaction.ToString(), typeof(HuangDAPI.Faction), typeof(MyGame.Faction), new List<object> { efaction.ToString()}));
+        }
+
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Factions1", fields);
+        return sourceCodeCreater.Create();
     }
 
     private void LoadName(Type[] types)
@@ -188,6 +275,8 @@ public class StreamManager
         //ECONOMY.PROV_LOW = fields.Where(x => x.Name == "PROV_LOW").Single().GetValue(null);
         //ECONOMY.PROV_HIGH = fields.Where(x => x.Name == "PROV_HIGH").Single().GetValue(null);
         //ECONOMY.PROV_MID = fields.Where(x => x.Name == "PROV_MID").Single().GetValue(null);
+
+        //officeDefineType = types.Where(x => x.Name == "OFFICE_DEFINE").Single();
     }
 
     private void AnaylizeDynastyName(Type[] types)
@@ -214,8 +303,7 @@ public class StreamManager
 
     private void AnaylizePersonName(Type[] types)
     {
-        IEnumerable<Type> EmumType = null;
-        EmumType = types.Where(x => x.Name == "PersonName");
+        IEnumerable<Type> EmumType = types.Where(x => x.Name == "PersonName");
         if (EmumType.Count() == 0)
         {
             return;
@@ -260,6 +348,10 @@ public class StreamManager
         //    UIDictionary.Add(p.Name, (string)p.GetValue(value, null));
         //}
     }
+    //public static Type officeDefineType = null;
+
+    public static Type OfficesType = null;
+    public static Type FactionsType = null;
 
 	public  static DynastyName dynastyName = new DynastyName();
 	public  static YearName yearName = new YearName();

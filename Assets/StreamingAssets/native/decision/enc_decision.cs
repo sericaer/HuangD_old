@@ -3,67 +3,6 @@ using System.Linq;
 
 namespace native
 {
-    class DECISION_DEC_INC : DECISION
-    {
-        bool Visable()
-        {
-            if (Offices.Get("SG1").faction == "SHI")
-            {
-                if(Factions.Get("SHI").PowerPercent > 90)
-                {
-                    if(Economy.currnet > 300 && !CountryFlag.Contains("LOW_TAX_LEVEL_5"))
-                    {
-                        return true;
-                    }
-                }
-                else if(Factions.Get("SHI").PowerPercent > 80)
-                {
-                    if (Economy.currnet > 400 && !CountryFlag.Contains("LOW_TAX_LEVEL_4"))
-                    {
-                        return true;
-                    }
-                }
-                else if (Factions.Get("SHI").PowerPercent > 70)
-                {
-                    if (Economy.currnet > 500 && !CountryFlag.Contains("LOW_TAX_LEVEL_3"))
-                    {
-                        return true;
-                    }
-                }
-                else if (Factions.Get("SHI").PowerPercent > 60)
-                {
-                    if (Economy.currnet > 600 && !CountryFlag.Contains("LOW_TAX_LEVEL_2"))
-                    {
-                        return true;
-                    }
-                }
-                else if (Factions.Get("SHI").PowerPercent > 50)
-                {
-                    if (Economy.currnet > 600 && !CountryFlag.Contains("LOW_TAX_LEVEL_1"))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
-            return false;
-        }
-
-        int CostDay = 1;
-        string Responsible = "SG1";
-        string EnableEvent()
-        {
-            return "EVENT_SQ1_SUGGEST_DEC_TAX";
-        }
-
-        string StartEvent()
-        {
-            return "EVENT_SQ1_DEC_TAX";
-        }
-    }
-
     class DECISION_YHSX : DECISION
     {
         bool Visable()

@@ -4,16 +4,38 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using HuangDAPI;
+using System.Runtime.CompilerServices;
+
+#if NET_4_6
+#else
+using Mono.CSharp;
+#endif
 
 public partial class MyGame
 {
     [Serializable]
 	public class Faction : HuangDAPI.Faction
     {
+        
+        public static void Initialize()
+        {
+            RuntimeHelpers.RunClassConstructor(StreamManager.FactionsType.TypeHandle);
+        }
+
+        public static Faction[] All
+        {
+            get
+            {
+                return _All.ToArray();
+            }
+        }
+
         public Faction(string name)
         {
             _name = name;
+            _All.Add(this);
         }
+
 
         public override string name
         {
@@ -22,6 +44,8 @@ public partial class MyGame
                 return _name;
             }
         }
+
+
 
         internal override int power
         {
@@ -83,6 +107,8 @@ public partial class MyGame
 
         [SerializeField]
         string _name;
+
+        static List<Faction> _All = new List<Faction>();
     }
 
     [Serializable]
