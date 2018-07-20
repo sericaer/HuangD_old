@@ -67,6 +67,47 @@ public partial class MyGame
             _name = name;
         }
 
+        public static void Initialize()
+        {
+            while(_Males.Count < MyGame.Office.All.Length)
+            {
+                Person person = new Person(true);
+                if(_Males.Any(x=>x.name == person.name))
+                {
+                    continue;
+                }
+
+                _Males.Add(new Person(true));
+            }
+
+            _Males = _Males.OrderByDescending(x=>x.score).ToList();
+        }
+
+        public static Person[] Males
+        {
+            get
+            {
+                return _Males.ToArray();
+            }
+        }
+
+        public static Person[] Females
+        {
+            get
+            {
+                return _Females.ToArray();
+            }
+        }
+
+        public Faction faction
+        {
+            get
+            {
+                return (from x in MyGame.RelationManager.mapPerson2Faction
+                        where x.person == this
+                        select x.faction).Single();
+            }
+        }
 
         public static Person NewPerson(Boolean isMale)
         {
@@ -220,10 +261,10 @@ public partial class MyGame
 
         public override void Die()
         {
-            foreach (Action<object, string> listener in ListListener)
-            {
-                listener(this, "DIE");
-            }
+            //foreach (Action<object, string> listener in ListListener)
+            //{
+            //    listener(this, "DIE");
+            //}
         }
 
         public int ScoreAdd(int value)
@@ -231,7 +272,7 @@ public partial class MyGame
             return _score += value;
         }
 
-        public static List<Action<object, string>> ListListener = new List<Action<object, string>>();
+        //public static List<Action<object, string>> ListListener = new List<Action<object, string>>();
         public static List<PersonProcess> ListProcess = new List<PersonProcess>();
 
         [SerializeField]
@@ -251,7 +292,8 @@ public partial class MyGame
 
         Dictionary<string, string> _Flags = new Dictionary<string, string>();
 
-
+        static List<Person> _Males = new List<Person>();
+        static List<Person> _Females = new List<Person>();
     }
 
     public class PersonManager

@@ -1,5 +1,6 @@
 ﻿using HuangDAPI;
 using System.Linq;
+using UnityEngine;
 
 namespace native
 {
@@ -7,6 +8,9 @@ namespace native
     {
         bool Precondition()
         {
+            //Offices1.SG1 = null;
+            Debug.Log(Offices1.SG1.name + Offices1.SG1.power);
+
             float prob = CalcProb();
 
             if (Probability.IsProbOccur(prob))

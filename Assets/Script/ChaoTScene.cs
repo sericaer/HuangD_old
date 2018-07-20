@@ -9,8 +9,8 @@ public class ChaoTScene : MonoBehaviour
 {
 	void Awake()
 	{
-		AddOfficeToDict ("Canvas/Panel/SanG");
-		AddOfficeToDict ("Canvas/Panel/JiuQ");
+        AddOfficeToDict ("Canvas/Panel/Center1", "Center1", MyGame.Office.groupCenter1);
+        AddOfficeToDict ("Canvas/Panel/Center2", "Center2", MyGame.Office.groupCenter2);
 
         PanelDecision = GameObject.Find("Canvas/Panel/PanelDecision");
         PanelProcess = GameObject.Find("Canvas/Panel/PanelDecProcess");
@@ -29,12 +29,13 @@ public class ChaoTScene : MonoBehaviour
         RefreshDecision();
     }
 
-	private void AddOfficeToDict(string path)
+    private void AddOfficeToDict(string path, string prefabname, MyGame.Office[] offices )
 	{
         Transform currTransform = GameObject.Find(path).transform;
-        for(int i=0; i< currTransform.childCount; i++)
+        foreach(var office in offices)
         {
-			lstChaoc.Add (new ChaoChenUI (currTransform.GetChild(i)));
+            var officeUI = Instantiate(Resources.Load("Prefabs/Office/" + prefabname), currTransform) as GameObject;
+            lstChaoc.Add(new ChaoChenUI(officeUI.transform, office));
         }
 	}
 
@@ -105,7 +106,7 @@ public class ChaoTScene : MonoBehaviour
 
 class ChaoChenUI
 {
-	public ChaoChenUI(Transform tran)
+    public ChaoChenUI(Transform tran, MyGame.Office office)
 	{
 		UIKey = tran.name;
 
@@ -114,7 +115,7 @@ class ChaoChenUI
 		personScore = tran.Find("score");
 		factionName = tran.Find("faction");
 
-        office = (MyGame.Office)MyGame.Inst.relationManager.Offices.Where(x => x.name == UIKey).First();
+        this.office = office;
 		officeName.text = office.name;
 
 		tran.Find ("reserve1").gameObject.SetActive (false);
@@ -124,9 +125,7 @@ class ChaoChenUI
 
 	public void Refresh()
 	{
-        HuangDAPI.Person p = (from x in MyGame.Inst.relationManager.GetOfficeMap()
-                              where x.office == office
-                              select x.person).FirstOrDefault();
+        MyGame.Person p = office.person;
 		if (p == null) 
 		{
 			personName.text = "--";
@@ -135,14 +134,10 @@ class ChaoChenUI
 			return;
 		}
 
-        HuangDAPI.Faction f = (from x in MyGame.Inst.relationManager.GetFactionMap()
-                            where x.person == p
-                            select x.faction).FirstOrDefault();
 
 		personName.text = p.name;
-
 		personScore.Find ("value").GetComponent<Text> ().text = p.score.ToString();
-		factionName.Find ("value").GetComponent<Text> ().text = f.name;
+        factionName.Find ("value").GetComponent<Text> ().text = p.faction.name;
         personScore.gameObject.SetActive (true);
         factionName.gameObject.SetActive (true);
 	}

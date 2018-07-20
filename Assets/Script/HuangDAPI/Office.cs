@@ -1,6 +1,10 @@
 ﻿using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+
+using UnityEngine;
 
 namespace HuangDAPI
 {
@@ -23,8 +27,15 @@ namespace HuangDAPI
         }
     }
 
+    public abstract class Hougong
+    {
+        public abstract string name { get; }
+        public abstract Person person { get; }
+    }
+
     public class Offices
     {
+
         public static Office[] JQ
         {
             get
@@ -73,5 +84,4 @@ namespace HuangDAPI
             }
         }
     }
-
 }

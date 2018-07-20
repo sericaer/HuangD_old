@@ -17,7 +17,7 @@ namespace CSharpCompiler
         public Action<string> actLog = null;
 
         ISynchronizeInvoke synchronizedInvoke;
-        List<ScriptBundle> allFilesBundle = new List<ScriptBundle>();
+        List<IScriptBundle> allFilesBundle = new List<IScriptBundle>();
 
         public ScriptBundleLoader(ISynchronizeInvoke synchronizedInvoke)
         {
@@ -29,9 +29,16 @@ namespace CSharpCompiler
         /// </summary>
         /// <param name="fileSources"></param>
         /// <returns>true on success, false on failure</returns>
-        public ScriptBundle LoadAndWatchScriptsBundle(IEnumerable<string> fileSources)
+        public IScriptBundle LoadAndWatchScriptsBundle(IEnumerable<string> fileSources)
         {
-            var bundle = new ScriptBundle(this, fileSources);
+            var bundle = new ScriptBundleFiles(this, fileSources);
+            allFilesBundle.Add(bundle);
+            return bundle;
+        }
+
+        public IScriptBundle LoadAndWatchSourceBundle(IEnumerable<string> sourceCodes)
+        {
+            var bundle = new SourceCodeBundle(this, sourceCodes);
             allFilesBundle.Add(bundle);
             return bundle;
         }
@@ -39,16 +46,32 @@ namespace CSharpCompiler
         /// <summary>
         /// Manages a bundle of files which form one assembly, if one file changes entire assembly is recompiled.
         /// </summary>
-        public class ScriptBundle
+        /// 
+
+        public interface IScriptBundle
         {
-            public Assembly assembly;
+            Assembly assembly { get; }
+        }
+
+        public class ScriptBundleFiles : IScriptBundle
+        {
+            public Assembly assembly 
+            {
+                get
+                {
+                    return _assembly;
+                }
+            }
+
+
+            Assembly _assembly;
             IEnumerable<string> filePaths;
             //List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
             List<object> instances = new List<object>();
             ScriptBundleLoader manager;
 
             string[] assemblyReferences;
-            public ScriptBundle(ScriptBundleLoader manager, IEnumerable<string> filePaths)
+            public ScriptBundleFiles(ScriptBundleLoader manager, IEnumerable<string> filePaths)
             {
                 this.filePaths = filePaths.Select(x => Path.GetFullPath(x));
                 this.manager = manager;
@@ -76,6 +99,7 @@ namespace CSharpCompiler
                 options.ReferencedAssemblies.AddRange(assemblyReferences);
 
                 var compiler = new CodeCompiler();
+
                 var result = compiler.CompileAssemblyFromFileBatch(options, filePaths.ToArray());
 
                 foreach (var err in result.Errors)
@@ -83,7 +107,7 @@ namespace CSharpCompiler
                     manager.actLog(err.ToString());
                 }
 
-                this.assembly = result.CompiledAssembly;
+                this._assembly = result.CompiledAssembly;
             }
             //void CreateFileWatchers()
             //{
@@ -161,7 +185,51 @@ namespace CSharpCompiler
             //}
         }
 
+        public class SourceCodeBundle : IScriptBundle
+        {
+            public Assembly assembly
+            {
+                get
+                {
+                    return _assembly;
+                }
+            }
 
+            Assembly _assembly;
+            IEnumerable<string> filePaths;
+            //List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
+            List<object> instances = new List<object>();
+            ScriptBundleLoader manager;
+
+            string[] assemblyReferences;
+            public SourceCodeBundle(ScriptBundleLoader manager, IEnumerable<string> sourceCodes)
+            {
+                this.manager = manager;
+
+                var domain = System.AppDomain.CurrentDomain;
+                this.assemblyReferences = domain
+                    .GetAssemblies()
+                    .Where(a => !(a is System.Reflection.Emit.AssemblyBuilder) && !string.IsNullOrEmpty(a.Location))
+                    .Select(a => a.Location)
+                    .ToArray();
+
+                var options = new CompilerParameters();
+                options.GenerateExecutable = false;
+                options.GenerateInMemory = true;
+                options.ReferencedAssemblies.AddRange(assemblyReferences);
+
+                var compiler = new CodeCompiler();
+
+                var result = compiler.CompileAssemblyFromSourceBatch(options, sourceCodes.ToArray());
+
+                foreach (var err in result.Errors)
+                {
+                    manager.actLog(err.ToString());
+                }
+
+                this._assembly = result.CompiledAssembly;
+            }
+        }
     }
 
 }

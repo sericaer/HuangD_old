@@ -8,6 +8,9 @@ using UnityEngine;
 using Tools;
 using HuangDAPI;
 
+using static MyGame.Person;
+using static MyGame.Office;
+
 [Serializable]
 class StringSerialDictionary : SerialDictionary<string,string>{};
 
@@ -25,6 +28,49 @@ partial class MyGame
         {
             
         }
+
+        public static void Initialize()
+        {
+            InitOffice2Person();
+            InitHougong2Person();
+            InitPerson2Faction();
+        }
+
+        static void InitPerson2Faction()
+        {
+            foreach(var p in Person.Males)
+            {
+                int iRandom = Tools.Probability.GetRandomNum(0, Faction.All.Length-1);
+
+                mapPerson2Faction.Add(new { person = p, faction = Faction.All[iRandom] });
+            }
+        }
+
+        static void InitOffice2Person()
+        {
+            Person[] persons = Person.Males.Take(Office.groupCenter1.Length).OrderBy(x=>Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Office.groupCenter1.Length; i++)
+            {
+                mapOffice2Person.Add(new { office = Office.groupCenter1[i], person = persons[i]});
+            }
+
+            persons = Person.Males.Skip(Office.groupCenter1.Length).Take(Office.groupCenter2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Office.groupCenter2.Length; i++)
+            {
+                mapOffice2Person.Add(new { office = Office.groupCenter2[i], person = persons[i] });
+            }
+        }
+
+        static void InitHougong2Person()
+        {
+            Person[] persons = Person.Females.Take(Office.groupCenter1.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Office.groupCenter1.Length; i++)
+            {
+                mapOffice2Person.Add(new { office = Office.groupCenter1[i], person = persons[i] });
+            }
+        }
+        public static List<dynamic> mapOffice2Person = new List<dynamic>();
+        public static List<dynamic> mapPerson2Faction = new List<dynamic>();
 
         public void Init()
         {
@@ -121,6 +167,8 @@ partial class MyGame
                 listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = f, person = p });
             }
         }
+
+
 
         public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
         {

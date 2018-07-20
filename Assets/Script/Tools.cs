@@ -175,10 +175,13 @@ namespace Tools
 
         private static int GetRandomSeed()
         {
-            byte[] bytes = new byte[4];
-            System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
-            rng.GetBytes(bytes);
-            return BitConverter.ToInt32(bytes, 0);
+            //byte[] bytes = new byte[4];
+            //System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            //rng.GetBytes(bytes);
+            //return BitConverter.ToInt32(bytes, 0);
+
+            byte[] buffer = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt32(buffer, 0);
         }
     }
 
