@@ -18,18 +18,7 @@ public class TianXScene: MonoBehaviour
     // Use this for initialization
     void Start () 
     {
-        string test = "";
-        foreach (var faction in HuangDAPI.Factions.All)
-        {
-            test += faction.name + ":" + HuangDAPI.Factions.Power[faction.name] + "\n\t";
-            
-            foreach (var elem in ((MyGame.Faction)faction).powerdetail)
-            {
-                test += "    " + elem.Item1 + ":" + elem.Item2 + "\n";
-            }
-        }
 
-        Debug.Log(test);
     }
 
     // Update is called once per frame
@@ -40,6 +29,8 @@ public class TianXScene: MonoBehaviour
 
         foreach(var prov in MyGame.Province.All)
         {
+            Debug.Log(prov.mainOffice.name);
+
             var person = prov.mainOffice.person;
             if (person != null)
                 data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", person.name, "", StreamManager.uiDesc.Get(person.faction.name), person.score });

@@ -54,10 +54,16 @@ partial class MyGame
                 mapOffice2Person.Add(new { office = Office.groupCenter1[i], person = persons[i]});
             }
 
-            persons = Person.Males.Skip(Office.groupCenter1.Length).Take(Office.groupCenter2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            persons = Person.Males.Skip(mapOffice2Person.Count).Take(Office.groupCenter2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Office.groupCenter2.Length; i++)
             {
                 mapOffice2Person.Add(new { office = Office.groupCenter2[i], person = persons[i] });
+            }
+
+            persons = Person.Males.Skip(mapOffice2Person.Count).Take(Office.groupLocal.Length).OrderBy(x => Guid.NewGuid()).ToArray();
+            for (int i = 0; i < Office.groupLocal.Length; i++)
+            {
+                mapOffice2Person.Add(new { office = Office.groupLocal[i], person = persons[i] });
             }
         }
 
@@ -88,98 +94,7 @@ partial class MyGame
 
         public void Init()
         {
-            foreach (var eProv in Enum.GetValues(typeof(Province.ENUM_PROV)))
-            {
-                FieldInfo field = eProv.GetType().GetField(eProv.ToString());
-                ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
-
-                Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
-                listProvince2Status.Add(new HuangDAPI.GMData.ProvinceStatusElem { province = newProvince, debuff = null, });//debuffList = new List<HuangDAPI.Disaster>() });
-            }
-
-            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_CENTER)))
-            {
-
-                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
-
-                Office newOffice = new Office(eOffice.ToString(), attribute.Power);
-
-                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem{office = newOffice, person = null});
-            }
-
-            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_LOCAL)))
-            {
-                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
-
-                foreach(var elem in listProvince2Status)
-                {
-
-                    Office newOffice = new Office(string.Format("{0}|{1}", elem.province.name, eOffice.ToString()), attribute.Power);
-                    listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = null });
-
-                    listProvince2Office.Add(new HuangDAPI.GMData.ProvinceMapElem { province = elem.province, office = newOffice, });//debuffList = new List<HuangDAPI.Disaster>() });
-                }
-            }
-
-
-
-            List<HuangDAPI.Person> listPerson = new List<HuangDAPI.Person>();
-            while (listPerson.Count < listOffice2Person.Count)
-            {
-                listPerson.Add(Person.NewPerson(true));
-            }
-
-            listPerson.nth_element(0, 3, (x, y) => -(x.score.CompareTo(y.score)));
-            listPerson.nth_element(3, 3+9, (x, y) => -(x.score.CompareTo(y.score)));
-            listPerson.nth_element(3+9, listPerson.Count, (x, y) => -(x.score.CompareTo(y.score)));
-
-            listOffice2Person.Sort((x, y) => -(x.office.power.CompareTo(y.office.power)));
-            for (int i = 0; i < listPerson.Count; i++)
-            {
-                listOffice2Person[i].person = listPerson[i];
-            }
-
-            foreach (var eOffice in Enum.GetValues(typeof(ENUM_OFFICE_FEMALE)))
-            {
-
-                FieldInfo field = eOffice.GetType().GetField(eOffice.ToString());
-                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
-
-                Office newOffice = new Office(eOffice.ToString(), attribute.Power);
-
-                listHougong2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = newOffice, person = Person.NewPerson(false) });
-            }
-
-
-            List<Faction> listFaction = new List<Faction>{
-                new Faction(FactionManager.ENUM_FACTION.SHI.ToString()),
-                new Faction(FactionManager.ENUM_FACTION.XUN.ToString()),
-                new Faction(FactionManager.ENUM_FACTION.WAI.ToString()),
-            };
-
-
-            foreach (Person p in listPerson)
-            {
-                Faction f = null;
-
-                int iRandom = Tools.Probability.GetRandomNum(0, 100);
-                if (iRandom < 60)
-                {
-                    f = listFaction.Find(x => x.name == "SHI");
-                }
-                else if (iRandom < 90)
-                {
-                    f = listFaction.Find(x => x.name == "XUN");
-                }
-                else
-                {
-                    f = listFaction.Find(x => x.name == "WAI");
-                }
-
-                listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = f, person = p });
-            }
+           
         }
 
 
@@ -348,9 +263,6 @@ partial class MyGame
 
 	//[NonSerialized]
 	//public RelationFaction2Person relFaction2Person = new RelationFaction2Person();
-
-    [NonSerialized]
-    public RelationZhouj2Office relZhouj2Office = new RelationZhouj2Office();
 
 	//[SerializeField]
 	//private StringSerialDictionary DictOffce2Person = new StringSerialDictionary ();
@@ -685,35 +597,4 @@ partial class MyGame
 	//		}
 	//	}
 	//}
-
-    public class RelationZhouj2Office
-    {
-        public void Set(Province z, Office o)
-        {
-            if (!Inst.DictZhouj2Office.ContainsKey(z.name))
-            {
-                Inst.DictZhouj2Office.Add(z.name, new NameList());
-            }
-
-            Inst.DictZhouj2Office[z.name].ToList().Add (o.name);
-        }
-
-        public List<Office> GetOffices(string zname)
-        {
-            List<Office> lstResult = new List<Office>();
-            List<string> lstName = Inst.DictZhouj2Office[zname].ToList();
-            foreach(string name in lstName)
-            {
-                lstResult.Add(Inst.officeManager.GetByName(name));
-            }
-
-            return lstResult;
-        }
-
-        public List<Office> GetOffices(Province z)
-        {
-            return GetOffices(z.name);
-        }
-
-    }
 }

@@ -74,15 +74,6 @@ namespace HuangDAPI
     {
         public abstract string name { get; }
         public abstract string economy { get; }
-        public Office mainOffice
-        {
-            get
-            {
-                return (from x in GMData.RelationManager.ProvinceMap
-                        where x.province.name == name
-                        select x.office).SingleOrDefault();
-            }
-        }
         public Disaster debuff
         {
             get

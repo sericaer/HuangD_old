@@ -140,6 +140,14 @@ public partial class MyGame
             _All.Add(this);
         }
 
+        public  Office mainOffice
+        {
+            get
+            {
+                return _mainOffice;
+            }
+        }
+
 
         public Province(string name, ENUM_ECONOMY economy)
         {
@@ -147,6 +155,8 @@ public partial class MyGame
             _economy = economy;
             listStatus = new List<STATUS>();
         }
+
+
 
         public override string name
         {

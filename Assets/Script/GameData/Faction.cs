@@ -14,9 +14,9 @@ using Mono.CSharp;
 public partial class MyGame
 {
     [Serializable]
-	public class Faction : HuangDAPI.Faction
+    public class Faction : HuangDAPI.Faction
     {
-        
+
         public static void Initialize()
         {
             Type type = StreamManager.Types.Where(x => x.Name == "Factions1").Single();
@@ -59,7 +59,7 @@ public partial class MyGame
                 }
 
                 return value;
-            } 
+            }
         }
 
         internal List<Tuple<string, int>> powerdetail
@@ -110,89 +110,5 @@ public partial class MyGame
         string _name;
 
         static List<Faction> _All = new List<Faction>();
-    }
-
-    [Serializable]
-    public class FactionManager
-    {
-        public enum ENUM_FACTION
-        {
-            SHI,
-            XUN,
-            WAI,
-            HUA,
-        }
-
-        public FactionManager()
-        {
-            foreach (ENUM_FACTION efaction in Enum.GetValues(typeof(ENUM_FACTION)))
-            {
-                lstFaction.Add(new Faction(efaction.ToString()));
-            }
-        }
-
-        public Faction GetByName(string name)
-        {
-            foreach (Faction faction in lstFaction)
-            {
-                if (faction.name == name)
-                {
-                    return faction;
-                }
-            }
-
-            return null;
-        }
-
-        public Faction[] GetByName(string[] names)
-        {
-            List<Faction> lstResult = new List<Faction>();
-            foreach (string name in names)
-            {
-                Faction o = lstFaction.Find(x => x.name == name);
-                if (o == null)
-                {
-                    continue;
-                }
-
-                lstResult.Add(o);
-            }
-
-            return lstResult.ToArray();
-        }
-
-        public int Count
-        {
-            get
-            {
-                return lstFaction.Count;
-            }
-        }
-
-        public Faction[] GetRange(int start, int end)
-        {
-            if (start > lstFaction.Count || start >= end)
-            {
-                Faction[] ps = { };
-                return ps;
-            }
-
-            if (end > lstFaction.Count)
-            {
-                end = lstFaction.Count;
-            }
-
-            return lstFaction.GetRange(start, end - start).ToArray();
-        }
-
-        //internal List<Faction> factionBySelector(SelectElem Selector)
-        //{
-        //    List<Faction> lstResult = lstFaction.Where(Selector.Complie<Faction>()).ToList();
-
-        //    return lstResult;
-        //}
-
-        [SerializeField]
-        private List<Faction> lstFaction = new List<Faction>();
     }
 }

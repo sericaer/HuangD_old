@@ -57,11 +57,6 @@ public partial class MyGame
         relationManager = new RelationManager();
         relationManager.Init();
 
-        officeManager = new OfficeManager ();
-		//femaleOfficeManager = new OfficeManager (typeof(ENUM_OFFICE_FEMALE));
-
-		factionManager = new FactionManager ();
-
         //personManager = new PersonManager (officeManager.CountCenter + officeManager.CountLocal, true);
 		//personManager.Sort ((p1,p2)=> -(p1.score.CompareTo(p2.score)));
 
@@ -322,14 +317,16 @@ public partial class MyGame
 
     public Person CreatePerson(PER_CREATE_PERSON p, string officename)
     {
-        Person person = new Person(p);
-        personManager.Add(person);
+        throw new NotImplementedException();
 
-        //relFaction2Person.Set(factionManager.GetByName(p.factionName), person);
-        relationManager.SetFaction2Person(factionManager.GetByName(p.factionName), person);
-        relationManager.SetOffice2Person(officeManager.GetByName(officename), person);
+        //Person person = new Person(p);
+        //personManager.Add(person);
 
-        return person;
+        ////relFaction2Person.Set(factionManager.GetByName(p.factionName), person);
+        //relationManager.SetFaction2Person(factionManager.GetByName(p.factionName), person);
+        //relationManager.SetOffice2Person(officeManager.GetByName(officename), person);
+
+        //return person;
     }
 
     public Person NewPerson(bool v)
@@ -346,58 +343,6 @@ public partial class MyGame
     {
     }
 
-
-	private void InitRelationOffice2Person ()
-	{
-		int iCount = officeManager.CountCenter;
-		Person[] persons = personManager.GetRange (0, iCount);
-        Office[] offices = officeManager.GetRange (typeof(ENUM_OFFICE_CENTER));
-
-		for (int i = 0; i < iCount; i++) 
-		{
-            relationManager.SetOffice2Person(offices[i], persons[i]);
-			//relOffice2Person.Set(persons[i], offices[i]);
-		}
-
-        int iLocalCount = officeManager.CountLocal;
-        persons = personManager.GetRange (iCount, iCount+iLocalCount);
-        offices = officeManager.GetRange (typeof(ENUM_OFFICE_LOCAL));
-
-        for (int i = 0; i < iLocalCount; i++) 
-        {
-            relationManager.SetOffice2Person(offices[i], persons[i]);
-            //relOffice2Person.Set(persons[i], offices[i]);
-        }
-	}
-
-	private void InitRelationFaction2Person ()
-	{
-		Person[] persons = personManager.GetRange (0, personManager.Count);
-
-		for (int i = 0; i < persons.Length; i++) 
-		{
-            Faction faction = null;
-
-			int iRandom = Probability.GetRandomNum (0, 100);
-			if(iRandom < 60)
-			{
-                faction = factionManager.GetByName(FactionManager.ENUM_FACTION.SHI.ToString());
-				
-			}
-			else if(iRandom < 90)
-			{
-                faction = factionManager.GetByName(FactionManager.ENUM_FACTION.XUN.ToString());
-			}
-			else
-			{
-                faction = factionManager.GetByName(FactionManager.ENUM_FACTION.WAI.ToString());
-			}
-
-            //relFaction2Person.Set(faction, persons[i]);
-            relationManager.SetFaction2Person(faction, persons[i]);
-		}
-	}
-
     public void HistoryRecord(string str)
     {
         if (str == "")
@@ -413,18 +358,6 @@ public partial class MyGame
         return historyRecord; 
     }
 
-	private void InitRelationFemaleOffice2Person()
-	{
-		int iCount = officeManager.CountFemale;
-		Person[] persons = femalePersonManager.GetRange (0, iCount);
-        Office[] offices = officeManager.GetRange (typeof(ENUM_OFFICE_FEMALE));
-
-		for (int i = 0; i < iCount; i++) 
-		{
-			//relOffice2Person.Set(persons[i], offices[i]);
-            relationManager.SetOffice2Person(offices[i], persons[i]);
-		}
-	}
 
     private void InitZhouj2Office()
     {
@@ -477,11 +410,6 @@ public partial class MyGame
     public RelationManager relationManager;
     public PersonManager personManager;
 	public PersonManager femalePersonManager;
-
-	public OfficeManager officeManager;
-	//public OfficeManager femaleOfficeManager;
-
-	public FactionManager factionManager;
 
     public ProvinceManager provManager;
 
