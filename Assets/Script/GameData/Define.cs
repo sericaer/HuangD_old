@@ -25,3 +25,17 @@ public class HougongAttr : Attribute
 {
     public HougongGroup group;
 }
+
+public enum ENUM_ECONOMY
+{
+    HIGH,
+    MID,
+    LOW,
+
+}
+
+public class ProvinceAttribute : Attribute
+{
+    public ENUM_ECONOMY economy;
+    public object mainOffice;
+}

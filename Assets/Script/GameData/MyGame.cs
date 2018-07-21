@@ -24,6 +24,7 @@ public partial class MyGame
 	public void Initialize(string strEmpName, string strYearName, string strDynastyName)
     {
         Office.Initialize();
+        Province.Initialize();
         Hougong.Initialize();
         Faction.Initialize();
 

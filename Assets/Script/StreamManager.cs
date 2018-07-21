@@ -175,10 +175,13 @@ public class StreamManager
         string hougongSourceCode = GenerateHougongCode(types);
         Debug.Log(hougongSourceCode);
 
+        string provinceSourceCode = GenerateProvinceCode(types);
+        Debug.Log(provinceSourceCode);
 
         defineSourceCodes.Add(officeSourceCode);
         defineSourceCodes.Add(factionSourceCode);
         defineSourceCodes.Add(hougongSourceCode);
+        defineSourceCodes.Add(provinceSourceCode);
 
         return defineSourceCodes.ToArray();
     }
@@ -229,6 +232,28 @@ public class StreamManager
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("Factions1", fields);
+        return sourceCodeCreater.Create();
+    }
+
+    private string GenerateProvinceCode(Type[] types)
+    {
+        Type provDefineType = types.Where(x => x.Name == "PROVINCE_DEFINE").Single();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        foreach (var eprov in Enum.GetValues(provDefineType))
+        {
+            FieldInfo field = eprov.GetType().GetField(eprov.ToString());
+            ProvinceAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
+
+            
+            fields.Add(new Tuple<string, Type, Type, List<object>>(eprov.ToString(), 
+                                                                   typeof(HuangDAPI.Province), 
+                                                                   typeof(MyGame.Province), 
+                                                                   new List<object> { eprov.ToString(), attribute.economy, attribute.mainOffice.ToString() }));
+        }
+
+        string[] namespaces = { "native" };
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Provinces1", fields, namespaces);
         return sourceCodeCreater.Create();
     }
 

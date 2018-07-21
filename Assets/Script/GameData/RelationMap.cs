@@ -91,7 +91,7 @@ partial class MyGame
             foreach (var eProv in Enum.GetValues(typeof(Province.ENUM_PROV)))
             {
                 FieldInfo field = eProv.GetType().GetField(eProv.ToString());
-                Province.ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
+                ProvinceAttribute attributeProv = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
 
                 Province newProvince = new Province(eProv.ToString(), attributeProv.economy);
                 listProvince2Status.Add(new HuangDAPI.GMData.ProvinceStatusElem { province = newProvince, debuff = null, });//debuffList = new List<HuangDAPI.Disaster>() });

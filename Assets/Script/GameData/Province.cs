@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using UnityEngine;
 
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public partial class MyGame
 {
@@ -26,6 +27,14 @@ public partial class MyGame
     [Serializable]
     public class Province : HuangDAPI.Province
     {
+        public static Province[] All
+        {
+            get
+            {
+                return _All.ToArray();
+            }
+        }
+
         public static STATUS[] GetDebuffStatus()
         {
             List<STATUS> result = new List<STATUS>();
@@ -42,11 +51,6 @@ public partial class MyGame
             }
 
             return result.ToArray();
-        }
-
-        public class ProvinceAttribute : Attribute
-        {
-            public ENUM_ECONOMY economy;
         }
 
         public enum ENUM_PROV
@@ -125,13 +129,17 @@ public partial class MyGame
             public bool recover;
         }
 
-        public enum ENUM_ECONOMY
-        {
-            HIGH,
-            MID,
-            LOW,
 
+        public Province(string name, ENUM_ECONOMY economy, string mainOfficeName)
+        {
+            _name = name;
+            _economy = economy;
+            listStatus = new List<STATUS>();
+            _mainOffice = MyGame.Office.All.Where(x => x.name == mainOfficeName).Single() ;
+
+            _All.Add(this);
         }
+
 
         public Province(string name, ENUM_ECONOMY economy)
         {
@@ -200,12 +208,18 @@ public partial class MyGame
 
             return result;
         }
-            
+
+        internal static void Initialize()
+        {
+            Type type = StreamManager.Types.Where(x => x.Name == "Provinces1").Single();
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+        }
 
         private string _name;
         public List<STATUS> listStatus;
         private ENUM_ECONOMY _economy;
-
+        private Office _mainOffice;
+        static List<Province> _All = new List<Province>();
     }
 
     [Serializable]
@@ -217,7 +231,7 @@ public partial class MyGame
             {
 
                 FieldInfo field = zj.GetType().GetField(zj.ToString());
-                Province.ProvinceAttribute attribute = Attribute.GetCustomAttribute(field, typeof(Province.ProvinceAttribute)) as Province.ProvinceAttribute;
+                ProvinceAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
 
                 Province ZhoujObj = new Province(zj.ToString(), attribute.economy);
                 lstProvince.Add(ZhoujObj);

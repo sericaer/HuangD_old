@@ -15,7 +15,7 @@ public class CodeDomGen
 
     private CodeCompileUnit _targetUnit;
     private CodeTypeDeclaration _targetClass;
-    public CodeDomGen(string className, List<Tuple<string, Type, Type, List<object>>> fieldsDictionary)
+    public CodeDomGen(string className, List<Tuple<string, Type, Type, List<object>>> fieldsDictionary, string[] namespaces = null)
     {
         _fieldsDictionary = fieldsDictionary;
         _className = className;
@@ -23,6 +23,13 @@ public class CodeDomGen
         _targetUnit = new CodeCompileUnit();
         CodeNamespace ns = new CodeNamespace(_ns);
         ns.Imports.Add(new CodeNamespaceImport("System"));
+        if (namespaces != null)
+        {
+            foreach(var value in namespaces)
+            {
+                ns.Imports.Add(new CodeNamespaceImport(value));
+            }
+        }
         _targetClass = new CodeTypeDeclaration(className);
         _targetClass.IsClass = true;
         _targetClass.TypeAttributes = TypeAttributes.Public;
