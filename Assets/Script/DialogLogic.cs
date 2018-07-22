@@ -131,13 +131,13 @@ public class DialogLogic : MonoBehaviour
         }
     }
 
-    public List<List<object>> table
-    {
-        get
-        {
-            return _table;
-        }
-    }
+    //public List<List<object>> table
+    //{
+    //    get
+    //    {
+    //        return _table;
+    //    }
+    //}
 
 	private DelegateProcess delegateProcess;
     private DelegateHistory delegateHistory;
@@ -147,5 +147,5 @@ public class DialogLogic : MonoBehaviour
     private object _nexparam;
     private string _historyrecord;
     private Dictionary<string, string> optionName2KeyDict = new Dictionary<string, string>();
-    private List<List<object>> _table;
+    //private List<List<object>> _table;
 }

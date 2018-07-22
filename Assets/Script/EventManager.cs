@@ -129,58 +129,58 @@ public class GMEvent : ItfEvent
     private object param;
 }
 
-public class TableEvent : ItfEvent
-{
-    public string title
-    { 
-        get
-        {
-            return "";
-        }
-    }
+//public class TableEvent : ItfEvent
+//{
+//    public string title
+//    { 
+//        get
+//        {
+//            return "";
+//        }
+//    }
 
-    public object content 
-    {
-        get
-        {
-            return _table;
-        }
-    }
+//    public object content 
+//    {
+//        get
+//        {
+//            return _table;
+//        }
+//    }
 
-    public KeyValuePair<string, string>[] options
-    { 
-        get
-        {
-            KeyValuePair<string, string>[] temp = { new KeyValuePair<string, string>("TABLE_BUTTON", "确认") };
-            return temp;
-        }
-    }
+//    public KeyValuePair<string, string>[] options
+//    { 
+//        get
+//        {
+//            KeyValuePair<string, string>[] temp = { new KeyValuePair<string, string>("TABLE_BUTTON", "确认") };
+//            return temp;
+//        }
+//    }
 
-    public bool isChecked
-    {
-        get 
-        {
-            return _isChecked;
-        }
-    }
+//    public bool isChecked
+//    {
+//        get 
+//        {
+//            return _isChecked;
+//        }
+//    }
 
-    public void Initlize()
-    {
-    }
+//    public void Initlize()
+//    {
+//    }
 
-    public void  SelectOption(string opKey, ref string nxtEvent, ref object ret)
-    {
-        _isChecked = true;
-    }
+//    public void  SelectOption(string opKey, ref string nxtEvent, ref object ret)
+//    {
+//        _isChecked = true;
+//    }
 
-    public string History()
-    {
-        return "";
-    }
+//    public string History()
+//    {
+//        return "";
+//    }
 
-    private bool _isChecked;
-    private List<List<object>> _table;
-}
+//    private bool _isChecked;
+//    //private List<List<object>> _table;
+//}
 
 public class EventManager
 {
@@ -246,15 +246,15 @@ public class EventManager
         ((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
     }
 
-    public void Insert(List<List<object>> table)
-    {
-        if (table == null || table.Count == 0) 
-        {
-            return;
-        }
+    //public void Insert(List<List<object>> table)
+    //{
+    //    if (table == null || table.Count == 0) 
+    //    {
+    //        return;
+    //    }
 
-        nextEvent = new TableEvent ();
-    }
+    //    nextEvent = new TableEvent ();
+    //}
 
 	private ItfEvent nextEvent = null;
     private ItfEvent decisionEvent = null;

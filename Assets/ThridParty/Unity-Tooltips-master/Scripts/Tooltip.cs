@@ -15,7 +15,7 @@ public class Tooltip : MonoBehaviour
 
     RectTransform mCornerImage;
     RectTransform mRectTransform;
-    CanvasScaler mScaler;
+    //CanvasScaler mScaler;
 
 
     void Awake()
@@ -28,7 +28,7 @@ public class Tooltip : MonoBehaviour
     {
         mText = GetComponentInChildren<Text>();
         mCornerImage = transform.Find("Corner").GetComponent<RectTransform>();
-        mScaler = transform.parent.GetComponent<CanvasScaler>();
+        //mScaler = transform.parent.GetComponent<CanvasScaler>();
         Close();
     }
 

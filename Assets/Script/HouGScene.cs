@@ -56,10 +56,8 @@ class HouFeiUI
 		personScore = tran.Find("score/value").GetComponent<Text> ();
 		//factionName = tran.Find("faction/value").GetComponent<Text> ();
 
-		Debug.Log ("Key:" + UIKey);
         this.hougong = hougong;
 		officeName.text = hougong.name;
-		Debug.Log ("Text:" + officeName.text);
 
 		tran.Find ("reserve1").gameObject.SetActive (false);
 		tran.Find ("reserve2").gameObject.SetActive (false); 

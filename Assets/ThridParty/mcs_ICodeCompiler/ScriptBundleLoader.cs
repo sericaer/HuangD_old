@@ -67,7 +67,7 @@ namespace CSharpCompiler
             Assembly _assembly;
             IEnumerable<string> filePaths;
             //List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
-            List<object> instances = new List<object>();
+            //List<object> instances = new List<object>();
             ScriptBundleLoader manager;
 
             string[] assemblyReferences;
@@ -198,13 +198,13 @@ namespace CSharpCompiler
             Assembly _assembly;
             IEnumerable<string> filePaths;
             //List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
-            List<object> instances = new List<object>();
-            ScriptBundleLoader manager;
+            //List<object> instances = new List<object>();
+            //ScriptBundleLoader manager;
 
             string[] assemblyReferences;
             public SourceCodeBundle(ScriptBundleLoader manager, IEnumerable<string> sourceCodes)
             {
-                this.manager = manager;
+                //this.manager = manager;
 
                 var domain = System.AppDomain.CurrentDomain;
                 this.assemblyReferences = domain

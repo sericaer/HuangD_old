@@ -92,186 +92,186 @@ partial class MyGame
         public static List<dynamic> mapPerson2Faction = new List<dynamic>();
         public static List<dynamic> mapHougong2Person = new List<dynamic>();
 
-        public void Init()
-        {
+ //       public void Init()
+ //       {
            
-        }
+ //       }
 
 
 
-        public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
-        {
-            var elem = listOffice2Person.Find(x => x.person == ppersonParam);
-            if (elem != null)
-            {
-                elem.person = null;
-            }
+ //       public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
+ //       {
+ //           var elem = listOffice2Person.Find(x => x.person == ppersonParam);
+ //           if (elem != null)
+ //           {
+ //               elem.person = null;
+ //           }
 
-            elem = listOffice2Person.Find(x => x.office == officeParam);
-            if(elem == null)
-            {
-                listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = officeParam, person = ppersonParam });
-                return;
-            }
+ //           elem = listOffice2Person.Find(x => x.office == officeParam);
+ //           if(elem == null)
+ //           {
+ //               listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = officeParam, person = ppersonParam });
+ //               return;
+ //           }
 
-            if(elem.person != null)
-            {
-                throw new ArgumentException(string.Format("office {0} already has person {1}", elem.office.name, elem.person.name));
-            }
+ //           if(elem.person != null)
+ //           {
+ //               throw new ArgumentException(string.Format("office {0} already has person {1}", elem.office.name, elem.person.name));
+ //           }
 
-            elem.person = ppersonParam;
-        }
+ //           elem.person = ppersonParam;
+ //       }
 
-        public void SetFaction2Person(HuangDAPI.Faction factionParam, HuangDAPI.Person personParam)
-        {
-            var elem = listFaction2Person.Find(x => x.person == personParam);
-            if (elem == null)
-            {
-                listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = factionParam, person = personParam });
-                return;
-            }
+ //       public void SetFaction2Person(HuangDAPI.Faction factionParam, HuangDAPI.Person personParam)
+ //       {
+ //           var elem = listFaction2Person.Find(x => x.person == personParam);
+ //           if (elem == null)
+ //           {
+ //               listFaction2Person.Add(new HuangDAPI.GMData.FactionMapElem { faction = factionParam, person = personParam });
+ //               return;
+ //           }
 
-            elem.faction = factionParam;
-        }
+ //           elem.faction = factionParam;
+ //       }
 
-        public void SetProvinceBuff(HuangDAPI.Province provincep, HuangDAPI.Disaster disaster)
-        {
-            var elem = listProvince2Status.Find(x => x.province == provincep);
-            elem.debuff = disaster;
-        }
+ //       public void SetProvinceBuff(HuangDAPI.Province provincep, HuangDAPI.Disaster disaster)
+ //       {
+ //           var elem = listProvince2Status.Find(x => x.province == provincep);
+ //           elem.debuff = disaster;
+ //       }
 
-        public void RemoveProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
-        {
-            var elem = listProvince2Status.Find(x => x.province == province && x.debuff == disaster);
-            elem.debuff = null;
-        }
+ //       public void RemoveProvinceBuff(HuangDAPI.Province province, HuangDAPI.Disaster disaster)
+ //       {
+ //           var elem = listProvince2Status.Find(x => x.province == province && x.debuff == disaster);
+ //           elem.debuff = null;
+ //       }
 
-        public HuangDAPI.Person[] Persons
-        {
-            get
-            {
-                List<HuangDAPI.Person> listPerson1 = (from x in listOffice2Person
-                                                    select x.person).ToList();
+ //       public HuangDAPI.Person[] Persons
+ //       {
+ //           get
+ //           {
+ //               List<HuangDAPI.Person> listPerson1 = (from x in listOffice2Person
+ //                                                   select x.person).ToList();
 
-                List<HuangDAPI.Person> listPerson2 = (from x in listFaction2Person
-                                                     select x.person).ToList();
+ //               List<HuangDAPI.Person> listPerson2 = (from x in listFaction2Person
+ //                                                    select x.person).ToList();
 
-                if( listPerson1.Except(listPerson2).Count() != 0)
-                {
-                    throw new SystemException("person in FactionMap and OfficeMap not same!");
-                }
+ //               if( listPerson1.Except(listPerson2).Count() != 0)
+ //               {
+ //                   throw new SystemException("person in FactionMap and OfficeMap not same!");
+ //               }
 
-                return listPerson1.ToArray();
-            }
-        }
+ //               return listPerson1.ToArray();
+ //           }
+ //       }
 
-        public HuangDAPI.Faction[] Factions
-        {
-            get
-            {
-                return (from x in listFaction2Person
-                        select x.faction).ToArray();
-            }
+ //       public HuangDAPI.Faction[] Factions
+ //       {
+ //           get
+ //           {
+ //               return (from x in listFaction2Person
+ //                       select x.faction).ToArray();
+ //           }
 
-        }
+ //       }
 
-        public HuangDAPI.Office[] Offices
-        {
-            get
-            {
-                return (from x in listOffice2Person
-                        select x.office).ToArray();
-            }
-        }
+ //       public HuangDAPI.Office[] Offices
+ //       {
+ //           get
+ //           {
+ //               return (from x in listOffice2Person
+ //                       select x.office).ToArray();
+ //           }
+ //       }
 
-        public HuangDAPI.Office[] Hougongs
-        {
-            get
-            {
-                return (from x in listHougong2Person
-                        select x.office).ToArray();
-            }
-        }
+ //       public HuangDAPI.Office[] Hougongs
+ //       {
+ //           get
+ //           {
+ //               return (from x in listHougong2Person
+ //                       select x.office).ToArray();
+ //           }
+ //       }
 
-        public List<HuangDAPI.GMData.OfficeMapElem> GetOfficeMap()
-        {
-            return listOffice2Person;
-        }
+ //       public List<HuangDAPI.GMData.OfficeMapElem> GetOfficeMap()
+ //       {
+ //           return listOffice2Person;
+ //       }
 
-        public List<HuangDAPI.GMData.FactionMapElem> GetFactionMap()
-        {
-            return listFaction2Person;
-        }
+ //       public List<HuangDAPI.GMData.FactionMapElem> GetFactionMap()
+ //       {
+ //           return listFaction2Person;
+ //       }
 
-        public List<HuangDAPI.GMData.RelationMapElem>  GetRelationMap()
-        {
-            var q = from a in listOffice2Person
-                    join b in listFaction2Person on a.person equals b.person
-                    select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = (a.person != null ? b.faction : null) };
-            var e = from x in listOffice2Person
-                    where x.person == null
-                    select new HuangDAPI.GMData.RelationMapElem() { office = x.office, person = null, faction = null };
+ //       public List<HuangDAPI.GMData.RelationMapElem>  GetRelationMap()
+ //       {
+ //           var q = from a in listOffice2Person
+ //                   join b in listFaction2Person on a.person equals b.person
+ //                   select new HuangDAPI.GMData.RelationMapElem() { office = a.office, person = a.person, faction = (a.person != null ? b.faction : null) };
+ //           var e = from x in listOffice2Person
+ //                   where x.person == null
+ //                   select new HuangDAPI.GMData.RelationMapElem() { office = x.office, person = null, faction = null };
 
-            List<HuangDAPI.GMData.RelationMapElem> result = q.ToList();
-            result.AddRange(e.ToList());
+ //           List<HuangDAPI.GMData.RelationMapElem> result = q.ToList();
+ //           result.AddRange(e.ToList());
 
-            return result;
-        }
+ //           return result;
+ //       }
 
-        public List<HuangDAPI.GMData.ProvinceMapElem> GetProvinceMap()
-        {
-            return listProvince2Office;
-        }
+ //       public List<HuangDAPI.GMData.ProvinceMapElem> GetProvinceMap()
+ //       {
+ //           return listProvince2Office;
+ //       }
 
-        public List<HuangDAPI.GMData.OfficeMapElem> GetHougongMap()
-        {
-            return listHougong2Person;
-        }
+ //       public List<HuangDAPI.GMData.OfficeMapElem> GetHougongMap()
+ //       {
+ //           return listHougong2Person;
+ //       }
 
-        public List<GMData.ProvinceStatusElem> GetProvinceStatusMap()
-        {
-            return listProvince2Status;
-        }
+ //       public List<GMData.ProvinceStatusElem> GetProvinceStatusMap()
+ //       {
+ //           return listProvince2Status;
+ //       }
 
-        public void Listen(object obj, string cmd)
-        {
-            switch (cmd)
-            {
-                case "DIE":
-                    {
-                        Person p = (Person)obj;
-                        listOffice2Person.Find(x => x.person == p).person = null;
-                        listFaction2Person.RemoveAll(x => x.person == p);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+ //       public void Listen(object obj, string cmd)
+ //       {
+ //           switch (cmd)
+ //           {
+ //               case "DIE":
+ //                   {
+ //                       Person p = (Person)obj;
+ //                       listOffice2Person.Find(x => x.person == p).person = null;
+ //                       listFaction2Person.RemoveAll(x => x.person == p);
+ //                   }
+ //                   break;
+ //               default:
+ //                   break;
+ //           }
+ //       }
 
-        List<HuangDAPI.GMData.OfficeMapElem> listOffice2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
-        List<HuangDAPI.GMData.OfficeMapElem> listHougong2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
-        List<HuangDAPI.GMData.FactionMapElem> listFaction2Person = new List<HuangDAPI.GMData.FactionMapElem>();
-        List<HuangDAPI.GMData.ProvinceMapElem> listProvince2Office = new List<HuangDAPI.GMData.ProvinceMapElem>();
-        List<HuangDAPI.GMData.ProvinceStatusElem> listProvince2Status = new List<HuangDAPI.GMData.ProvinceStatusElem>();
+ //       List<HuangDAPI.GMData.OfficeMapElem> listOffice2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
+ //       List<HuangDAPI.GMData.OfficeMapElem> listHougong2Person = new List<HuangDAPI.GMData.OfficeMapElem>();
+ //       List<HuangDAPI.GMData.FactionMapElem> listFaction2Person = new List<HuangDAPI.GMData.FactionMapElem>();
+ //       List<HuangDAPI.GMData.ProvinceMapElem> listProvince2Office = new List<HuangDAPI.GMData.ProvinceMapElem>();
+ //       List<HuangDAPI.GMData.ProvinceStatusElem> listProvince2Status = new List<HuangDAPI.GMData.ProvinceStatusElem>();
 
 
-    }
+ //   }
 
-	//[NonSerialized]
-	//public RelationOffice2Person relOffice2Person = new RelationOffice2Person();
+	////[NonSerialized]
+	////public RelationOffice2Person relOffice2Person = new RelationOffice2Person();
 
-	//[NonSerialized]
-	//public RelationFaction2Person relFaction2Person = new RelationFaction2Person();
+	////[NonSerialized]
+	////public RelationFaction2Person relFaction2Person = new RelationFaction2Person();
 
-	//[SerializeField]
-	//private StringSerialDictionary DictOffce2Person = new StringSerialDictionary ();
+	////[SerializeField]
+	////private StringSerialDictionary DictOffce2Person = new StringSerialDictionary ();
 
-	//[SerializeField]
-	//private  ListSerialDictionary DictFaction2Person = new ListSerialDictionary ();
+	////[SerializeField]
+	////private  ListSerialDictionary DictFaction2Person = new ListSerialDictionary ();
 
-    [SerializeField]
-    private  ListSerialDictionary DictZhouj2Office = new ListSerialDictionary ();
+ //   [SerializeField]
+ //   private  ListSerialDictionary DictZhouj2Office = new ListSerialDictionary ();
 
 	//public class RelationOffice2Person
 	//{
@@ -596,5 +596,5 @@ partial class MyGame
 	//			break;
 	//		}
 	//	}
-	//}
+	}
 }

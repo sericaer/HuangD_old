@@ -105,19 +105,19 @@ namespace HuangDAPI
             this._name = name;
         }
 
-        public Person ResponsiblePerson
-        {
-            get
-            {
-                if(MyGame.DecisionManager.Procs.ContainsKey(_name))
-                {
-                    return MyGame.DecisionManager.Procs[_name].ResponsiblePerson;
-                }
+        //public Person ResponsiblePerson
+        //{
+        //    get
+        //    {
+        //        if(MyGame.DecisionManager.Procs.ContainsKey(_name))
+        //        {
+        //            return MyGame.DecisionManager.Procs[_name].ResponsiblePerson;
+        //        }
 
-                return MyGame.DecisionManager.Plans[_name].ResponsibleOffice.person;
+        //        return MyGame.DecisionManager.Plans[_name].ResponsibleOffice.person;
 
-            }
-        }
+        //    }
+        //}
 
         public void process()
         {

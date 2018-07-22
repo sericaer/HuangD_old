@@ -26,8 +26,8 @@ public class MainScene : MonoBehaviour
         
         txtDynastyName = GameObject.Find("Canvas/PanelTop/Detail/Dyname").GetComponent<Text>();
 
-        GameObject statusPanel = GameObject.Find("Canvas/PanelTop/Detail/Panel");
-        listDyStatus = new List<Text>(statusPanel.GetComponentsInChildren<Text>());
+        //GameObject statusPanel = GameObject.Find("Canvas/PanelTop/Detail/Panel");
+        //listDyStatus = new List<Text>(statusPanel.GetComponentsInChildren<Text>());
 
         panelCenter = GameObject.Find ("Canvas/PanelCenter");
 
@@ -151,24 +151,24 @@ public class MainScene : MonoBehaviour
         Military.text  = MyGame.Inst.Military.ToString();
         txtTime.text   = MyGame.Inst.time;
 
-        txtEmpName.text = MyGame.Inst.empName;
-        txtEmpAge.text = MyGame.Inst.empAge.ToString();
-        sldEmpHeath.value = MyGame.Inst.empHeath;
+        txtEmpName.text = MyGame.Emperor.name;
+        txtEmpAge.text = MyGame.Emperor.age.ToString();
+        sldEmpHeath.value = MyGame.Emperor.heath;
 
         if(btnDynDetail.activeSelf)
         {
-            for(int i=1; i< listDyStatus.Count; i++)
-            {
-                if(i > MyGame.Inst.statusManager.listStatus.Count)
-                {
-                    listDyStatus[i].text = "";
-                    continue;
-                }
+            //for(int i=1; i< listDyStatus.Count; i++)
+            //{
+            //    if(i > MyGame.Inst.statusManager.listStatus.Count)
+            //    {
+            //        listDyStatus[i].text = "";
+            //        continue;
+            //    }
 
-                listDyStatus[i].text = MyGame.Inst.statusManager.listStatus[i-1].name;
-                string detail = MyGame.Inst.statusManager.listStatus[i - 1].desc;
-                listDyStatus[i].GetComponent< TooltipTrigger >().mDisplayText = detail;
-            }
+            //    listDyStatus[i].text = MyGame.Inst.statusManager.listStatus[i-1].name;
+            //    string detail = MyGame.Inst.statusManager.listStatus[i - 1].desc;
+            //    listDyStatus[i].GetComponent< TooltipTrigger >().mDisplayText = detail;
+            //}
         }
  
     }
@@ -207,7 +207,7 @@ public class MainScene : MonoBehaviour
 	Slider sldEmpHeath;
 
     Text txtDynastyName;
-    List<Text> listDyStatus;
+    //List<Text> listDyStatus;
 
 	GameObject panelCenter;
 }

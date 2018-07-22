@@ -108,7 +108,7 @@ class ChaoChenUI
 {
     public ChaoChenUI(Transform tran, MyGame.Office office)
 	{
-		UIKey = tran.name;
+		//UIKey = tran.name;
 
 		officeName = tran.Find ("Text").GetComponent<Text> ();
 		personName = tran.Find ("value").GetComponent<Text> ();
@@ -142,7 +142,8 @@ class ChaoChenUI
         factionName.gameObject.SetActive (true);
 	}
 
-	string UIKey;
+	//string UIKey;
+
 
 	Text officeName;
 	Text personName;

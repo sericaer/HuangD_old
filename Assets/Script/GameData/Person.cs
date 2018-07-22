@@ -6,66 +6,66 @@ using HuangDAPI;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class PersonProcess : HuangDAPI.StatusParam, HuangDAPI.PersonProcess 
-    {
-        public PersonProcess(string name, Person opp, params object[] tag) : base(name)
-        {
-            this._opp = opp;
+    //[Serializable]
+    //public class PersonProcess : HuangDAPI.StatusParam, HuangDAPI.PersonProcess 
+    //{
+    //    public PersonProcess(string name, Person opp, params object[] tag) : base(name)
+    //    {
+    //        this._opp = opp;
 
-            this._tag = new List<object>(tag);
-        }
+    //        this._tag = new List<object>(tag);
+    //    }
 
-        public HuangDAPI.Person opp 
-        {
-            get
-            {
-                return _opp;
-            }
-        }
-        public List<object> tag 
-        {
-            get
-            {
-                return _tag;
-            }
-        }
+    //    public HuangDAPI.Person opp 
+    //    {
+    //        get
+    //        {
+    //            return _opp;
+    //        }
+    //    }
+    //    public List<object> tag 
+    //    {
+    //        get
+    //        {
+    //            return _tag;
+    //        }
+    //    }
 
-        public override string ToString()
-        {
-            if (_tag.Count == 0)
-            {
-                return string.Format(StreamManager.uiDesc.Get(ID), _opp.ToString());
-            }
+    //    public override string ToString()
+    //    {
+    //        if (_tag.Count == 0)
+    //        {
+    //            return string.Format(StreamManager.uiDesc.Get(ID), _opp.ToString());
+    //        }
 
-            List<string> lstString = new List<string> { _opp.ToString() };
-            for (int i = 0; i < _tag.Count; i++)
-            {
-                lstString.Add(_tag[i].ToString());
-            }
+    //        List<string> lstString = new List<string> { _opp.ToString() };
+    //        for (int i = 0; i < _tag.Count; i++)
+    //        {
+    //            lstString.Add(_tag[i].ToString());
+    //        }
 
-            return string.Format(StreamManager.uiDesc.Get(ID), lstString.ToArray());
+    //        return string.Format(StreamManager.uiDesc.Get(ID), lstString.ToArray());
 
-            //for(int i=0; i< tag.Count; i++)
-            //string.Format(StreamManager.uiDesc.Get(name), opp.name, );
-        }
+    //        //for(int i=0; i< tag.Count; i++)
+    //        //string.Format(StreamManager.uiDesc.Get(name), opp.name, );
+    //    }
 
-        public Person _opp;
-        public List<object> _tag;
-    }
+    //    public Person _opp;
+    //    public List<object> _tag;
+    //}
 
     [Serializable]
 	public class Person : HuangDAPI.Person
     {
-        public Person()
-        {
-            throw new NotImplementedException();
-        }
+        //public Person()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public Person(string name) : this(true, Tools.Probability.GetRandomNum(10, 90))
-        {
-            _name = name;
-        }
+        //public Person(string name) : this(true, Tools.Probability.GetRandomNum(10, 90))
+        //{
+        //    _name = name;
+        //}
 
         public static void Initialize()
         {
@@ -122,38 +122,38 @@ public partial class MyGame
             }
         }
 
-        public static Person NewPerson(Boolean isMale)
-        {
-            do
-            {
-                Person person = new Person(isMale);
+        //public static Person NewPerson(Boolean isMale)
+        //{
+        //    do
+        //    {
+        //        Person person = new Person(isMale);
 
-                int Count = 0;
-                if(isMale)
-                {
-                    Count = (from x in MyGame.Inst.relationManager.GetOfficeMap()
-                             where x.person != null
-                                 where x.person.name == person.name
-                                 select x.person).Count();
-                }
-                else
-                {
-                    Count = (from x in MyGame.Inst.relationManager.GetHougongMap()
-                             where x.person != null
-                                 where x.person.name == person.name
-                                 select x.person).Count();
-                }
+        //        int Count = 0;
+        //        if(isMale)
+        //        {
+        //            Count = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+        //                     where x.person != null
+        //                         where x.person.name == person.name
+        //                         select x.person).Count();
+        //        }
+        //        else
+        //        {
+        //            Count = (from x in MyGame.Inst.relationManager.GetHougongMap()
+        //                     where x.person != null
+        //                         where x.person.name == person.name
+        //                         select x.person).Count();
+        //        }
 
 
-                if(Count != 0)
-                {
-                    continue;
-                }
+        //        if(Count != 0)
+        //        {
+        //            continue;
+        //        }
 
-                return person;
+        //        return person;
 
-            } while (true);
-        }
+        //    } while (true);
+        //}
 
         public Person(Boolean isMale) : this(isMale, Tools.Probability.GetRandomNum(10, 90))
         {
@@ -174,11 +174,11 @@ public partial class MyGame
             _score = score;
         }
 
-        public Person(PER_CREATE_PERSON p)
-        {
-            _name = p.personName;
-            _score = p.score;
-        }
+        //public Person(PER_CREATE_PERSON p)
+        //{
+        //    _name = p.personName;
+        //    _score = p.score;
+        //}
 
         public override string name
         {
@@ -188,22 +188,22 @@ public partial class MyGame
             }
         }
 
-        public override int press
-        {
-            get
-            {
-                int value = 0;
-                foreach(var elem in Flags.Values)
-                {
-                    string[] array = elem.Split(':');
-                    if(array[0] == "press")
-                    {
-                        value += Convert.ToInt32(array[1]);
-                    }
-                }
-                return value;
-            }
-        }
+        //public override int press
+        //{
+        //    get
+        //    {
+        //        int value = 0;
+        //        foreach(var elem in Flags.Values)
+        //        {
+        //            string[] array = elem.Split(':');
+        //            if(array[0] == "press")
+        //            {
+        //                value += Convert.ToInt32(array[1]);
+        //            }
+        //        }
+        //        return value;
+        //    }
+        //}
 
         public override int score
         {
@@ -217,60 +217,60 @@ public partial class MyGame
             }
         }
 
-        public override int heath
-        {
-            get
-            {
-                return _heath;
-            }
-            set
-            {
-                _heath = value;
-            }
-        }
+        //public override int heath
+        //{
+        //    get
+        //    {
+        //        return _heath;
+        //    }
+        //    set
+        //    {
+        //        _heath = value;
+        //    }
+        //}
 
-        public override int age
-        {
-            get
-            {
-                return _age;
-            }
-            set
-            {
-                _age = value;
-            }
-        }
+        //public override int age
+        //{
+        //    get
+        //    {
+        //        return _age;
+        //    }
+        //    set
+        //    {
+        //        _age = value;
+        //    }
+        //}
 
-        public override Dictionary<string, string> Flags
-        {
-            get
-            {
-                return _Flags;
-            }
+        //public override Dictionary<string, string> Flags
+        //{
+        //    get
+        //    {
+        //        return _Flags;
+        //    }
 
-            set
-            {
-                _Flags = value;
-            }
-        }
+        //    set
+        //    {
+        //        _Flags = value;
+        //    }
+        //}
 
-        public override string ToString()
-        {
-            //HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
-            //                 where x.person == this
-            //                 select x.office).FirstOrDefault();
-            //if(office != null)
-            //{
-            //    return StreamManager.uiDesc.Get(office.name) + name;
-            //}
+        //public override string ToString()
+        //{
+        //    //HuangDAPI.Office office = (from x in MyGame.Inst.relationManager.GetOfficeMap()
+        //    //                 where x.person == this
+        //    //                 select x.office).FirstOrDefault();
+        //    //if(office != null)
+        //    //{
+        //    //    return StreamManager.uiDesc.Get(office.name) + name;
+        //    //}
 
-            return name;
-        }
+        //    return name;
+        //}
 
-        public PersonProcess Process(string name, params object[] param)
-        {
-            return  new PersonProcess(name, this, param);
-        }
+        //public PersonProcess Process(string name, params object[] param)
+        //{
+        //    return  new PersonProcess(name, this, param);
+        //}
 
         public override void Die()
         {
@@ -280,13 +280,13 @@ public partial class MyGame
             //}
         }
 
-        public int ScoreAdd(int value)
-        {
-            return _score += value;
-        }
+        //public int ScoreAdd(int value)
+        //{
+        //    return _score += value;
+        //}
 
         //public static List<Action<object, string>> ListListener = new List<Action<object, string>>();
-        public static List<PersonProcess> ListProcess = new List<PersonProcess>();
+        //public static List<PersonProcess> ListProcess = new List<PersonProcess>();
 
         [SerializeField]
         string _name;
@@ -294,114 +294,114 @@ public partial class MyGame
         [SerializeField]
         int _score;
 
-        [SerializeField]
-        int _press;
+        //[SerializeField]
+        //int _press;
 
-        [SerializeField]
-        int _heath;
+        //[SerializeField]
+        //int _heath;
 
-        [SerializeField]
-        int _age;
+        //[SerializeField]
+        //int _age;
 
-        Dictionary<string, string> _Flags = new Dictionary<string, string>();
+        //Dictionary<string, string> _Flags = new Dictionary<string, string>();
 
         static List<Person> _Males = new List<Person>();
         static List<Person> _Females = new List<Person>();
     }
 
-    public class PersonManager
-    {
-        public PersonManager(int count, Boolean isMale)
-        {
-            while (lstPerson.Count < count)
-            {
-                Person p = new Person(isMale);
-                if (lstPerson.Find(x => x.name.Equals(p.name)) != null)
-                {
-                    continue;
-                }
+    //public class PersonManager
+    //{
+    //    public PersonManager(int count, Boolean isMale)
+    //    {
+    //        while (lstPerson.Count < count)
+    //        {
+    //            Person p = new Person(isMale);
+    //            if (lstPerson.Find(x => x.name.Equals(p.name)) != null)
+    //            {
+    //                continue;
+    //            }
 
-                lstPerson.Add(p);
-            }
+    //            lstPerson.Add(p);
+    //        }
 
-        }
+    //    }
 
-        public Person[] GetRange(int start, int end)
-        {
-            if (start > lstPerson.Count || start >= end)
-            {
-                Person[] ps = { };
-                return ps;
-            }
+    //    public Person[] GetRange(int start, int end)
+    //    {
+    //        if (start > lstPerson.Count || start >= end)
+    //        {
+    //            Person[] ps = { };
+    //            return ps;
+    //        }
 
-            if (end > lstPerson.Count)
-            {
-                end = lstPerson.Count;
-            }
+    //        if (end > lstPerson.Count)
+    //        {
+    //            end = lstPerson.Count;
+    //        }
 
-            return lstPerson.GetRange(start, end - start).ToArray();
-        }
+    //        return lstPerson.GetRange(start, end - start).ToArray();
+    //    }
 
-        //public List<Person> GetPersonBySelector(SelectElem Selector)
-        //{
-        //    List<Person> lstResult = lstPerson.Where(Selector.Complie<Person>()).ToList();
+    //    //public List<Person> GetPersonBySelector(SelectElem Selector)
+    //    //{
+    //    //    List<Person> lstResult = lstPerson.Where(Selector.Complie<Person>()).ToList();
 
-        //    return lstResult;
-        //}
+    //    //    return lstResult;
+    //    //}
 
-        public Person GetByName(string name)
-        {
-            return lstPerson.Find(x => x.name == name);
-        }
+    //    public Person GetByName(string name)
+    //    {
+    //        return lstPerson.Find(x => x.name == name);
+    //    }
 
-        public Person[] GetByName(string[] names)
-        {
-            List<Person> lstResult = new List<Person>();
-            foreach (string name in names)
-            {
-                Person o = GetByName(name);
-                if (o == null)
-                {
-                    continue;
-                }
+    //    public Person[] GetByName(string[] names)
+    //    {
+    //        List<Person> lstResult = new List<Person>();
+    //        foreach (string name in names)
+    //        {
+    //            Person o = GetByName(name);
+    //            if (o == null)
+    //            {
+    //                continue;
+    //            }
 
-                lstResult.Add(o);
-            }
+    //            lstResult.Add(o);
+    //        }
 
-            return lstResult.ToArray();
-        }
+    //        return lstResult.ToArray();
+    //    }
 
-        public int Count
-        {
-            get
-            {
-                return lstPerson.Count;
-            }
-        }
+    //    public int Count
+    //    {
+    //        get
+    //        {
+    //            return lstPerson.Count;
+    //        }
+    //    }
 
-        public void Sort(Comparison<Person> comparison)
-        {
-            lstPerson.Sort(comparison);
-        }
+    //    public void Sort(Comparison<Person> comparison)
+    //    {
+    //        lstPerson.Sort(comparison);
+    //    }
 
-        public void Listen(object obj, string cmd)
-        {
-            switch (cmd)
-            {
-                case "DIE":
-                    lstPerson.Remove((Person)obj);
-                    break;
-                default:
-                    break;
-            }
-        }
+    //    public void Listen(object obj, string cmd)
+    //    {
+    //        switch (cmd)
+    //        {
+    //            case "DIE":
+    //                lstPerson.Remove((Person)obj);
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
 
-        public void Add(Person p)
-        {
-            lstPerson.Add(p);
-        }
+    //    public void Add(Person p)
+    //    {
+    //        lstPerson.Add(p);
+    //    }
 
-        [SerializeField]
-        private List<Person> lstPerson = new List<Person>();
-    }
+    //    [SerializeField]
+    //    private List<Person> lstPerson = new List<Person>();
+    //}
 }

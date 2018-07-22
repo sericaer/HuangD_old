@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using HuangDAPI;
 
 #if NET_4_6
 #else
@@ -57,16 +58,24 @@ public partial class MyGame
         }
 
         public string name;
+        //public HuangDAPI.Office ResponsibleOffice
+        //{
+        //    get
+        //    {
+        //        HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+        //        return HuangDAPI.Offices.All.First(x => x.name == decisionDef._Responsible);
+        //    }
+        //}
+
+        private bool? oldState = null;
+
         public HuangDAPI.Office ResponsibleOffice
         {
             get
             {
-                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-                return HuangDAPI.Offices.All.First(x => x.name == decisionDef._Responsible);
+                throw new NotImplementedException();
             }
         }
-
-        private bool? oldState = null;
     }
 
     [Serializable]
@@ -74,14 +83,14 @@ public partial class MyGame
     {
         public DecisionProc(string key)
         {
-            name = key;
-            _startTime = new GameTime(MyGame.Inst.date);
+            //name = key;
+            //_startTime = new GameTime(MyGame.Inst.date);
 
-            decisionDef = StreamManager.decisionDict[key];
+            //decisionDef = StreamManager.decisionDict[key];
 
-            resPerson = HuangDAPI.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
+            //resPerson = HuangDAPI.Offices.All.First(x=>x.name== decisionDef._Responsible).person;
 
-            decisionDef.Flags = this.Flags;
+            //decisionDef.Flags = this.Flags;
 
             
 
@@ -148,13 +157,13 @@ public partial class MyGame
             }
         }
 
-        public GameTime startTime
-        {
-            get
-            {
-                return _startTime;
-            }
-        }
+        //public GameTime startTime
+        //{
+        //    get
+        //    {
+        //        return _startTime;
+        //    }
+        //}
 
         public void DayIncrease()
         {
@@ -182,8 +191,8 @@ public partial class MyGame
         private List<string> _Flags = new List<string>();
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
         private HuangDAPI.Person resPerson = null;
-        private GameTime _startTime;
-        private HuangDAPI.DECISION decisionDef;
+        //private GameTime _startTime;
+        private HuangDAPI.DECISION decisionDef = null;
     }
 
     private Dictionary<string, HuangDAPI.DecisionPlan> DecisionPlans = new Dictionary<string, HuangDAPI.DecisionPlan>();

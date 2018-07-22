@@ -9,11 +9,11 @@ public partial class MyGame
         public static Dictionary<string, int> IncomeDetail()
         {
             Dictionary<string, int> result = new Dictionary<string, int>();
-            foreach (var p in MyGame.Provinces.Enumer)
-            {
-                Dictionary <string, int> provTaxDetail = p.taxDetail();
-                result.Add(p.name, provTaxDetail.Values.Sum());
-            }
+            //foreach (var p in MyGame.Provinces.Enumer)
+            //{
+            //    Dictionary <string, int> provTaxDetail = p.taxDetail();
+            //    result.Add(p.name, provTaxDetail.Values.Sum());
+            //}
 
             return result;
         }

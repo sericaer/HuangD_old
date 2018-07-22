@@ -15,40 +15,40 @@ namespace HuangDAPI
 
     public static class ExtentionMethods
     {
-        public static void Add(this List<PersonFlag> list, string name, string op)
-        {
-            list.Add(new MyGame.PersonFlag(name, op));
-        }
+        //public static void Add(this List<PersonFlag> list, string name, string op)
+        //{
+        //    list.Add(new MyGame.PersonFlag(name, op));
+        //}
 
         public static void Remove(this List<PersonFlag> list, string name)
         {
             list.RemoveAll(x => x.name == name);
         }
 
-        public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src)
-        {
-            listImpWork.Add(new MyGame.ImpWork(name, detail, src));
-        }
+        //public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src)
+        //{
+        //    listImpWork.Add(new MyGame.ImpWork(name, detail, src));
+        //}
 
-        public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src, object dest)
-        {
-            listImpWork.Add(new MyGame.ImpWork(name, detail, src, dest));
-        }
+        //public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src, object dest)
+        //{
+        //    listImpWork.Add(new MyGame.ImpWork(name, detail, src, dest));
+        //}
 
-        public static ImpWork Find(this List<ImpWork> listImpWork, string name)
-        {
-            return listImpWork.Find(x => x.name == name);
-        }
+        //public static ImpWork Find(this List<ImpWork> listImpWork, string name)
+        //{
+        //    return listImpWork.Find(x => x.name == name);
+        //}
 
-        public static bool Contains(this List<ImpWork> listImpWork, string name)
-        {
-            return listImpWork.Any(x => x.name == name);
-        }
+        //public static bool Contains(this List<ImpWork> listImpWork, string name)
+        //{
+        //    return listImpWork.Any(x => x.name == name);
+        //}
 
-        public static void Remove(this List<ImpWork> listImpWork, string name)
-        {
-            listImpWork.RemoveAll(x => x.name == name);
-        }
+        //public static void Remove(this List<ImpWork> listImpWork, string name)
+        //{
+        //    listImpWork.RemoveAll(x => x.name == name);
+        //}
 
         public static void RemoveAll(this Dictionary<string, string> dict, Predicate<string> match)
         {
@@ -74,20 +74,20 @@ namespace HuangDAPI
     {
         public abstract string name { get; }
         public abstract string economy { get; }
-        public Disaster debuff
-        {
-            get
-            {
-                return (from x in GMData.RelationManager.ProvinceStatusMap
-                        where x.province == this
-                        select x.debuff).SingleOrDefault();
-            }
-            set
-            {
-                GMData.RelationManager.ProvinceStatusMap.Find(x => x.province.name == name).debuff = value;
-            }
+        //public Disaster debuff
+        //{
+        //    get
+        //    {
+        //        return (from x in GMData.RelationManager.ProvinceStatusMap
+        //                where x.province == this
+        //                select x.debuff).SingleOrDefault();
+        //    }
+        //    set
+        //    {
+        //        GMData.RelationManager.ProvinceStatusMap.Find(x => x.province.name == name).debuff = value;
+        //    }
 
-        }
+        //}
     }
 
     public abstract class Disaster
@@ -95,34 +95,34 @@ namespace HuangDAPI
         public abstract string name { get; }
         public abstract string saved { get; set; }
         public abstract bool recover { get; set; }
-        public Province[] provinces
-        {
-            get
-            {
-                return (from x in GMData.RelationManager.ProvinceStatusMap
-                        where x.debuff == this
-                        select x.province).ToArray();
-            }
-        }
+        //public Province[] provinces
+        //{
+        //    get
+        //    {
+        //        return (from x in GMData.RelationManager.ProvinceStatusMap
+        //                where x.debuff == this
+        //                select x.province).ToArray();
+        //    }
+        //}
 
     }
 
-    public interface Status
-    {
-        string ID { get; }
-        string name { get; }
-        string desc { get; }
-        StatusParam param { get; set; }
+    //public interface Status
+    //{
+    //    string ID { get; }
+    //    string name { get; }
+    //    string desc { get; }
+    //    StatusParam param { get; set; }
 
-    }
+    //}
 
-    public interface ImpWork
-    {
-        string name { get; set;}
-        string detail { get; set;}
-        object src { get; set;}
-        object dest {get; set;}
-    }
+    //public interface ImpWork
+    //{
+    //    string name { get; set;}
+    //    string detail { get; set;}
+    //    object src { get; set;}
+    //    object dest {get; set;}
+    //}
 
     public interface GMDate
     {
@@ -132,28 +132,28 @@ namespace HuangDAPI
 
     }
 
-    public class StatusParam
-    {
-        public StatusParam(string ID)
-        {
-            mID = ID;
-        }
+    //public class StatusParam
+    //{
+    //    public StatusParam(string ID)
+    //    {
+    //        mID = ID;
+    //    }
 
-        public string ID 
-        { 
-            get
-            {
-                return mID;
-            }
-        }
+    //    public string ID 
+    //    { 
+    //        get
+    //        {
+    //            return mID;
+    //        }
+    //    }
 
-        public override string ToString()
-        {
-            return mID;
-        }
+    //    public override string ToString()
+    //    {
+    //        return mID;
+    //    }
 
-        string mID;
-    }
+    //    string mID;
+    //}
 
     public class ReflectBase
 	{
@@ -185,130 +185,130 @@ namespace HuangDAPI
     public class GMData
     {
 
-        public class Provinces
-        {
-            public static Province[] All
-            {
-                get
-                {
-                    List<Province> list = (from x in RelationManager.ProvinceMap
-                                         select x.province).ToList();
-                    return list.ToArray();
-                }
-            }
-        }
+        //public class Provinces
+        //{
+        //    public static Province[] All
+        //    {
+        //        get
+        //        {
+        //            List<Province> list = (from x in RelationManager.ProvinceMap
+        //                                 select x.province).ToList();
+        //            return list.ToArray();
+        //        }
+        //    }
+        //}
 
         public class Disasters
         {
-            public static Disaster[] All
-            {
-                get
-                {
-                    List<Disaster> list = (from x in RelationManager.ProvinceStatusMap
-                                           where x.debuff != null
-                                           select x.debuff).ToList();
-                    return list.ToArray();
-                }
-            }
+            //public static Disaster[] All
+            //{
+            //    get
+            //    {
+            //        List<Disaster> list = (from x in RelationManager.ProvinceStatusMap
+            //                               where x.debuff != null
+            //                               select x.debuff).ToList();
+            //        return list.ToArray();
+            //    }
+            //}
         }
 
-        public class RelationMapElem
-        {
-            public Office office;
-            public Person person;
-            public Faction faction;
-        }
+        //public class RelationMapElem
+        //{
+        //    public Office office;
+        //    public Person person;
+        //    public Faction faction;
+        //}
 
-        public class FactionMapElem
-        {
-            public Faction faction;
-            public Person person;
-        }
+        //public class FactionMapElem
+        //{
+        //    public Faction faction;
+        //    public Person person;
+        //}
 
-        public class OfficeMapElem
-        {
-            public Office office;
-            public Person person;
-        }
+        //public class OfficeMapElem
+        //{
+        //    public Office office;
+        //    public Person person;
+        //}
 
-        public class ProvinceMapElem
-        {
-            public Province province;
-            public Office office;
-            //public List<Disaster> debuffList;
-        }
+        //public class ProvinceMapElem
+        //{
+        //    public Province province;
+        //    public Office office;
+        //    //public List<Disaster> debuffList;
+        //}
 
-        public class ProvinceStatusElem
-        {
-            public Province province;
-            public Disaster debuff;
-        }
+        //public class ProvinceStatusElem
+        //{
+        //    public Province province;
+        //    public Disaster debuff;
+        //}
 
 
-        public class RelationManager
-        {
-            public static List<RelationMapElem> RelationMap
-            {
-                get
-                {
-                    return MyGame.Inst.relationManager.GetRelationMap();
-                }
-            }
+        //public class RelationManager
+        //{
+        //    public static List<RelationMapElem> RelationMap
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.relationManager.GetRelationMap();
+        //        }
+        //    }
 
-            public static List<OfficeMapElem> OfficeMap
-            {
-                get
-                {
-                    return MyGame.Inst.relationManager.GetOfficeMap();
-                }
-            }
+        //    public static List<OfficeMapElem> OfficeMap
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.relationManager.GetOfficeMap();
+        //        }
+        //    }
 
-            public static List<FactionMapElem> FactionMap
-            {
-                get
-                {
-                    return MyGame.Inst.relationManager.GetFactionMap();
-                }
-            }
+        //    public static List<FactionMapElem> FactionMap
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.relationManager.GetFactionMap();
+        //        }
+        //    }
 
-            public static List<ProvinceMapElem> ProvinceMap
-            {
-                get
-                {
-                    return MyGame.Inst.relationManager.GetProvinceMap();
-                }
-            }
+        //    public static List<ProvinceMapElem> ProvinceMap
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.relationManager.GetProvinceMap();
+        //        }
+        //    }
 
-            public static List<ProvinceStatusElem> ProvinceStatusMap
-            {
-                get
-                {
-                    return MyGame.Inst.relationManager.GetProvinceStatusMap();
-                }
-            }
+        //    public static List<ProvinceStatusElem> ProvinceStatusMap
+        //    {
+        //        get
+        //        {
+        //            return MyGame.Inst.relationManager.GetProvinceStatusMap();
+        //        }
+        //    }
 
-            public static void SetOffice(Person person, Office office)
-            {
-                NewPersonInfo personInfo = listNewPersonInfo.Find((obj) => obj._person == person);
+        //    public static void SetOffice(Person person, Office office)
+        //    {
+        //        NewPersonInfo personInfo = listNewPersonInfo.Find((obj) => obj._person == person);
 
-                if (personInfo != null)
-                {
-                    MyGame.Inst.relationManager.SetFaction2Person(personInfo._faction, person);
-                }
+        //        if (personInfo != null)
+        //        {
+        //            MyGame.Inst.relationManager.SetFaction2Person(personInfo._faction, person);
+        //        }
 
-                MyGame.Inst.relationManager.SetOffice2Person(office, person);
-            }
+        //        MyGame.Inst.relationManager.SetOffice2Person(office, person);
+        //    }
 
-            public static void SetProvinceBuff(Province province, Disaster disaster)
-            {
-                MyGame.Inst.relationManager.SetProvinceBuff(province, disaster);
-            }
+        //    public static void SetProvinceBuff(Province province, Disaster disaster)
+        //    {
+        //        MyGame.Inst.relationManager.SetProvinceBuff(province, disaster);
+        //    }
 
-            public static void RemoveProvinceBuff(Province province, Disaster disaster)
-            {
-                MyGame.Inst.relationManager.RemoveProvinceBuff(province, disaster);
-            }
-        }
+        //    public static void RemoveProvinceBuff(Province province, Disaster disaster)
+        //    {
+        //        MyGame.Inst.relationManager.RemoveProvinceBuff(province, disaster);
+        //    }
+        //}
 
 
         //     public static Person[] GetPersons(BySelector selector = null)
@@ -349,54 +349,54 @@ namespace HuangDAPI
         public class TianWenStatus
         {
 
-            public static void Add(string ID)
-            {
-                MyGame.Inst.statusManager.listStatus.Add(new MyGame.TWStatus(ID));
-            }
+            //public static void Add(string ID)
+            //{
+            //    MyGame.Inst.statusManager.listStatus.Add(new MyGame.TWStatus(ID));
+            //}
 
-            public static void Remove(string ID)
-            {
-                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
-                if (index == -1)
-                {
-                    return;
-                }
+            //public static void Remove(string ID)
+            //{
+            //    int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
+            //    if (index == -1)
+            //    {
+            //        return;
+            //    }
 
-                MyGame.Inst.statusManager.listStatus.RemoveAt(index);
-            }
+            //    MyGame.Inst.statusManager.listStatus.RemoveAt(index);
+            //}
 
-            public static bool Contains(string ID)
-            {
-                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
-                if (index == -1)
-                {
-                    return false;
-                }
+            //public static bool Contains(string ID)
+            //{
+            //    int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
+            //    if (index == -1)
+            //    {
+            //        return false;
+            //    }
 
-                return true;
-            }
+            //    return true;
+            //}
 
-            public static StatusParam Get(string ID)
-            {
-                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
-                if (index == -1)
-                {
-                    return null;
-                }
+            //public static StatusParam Get(string ID)
+            //{
+            //    int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
+            //    if (index == -1)
+            //    {
+            //        return null;
+            //    }
 
-                return MyGame.Inst.statusManager.listStatus[index].param;
-            }
+            //    return MyGame.Inst.statusManager.listStatus[index].param;
+            //}
 
-            public static void Set(string ID, StatusParam value)
-            {
-                int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
-                if (index == -1)
-                {
-                    throw new ArgumentException(string.Format("can not find {0} in status list", ID));
-                }
+            //public static void Set(string ID, StatusParam value)
+            //{
+            //    int index = MyGame.Inst.statusManager.listStatus.FindIndex(x => x.ID == ID);
+            //    if (index == -1)
+            //    {
+            //        throw new ArgumentException(string.Format("can not find {0} in status list", ID));
+            //    }
 
-                MyGame.Inst.statusManager.listStatus[index].param = value;
-            }
+            //    MyGame.Inst.statusManager.listStatus[index].param = value;
+            //}
         }
 
         //public class Emp
@@ -420,21 +420,21 @@ namespace HuangDAPI
         //}
 
         //public 
-        public static Person NewMalePerson(HuangDAPI.Faction faction)
-        {
-            Person person = MyGame.Inst.NewPerson(true);
-            listNewPersonInfo.Add(new NewPersonInfo { _person = person, _faction = faction });
+        //public static Person NewMalePerson(HuangDAPI.Faction faction)
+        //{
+        //    Person person = MyGame.Inst.NewPerson(true);
+        //    listNewPersonInfo.Add(new NewPersonInfo { _person = person, _faction = faction });
 
-            return person;
-        }
+        //    return person;
+        //}
 
-        public static Person NewFemalePerson(HuangDAPI.Faction faction)
-        {
-            Person person = MyGame.Inst.NewPerson(false);
-            //listTemPerson.Add(new TempPersonInfo{ _person = person, _faction = faction });
+        //public static Person NewFemalePerson(HuangDAPI.Faction faction)
+        //{
+        //    Person person = MyGame.Inst.NewPerson(false);
+        //    //listTemPerson.Add(new TempPersonInfo{ _person = person, _faction = faction });
 
-            return person;
-        }
+        //    return person;
+        //}
 
         public static Disaster NewDisaster()
         {
@@ -459,13 +459,13 @@ namespace HuangDAPI
         //}
 
 
-        public static Person Emp
-        {
-            get
-            {
-                return MyGame.Inst.Emp;
-            }
-        }
+        //public static Person Emp
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.Emp;
+        //    }
+        //}
 
         public static int Stability
         {
@@ -519,13 +519,13 @@ namespace HuangDAPI
             }
         }
 
-        public static List<ImpWork> ImpWorks
-        {
-            get
-            {
-                return MyGame.Inst.ImpWorks;
-            }
-        }
+        //public static List<ImpWork> ImpWorks
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.ImpWorks;
+        //    }
+        //}
 
         public class NewPersonInfo
         {

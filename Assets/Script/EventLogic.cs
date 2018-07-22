@@ -46,13 +46,13 @@ public class EventLogic : MonoBehaviour
 
 			string key = dialog.GetComponent<DialogLogic> ().result;
             object param = dialog.GetComponent<DialogLogic> ().nexparam;
-            List<List<object>> showTable = dialog.GetComponent<DialogLogic>().table;
+            //List<List<object>> showTable = dialog.GetComponent<DialogLogic>().table;
             			
 			Destroy (dialog);
 
             ((GMEvent)eventobj).ie.LoadMemento();
 
-            eventManager.Insert (showTable);
+            //eventManager.Insert (showTable);
             eventManager.Insert (key, param);
 
             if (MyGame.Inst.gameEnd)

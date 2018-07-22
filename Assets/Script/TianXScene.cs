@@ -29,8 +29,6 @@ public class TianXScene: MonoBehaviour
 
         foreach(var prov in MyGame.Province.All)
         {
-            Debug.Log(prov.mainOffice.name);
-
             var person = prov.mainOffice.person;
             if (person != null)
                 data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", person.name, "", StreamManager.uiDesc.Get(person.faction.name), person.score });
