@@ -47,14 +47,14 @@ namespace HuangDAPI
     //    }
     //}
 
-    public interface PersonFlag
-    {
-        string name { get; }
-    }
+    //public interface PersonFlag
+    //{
+    //    string name { get; }
+    //}
 
-    public interface PersonProcess
-    {
-        Person opp { get; }
-        List<object> tag { get; }
-    }
+    //public interface PersonProcess
+    //{
+    //    Person opp { get; }
+    //    List<object> tag { get; }
+    //}
 }

@@ -19,7 +19,7 @@ public partial class MyGame
 
         public static void Initialize()
         {
-            Type type = StreamManager.Types.Where(x => x.Name == "Factions1").Single();
+            Type type = StreamManager.Types.Where(x => x.Name == "Factions").Single();
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 

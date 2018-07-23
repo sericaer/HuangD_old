@@ -20,10 +20,10 @@ namespace HuangDAPI
         //    list.Add(new MyGame.PersonFlag(name, op));
         //}
 
-        public static void Remove(this List<PersonFlag> list, string name)
-        {
-            list.RemoveAll(x => x.name == name);
-        }
+        //public static void Remove(this List<PersonFlag> list, string name)
+        //{
+        //    list.RemoveAll(x => x.name == name);
+        //}
 
         //public static void Add(this List<ImpWork> listImpWork, string name, string detail, object src)
         //{

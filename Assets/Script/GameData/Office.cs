@@ -34,7 +34,7 @@ public partial class MyGame
 
         public static void Initialize()
         {
-            Type type = StreamManager.Types.Where(x => x.Name == "Offices1").Single();
+            Type type = StreamManager.Types.Where(x => x.Name == "Offices").Single();
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 

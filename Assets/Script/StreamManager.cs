@@ -216,7 +216,7 @@ public class StreamManager
             fields.Add(new Tuple<string, Type, Type, List<object>> (eoffice.ToString(), typeof(HuangDAPI.Office), typeof(MyGame.Office), new List<object>{eoffice.ToString(), attribute.Power, attribute.group}));
         }
 
-        CodeDomGen sourceCodeCreater = new CodeDomGen("Offices1", fields);
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Offices", fields);
         return sourceCodeCreater.Create();
     }
 
@@ -231,7 +231,7 @@ public class StreamManager
             fields.Add(new Tuple<string, Type, Type, List<object>>(efaction.ToString(), typeof(HuangDAPI.Faction), typeof(MyGame.Faction), new List<object> { efaction.ToString()}));
         }
 
-        CodeDomGen sourceCodeCreater = new CodeDomGen("Factions1", fields);
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Factions", fields);
         return sourceCodeCreater.Create();
     }
 
@@ -258,7 +258,7 @@ public class StreamManager
         }
 
         string[] namespaces = { "native" };
-        CodeDomGen sourceCodeCreater = new CodeDomGen("Provinces1", fields, namespaces);
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Provinces", fields, namespaces);
         return sourceCodeCreater.Create();
     }
 

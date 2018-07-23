@@ -1,27 +1,27 @@
-﻿//using HuangDAPI;
-//using System.Collections;
-//using System.Collections.Generic;
-//using System;
-//using System.Linq;
+﻿using HuangDAPI;
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
-//namespace native
-//{
-//    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
-//    //{
-//    //    bool Precondition()
-//    //    {
-//    //        if (Offices[SG1].faction == Factions[SHI])
-//    //        {
-//    //            levels = CalcSuggestLevel(Factions[SHI].PowerPercent);
-//    //            if (levels == null || levels.Count != 0)
-//    //            {
-//    //                return true;
-//    //            }
-//    //        }
+namespace native
+{
+    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
+    //{
+    //    bool Precondition()
+    //    {
+    //        if (Offices[SG1].faction == Factions[SHI])
+    //        {
+    //            levels = CalcSuggestLevel(Factions[SHI].PowerPercent);
+    //            if (levels == null || levels.Count != 0)
+    //            {
+    //                return true;
+    //            }
+    //        }
 
-//    //        return false;
-//    //    }
-//    //}
+    //        return false;
+    //    }
+    //}
 
 //    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
 //    //{
@@ -602,4 +602,4 @@
 //    //        }
 //    //    }
 //    //}
-//}
+}

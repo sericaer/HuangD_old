@@ -199,7 +199,7 @@ public partial class MyGame
 
         internal static void Initialize()
         {
-            Type type = StreamManager.Types.Where(x => x.Name == "Provinces1").Single();
+            Type type = StreamManager.Types.Where(x => x.Name == "Provinces").Single();
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
