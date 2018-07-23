@@ -245,11 +245,16 @@ public class StreamManager
             FieldInfo field = eprov.GetType().GetField(eprov.ToString());
             ProvinceAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
 
-            
+            FieldInfo ecofield = attribute.economy.GetType().GetField(attribute.economy.ToString());
+            ProvEconmoyLevelAttr Levelattr = Attribute.GetCustomAttribute(ecofield, typeof(ProvEconmoyLevelAttr)) as ProvEconmoyLevelAttr;
+
+            string econmoy = attribute.economy + "|" + Levelattr.baseTax;
+            //dynamic econmoy = new { baseTax = Levelattr.baseTax, levelName = attribute.economy.ToString() };
+
             fields.Add(new Tuple<string, Type, Type, List<object>>(eprov.ToString(), 
                                                                    typeof(HuangDAPI.Province), 
                                                                    typeof(MyGame.Province), 
-                                                                   new List<object> { eprov.ToString(), attribute.economy, attribute.mainOffice.ToString() }));
+                                                                   new List<object> { eprov.ToString(), econmoy, attribute.mainOffice.ToString() }));
         }
 
         string[] namespaces = { "native" };

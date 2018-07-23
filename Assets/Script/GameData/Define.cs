@@ -26,16 +26,14 @@ public class HougongAttr : Attribute
     public HougongGroup group;
 }
 
-public enum ENUM_ECONOMY
+public class ProvEconmoyLevelAttr : Attribute
 {
-    HIGH,
-    MID,
-    LOW,
-
+    public string levelName;
+    public int baseTax;
 }
 
 public class ProvinceAttribute : Attribute
 {
-    public ENUM_ECONOMY economy;
+    public object economy;
     public object mainOffice;
 }

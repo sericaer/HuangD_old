@@ -103,6 +103,30 @@ public class CodeDomGen
                     CodeFieldReferenceExpression codeEnum = new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(param.GetType().Name), ((Enum)param).ToString());
                     right.Parameters.Add(codeEnum);
                 }
+                //if(param.GetType().Name.Contains("AnonType"))
+                //{
+
+                //    string exper = "new { ";
+                //    foreach(FieldInfo field in param.GetType().GetFields())
+                //    {
+                //        object value = field.GetValue(param);
+                //        if(value is string)
+                //        {
+                //            exper += field.Name + "=" + "\"" + value + "\"";
+                //        }
+                //        else
+                //        {
+                //            exper += field.Name + "=" + value;
+                //        }
+
+                //        exper += ",";
+                //    }
+                //    exper.TrimEnd(",".ToCharArray());
+                //    exper += "}";
+
+                //    CodeSnippetExpression codeEnum = new CodeSnippetExpression(exper);
+                //    right.Parameters.Add(codeEnum);
+                //}
                 else
                 {
                     right.Parameters.Add(new CodePrimitiveExpression(param));

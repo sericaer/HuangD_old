@@ -118,10 +118,12 @@ public partial class MyGame
         //}
 
 
-        public Province(string name, ENUM_ECONOMY economy, string mainOfficeName)
+        public Province(string name, string economy, string mainOfficeName)
         {
             _name = name;
-            _economy = economy;
+
+            string[] anaylize = economy.Split('|');
+            _economy = new {baseTax = Convert.ToInt32(anaylize[1]), levelName = anaylize[0]};
             //listStatus = new List<STATUS>();
             _mainOffice = MyGame.Office.All.Where(x => x.name == mainOfficeName).Single() ;
 
@@ -158,7 +160,7 @@ public partial class MyGame
         {
             get
             {
-                return _economy.ToString();
+                return _economy.levelName;
             }
         }
 
@@ -187,25 +189,13 @@ public partial class MyGame
         //    return result.ToArray();
         //}
 
-        //public Dictionary<string, int> taxDetail()
-        //{
-        //    Dictionary<string, int> result = new Dictionary<string, int>();
+        public Dictionary<string, int> taxDetail()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
 
-        //    if(_economy == ENUM_ECONOMY.LOW)
-        //    {
-        //        result.Add("TAX_BASE", 5);
-        //    }
-        //    if (_economy == ENUM_ECONOMY.MID)
-        //    {
-        //        result.Add("TAX_BASE", 10);
-        //    }
-        //    if (_economy == ENUM_ECONOMY.HIGH)
-        //    {
-        //        result.Add("TAX_BASE", 15);
-        //    }
-
-        //    return result;
-        //}
+            result.Add("TAX_BASE", _economy.baseTax);
+            return result;
+        }
 
         internal static void Initialize()
         {
@@ -215,7 +205,7 @@ public partial class MyGame
 
         private string _name;
         //public List<STATUS> listStatus;
-        private ENUM_ECONOMY _economy;
+        private dynamic _economy;
         private Office _mainOffice;
         static List<Province> _All = new List<Province>();
     }
