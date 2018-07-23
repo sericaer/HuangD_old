@@ -6,6 +6,36 @@ using System.Linq;
 
 namespace native
 {
+    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
+    //{
+    //    void Precondition(ref object result)
+    //    {
+    //        if (Offices.SG1.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.PowerPercent);
+    //            if (PowerPercent > 80)
+    //            {
+    //                if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
+    //                {
+    //                    result = Flags.LOW_TAX_LEVEL_3;
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc(dynamic Precondition)
+    //        {
+    //            return UI.Format(Precondition.result[0]);
+    //        }
+    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.Add(Precondition.result[0]);
+    //        }
+    //    }
+    //}
+
     //class EVENT_SG1_SUGGEST_LOW_TAX
     //{
     //    Precondition

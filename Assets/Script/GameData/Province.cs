@@ -203,10 +203,17 @@ public partial class MyGame
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
+        [SerializeField]
         private string _name;
         //public List<STATUS> listStatus;
+
+        [SerializeField]
         private dynamic _economy;
+
+        [SerializeField]
         private Office _mainOffice;
+
+        [SerializeField]
         static List<Province> _All = new List<Province>();
     }
 

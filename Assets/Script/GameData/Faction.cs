@@ -123,6 +123,7 @@ public partial class MyGame
         [SerializeField]
         string _name;
 
+        [SerializeField]
         static List<Faction> _All = new List<Faction>();
     }
 }

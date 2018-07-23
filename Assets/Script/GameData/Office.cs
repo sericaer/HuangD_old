@@ -97,6 +97,7 @@ public partial class MyGame
         [SerializeField]
         OfficeGroup _group;
 
+        [SerializeField]
         public static List<Office> _All = new List<Office>();
     }
 }

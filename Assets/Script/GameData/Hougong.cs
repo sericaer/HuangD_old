@@ -86,6 +86,7 @@ public partial class MyGame
         [SerializeField]
         HougongGroup _group;
 
+        [SerializeField]
         public static List<Hougong> _All = new List<Hougong>();
     }
 }

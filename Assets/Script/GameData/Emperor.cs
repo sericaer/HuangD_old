@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 public partial class MyGame
 {
@@ -30,8 +31,11 @@ public partial class MyGame
             }
         }
 
+        [SerializeField]
         private string strEmpName;
+        [SerializeField]
         private int _age;
+        [SerializeField]
         private int _heath;
 
         public Emperor(string strEmpName, int age, int heath)
@@ -43,6 +47,7 @@ public partial class MyGame
             Inst = this;
         }
 
+        [SerializeField]
         static Emperor Inst;
     }
 }
