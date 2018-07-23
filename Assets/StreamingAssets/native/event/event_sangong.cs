@@ -6,20 +6,33 @@ using System.Linq;
 
 namespace native
 {
-    //class EVENT_SG1_SUGGEST_LOW_TAX : EVENT_HD
+    //class EVENT_SG1_SUGGEST_LOW_TAX
     //{
-    //    bool Precondition()
+    //    Precondition
     //    {
-    //        if (Offices[SG1].faction == Factions[SHI])
+    //        if (Offices.SG1.faction == Factions.SHI)
     //        {
-    //            levels = CalcSuggestLevel(Factions[SHI].PowerPercent);
-    //            if (levels == null || levels.Count != 0)
+    //            int powerPercent = Factions.SHI.PowerPercent);
+    //            if (PowerPercent > 80)
     //            {
-    //                return true;
+    //                if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
+    //                {
+    //                    result = Flags.LOW_TAX_LEVEL_3;
+    //                }
     //            }
     //        }
+    //    }
 
-    //        return false;
+    //    OPTION1
+    //    {
+    //        Desc
+    //        {
+    //            result = UI.Format(Precondition.result[0]);
+    //        }
+    //        Selected
+    //        {
+    //            CountryFlags.Add(Precondition.result[0]);
+    //        }
     //    }
     //}
 

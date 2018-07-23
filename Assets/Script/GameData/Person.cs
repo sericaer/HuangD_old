@@ -122,6 +122,16 @@ public partial class MyGame
             }
         }
 
+        public Office office
+        {
+            get
+            {
+                return (from x in MyGame.RelationManager.mapOffice2Person
+                        where x.person == this
+                        select x.office).Single();
+            }
+        }
+
         //public static Person NewPerson(Boolean isMale)
         //{
         //    do

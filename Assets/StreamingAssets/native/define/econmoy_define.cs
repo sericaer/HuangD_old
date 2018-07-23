@@ -22,4 +22,13 @@ namespace native
         [ProvEconmoyLevelAttr(baseTax = 15)]
         HIGH,
     }
+
+    public enum PEESON_SCORE_TO_POWER_DEFINE
+    {
+        SCORE60_70,
+        SCORE70_80,
+        SCORE80_90,
+        SCORE90_95,
+        SCORE95_MAX,
+    }
 }
