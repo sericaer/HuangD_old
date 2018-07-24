@@ -9,11 +9,12 @@ using UnityEngine;
 
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class Office : HuangDAPI.Office
+    [JsonObject(MemberSerialization.Fields)]
+    public class Office : SerializeManager, HuangDAPI.Office
     {
         public Office(string name, int power, OfficeGroup group)
         {
@@ -62,7 +63,7 @@ public partial class MyGame
             }
         }
 
-        public override string name
+        public string name
         {
             get
             {
@@ -70,7 +71,7 @@ public partial class MyGame
             }
         }
 
-        public override int power
+        public int power
         {
             get
             {
@@ -82,9 +83,15 @@ public partial class MyGame
         {
             get
             {
-                return (from x in MyGame.RelationManager.mapOffice2Person
-                        where x.office == this
+                string personname = (from x in MyGame.RelationManager.mapOffice2Person
+                        where x.office == this.name
                         select x.person).SingleOrDefault();
+                if(personname == null)
+                {
+                    return null;
+                }
+
+                return Person.Males.Where((arg) => arg.name == personname).Single();
             }
         }
 

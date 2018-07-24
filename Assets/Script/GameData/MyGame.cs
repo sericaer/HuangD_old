@@ -18,7 +18,6 @@ using System.Runtime.CompilerServices;
 [Serializable]
 public partial class MyGame
 {
-	[NonSerialized]
     public static MyGame Inst = new MyGame();
 
 	public void Initialize(string strEmpName, string strYearName, string strDynastyName)
@@ -47,6 +46,11 @@ public partial class MyGame
         date = new GameTime();
 
         date.incMonthEvent += Economy.UpDate;
+    }
+
+    public string Serialize()
+    {
+        return SerializeManager.Serial();
     }
 
     public class PER_CREATE_PERSON
@@ -133,6 +137,8 @@ public partial class MyGame
 
 	public string yearName;
 	public GameTime date;
+
+    public static int a = 1;
 
     [SerializeField]
     private string historyRecord;

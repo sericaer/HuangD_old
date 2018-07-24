@@ -125,7 +125,7 @@ public partial class MyGame
             string[] anaylize = economy.Split('|');
             _economy = new {baseTax = Convert.ToInt32(anaylize[1]), levelName = anaylize[0]};
             //listStatus = new List<STATUS>();
-            _mainOffice = MyGame.Office.All.Where(x => x.name == mainOfficeName).Single() ;
+            _mainOffice = mainOfficeName; 
 
             _All.Add(this);
         }
@@ -134,7 +134,7 @@ public partial class MyGame
         {
             get
             {
-                return _mainOffice;
+                return MyGame.Office.All.Where(x => x.name == _mainOffice).Single();
             }
         }
 
@@ -211,7 +211,7 @@ public partial class MyGame
         private dynamic _economy;
 
         [SerializeField]
-        private Office _mainOffice;
+        private string _mainOffice;
 
         [SerializeField]
         static List<Province> _All = new List<Province>();

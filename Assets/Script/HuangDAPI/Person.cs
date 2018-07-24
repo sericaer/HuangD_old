@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace HuangDAPI
 {
-    public abstract class Person
+    public interface Person
     {
-        public abstract string name { get; }
+        string name { get; }
         //public abstract int press { get; }
-        public abstract int score { get; set; }
+        int score { get; set; }
         //public abstract int heath { get; set; }
         //public abstract int age { get; set; }
         //public abstract Dictionary<string, string> Flags { get; set; }
@@ -32,7 +32,7 @@ namespace HuangDAPI
         //    }
         //}
 
-        public abstract void Die();
+        void Die();
     }
 
     //public static class Persons

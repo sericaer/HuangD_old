@@ -74,9 +74,15 @@ public partial class MyGame
         {
             get
             {
-                return (from x in MyGame.RelationManager.mapHougong2Person
-                        where x.hougong == this
+                string personname =  (from x in MyGame.RelationManager.mapHougong2Person
+                        where x.hougong == this.name
                         select x.person).SingleOrDefault();
+                if(personname == null)
+                {
+                    return null;
+                }
+
+                return Person.Females.Where((arg) => arg.name == personname).Single();
             }
         }
 

@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace HuangDAPI
 {
-    public abstract class Faction
+    public interface Faction
     { 
-        public abstract string name { get; }
-        internal abstract int power { get; }
+        string name { get; }
+        int power { get; }
     }
 
     //public static class Factions

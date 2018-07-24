@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using HuangDAPI;
+using Newtonsoft.Json;
 
 public partial class MyGame
 {
@@ -54,8 +55,8 @@ public partial class MyGame
     //    public List<object> _tag;
     //}
 
-    [Serializable]
-	public class Person : HuangDAPI.Person
+    [JsonObject(MemberSerialization.Fields)]
+    public class Person : SerializeManager, HuangDAPI.Person
     {
         //public Person()
         //{
@@ -112,13 +113,27 @@ public partial class MyGame
             }
         }
 
+        public static Person[] All
+        {
+            get
+            {
+                List<Person> all = new List<Person>();
+                all.AddRange(_Males);
+                all.AddRange(_Females);
+
+                return all.ToArray();
+            }
+        }
+
         public Faction faction
         {
             get
             {
-                return (from x in MyGame.RelationManager.mapPerson2Faction
-                        where x.person == this
+                string factionname =  (from x in MyGame.RelationManager.mapPerson2Faction
+                        where x.person == this.name
                         select x.faction).Single();
+                
+                return Faction.All.Where((arg) => arg.name == factionname).Single();
             }
         }
 
@@ -126,9 +141,11 @@ public partial class MyGame
         {
             get
             {
-                return (from x in MyGame.RelationManager.mapOffice2Person
-                        where x.person == this
+                string officename =  (from x in MyGame.RelationManager.mapOffice2Person
+                        where x.person == this.name
                         select x.office).Single();
+
+                return Office.All.Where((arg) => arg.name == officename).Single();
             }
         }
 
@@ -190,7 +207,7 @@ public partial class MyGame
         //    _score = p.score;
         //}
 
-        public override string name
+        public string name
         {
             get
             {
@@ -215,7 +232,7 @@ public partial class MyGame
         //    }
         //}
 
-        public override int score
+        public int score
         {
             get
             {
@@ -282,7 +299,7 @@ public partial class MyGame
         //    return  new PersonProcess(name, this, param);
         //}
 
-        public override void Die()
+        public void Die()
         {
             //foreach (Action<object, string> listener in ListListener)
             //{
@@ -315,7 +332,10 @@ public partial class MyGame
 
         //Dictionary<string, string> _Flags = new Dictionary<string, string>();
 
+        [SerializeField]
         static List<Person> _Males = new List<Person>();
+
+        [SerializeField]
         static List<Person> _Females = new List<Person>();
     }
 

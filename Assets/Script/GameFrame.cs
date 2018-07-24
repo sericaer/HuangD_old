@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 public class GameFrame
 {
@@ -34,7 +35,9 @@ public class GameFrame
             Directory.CreateDirectory(strSavePath);
         }
 
-		string json = JsonUtility.ToJson(MyGame.Inst);
+
+        //string json = JsonConvert.SerializeObject(MyGame.Office.All);
+        string json = MyGame.SerializeManager.Serial();
         File.WriteAllText(GetSavePath() + "/game.save", json);
     }
 

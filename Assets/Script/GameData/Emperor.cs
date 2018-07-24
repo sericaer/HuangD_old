@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    public class Emperor
+    [JsonObject(MemberSerialization.Fields)]
+    public class Emperor : SerializeManager
     {
         public static string name
         {
@@ -31,11 +33,11 @@ public partial class MyGame
             }
         }
 
-        [SerializeField]
+        [JsonProperty]
         private string strEmpName;
-        [SerializeField]
+        [JsonProperty]
         private int _age;
-        [SerializeField]
+        [JsonProperty]
         private int _heath;
 
         public Emperor(string strEmpName, int age, int heath)

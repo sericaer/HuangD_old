@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HuangDAPI;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 #if NET_4_6
 #else
@@ -13,8 +14,8 @@ using Mono.CSharp;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class Faction : HuangDAPI.Faction
+    [JsonObject(MemberSerialization.Fields)]
+    public class Faction : SerializeManager, HuangDAPI.Faction
     {
 
         public static void Initialize()
@@ -38,7 +39,7 @@ public partial class MyGame
         }
 
 
-        public override string name
+        public  string name
         {
             get
             {
@@ -60,7 +61,7 @@ public partial class MyGame
             }
         }
 
-        internal override int power
+        public int power
         {
             get
             {
@@ -80,36 +81,38 @@ public partial class MyGame
             {
                 List<Tuple<string, int>> list = new List<Tuple<string, int>>();
 
-                var query = MyGame.RelationManager.mapPerson2Faction.FindAll(x=>x.faction == this);
+                var query = MyGame.RelationManager.mapPerson2Faction.FindAll(x=>x.faction == this.name);
 
                 foreach (var elem in query)
                 {
+                    Person person = Person.All.Where((arg) => arg.name == elem.person).Single();
+
                     int power = 0;
 
-                    if (elem.person.score > 60)
+                    if (person.score > 60)
                     {
                         power = 1;
-                        if (elem.person.score > 70)
+                        if (person.score > 70)
                         {
                             power = 3;
                         }
-                        if (elem.person.score > 80)
+                        if (person.score > 80)
                         {
                             power = 6;
                         }
-                        else if (elem.person.score > 90)
+                        else if (person.score > 90)
                         {
                             power = 9;
                         }
-                        else if (elem.person.score > 95)
+                        else if (person.score > 95)
                         {
                             power = 12;
                         }
 
-                        list.Add(new Tuple<string, int>(UI.Format("{0}{1}", elem.person.name, "SCORE"), power));
+                        list.Add(new Tuple<string, int>(UI.Format("{0}{1}", person.name, "SCORE"), power));
                     }
 
-                    list.Add(new Tuple<string, int>(UI.Format("{0}{1}", elem.person.name, elem.person.office.name), elem.person.office.power));
+                    list.Add(new Tuple<string, int>(UI.Format("{0}{1}", person.name, person.office.name), person.office.power));
                 }
 
                 return list;

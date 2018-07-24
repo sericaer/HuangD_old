@@ -10,6 +10,7 @@ using HuangDAPI;
 
 using static MyGame.Person;
 using static MyGame.Office;
+using Newtonsoft.Json;
 
 [Serializable]
 class StringSerialDictionary : SerialDictionary<string,string>{};
@@ -22,7 +23,8 @@ class ListSerialDictionary : SerialDictionary<string, NameList>{};
 
 partial class MyGame
 {
-    public class RelationManager
+    [JsonObject(MemberSerialization.Fields)]
+    public class RelationManager : SerializeManager
     {
         public RelationManager()
         {
@@ -42,7 +44,7 @@ partial class MyGame
             {
                 int iRandom = Tools.Probability.GetRandomNum(0, Faction.All.Length-1);
 
-                mapPerson2Faction.Add(new { person = p, faction = Faction.All[iRandom] });
+                mapPerson2Faction.Add(new { person = p.name, faction = Faction.All[iRandom].name });
             }
         }
 
@@ -51,19 +53,19 @@ partial class MyGame
             Person[] persons = Person.Males.Take(Office.groupCenter1.Length).OrderBy(x=>Guid.NewGuid()).ToArray();
             for (int i = 0; i < Office.groupCenter1.Length; i++)
             {
-                mapOffice2Person.Add(new { office = Office.groupCenter1[i], person = persons[i]});
+                mapOffice2Person.Add(new { office = Office.groupCenter1[i].name, person = persons[i].name});
             }
 
             persons = Person.Males.Skip(mapOffice2Person.Count).Take(Office.groupCenter2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Office.groupCenter2.Length; i++)
             {
-                mapOffice2Person.Add(new { office = Office.groupCenter2[i], person = persons[i] });
+                mapOffice2Person.Add(new { office = Office.groupCenter2[i].name, person = persons[i].name });
             }
 
             persons = Person.Males.Skip(mapOffice2Person.Count).Take(Office.groupLocal.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Office.groupLocal.Length; i++)
             {
-                mapOffice2Person.Add(new { office = Office.groupLocal[i], person = persons[i] });
+                mapOffice2Person.Add(new { office = Office.groupLocal[i].name, person = persons[i].name });
             }
         }
 
@@ -72,24 +74,29 @@ partial class MyGame
             Person[] persons = Person.Females.Take(Hougong.Level1.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Hougong.Level1.Length; i++)
             {
-                mapHougong2Person.Add(new { hougong = Hougong.Level1[i], person = persons[i] });
+                mapHougong2Person.Add(new { hougong = Hougong.Level1[i].name, person = persons[i].name });
             }
 
             persons = Person.Females.Skip(mapHougong2Person.Count).Take(Hougong.Level2.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Hougong.Level2.Length; i++)
             {
-                mapHougong2Person.Add(new { hougong = Hougong.Level2[i], person = persons[i] });
+                mapHougong2Person.Add(new { hougong = Hougong.Level2[i].name, person = persons[i].name });
             }
 
             persons = Person.Females.Skip(mapHougong2Person.Count).Take(Hougong.Level3.Length).OrderBy(x => Guid.NewGuid()).ToArray();
             for (int i = 0; i < Hougong.Level3.Length; i++)
             {
-                mapHougong2Person.Add(new { hougong = Hougong.Level3[i], person = persons[i] });
+                mapHougong2Person.Add(new { hougong = Hougong.Level3[i].name, person = persons[i].name });
             }
         }
 
+        [SerializeField]
         public static List<dynamic> mapOffice2Person = new List<dynamic>();
+
+        [SerializeField]
         public static List<dynamic> mapPerson2Faction = new List<dynamic>();
+
+        [SerializeField]
         public static List<dynamic> mapHougong2Person = new List<dynamic>();
 
  //       public void Init()

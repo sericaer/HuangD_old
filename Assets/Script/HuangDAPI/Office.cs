@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace HuangDAPI
 {
-    public abstract class Office
+    public interface Office
     {
-        public abstract string name { get; }
-        public abstract int power { get; }
+        string name { get; }
+        int power { get; }
         //public Person person
         //{
         //    get

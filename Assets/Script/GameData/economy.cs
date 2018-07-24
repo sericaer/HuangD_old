@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 public partial class MyGame
 {
-    public static class Economy 
+    public class Economy : SerializeManager
     {
         public static Dictionary<string, int> IncomeDetail()
         {
@@ -57,6 +58,7 @@ public partial class MyGame
             current += NetInCome();
         }
 
+        [SerializeField]
         public static int current;
     }
 }
