@@ -15,8 +15,8 @@ public class DecisionLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        decplan = MyGame.DecisionManager.Plans[this.name] as MyGame.DecisionPlan;
-        btnDo.interactable = decplan.IsEnable() && !MyGame.Inst.eventManager.isEventDialogExit;
+        decplan = MyGame.DecisionManager.Plans.Find((obj) => obj.name == this.name) as MyGame.DecisionPlan;
+        btnDo.interactable = decplan.IsEnable() && !GameFrame.eventManager.isEventDialogExit;
     }
 	
 	// Update is called once per frame

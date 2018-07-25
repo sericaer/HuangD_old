@@ -27,10 +27,10 @@ namespace HuangDAPI
         //}
     }
 
-    public abstract class Hougong
+    public interface Hougong
     {
-        public abstract string name { get; }
-        public abstract Person person { get; }
+        string name { get; }
+        Person person { get; }
     }
 
     //public class Offices

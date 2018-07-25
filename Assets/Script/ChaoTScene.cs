@@ -57,7 +57,8 @@ public class ChaoTScene : MonoBehaviour
 
     private void RefreshDecisionPlan()
     {
-        List<string> newPlans = MyGame.DecisionManager.Plans.Keys.ToList();
+        List<string> newPlans = (from x in MyGame.DecisionManager.Plans
+                                 select x.name).ToList();
 
         List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<DecisionLogic>()
                                  select x.name).ToList();
@@ -79,8 +80,8 @@ public class ChaoTScene : MonoBehaviour
 
     private void RefreshDecisionProc()
     {
-        List<string> newProcs = MyGame.DecisionManager.Procs.Keys.ToList();
-
+        List<string> newProcs = (from x in MyGame.DecisionManager.Procs
+                                 select x.name).ToList();
         List<string> oldProcs = (from x in PanelProcess.GetComponentsInChildren<ProcessLogic>()
                                  select x.name).ToList();
 

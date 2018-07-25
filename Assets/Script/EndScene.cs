@@ -14,8 +14,8 @@ public class EndScene : MonoBehaviour
         title = GameObject.Find("Canvas/Panel/title").GetComponent<Text>();
         history   = GameObject.Find("Canvas/Panel/history/value").GetComponent<Text>();
 
-        title.text = MyGame.Inst.dynastyName + "史";
-        history.text = MyGame.Inst.HistoryGet();
+        title.text = MyGame.DynastyInfo.dynastyName + "史";
+        history.text = MyGame.History.current;
 	}
 	
 	// Update is called once per frame

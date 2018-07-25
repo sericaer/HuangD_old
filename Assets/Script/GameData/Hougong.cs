@@ -10,11 +10,12 @@ using UnityEngine;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using HuangDAPI;
+using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class Hougong : HuangDAPI.Hougong
+    [JsonObject(MemberSerialization.Fields)]
+    public class Hougong : SerializeManager, HuangDAPI.Hougong
     {
         public Hougong(string name, HougongGroup group)
         {
@@ -62,7 +63,7 @@ public partial class MyGame
             }
         }
 
-        public override string name
+        public string name
         {
             get
             {
@@ -70,7 +71,7 @@ public partial class MyGame
             }
         }
 
-        public override HuangDAPI.Person person
+        public  HuangDAPI.Person person
         {
             get
             {

@@ -31,7 +31,7 @@ public class MainScene : MonoBehaviour
 
         panelCenter = GameObject.Find ("Canvas/PanelCenter");
 
-        txtDynastyName.text = MyGame.Inst.dynastyName;
+        txtDynastyName.text = MyGame.DynastyInfo.dynastyName;
 
         //ZhoujTable =  GameObject.Find ("Canvas/ZhoujTable").GetComponent<WDataTable>();
 
@@ -69,7 +69,7 @@ public class MainScene : MonoBehaviour
         onRefresh();
 		OnKeyBoard();
 
-        if (MyGame.Inst.gameEnd)
+        if (GameFrame.gameEnd)
         {
             SceneManager.LoadSceneAsync("EndScene", LoadSceneMode.Single);
         }
@@ -131,25 +131,25 @@ public class MainScene : MonoBehaviour
 
     public void OnSave()
 	{
-		GameFrame.GetInstance ().OnSave ();
+		GameFrame.OnSave ();
 		panelCenter.SetActive (false);
 	}
 
     public void OnExit()
     {
         panelCenter.SetActive (false);
-        MyGame.Inst.gameEnd = true;
+        GameFrame.gameEnd = true;
     }
 
     private void onRefresh()
     {
-        Stability.text = MyGame.Inst.Stability.ToString();
+        Stability.text = MyGame.Stability.current.ToString();
 
         Economy.text   = MyGame.Economy.current.ToString();
         Economy.GetComponent<TooltipTrigger>().mDisplayText = MyGame.Economy.Desc();
 
-        Military.text  = MyGame.Inst.Military.ToString();
-        txtTime.text   = MyGame.Inst.time;
+        Military.text  = MyGame.Military.current.ToString();
+        txtTime.text   = MyGame.DynastyInfo.dynastyName + MyGame.DynastyInfo.yearName + MyGame.GameTime.current.ToString();
 
         txtEmpName.text = MyGame.Emperor.name;
         txtEmpAge.text = MyGame.Emperor.age.ToString();

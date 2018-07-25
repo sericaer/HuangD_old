@@ -15,11 +15,12 @@ using UnityEngine;
 public partial class MyGame
 {
     [Serializable]
-    public class DecisionPlan : HuangDAPI.DecisionPlan
+    public class DecisionPlan : SerializeManager,HuangDAPI.DecisionPlan
     {
         public DecisionPlan(string key)
         {
             name = key;
+            All.Add(this);
         }
 
         public bool IsEnable()
@@ -34,14 +35,14 @@ public partial class MyGame
                     string eventName = decisionDef._funcEnableEvent();
                     Debug.Log("Add " + eventName);
 
-                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, name, "");
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, "");
                 }
                 if(isEnable == false)
                 {
                     string eventName = decisionDef._funcDisableEvent();
                     Debug.Log("Add" + eventName);
 
-                    MyGame.Inst.eventManager.InsertDecisionEvent(eventName, name, "");
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, "");
                 }
             }
 
@@ -51,10 +52,10 @@ public partial class MyGame
         public void process()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, "");
+            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, "");
 
-            MyGame.Inst.DecisionProcs.Add(name, new DecisionProc(name));
-            MyGame.Inst.DecisionPlans.Remove(name);
+            var process = new DecisionProc(name);
+            All.Remove(this);
         }
 
         public string name;
@@ -76,10 +77,12 @@ public partial class MyGame
                 throw new NotImplementedException();
             }
         }
+
+        [SerializeField]
+        public static List<DecisionPlan> All = new List<DecisionPlan>();
     }
 
-    [Serializable]
-    public class DecisionProc : HuangDAPI.DecisionProc
+    public class DecisionProc : SerializeManager,HuangDAPI.DecisionProc
     {
         public DecisionProc(string key)
         {
@@ -114,14 +117,15 @@ public partial class MyGame
             //    }
             //}
 
-            MyGame.Inst.date.incDayEvent += DayIncrease;
+            MyGame.GameTime.current.incDayEvent += DayIncrease;
+            All.Add(this);
         }
 
         public HuangDAPI.Person ResponsiblePerson
         {
             get
             {
-                return resPerson;
+                return Person.All.Where((arg) => arg.name == resPerson).SingleOrDefault();
             }
         }
         public List<string> Flags
@@ -144,7 +148,7 @@ public partial class MyGame
 
                 //return sum;
 
-                
+                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[decisionname];
                 return decisionDef._CostDay;
             }
         }
@@ -169,19 +173,20 @@ public partial class MyGame
         {
             currDay++;
 
-            MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[decisionname];
+            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
 
             if (currDay >= maxDay && maxDay != 0)
             {
-                MyGame.Inst.date.incDayEvent -= DayIncrease;
-                MyGame.Inst.DecisionProcs.Remove(this.name);
-                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
+                MyGame.GameTime.current.incDayEvent -= DayIncrease;
+                All.Remove(this);
+                GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
             if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
             {
-                MyGame.Inst.DecisionProcs.Remove(this.name);
-                MyGame.Inst.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
+                All.Remove(this);
+                GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
         }
@@ -190,13 +195,16 @@ public partial class MyGame
         public string name;
         private List<string> _Flags = new List<string>();
         private List<Tuple<string, int>> _timeline = new List<Tuple<string, int>>();
-        private HuangDAPI.Person resPerson = null;
+        private string resPerson = null;
         //private GameTime _startTime;
-        private HuangDAPI.DECISION decisionDef = null;
+        private string decisionname = null;
+
+        [SerializeField]
+        public static List<DecisionProc> All =new List<DecisionProc>();
     }
 
-    private Dictionary<string, HuangDAPI.DecisionPlan> DecisionPlans = new Dictionary<string, HuangDAPI.DecisionPlan>();
-    private Dictionary<string, HuangDAPI.DecisionProc> DecisionProcs = new Dictionary<string, HuangDAPI.DecisionProc>();
+    //private Dictionary<string, HuangDAPI.DecisionPlan> DecisionPlans = new Dictionary<string, HuangDAPI.DecisionPlan>();
+    //private Dictionary<string, HuangDAPI.DecisionProc> DecisionProcs = new Dictionary<string, HuangDAPI.DecisionProc>();
 
     public static class DecisionManager
     {
@@ -205,19 +213,19 @@ public partial class MyGame
             Update();
         }
 
-        public static Dictionary<string, HuangDAPI.DecisionPlan> Plans
+        public static List<DecisionPlan> Plans
         {
             get
             {
-                return MyGame.Inst.DecisionPlans;
+                return DecisionPlan.All;
             }
         }
 
-        public static Dictionary<string, HuangDAPI.DecisionProc> Procs
+        public static List<DecisionProc> Procs
         {
             get
             {
-                return MyGame.Inst.DecisionProcs;
+                return DecisionProc.All;
             }
         }
 
@@ -227,15 +235,15 @@ public partial class MyGame
             {
                 if (elem.Value._funcVisable())
                 {
-                    if(!MyGame.Inst.DecisionPlans.ContainsKey(elem.Key)
-                        && !MyGame.Inst.DecisionProcs.ContainsKey(elem.Key))
+                    if(!Plans.Exists((obj) => obj.name == elem.Key)
+                       && !Procs.Exists((obj) => obj.name == elem.Key))
                     {
-                        MyGame.Inst.DecisionPlans.Add(elem.Key, new DecisionPlan(elem.Key));
+                        var plan = new DecisionPlan(elem.Key);
                     }
                 }
                 else
                 {
-                    MyGame.Inst.DecisionPlans.Remove(elem.Key);
+                    Plans.RemoveAll((obj) => obj.name == elem.Key);
                 }
             }
         }

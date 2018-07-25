@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour
 
     void TimerFunc()
     {
-        MyGame.Inst.date.Increase();
+        MyGame.GameTime.current.Increase();
         Invoke("TimerFunc", 3.0f);
     }
 }

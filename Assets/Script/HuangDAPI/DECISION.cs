@@ -121,21 +121,21 @@ namespace HuangDAPI
 
         public void process()
         {
-            if(MyGame.DecisionManager.Procs.ContainsKey(_name))
+            if(MyGame.DecisionManager.Procs.Exists((obj)=>obj.name == _name))
             {
                 throw new Exception("decision already process! name:" + _name);
             }
 
-            MyGame.DecisionManager.Plans[_name].process();
+            MyGame.DecisionManager.Plans.Find((obj) => obj.name == _name).process();
         }
 
         public IList<string> Flags
         {
             get
             {
-                if (MyGame.DecisionManager.Procs.ContainsKey(_name))
+                if (MyGame.DecisionManager.Procs.Exists((obj) => obj.name == _name))
                 {
-                    return MyGame.DecisionManager.Procs[_name].Flags;
+                    return MyGame.DecisionManager.Procs.Find((obj) => obj.name == _name).Flags;
                 }
 
                 throw new Exception("decision not process! name:" + _name);

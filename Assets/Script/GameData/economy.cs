@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Tools;
 
 public partial class MyGame
 {
@@ -59,6 +60,6 @@ public partial class MyGame
         }
 
         [SerializeField]
-        public static int current;
+        public static int current = Probability.GetRandomNum(60, 90);
     }
 }

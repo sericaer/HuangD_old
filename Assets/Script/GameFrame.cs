@@ -8,25 +8,26 @@ using Newtonsoft.Json;
 
 public class GameFrame
 {
-    public static GameFrame GetInstance()
-    {
-        if (m_Instance == null)
-        {
-            m_Instance = new GameFrame();
-        }
+    //public static GameFrame GetInstance()
+    //{
+    //    if (m_Instance == null)
+    //    {
+    //        m_Instance = new GameFrame();
+    //    }
 
-        return m_Instance;
-    }
+    //    return m_Instance;
+    //}
 
-    public void OnNew()//(String countryName, String yearName, String familyName, String selfName)
+    public static void OnNew(string strEmpName, string strYearName, string strDynastyName)
     {
         //Global.SetMyGame(new MyGame(countryName, yearName, familyName, selfName));
         //Global.GetGameData().Init();
-
+        gameEnd = false;
+        Initialize(strEmpName, strYearName, strDynastyName);
         SceneManager.LoadSceneAsync("MainScene");
     }
 
-    public void OnSave()
+    public static void OnSave()
     {
         string strSavePath = GetSavePath();
         Debug.Log(strSavePath);
@@ -35,43 +36,65 @@ public class GameFrame
             Directory.CreateDirectory(strSavePath);
         }
 
-
-        //string json = JsonConvert.SerializeObject(MyGame.Office.All);
         string json = MyGame.SerializeManager.Serial();
         File.WriteAllText(GetSavePath() + "/game.save", json);
     }
 
-    public void OnLoad()
+    public static void OnLoad()
     {
+        gameEnd = false;
+
         string strSavePath = GetSavePath();
         Debug.Log(strSavePath);
 
         string json = File.ReadAllText(GetSavePath() + "/game.save");
-		MyGame.Inst = JsonUtility.FromJson<MyGame> (json);
+
+        MyGame.SerializeManager.Deserial(json);
+
+		//MyGame.Inst = JsonUtility.FromJson<MyGame> (json);
 
         //Global.SetMyGame(new MyGame(JsonUtility.FromJson<GameData>(json)));
         SceneManager.LoadSceneAsync("MainScene");
     }
 
-    public void OnEnd()
+    public static void OnEnd()
     {
         SceneManager.LoadSceneAsync("EndScene");
     }
 
-    public void OnQuit()
+    public static void OnQuit()
     {
         Application.Quit();
     }
 
-    public void OnReturn()
+    public static void OnReturn()
     {
         SceneManager.LoadSceneAsync("StartScene");
     }
 
-    private string GetSavePath()
+    private static string GetSavePath()
     {
         return Application.persistentDataPath + "/save";
     }
 
-    private static GameFrame m_Instance;
+    private static void Initialize(string strEmpName, string strYearName, string strDynastyName)
+    {
+        MyGame.Office.Initialize();
+        MyGame.Province.Initialize();
+        MyGame.Hougong.Initialize();
+        MyGame.Faction.Initialize();
+
+        MyGame.Person.Initialize();
+
+        MyGame.RelationManager.Initialize();
+
+        MyGame.Emperor.Initialize(strEmpName, Tools.Probability.GetRandomNum(16, 40), Tools.Probability.GetRandomNum(5, 8));
+
+        MyGame.GameTime.Initialize();
+        MyGame.DynastyInfo.Initialize(strYearName, strDynastyName);
+    }
+
+    public static bool gameEnd = false;
+    public static EventManager eventManager = null;
+    //private static GameFrame m_Instance;
 }

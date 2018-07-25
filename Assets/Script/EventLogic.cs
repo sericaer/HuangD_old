@@ -10,7 +10,7 @@ public class EventLogic : MonoBehaviour
 	{
 		eventManager = new EventManager ();
 
-        MyGame.Inst.eventManager = eventManager;
+        GameFrame.eventManager = eventManager;
 
 		m_fWaitTime = 1.0F;
 		StartCoroutine(OnTimer());  
@@ -42,7 +42,7 @@ public class EventLogic : MonoBehaviour
 			yield return new WaitUntil (isChecked);
 
             string history = dialog.GetComponent<DialogLogic>().historyrecord;
-            MyGame.Inst.HistoryRecord(history);
+            MyGame.History.current += history;
 
 			string key = dialog.GetComponent<DialogLogic> ().result;
             object param = dialog.GetComponent<DialogLogic> ().nexparam;
@@ -55,7 +55,7 @@ public class EventLogic : MonoBehaviour
             //eventManager.Insert (showTable);
             eventManager.Insert (key, param);
 
-            if (MyGame.Inst.gameEnd)
+            if (GameFrame.gameEnd)
             {
 
                 yield break;
@@ -64,11 +64,11 @@ public class EventLogic : MonoBehaviour
 			costtime += 0.1f;
 		}
 
-        MyGame.Inst.eventManager.isEventDialogExit = false;
+        eventManager.isEventDialogExit = false;
 
         yield return new WaitForSeconds(m_fWaitTime - costtime);
 
-        MyGame.Inst.date.Increase();
+        MyGame.GameTime.current.Increase();
         StartCoroutine(OnTimer());
 
 	}

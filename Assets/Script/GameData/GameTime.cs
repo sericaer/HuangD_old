@@ -1,11 +1,19 @@
 ﻿using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class GameTime : HuangDAPI.GMDate
+    [JsonObject(MemberSerialization.OptIn)]
+    public class GameTime : SerializeManager, HuangDAPI.GMDate
 	{
+        public static void Initialize()
+        {
+            current = new GameTime();
+
+            current.incMonthEvent += Economy.UpDate;
+        }
+
 		public GameTime()
 		{
 			_year = 1;
@@ -156,15 +164,20 @@ public partial class MyGame
             return result;
         }
 
+
         public event Action incDayEvent;
         public event Action incMonthEvent;
         public event Action incYearEvent;
 
-        [SerializeField]
+ 
+        [JsonProperty]
 		private int _year;
-		[SerializeField]
+        [JsonProperty]
 		private int _month;
-		[SerializeField]
+        [JsonProperty]
 		private int _day;
+
+        [SerializeField]
+        public static GameTime current;
 	}
 }

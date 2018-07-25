@@ -74,17 +74,17 @@ public class StartScene : MonoBehaviour
 
     public void OnButtonQuit()
     {
-        GameFrame.GetInstance().OnQuit();
+        GameFrame.OnQuit();
     }
 
 	public void OnButtonSave()
 	{
-		GameFrame.GetInstance().OnSave();
+		GameFrame.OnSave();
 	}
 
     public void OnButtonLoad()
     {
-        GameFrame.GetInstance().OnLoad();
+        GameFrame.OnLoad();
     }
 
     //private String GetRandomCounryName()

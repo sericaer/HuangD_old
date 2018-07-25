@@ -86,7 +86,7 @@ public partial class MyGame
             while (_Females.Count < MyGame.Hougong.All.Length)
             {
                 Person person = new Person(false);
-                if (_Males.Any(x => x.name == person.name))
+                if (_Females.Any(x => x.name == person.name))
                 {
                     continue;
                 }

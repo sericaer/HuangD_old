@@ -9,6 +9,11 @@ public partial class MyGame
     [JsonObject(MemberSerialization.Fields)]
     public class Emperor : SerializeManager
     {
+        public static void Initialize(string strEmpName, int age, int heath)
+        {
+            Inst = new Emperor(strEmpName, age, heath);
+        }
+
         public static string name
         {
             get
@@ -40,13 +45,11 @@ public partial class MyGame
         [JsonProperty]
         private int _heath;
 
-        public Emperor(string strEmpName, int age, int heath)
+        private Emperor(string strEmpName, int age, int heath)
         {
             this.strEmpName = strEmpName;
             this._age = age;
             this._heath = heath;
-
-            Inst = this;
         }
 
         [SerializeField]

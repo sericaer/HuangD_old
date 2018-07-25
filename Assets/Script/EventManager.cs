@@ -22,7 +22,7 @@ public class GMEvent : ItfEvent
 {
     public GMEvent(EVENT_HD ie, object param)
     {
-        MyGame.Inst.eventManager.isEventDialogExit = true;
+        GameFrame.eventManager.isEventDialogExit = true;
 
         this._isChecked = false;
         this.ie = ie;

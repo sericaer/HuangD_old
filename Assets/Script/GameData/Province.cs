@@ -9,11 +9,12 @@ using UnityEngine;
 
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    [Serializable]
-    public class Province : HuangDAPI.Province
+    [JsonObject(MemberSerialization.Fields)]
+    public class Province : SerializeManager, HuangDAPI.Province
     {
         public static Province[] All
         {
@@ -148,7 +149,7 @@ public partial class MyGame
 
 
 
-        public override string name
+        public  string name
         {
             get
             {
@@ -156,7 +157,7 @@ public partial class MyGame
             }
         }
 
-        public override string economy
+        public  string economy
         {
             get
             {
@@ -193,7 +194,7 @@ public partial class MyGame
         {
             Dictionary<string, int> result = new Dictionary<string, int>();
 
-            result.Add("TAX_BASE", _economy.baseTax);
+            result.Add("TAX_BASE", (int)_economy.baseTax);
             return result;
         }
 

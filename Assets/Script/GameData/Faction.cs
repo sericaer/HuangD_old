@@ -81,11 +81,12 @@ public partial class MyGame
             {
                 List<Tuple<string, int>> list = new List<Tuple<string, int>>();
 
-                var query = MyGame.RelationManager.mapPerson2Faction.FindAll(x=>x.faction == this.name);
+                var query = MyGame.RelationManager.mapPerson2Faction.FindAll(x => x.faction == this.name);
 
-                foreach (var elem in query)
+                foreach (dynamic elem in query)
                 {
-                    Person person = Person.All.Where((arg) => arg.name == elem.person).Single();
+
+                    Person person = Person.All.Where((arg) => arg.name == (string)elem.person).Single();
 
                     int power = 0;
 

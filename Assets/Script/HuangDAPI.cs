@@ -70,10 +70,10 @@ namespace HuangDAPI
 
 
 
-    public abstract class Province
+    public interface Province
     {
-        public abstract string name { get; }
-        public abstract string economy { get; }
+          string name { get; }
+          string economy { get; }
         //public Disaster debuff
         //{
         //    get
@@ -436,11 +436,11 @@ namespace HuangDAPI
         //    return person;
         //}
 
-        public static Disaster NewDisaster()
-        {
-            Disaster disaster = MyGame.Inst.NewDisaster();
-            return disaster;
-        }
+        //public static Disaster NewDisaster()
+        //{
+        //    Disaster disaster = MyGame.Inst.NewDisaster();
+        //    return disaster;
+        //}
 
         //public static Person NewPerson(Faction faction)
         //{
@@ -467,17 +467,17 @@ namespace HuangDAPI
         //    }
         //}
 
-        public static int Stability
-        {
-            get
-            {
-                return MyGame.Inst.Stability;
-            }
-            set
-            {
-                MyGame.Inst.Stability = value;
-            }
-        }
+        //public static int Stability
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.Stability;
+        //    }
+        //    set
+        //    {
+        //        MyGame.Inst.Stability = value;
+        //    }
+        //}
 
         public static int Economy
         {
@@ -491,33 +491,33 @@ namespace HuangDAPI
             }
         }
 
-        public static int Military
-        {
-            get
-            {
-                return MyGame.Inst.Military;
-            }
-            set
-            {
-                MyGame.Inst.Military = value;
-            }
-        }
+        //public static int Military
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.Military;
+        //    }
+        //    set
+        //    {
+        //        MyGame.Inst.Military = value;
+        //    }
+        //}
 
-        public static GMDate Date
-        {
-            get
-            {
-                return MyGame.Inst.date;
-            }
-        }
+        //public static GMDate Date
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.date;
+        //    }
+        //}
 
-        public static List<string> CountryFlags
-        {
-            get
-            {
-                return MyGame.Inst.CountryFlags;
-            }
-        }
+        //public static List<string> CountryFlags
+        //{
+        //    get
+        //    {
+        //        return MyGame.Inst.CountryFlags;
+        //    }
+        //}
 
         //public static List<ImpWork> ImpWorks
         //{
@@ -541,22 +541,22 @@ namespace HuangDAPI
             }
         }
 
-        public static Dictionary<string, DecisionProc> DecisionProcs
-        {
-            get
-            {
-                return MyGame.DecisionManager.Procs;
-            }
-        }
+        //public static Dictionary<string, DecisionProc> DecisionProcs
+        //{
+        //    get
+        //    {
+        //        return MyGame.DecisionManager.Procs;
+        //    }
+        //}
 
 
-        public static Dictionary<string, DecisionPlan> DecisionPlans
-        {
-            get
-            {
-                return MyGame.DecisionManager.Plans;
-            }
-        }
+        //public static Dictionary<string, DecisionPlan> DecisionPlans
+        //{
+        //    get
+        //    {
+        //        return MyGame.DecisionManager.Plans;
+        //    }
+        //}
 
         private static List<NewPersonInfo> listNewPersonInfo = new List<NewPersonInfo>();
 
