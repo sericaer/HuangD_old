@@ -79,7 +79,7 @@ public partial class MyGame
             }
         }
 
-        public Person person
+        public HuangDAPI.Person person
         {
             get
             {

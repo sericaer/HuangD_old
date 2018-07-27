@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using HuangDAPI;
+using System.Dynamic;
 
 public interface ItfEvent
 {
@@ -15,12 +16,11 @@ public interface ItfEvent
     void Initlize();
     void SelectOption(string opKey, ref string nxtEvent, ref object ret);
     string History();
-
 }
 
 public class GMEvent : ItfEvent
 {
-    public GMEvent(EVENT_HD ie, object param)
+    public GMEvent(EVENT_HD ie, object param, dynamic preResult)
     {
         GameFrame.eventManager.isEventDialogExit = true;
 
@@ -29,6 +29,7 @@ public class GMEvent : ItfEvent
         ie.param = param;
         this.param = param;
 
+        this.preResult = preResult;
         optionDic = new Dictionary<string, EVENT_HD.Option>();
 
         Debug.Log("Event Start:" + ie._funcTitle());
@@ -62,7 +63,7 @@ public class GMEvent : ItfEvent
                     continue;
                 }
 
-                result.Add (new KeyValuePair<string, string> (option.GetType().Name, option._funcDesc()));
+                result.Add (new KeyValuePair<string, string> (option.GetType().Name, option._funcDesc(preResult)));
 			}
 
 			return result.ToArray ();
@@ -113,7 +114,7 @@ public class GMEvent : ItfEvent
 	{
         _isChecked = true;
 
-        optionDic[opKey]._funcSelected(ref nxtEvent, ref ret);
+        optionDic[opKey]._funcSelected(preResult, ref nxtEvent, ref ret);
        
     }
 
@@ -126,6 +127,7 @@ public class GMEvent : ItfEvent
     private bool _isChecked;
     private Dictionary<string, EVENT_HD.Option> optionDic;
 
+    private dynamic preResult;
     private object param;
 }
 
@@ -212,12 +214,14 @@ public class EventManager
 		{
             ie.LoadMemento();
 
-            if (!ie._funcPrecondition())
+            dynamic rslt = new ExpandoObject();
+            ie._funcPrecondition(ref rslt);
+            if (rslt == null)
 			{
 				continue;
 			}
 
-            GMEvent eventobj = new GMEvent (ie, null);
+            GMEvent eventobj = new GMEvent (ie, null, rslt);
 			eventobj.Initlize ();
 			yield return eventobj;
 		}
@@ -232,7 +236,7 @@ public class EventManager
 			return;
 		}
             
-		nextEvent = new GMEvent (StreamManager.eventDict [key], param);
+        nextEvent = new GMEvent (StreamManager.eventDict [key], param, null);
 	}
 
     public void InsertDecisionEvent(string key, string decision, object param)
@@ -242,7 +246,7 @@ public class EventManager
             return;
         }
 
-        decisionEvent = new GMEvent(StreamManager.eventDict[key], param);
+        decisionEvent = new GMEvent(StreamManager.eventDict[key], param, null);
         ((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
     }
 

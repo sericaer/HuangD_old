@@ -44,7 +44,7 @@ partial class MyGame
             {
                 int iRandom = Tools.Probability.GetRandomNum(0, Faction.All.Length-1);
 
-                mapPerson2Faction.Add(new { person = p.name, faction = Faction.All[iRandom].name });
+                mapPerson2Faction.Add(new { person = p.name, faction = "SHI" });
             }
         }
 

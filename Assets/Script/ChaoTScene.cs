@@ -126,7 +126,7 @@ class ChaoChenUI
 
 	public void Refresh()
 	{
-        MyGame.Person p = office.person;
+        HuangDAPI.Person p = office.person;
 		if (p == null) 
 		{
 			personName.text = "--";

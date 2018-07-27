@@ -125,7 +125,7 @@ public partial class MyGame
             }
         }
 
-        public Faction faction
+        public HuangDAPI.Faction faction
         {
             get
             {

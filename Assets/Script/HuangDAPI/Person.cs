@@ -9,6 +9,7 @@ namespace HuangDAPI
         string name { get; }
         //public abstract int press { get; }
         int score { get; set; }
+        Faction faction { get; }
         //public abstract int heath { get; set; }
         //public abstract int age { get; set; }
         //public abstract Dictionary<string, string> Flags { get; set; }

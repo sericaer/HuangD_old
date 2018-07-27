@@ -37,7 +37,12 @@ public class EventLogic : MonoBehaviour
         {
 			yield return new WaitForSeconds(0.5f);
 
-            dialog = DialogLogic.newDialogInstace(eventobj.title, eventobj.content, eventobj.options, eventobj.SelectOption, eventobj.History);
+            DialogLogic.DelegateProcess delegateProcess = delegate(string op, ref string nextEvent, ref object nextParam) {
+
+                eventobj.SelectOption(op, ref nextEvent, ref nextParam);
+            };
+
+            dialog = DialogLogic.newDialogInstace(eventobj.title, eventobj.content, eventobj.options, delegateProcess, eventobj.History);
 
 			yield return new WaitUntil (isChecked);
 

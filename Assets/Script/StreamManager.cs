@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Linq;
 
 using HuangDAPI;
+using System.Text.RegularExpressions;
 
 
 #if NET_4_6
@@ -142,7 +143,8 @@ public class StreamManager
         List<string> sourceCodes = defineSourceCodes.ToList();
         foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
         {
-            sourceCodes.Add(File.ReadAllText(filename));
+            string script = ScriptPerProcess(File.ReadAllText(filename));
+            sourceCodes.Add(script);
         }
 
         CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchSourceBundle(sourceCodes.ToArray());
@@ -366,6 +368,21 @@ public class StreamManager
         }
     }
 
+    private string ScriptPerProcess(string v)
+    {
+        v = v.Replace("\t", "    ");
+        Regex r = new Regex(@"((?:^|\n)\s*EVENT_.*)(\n\s*{[\s\S]*)");
+
+        string mcs = r.Replace(v, new MatchEvaluator((Match match) =>
+                                                              {
+             string result =  match.Groups[1].Value.Insert(0, "class ") + ":EVENT_HD"  +match.Groups[2].Value;
+                                                                  Debug.Log(result);
+                                                                  return result;
+                                                              }));
+
+        return mcs;
+
+    }
 
     private void LoadUIDesc()
     {

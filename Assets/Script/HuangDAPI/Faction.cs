@@ -8,6 +8,7 @@ namespace HuangDAPI
     { 
         string name { get; }
         int power { get; }
+        int powerPercent { get; }
     }
 
     //public static class Factions

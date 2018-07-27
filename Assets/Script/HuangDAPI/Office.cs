@@ -12,19 +12,7 @@ namespace HuangDAPI
     {
         string name { get; }
         int power { get; }
-        //public Person person
-        //{
-        //    get
-        //    {
-        //        return (from x in GMData.RelationManager.OfficeMap
-        //                where x.office.name == name
-        //                select x.person).SingleOrDefault();
-        //    }
-        //    set
-        //    {
-        //        GMData.RelationManager.OfficeMap.Find(x => x.office.name == name).person = value;
-        //    }
-        //}
+        Person person { get; }
     }
 
     public interface Hougong
