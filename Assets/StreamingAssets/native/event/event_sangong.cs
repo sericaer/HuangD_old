@@ -8,7 +8,39 @@ namespace native
 {
     EVENT_SG1_SUGGEST_LOW_TAX
     {
-        void Precondition(ref dynamic Precondition)
+        Precondition
+        {
+            if (Offices.SG1.person.faction == Factions.SHI)
+            {
+                int powerPercent = Factions.SHI.powerPercent;
+                if (powerPercent > 80)
+                {
+                    //if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
+                    {
+                        Precondition.Flag = "aaa"; //Flags.LOW_TAX_LEVEL_3;
+                    }
+                }
+            }
+        }
+
+        OPTION_1
+        {
+            string Desc(dynamic Precondition)
+            {
+                return UI.Format(Precondition.Flag);
+            }
+            Selected
+            {
+
+                Debug.Log(Precondition.Flag);
+                //CountryFlags.Add(Precondition.result[0]);
+            }
+        }
+    }
+
+    EVENT_SG2_SUGGEST_LOW_TAX
+    {
+         void Precondition(ref dynamic Precondition)
         {
             if (Offices.SG1.person.faction == Factions.SHI)
             {
