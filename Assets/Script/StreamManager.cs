@@ -371,15 +371,43 @@ public class StreamManager
     private string ScriptPerProcess(string v)
     {
         v = v.Replace("\t", "    ");
-        Regex r = new Regex(@"((?:^|\n)\s*EVENT_.*)(\n\s*{[\s\S]*)");
+        Regex r = new Regex(@"((?:^|\n)\s*)(EVENT_.*)(\n\s*{)");
 
+        bool bFlag = false;
         string mcs = r.Replace(v, new MatchEvaluator((Match match) =>
                                                               {
-             string result =  match.Groups[1].Value.Insert(0, "class ") + ":EVENT_HD"  +match.Groups[2].Value;
-                                                                  Debug.Log(result);
+             string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":EVENT_HD"  + match.Groups[3].Value;
+                                                                  bFlag = true;
                                                                   return result;
-                                                              }));
+                                                         }));
+        r = new Regex(@"((?:^|\n)\s*)(OPTION_.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":Option" + match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
 
+        r = new Regex(@"((?:^|\n)\s*)(Precondition.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic Precondition)" + match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
+
+        r = new Regex(@"((?:^|\n)\s*)(Select.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string nxtEvent, ref object param)" + match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
+
+        if (bFlag)
+        {
+            Debug.Log(mcs);
+        }
         return mcs;
 
     }
