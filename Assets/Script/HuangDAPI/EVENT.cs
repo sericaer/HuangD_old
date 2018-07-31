@@ -122,10 +122,10 @@ namespace HuangDAPI
                                                       return true;
                                                   });
                 _funcDesc = GetDelegateInSubEvent<DelegatecDesc>("Desc",
-                                                                 (dynamic param) =>
+                                                                 (dynamic param, ref string Desc) =>
                                                                     {
                                                                         FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
-                                                                        return (string)field.GetValue(this);
+                                                                        Desc = (string)field.GetValue(this);
                                                                     });
                 _funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
                                                                         (dynamic precondition, ref string nxtEvent, ref object param) =>
@@ -145,7 +145,7 @@ namespace HuangDAPI
             }
 
             public delegate void DelegateSelected(dynamic precondition, ref string nxtEvent, ref object param);
-            public delegate string DelegatecDesc(dynamic param);
+            public delegate void DelegatecDesc(dynamic param, ref string Desc);
 
             public Func<bool> _funcPrecondition;
             public DelegatecDesc _funcDesc;

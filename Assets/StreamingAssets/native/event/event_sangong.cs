@@ -13,11 +13,27 @@ namespace native
             if (Offices.SG1.person.faction == Factions.SHI)
             {
                 int powerPercent = Factions.SHI.powerPercent;
+                if (powerPercent > 90)
+                {
+                    if (!COUNTRY_FLAG_SSYD_III.IsEnaled)
+                    {
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_III;
+                    }
+                }
                 if (powerPercent > 80)
                 {
-                    //if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
+                    if (!COUNTRY_FLAG_SSYD_II.IsEnaled && !COUNTRY_FLAG_SSYD_III.IsEnaled)
                     {
-                        Precondition.Flag = "aaa"; //Flags.LOW_TAX_LEVEL_3;
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_II;
+                        Precondition.Flag2 = COUNTRY_FLAG_SSYD_III;
+                    }
+                }
+                if (powerPercent > 60)
+                {
+                    if (!COUNTRY_FLAG_SSYD_I.IsEnaled && !COUNTRY_FLAG_SSYD_II.IsEnaled && !COUNTRY_FLAG_SSYD_III.IsEnaled)
+                    {
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_II;
+                        Precondition.Flag2 = COUNTRY_FLAG_SSYD_III;
                     }
                 }
             }
@@ -25,50 +41,74 @@ namespace native
 
         OPTION_1
         {
-            string Desc(dynamic Precondition)
+            Desc
             {
-                return UI.Format(Precondition.Flag);
+                Desc = UI.Format(Precondition.Flag);
             }
             Selected
             {
-
-                Debug.Log(Precondition.Flag);
+			
+                Precondition.Flag.Enaled();
                 //CountryFlags.Add(Precondition.result[0]);
             }
         }
     }
-
-    EVENT_SG2_SUGGEST_LOW_TAX
+    
+    COUNTRY_FLAG_SSYD_I
     {
-         void Precondition(ref dynamic Precondition)
+        EFFECT
         {
-            if (Offices.SG1.person.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent > 80)
-                {
-                    //if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
-                    {
-                        Precondition.Flag = "aaa"; //Flags.LOW_TAX_LEVEL_3;
-                    }
-                }
-            }
-        }
-
-        class OPTION1 : Option
-        {
-            string Desc(dynamic Precondition)
-            {
-                return UI.Format(Precondition.Flag);
-            }
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-            {
-
-                Debug.Log(Precondition.Flag);
-                //CountryFlags.Add(Precondition.result[0]);
-            }
+            EFFECT = "PROVINCE_TAX|*0.9";
         }
     }
+
+    COUNTRY_FLAG_SSYD_II
+    {
+        EFFECT
+        {
+            EFFECT = "PROVINCE_TAX|*0.75";
+        }
+    }
+
+    COUNTRY_FLAG_SSYD_III
+    {
+        EFFECT
+        {
+            EFFECT = "PROVINCE_TAX|*0.5";
+        }
+    }
+
+    //EVENT_SG2_SUGGEST_LOW_TAX
+    //{
+    //     void Precondition(ref dynamic Precondition)
+    //    {
+    //        if (Offices.SG1.person.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent > 80)
+    //            {
+    //                //if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
+    //                {
+    //                    Precondition.Flag = "aaa"; //Flags.LOW_TAX_LEVEL_3;
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc(dynamic Precondition)
+    //        {
+    //            return UI.Format(Precondition.Flag);
+    //        }
+    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+    //        {
+
+    //            Debug.Log(Precondition.Flag);
+    //            //CountryFlags.Add(Precondition.result[0]);
+    //        }
+    //    }
+    //}
 
     //class EVENT_SG1_SUGGEST_LOW_TAX
     //{

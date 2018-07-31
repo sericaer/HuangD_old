@@ -63,7 +63,9 @@ public class GMEvent : ItfEvent
                     continue;
                 }
 
-                result.Add (new KeyValuePair<string, string> (option.GetType().Name, option._funcDesc(preResult)));
+                string Desc = "";
+                option._funcDesc(preResult, ref Desc);
+                result.Add (new KeyValuePair<string, string> (option.GetType().Name, Desc));
 			}
 
 			return result.ToArray ();

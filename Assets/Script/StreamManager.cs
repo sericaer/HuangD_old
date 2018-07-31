@@ -404,6 +404,30 @@ public class StreamManager
             return result;
         }));
 
+        r = new Regex(@"((?:^|\n)\s*)(Desc.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string Desc)" + match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
+
+        r = new Regex(@"((?:^|\n)\s*)(COUNTRY_FLAG.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":COUNTRY_FLAG<" + match.Groups[2].Value + ">"+  match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
+
+        r = new Regex(@"((?:^|\n)\s*)(EFFECT.*)(\n\s*{)");
+        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+        {
+            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic EFFECT)" + match.Groups[3].Value;
+            bFlag = true;
+            return result;
+        }));
+
         if (bFlag)
         {
             Debug.Log(mcs);
