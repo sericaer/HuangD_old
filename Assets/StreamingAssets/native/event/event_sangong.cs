@@ -6,109 +6,85 @@ using System.Linq;
 using UnityEngine;
 namespace native
 {
-    EVENT_SG1_SUGGEST_LOW_TAX
+    class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     {
-        Precondition
+        dynamic Sponsor = Offices.SG1.person;
+
+        bool Precondition(ref dynamic Precondition)
         {
-            if (Offices.SG1.person.faction == Factions.SHI)
+            if (Sponsor.faction == Factions.SHI)
             {
                 int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent > 90)
+                if (powerPercent > 70)
                 {
-                    if (!COUNTRY_FLAG_SSYD_III.IsEnaled)
+                    if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL3)
                     {
-                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_III;
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL3;
+                        return true;
                     }
                 }
-                if (powerPercent > 80)
+                if (powerPercent > 50)
                 {
-                    if (!COUNTRY_FLAG_SSYD_II.IsEnaled && !COUNTRY_FLAG_SSYD_III.IsEnaled)
+                    if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL2)
                     {
-                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_II;
-                        Precondition.Flag2 = COUNTRY_FLAG_SSYD_III;
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL2;
+                        Precondition.Flag2 = COUNTRY_FLAG_SSYD.LV.LEVEL3;
+                        return true;
                     }
                 }
-                if (powerPercent > 60)
+                if (powerPercent > 40)
                 {
-                    if (!COUNTRY_FLAG_SSYD_I.IsEnaled && !COUNTRY_FLAG_SSYD_II.IsEnaled && !COUNTRY_FLAG_SSYD_III.IsEnaled)
+                    if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL1)
                     {
-                        Precondition.Flag1 = COUNTRY_FLAG_SSYD_II;
-                        Precondition.Flag2 = COUNTRY_FLAG_SSYD_III;
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL1;
+                        Precondition.Flag2 = COUNTRY_FLAG_SSYD.LV.LEVEL2;
+                        return true;
+                    }
+                }
+                if (powerPercent > 30)
+                {
+                    if (!COUNTRY_FLAG_SSYD.IsEnabled)
+                    {
+                        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL0;
+                        Precondition.Flag2 = COUNTRY_FLAG_SSYD.LV.LEVEL1;
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
 
-        OPTION_1
+        class OPTION1 : Option
         {
-            Desc
+            string Desc(dynamic Precondition)
             {
-                Desc = UI.Format(Precondition.Flag);
+                return UI.Format(Precondition.Flag1);
             }
-            Selected
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-			
-                Precondition.Flag.Enaled();
-                //CountryFlags.Add(Precondition.result[0]);
+                COUNTRY_FLAG_SSYD.Level = Precondition.Flag1;
+            }
+        }
+
+        class OPTION2 : Option
+        {
+            bool isVisable()
+            {
+                return Precondition.Flag2 != null;
+            }
+
+            string Desc(dynamic Precondition)
+            {
+                return UI.Format(Precondition.Flag2);
+            }
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                COUNTRY_FLAG_SSYD.Level = Precondition.Flag2;
+                Stability.current += 1;
             }
         }
     }
-    
-    COUNTRY_FLAG_SSYD_I
-    {
-        EFFECT
-        {
-            EFFECT = "PROVINCE_TAX|*0.9";
-        }
-    }
-
-    COUNTRY_FLAG_SSYD_II
-    {
-        EFFECT
-        {
-            EFFECT = "PROVINCE_TAX|*0.75";
-        }
-    }
-
-    COUNTRY_FLAG_SSYD_III
-    {
-        EFFECT
-        {
-            EFFECT = "PROVINCE_TAX|*0.5";
-        }
-    }
-
-    //EVENT_SG2_SUGGEST_LOW_TAX
-    //{
-    //     void Precondition(ref dynamic Precondition)
-    //    {
-    //        if (Offices.SG1.person.faction == Factions.SHI)
-    //        {
-    //            int powerPercent = Factions.SHI.powerPercent;
-    //            if (powerPercent > 80)
-    //            {
-    //                //if (!CountryFlags.Contains(Flags.LOW_TAX_LEVEL_3))
-    //                {
-    //                    Precondition.Flag = "aaa"; //Flags.LOW_TAX_LEVEL_3;
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    class OPTION1 : Option
-    //    {
-    //        string Desc(dynamic Precondition)
-    //        {
-    //            return UI.Format(Precondition.Flag);
-    //        }
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-
-    //            Debug.Log(Precondition.Flag);
-    //            //CountryFlags.Add(Precondition.result[0]);
-    //        }
-    //    }
-    //}
 
     //class EVENT_SG1_SUGGEST_LOW_TAX
     //{

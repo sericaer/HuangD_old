@@ -143,7 +143,8 @@ public class StreamManager
         List<string> sourceCodes = defineSourceCodes.ToList();
         foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
         {
-            string script = ScriptPerProcess(File.ReadAllText(filename));
+            //string script = ScriptPerProcess(File.ReadAllText(filename));
+            string script = File.ReadAllText(filename);
             sourceCodes.Add(script);
         }
 
