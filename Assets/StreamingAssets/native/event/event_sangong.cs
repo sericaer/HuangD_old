@@ -61,15 +61,31 @@ namespace native
             {
                 return UI.Format(Precondition.Flag1);
             }
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected(dynamic aaaa, ref string nxtEvent, ref object param)
             {
-                COUNTRY_FLAG_SSYD.Level = Precondition.Flag1;
+                vae = aaaa;
+
+                //COUNTRY_FLAG_SSYD.Level =  aaaa;
             }
+
+            TEST vae
+            {
+                set
+                {
+                    _test = value;
+                }
+            }
+            enum TEST
+            {
+                t1;
+            }
+
+            TEST _test
         }
 
         class OPTION2 : Option
         {
-            bool isVisable()
+            bool isVisable(dynamic Precondition)
             {
                 return Precondition.Flag2 != null;
             }
@@ -81,7 +97,7 @@ namespace native
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
                 COUNTRY_FLAG_SSYD.Level = Precondition.Flag2;
-                Stability.current += 1;
+                //Stability.current += 1;
             }
         }
     }

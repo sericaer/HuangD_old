@@ -8,10 +8,10 @@ namespace HuangDAPI
 {
     public abstract class COUNTRY_FLAG<T> where T : COUNTRY_FLAG<T>, new()
     {
-	    public static string Title
-		{
-		    get
-			{
+        public static string Title
+          {
+            get
+            {
                 return _inst.GetType().Name + "TITLE";
             }
         }
@@ -24,12 +24,17 @@ namespace HuangDAPI
             }
         }
 							
-        public static bool IsEnaled
+        public static bool IsEnabled
         {
             get
             {
                 return _inst._exist;
             }
+        }
+
+        public static bool Test()
+        {
+            return true;
         }
 
         public static T Inst
@@ -57,4 +62,26 @@ namespace HuangDAPI
 
     }
 
+
+    //public abstract class COUNTRY_FLAG
+    //{						
+    //    public  bool IsEnaled
+    //    {
+    //        get
+    //        {
+    //            return this._exist;
+    //        }
+    //    }
+
+    //    public static void Enable()
+    //    {
+    //        this._exist = true;
+    //    }
+    //    public static void Disable()
+    //    {
+    //        this._exist = false;
+    //    }
+        
+    //    private bool _exist=false;
+    //}
 }

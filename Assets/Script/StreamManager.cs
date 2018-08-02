@@ -8,6 +8,7 @@ using System.Linq;
 
 using HuangDAPI;
 using System.Text.RegularExpressions;
+using System.Dynamic;
 
 
 #if NET_4_6
@@ -111,8 +112,18 @@ public class StreamManager
 		private Dictionary<Tuple<string, string>, string> dict;
     }
 
+    string Test(dynamic aaa)
+    {
+        string test = aaa.test;
+        return test;
+    }
+
 	private StreamManager ()
 	{
+        dynamic aaa = new ExpandoObject();
+        aaa.test = "111";
+            string test = aaa.test;
+
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
         csharpLoader.actLog = CSharpCompiler.UnityLogTextWriter.Log;
 

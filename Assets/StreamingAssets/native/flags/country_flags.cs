@@ -5,12 +5,12 @@ namespace native
 {
     class COUNTRY_FLAG_SSYD : COUNTRY_FLAG<COUNTRY_FLAG_SSYD>
     {
-        bool IsVisable()
+        public static bool IsVisable()
         {
             return _level > LEVEL0;
         }
 
-        string EFFECT()
+        public static string EFFECT()
         {
             switch (_level)
             {
@@ -25,7 +25,7 @@ namespace native
             }
         }
 
-        enum LV
+        public enum LV
         {
             LEVEL0,
             LEVEL1,
@@ -33,7 +33,7 @@ namespace native
             LEVEL3
         }
 
-        static LV Level
+        public static LV Level
         {
             get
             {
