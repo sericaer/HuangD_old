@@ -88,28 +88,6 @@ public class GMEvent : ItfEvent
         {
             optionDic.Add(option.GetType().Name, option);
         }
-        ;
-
-  //      if (itf.option1 != null)
-		//{
-  //          optionDic.Add (itf.option1.KEY, itf.option1);
-		//}
-		//if (itf.option2 != null)
-		//{
-  //          optionDic.Add (itf.option2.KEY, itf.option2);
-		//}
-		//if (itf.option3 != null)
-		//{
-  //          optionDic.Add (itf.option3.KEY, itf.option3);
-		//}
-		//if (itf.option4 != null)
-		//{
-  //          optionDic.Add (itf.option4.KEY, itf.option4);
-		//}
-		//if (itf.option5 != null)
-		//{
-  //          optionDic.Add (itf.option5.KEY, itf.option5);
-		//}
 	}
 
     public void SelectOption(string opKey, ref string nxtEvent, ref object ret)
@@ -123,6 +101,11 @@ public class GMEvent : ItfEvent
     public string History()
     {
         return ie._funcHistorRecord();
+    }
+
+    public bool IsSponsorVaild()
+    {
+        return ie.IsSponsorVaild();
     }
 
     internal EVENT_HD ie;
@@ -216,9 +199,13 @@ public class EventManager
 		{
             ie.LoadMemento();
 
+            if(!ie.IsSponsorVaild())
+            {
+                continue;
+            }
+
             dynamic rslt = new ExpandoObject();
-            ie._funcPrecondition(ref rslt);
-            if (rslt == null)
+            if (ie._funcPrecondition(ref rslt))
 			{
 				continue;
 			}

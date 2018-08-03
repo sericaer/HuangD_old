@@ -112,18 +112,8 @@ public class StreamManager
 		private Dictionary<Tuple<string, string>, string> dict;
     }
 
-    string Test(dynamic aaa)
-    {
-        string test = aaa.test;
-        return test;
-    }
-
 	private StreamManager ()
 	{
-        dynamic aaa = new ExpandoObject();
-        aaa.test = "111";
-            string test = aaa.test;
-
         csharpLoader = new CSharpCompiler.ScriptBundleLoader(null);
         csharpLoader.actLog = CSharpCompiler.UnityLogTextWriter.Log;
 
@@ -139,7 +129,22 @@ public class StreamManager
             LoadMod(dirname);
         }
 	}
-    
+
+    class DynamicEnum
+    {
+        enum TEST
+        {
+            t1,
+        }
+
+        TEST _test;
+
+        void Selected(dynamic param)
+        {
+            _test = param;
+        }
+    }
+
     private void LoadMod(string path)
     {
         Debug.Log(string.Format("*****************Start Load mod {0}********************", path));

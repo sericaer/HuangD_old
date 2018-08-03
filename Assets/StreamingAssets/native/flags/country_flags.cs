@@ -7,33 +7,33 @@ namespace native
     {
         public static bool IsVisable()
         {
-            return _level > LEVEL0;
+            return _level != null  && _level != LV.LEVEL0;
         }
 
         public static string EFFECT()
         {
             switch (_level)
             {
-                case LEVEL1:
+                case LV.LEVEL1:
                     return "PROVINCE_TAX|*0.9";
-                case LEVEL2:
+                case LV.LEVEL2:
                     return "PROVINCE_TAX|*0.75";
-                case LEVEL3:
+                case LV.LEVEL3:
                     return "PROVINCE_TAX|*0.5";
                 default:
                     return "";
             }
         }
 
-        public enum LV
+        public static class LV
         {
-            LEVEL0,
-            LEVEL1,
-            LEVEL2,
-            LEVEL3
+            const string LEVEL0 = "LEVEL0";
+            const string LEVEL1 = "LEVEL1";
+            const string LEVEL2 = "LEVEL2";
+            const string LEVEL3 = "LEVEL3";
         }
 
-        public static LV Level
+        public static string Level
         {
             get
             {
@@ -46,6 +46,6 @@ namespace native
             }
         }
 
-        LV? _level = null;
+        string _level = null;
     }
 }

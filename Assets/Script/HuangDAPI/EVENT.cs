@@ -40,6 +40,9 @@ namespace HuangDAPI
                                                                           return;
                                                                       });
 
+            List<PropertyInfo> propers = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
+            _sponsor = propers.Find(x => x.Name == "Sponsor");
+
             listOptions = new List<Option>();
 
             Type[] nestedTypes = this.GetType().GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public);
@@ -100,6 +103,16 @@ namespace HuangDAPI
             }
         }
 
+        public bool IsSponsorVaild()
+        {
+            if (_sponsor == null)
+            {
+                return true;
+            }
+
+            return _sponsor.GetValue(this) != null;
+        }
+
         public abstract class Option : ReflectBase
         {
             public Option()
@@ -150,7 +163,7 @@ namespace HuangDAPI
             public Func<bool> _funcPrecondition;
             public DelegatecDesc _funcDesc;
             public DelegateSelected _funcSelected;
-
+            private PropertyInfo _sponsor;
             public dynamic OUTTER;
 
             protected string desc;
@@ -159,7 +172,7 @@ namespace HuangDAPI
 
 
 
-        public delegate void Precondition(ref dynamic preResult);
+        public delegate bool Precondition(ref dynamic preResult);
 
         public Precondition _funcPrecondition;
         public Func<string> _funcTitle;

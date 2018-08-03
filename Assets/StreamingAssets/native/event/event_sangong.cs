@@ -6,9 +6,30 @@ using System.Linq;
 using UnityEngine;
 namespace native
 {
+    //class DynamicEnum
+    //{
+    //    enum TEST
+    //    {
+    //        t1,
+    //    }
+        
+    //    TEST _test;
+        
+    //    void Selected(dynamic param)
+    //    {
+    //        _test = param;
+    //    }
+    //}
+
     class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     {
-        dynamic Sponsor = Offices.SG1.person;
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
 
         bool Precondition(ref dynamic Precondition)
         {
@@ -61,26 +82,10 @@ namespace native
             {
                 return UI.Format(Precondition.Flag1);
             }
-            void Selected(dynamic aaaa, ref string nxtEvent, ref object param)
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                vae = aaaa;
-
-                //COUNTRY_FLAG_SSYD.Level =  aaaa;
+                COUNTRY_FLAG_SSYD.Level = Precondition.Flag1;
             }
-
-            TEST vae
-            {
-                set
-                {
-                    _test = value;
-                }
-            }
-            enum TEST
-            {
-                t1;
-            }
-
-            TEST _test
         }
 
         class OPTION2 : Option
