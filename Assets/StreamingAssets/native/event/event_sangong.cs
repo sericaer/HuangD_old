@@ -104,7 +104,7 @@ namespace native
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
                 COUNTRY_FLAG_SSYD.Level = Precondition.Flag2;
-                //Stability.current += 1;
+                Stability.current += 1;
             }
         }
     }
