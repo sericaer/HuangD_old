@@ -58,13 +58,12 @@ public class GMEvent : ItfEvent
 			List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>> ();
             foreach (EVENT_HD.Option option in optionDic.Values) 
 			{
-                if (!option._funcPrecondition())
+                if (!option._funcIsVisable(preResult))
                 {
                     continue;
                 }
 
-                string Desc = "";
-                option._funcDesc(preResult, ref Desc);
+                string Desc =  option._funcDesc(preResult);
                 result.Add (new KeyValuePair<string, string> (option.GetType().Name, Desc));
 			}
 
@@ -205,7 +204,7 @@ public class EventManager
             }
 
             dynamic rslt = new ExpandoObject();
-            if (ie._funcPrecondition(ref rslt))
+            if (!ie._funcPrecondition(ref rslt))
 			{
 				continue;
 			}

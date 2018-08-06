@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,7 +28,8 @@ public class MainScene : MonoBehaviour
         
         txtDynastyName = GameObject.Find("Canvas/PanelTop/Detail/Dyname").GetComponent<Text>();
 
-        //GameObject statusPanel = GameObject.Find("Canvas/PanelTop/Detail/Panel");
+        CountryFlagPanel = GameObject.Find("Canvas/PanelTop/Detail/Panel");
+
         //listDyStatus = new List<Text>(statusPanel.GetComponentsInChildren<Text>());
 
         panelCenter = GameObject.Find ("Canvas/PanelCenter");
@@ -157,18 +160,31 @@ public class MainScene : MonoBehaviour
 
         if(btnDynDetail.activeSelf)
         {
-            //for(int i=1; i< listDyStatus.Count; i++)
-            //{
-            //    if(i > MyGame.Inst.statusManager.listStatus.Count)
-            //    {
-            //        listDyStatus[i].text = "";
-            //        continue;
-            //    }
+            List<string> oldFlags = (from x in CountryFlagPanel.GetComponentsInChildren<Text>()
+                                     select x.name).ToList();
 
-            //    listDyStatus[i].text = MyGame.Inst.statusManager.listStatus[i-1].name;
-            //    string detail = MyGame.Inst.statusManager.listStatus[i - 1].desc;
-            //    listDyStatus[i].GetComponent< TooltipTrigger >().mDisplayText = detail;
-            //}
+            List<string> NewFlags = new List<string>();
+            foreach (var elem in StreamManager.countryFlagDict)
+            {
+                if(elem.Value._funcIsEnabled())
+                {
+                    NewFlags.Add(elem.Key);
+                }
+            }
+
+            foreach (var addFlag in NewFlags.Except(oldFlags))
+            {
+                var decisionUI = Instantiate(Resources.Load("Prefabs/CountryFlag"), CountryFlagPanel.transform) as GameObject;
+                decisionUI.name = addFlag;
+                decisionUI.GetComponent<Text>().text = StreamManager.countryFlagDict[addFlag]._funcTitle();
+                decisionUI.GetComponent<TooltipTrigger>().mDisplayText = StreamManager.countryFlagDict[addFlag]._funcDesc();
+            }
+
+            foreach (var delFlag in oldFlags.Except(NewFlags))
+            {
+                var decisionUI = CountryFlagPanel.transform.Find(delFlag);
+                Destroy(decisionUI.gameObject);
+            }
         }
  
     }
@@ -207,6 +223,8 @@ public class MainScene : MonoBehaviour
 	Slider sldEmpHeath;
 
     Text txtDynastyName;
+    GameObject CountryFlagPanel;
+
     //List<Text> listDyStatus;
 
 	GameObject panelCenter;

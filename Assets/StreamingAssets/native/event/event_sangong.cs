@@ -23,6 +23,7 @@ namespace native
 
     class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     {
+        
         Person Sponsor
         {
             get
@@ -36,14 +37,15 @@ namespace native
             if (Sponsor.faction == Factions.SHI)
             {
                 int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent > 70)
-                {
-                    if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL3)
-                    {
-                        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL3;
-                        return true;
-                    }
-                }
+                //if (powerPercent > 70)
+                //{
+                //    if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL3)
+                //    {
+                //        Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL3;
+                //        Precondition.Flag2 = null;
+                //        return true;
+                //    }
+                //}
                 if (powerPercent > 50)
                 {
                     if (COUNTRY_FLAG_SSYD.Level < COUNTRY_FLAG_SSYD.LV.LEVEL2)
@@ -64,7 +66,7 @@ namespace native
                 }
                 if (powerPercent > 30)
                 {
-                    if (!COUNTRY_FLAG_SSYD.IsEnabled)
+                    if (!COUNTRY_FLAG_SSYD.IsEnabled())
                     {
                         Precondition.Flag1 = COUNTRY_FLAG_SSYD.LV.LEVEL0;
                         Precondition.Flag2 = COUNTRY_FLAG_SSYD.LV.LEVEL1;
@@ -80,7 +82,7 @@ namespace native
         {
             string Desc(dynamic Precondition)
             {
-                return UI.Format(Precondition.Flag1);
+                return UI.Format("EVENT_SG1_SUGGEST_SSYD_LEVEL_" + Precondition.Flag1.ToString());
             }
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
@@ -90,14 +92,14 @@ namespace native
 
         class OPTION2 : Option
         {
-            bool isVisable(dynamic Precondition)
+            bool IsVisable(dynamic Precondition)
             {
                 return Precondition.Flag2 != null;
             }
 
             string Desc(dynamic Precondition)
             {
-                return UI.Format(Precondition.Flag2);
+                return UI.Format("EVENT_SG1_SUGGEST_SSYD_LEVEL_" + Precondition.Flag2.ToString());
             }
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {

@@ -5,14 +5,24 @@ namespace native
 {
     class COUNTRY_FLAG_SSYD : COUNTRY_FLAG<COUNTRY_FLAG_SSYD>
     {
+        public static string Title()
+        {
+            return string.Format("{0}_{1}_{2}", Inst.GetType().Name, Inst._level, "TITLE");
+        }
+
+        public static string Desc()
+        {
+            return string.Format("{0}_{1}_{2}", Inst.GetType().Name, Inst._level, "DESC");
+        }
+
         public static bool IsVisable()
         {
-            return _level != null  && _level != LV.LEVEL0;
+            return Inst._level > LV.LEVEL0;
         }
 
         public static string EFFECT()
         {
-            switch (_level)
+            switch (Inst._level)
             {
                 case LV.LEVEL1:
                     return "PROVINCE_TAX|*0.9";
@@ -27,13 +37,13 @@ namespace native
 
         public static class LV
         {
-            const string LEVEL0 = "LEVEL0";
-            const string LEVEL1 = "LEVEL1";
-            const string LEVEL2 = "LEVEL2";
-            const string LEVEL3 = "LEVEL3";
+            public const int LEVEL0 = 0;
+            public const int LEVEL1 = 1;
+            public const int LEVEL2 = 2;
+            public const int LEVEL3 = 3;
         }
 
-        public static string Level
+        public static int Level
         {
             get
             {
@@ -41,11 +51,11 @@ namespace native
             }
             set
             {
-                Inst.Enable();
+                Enable();
                 Inst._level = value;
             }
         }
 
-        string _level = null;
+        int _level = LV.LEVEL0;
     }
 }

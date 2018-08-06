@@ -15,7 +15,8 @@ namespace HuangDAPI
             _funcPrecondition = GetDelegateInSubEvent<Precondition>("Precondition",
                                                                   (ref dynamic result) =>
                                                                   {
-                                                                        result = null;
+                                                                      result = null;
+                                                                      return false;
                                                                   });
             _funcTitle = GetDelegateInSubEvent<Func<string>>("Title",
                                                             () =>
@@ -129,16 +130,17 @@ namespace HuangDAPI
 
                 desc = StreamManager.uiDesc.Get(outter.GetType().Name + "_" + this.GetType().Name + "_DESC");
 
-                _funcPrecondition = GetDelegateInSubEvent<Func<bool>>("Precondition",
-                                                  () =>
-                                                  {
-                                                      return true;
-                                                  });
+                _funcIsVisable = GetDelegateInSubEvent<DelegateIsVisable>("IsVisable",
+                                                                   (dynamic precondition) =>
+                                                                  {
+                                                                      return true;
+                                                                  });
                 _funcDesc = GetDelegateInSubEvent<DelegatecDesc>("Desc",
-                                                                 (dynamic param, ref string Desc) =>
+                                                                 (dynamic param) =>
                                                                     {
                                                                         FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
-                                                                        Desc = (string)field.GetValue(this);
+                                                                        string Desc = (string)field.GetValue(this);
+                                                                        return Desc;
                                                                     });
                 _funcSelected = GetDelegateInSubEvent<DelegateSelected>("Selected",
                                                                         (dynamic precondition, ref string nxtEvent, ref object param) =>
@@ -158,12 +160,13 @@ namespace HuangDAPI
             }
 
             public delegate void DelegateSelected(dynamic precondition, ref string nxtEvent, ref object param);
-            public delegate void DelegatecDesc(dynamic param, ref string Desc);
+            public delegate string DelegatecDesc(dynamic param);
+            public delegate bool DelegateIsVisable(dynamic precondition);
 
-            public Func<bool> _funcPrecondition;
+            public DelegateIsVisable _funcIsVisable;
             public DelegatecDesc _funcDesc;
             public DelegateSelected _funcSelected;
-            private PropertyInfo _sponsor;
+
             public dynamic OUTTER;
 
             protected string desc;
@@ -184,6 +187,7 @@ namespace HuangDAPI
         protected string desc;
         public object param;
         public Decision AssocDecision;
+        private PropertyInfo _sponsor;
 
         private List<Option> listOptions;
         private static Dictionary<string, Dictionary<string, object>> _mementoDict = new Dictionary<string, Dictionary<string, object>>();

@@ -6,30 +6,11 @@ using System.Text;
 
 namespace HuangDAPI
 {
-    public abstract class COUNTRY_FLAG<T> where T : COUNTRY_FLAG<T>, new()
-    {
-        public static string Title
-          {
-            get
-            {
-                return _inst.GetType().Name + "TITLE";
-            }
-        }
-	
-        public static string Desc
+    public class COUNTRY_FLAG<T> : ReflectBase where T : COUNTRY_FLAG<T>, new()
+    {	
+        public static bool IsEnabled()
         {
-            get
-            {
-                return _inst.GetType().Name + "Desc";
-            }
-        }
-							
-        public static bool IsEnabled
-        {
-            get
-            {
-                return _inst._exist;
-            }
+            return _inst._exist;
         }
 
         public static bool Test()
@@ -55,33 +36,10 @@ namespace HuangDAPI
         }
         
         public string EFFECT;
-        
+
         private bool _exist=false;
 
         private static T _inst = new T();
 
     }
-
-
-    //public abstract class COUNTRY_FLAG
-    //{						
-    //    public  bool IsEnaled
-    //    {
-    //        get
-    //        {
-    //            return this._exist;
-    //        }
-    //    }
-
-    //    public static void Enable()
-    //    {
-    //        this._exist = true;
-    //    }
-    //    public static void Disable()
-    //    {
-    //        this._exist = false;
-    //    }
-        
-    //    private bool _exist=false;
-    //}
 }
