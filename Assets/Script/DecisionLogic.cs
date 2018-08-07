@@ -16,13 +16,13 @@ public class DecisionLogic : MonoBehaviour
 	void Start ()
     {
         decplan = MyGame.DecisionManager.Plans.Find((obj) => obj.name == this.name) as MyGame.DecisionPlan;
-        btnDo.interactable = decplan.IsEnable() && !GameFrame.eventManager.isEventDialogExit;
+
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
+        btnDo.interactable = decplan.IsEnable() && !GameFrame.eventManager.isEventDialogExit;
 	}
 
     public void OnButtonClick()

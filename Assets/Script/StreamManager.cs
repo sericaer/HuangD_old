@@ -197,53 +197,6 @@ public class StreamManager
         return source;
     }
 
-    //private void LoadFlags(Type[] types)
-    //{
-    //    Type[] FlagTypes = types.Where(x => x.BaseType.Name.StartsWith("COUNTRY_FLAG")).ToArray();
-    //    foreach (Type type in FlagTypes)
-    //    {
-    //        List<MethodInfo> _subMethods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
-
-    //        Func<string> funcTitle = null;
-    //        MethodInfo method = _subMethods.Find((obj) => obj.Name == "Title");
-    //        if (method != null) 
-    //        {
-    //            funcTitle = (Func<string>) Delegate.CreateDelegate(typeof(Func<string>), null, method);
-    //        }
-    //        else
-    //        {
-    //            funcTitle = () =>
-    //            {
-    //                return type.Name + "_TITLE";
-    //            };
-    //        }
-
-    //        Func<string> funcDesc = null;
-    //        method = _subMethods.Find((obj) => obj.Name == "Desc");
-    //        if (method != null)
-    //        {
-    //            funcDesc = (Func<string>)Delegate.CreateDelegate(typeof(Func<string>), null, method);
-    //        }
-    //        else
-    //        {
-    //            funcDesc = () =>
-    //            {
-    //                return type.Name + "_DESC";
-    //            };
-    //        }
-
-    //        _subMethods = type.BaseType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
-    //        Func<bool> funcIsEnabled = null;
-    //        method = _subMethods.Find((obj) => obj.Name == "IsEnabled");
-    //        funcIsEnabled = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), null, method);
-
-
-    //        countryFlagDict.Add(type.Name, new {_funcTitle = funcTitle, _funcDesc = funcDesc, _funcIsEnabled = funcIsEnabled});
-    //    }
-
-    //    Debug.Log("Load country flag count:" + countryFlagDict.Count);
-    //}
-
     private string[] GenerateByDefine(string path)
     {
         List<string> defineSourceCodes = new List<string>();
@@ -453,73 +406,73 @@ public class StreamManager
         }
     }
 
-    private string ScriptPerProcess(string v)
-    {
-        v = v.Replace("\t", "    ");
-        Regex r = new Regex(@"((?:^|\n)\s*)(EVENT_.*)(\n\s*{)");
+    //private string ScriptPerProcess(string v)
+    //{
+    //    v = v.Replace("\t", "    ");
+    //    Regex r = new Regex(@"((?:^|\n)\s*)(EVENT_.*)(\n\s*{)");
 
-        bool bFlag = false;
-        string mcs = r.Replace(v, new MatchEvaluator((Match match) =>
-                                                              {
-             string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":EVENT_HD"  + match.Groups[3].Value;
-                                                                  bFlag = true;
-                                                                  return result;
-                                                         }));
-        r = new Regex(@"((?:^|\n)\s*)(OPTION_.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":Option" + match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    bool bFlag = false;
+    //    string mcs = r.Replace(v, new MatchEvaluator((Match match) =>
+    //                                                          {
+    //         string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":EVENT_HD"  + match.Groups[3].Value;
+    //                                                              bFlag = true;
+    //                                                              return result;
+    //                                                     }));
+    //    r = new Regex(@"((?:^|\n)\s*)(OPTION_.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":Option" + match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        r = new Regex(@"((?:^|\n)\s*)(Precondition.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic Precondition)" + match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    r = new Regex(@"((?:^|\n)\s*)(Precondition.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic Precondition)" + match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        r = new Regex(@"((?:^|\n)\s*)(Select.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string nxtEvent, ref object param)" + match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    r = new Regex(@"((?:^|\n)\s*)(Select.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string nxtEvent, ref object param)" + match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        r = new Regex(@"((?:^|\n)\s*)(Desc.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string Desc)" + match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    r = new Regex(@"((?:^|\n)\s*)(Desc.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(dynamic Precondition, ref string Desc)" + match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        r = new Regex(@"((?:^|\n)\s*)(COUNTRY_FLAG.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":COUNTRY_FLAG<" + match.Groups[2].Value + ">"+  match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    r = new Regex(@"((?:^|\n)\s*)(COUNTRY_FLAG.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "class ") + ":COUNTRY_FLAG<" + match.Groups[2].Value + ">"+  match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        r = new Regex(@"((?:^|\n)\s*)(EFFECT.*)(\n\s*{)");
-        mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
-        {
-            string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic EFFECT)" + match.Groups[3].Value;
-            bFlag = true;
-            return result;
-        }));
+    //    r = new Regex(@"((?:^|\n)\s*)(EFFECT.*)(\n\s*{)");
+    //    mcs = r.Replace(mcs, new MatchEvaluator((Match match) =>
+    //    {
+    //        string result = match.Groups[1].Value + match.Groups[2].Value.Insert(0, "void ") + "(ref dynamic EFFECT)" + match.Groups[3].Value;
+    //        bFlag = true;
+    //        return result;
+    //    }));
 
-        if (bFlag)
-        {
-            Debug.Log(mcs);
-        }
-        return mcs;
+    //    if (bFlag)
+    //    {
+    //        Debug.Log(mcs);
+    //    }
+    //    return mcs;
 
-    }
+    //}
 
     private void LoadUIDesc()
     {

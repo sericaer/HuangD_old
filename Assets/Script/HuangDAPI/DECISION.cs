@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -35,8 +36,8 @@ namespace HuangDAPI
                                                   });
             _funcProcFinish = GetDelegateInSubEvent<Func<bool>>("ProcFinish", null);
 
-            _funcEnableEvent = GetDelegateInSubEvent<Func<string>>("EnableEvent",
-                                                  () =>
+            _funcEnableEvent = GetDelegateInSubEvent<DelegateEnableEvent>("EnableEvent",
+                                                  (ref dynamic param) =>
                                                   {
                                                       return "";
                                                   });
@@ -82,7 +83,9 @@ namespace HuangDAPI
         public Func<string> _funcTitle;
         public Func<string> _funcDesc;
 
-        public Func<string> _funcEnableEvent;
+        public delegate string DelegateEnableEvent(ref dynamic param);
+
+        public DelegateEnableEvent _funcEnableEvent;
         public Func<string> _funcDisableEvent;
 
         public Func<string> _funcStartEvent;
@@ -96,6 +99,7 @@ namespace HuangDAPI
         protected string title;
         public IList<string> Flags;
 
+        public dynamic param = new ExpandoObject();
     }
 
     public class Decision

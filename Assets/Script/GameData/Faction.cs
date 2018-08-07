@@ -51,6 +51,8 @@ public partial class MyGame
         {
             get
             {
+                return 30;
+
                 int total = 0;
                 foreach(var faction in Faction.All)
                 {

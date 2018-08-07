@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using HuangDAPI;
 
@@ -32,18 +33,21 @@ public partial class MyGame
             {
                 if(isEnable == true)
                 {
-                    string eventName = decisionDef._funcEnableEvent();
-                    Debug.Log("Add " + eventName);
+                    dynamic param = new ExpandoObject();
+                    string eventName = decisionDef._funcEnableEvent(ref param);
 
-                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, "");
+
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, param);
                 }
                 if(isEnable == false)
                 {
                     string eventName = decisionDef._funcDisableEvent();
-                    Debug.Log("Add" + eventName);
 
-                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, "");
+
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, null);
                 }
+
+                oldState = isEnable;
             }
 
             return isEnable;
@@ -52,7 +56,7 @@ public partial class MyGame
         public void process()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, "");
+            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, null);
 
             var process = new DecisionProc(name);
             All.Remove(this);
@@ -86,7 +90,7 @@ public partial class MyGame
     {
         public DecisionProc(string key)
         {
-            //name = key;
+            name = key;
             //_startTime = new GameTime(MyGame.Inst.date);
 
             //decisionDef = StreamManager.decisionDict[key];
@@ -148,7 +152,7 @@ public partial class MyGame
 
                 //return sum;
 
-                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[decisionname];
+                HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
                 return decisionDef._CostDay;
             }
         }
@@ -173,18 +177,19 @@ public partial class MyGame
         {
             currDay++;
 
-            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[decisionname];
+            HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
             GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
 
-            if (currDay >= maxDay && maxDay != 0)
+
+            if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
             {
-                MyGame.GameTime.current.incDayEvent -= DayIncrease;
                 All.Remove(this);
                 GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
-            if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
+            else if (currDay >= maxDay)
             {
+                MyGame.GameTime.current.incDayEvent -= DayIncrease;
                 All.Remove(this);
                 GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
@@ -233,12 +238,13 @@ public partial class MyGame
         {
             foreach (var elem in StreamManager.decisionDict)
             {
-                if (elem.Value._funcVisable())
+                if (elem.Value._funcEnable())
                 {
                     if(!Plans.Exists((obj) => obj.name == elem.Key)
                        && !Procs.Exists((obj) => obj.name == elem.Key))
                     {
                         var plan = new DecisionPlan(elem.Key);
+                        plan.IsEnable();
                     }
                 }
                 else

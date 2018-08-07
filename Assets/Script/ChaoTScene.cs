@@ -49,7 +49,7 @@ public class ChaoTScene : MonoBehaviour
 
     private void RefreshDecision()
     {
-        MyGame.DecisionManager.Update();
+        
 
         RefreshDecisionPlan();
         RefreshDecisionProc();
@@ -58,6 +58,7 @@ public class ChaoTScene : MonoBehaviour
     private void RefreshDecisionPlan()
     {
         List<string> newPlans = (from x in MyGame.DecisionManager.Plans
+                                 where x.IsEnable()
                                  select x.name).ToList();
 
         List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<DecisionLogic>()

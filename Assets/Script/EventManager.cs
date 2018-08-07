@@ -20,7 +20,7 @@ public interface ItfEvent
 
 public class GMEvent : ItfEvent
 {
-    public GMEvent(EVENT_HD ie, object param, dynamic preResult)
+    public GMEvent(EVENT_HD ie, dynamic param, dynamic preResult)
     {
         GameFrame.eventManager.isEventDialogExit = true;
 
@@ -224,17 +224,17 @@ public class EventManager
 			return;
 		}
             
-        nextEvent = new GMEvent (StreamManager.eventDict [key], param, null);
+        nextEvent = new GMEvent (StreamManager.eventDict [key], param, param);
 	}
 
-    public void InsertDecisionEvent(string key, string decision, object param)
+    public void InsertDecisionEvent(string key, string decision, dynamic param)
     {
         if (key.Length == 0)
         {
             return;
         }
 
-        decisionEvent = new GMEvent(StreamManager.eventDict[key], param, null);
+        decisionEvent = new GMEvent(StreamManager.eventDict[key], param, param);
         ((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
     }
 

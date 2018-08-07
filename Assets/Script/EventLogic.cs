@@ -71,6 +71,8 @@ public class EventLogic : MonoBehaviour
 
         eventManager.isEventDialogExit = false;
 
+        MyGame.DecisionManager.Update();
+
         yield return new WaitForSeconds(m_fWaitTime - costtime);
 
         MyGame.GameTime.current.Increase();
