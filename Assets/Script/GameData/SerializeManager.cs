@@ -69,7 +69,7 @@ public partial class MyGame
                     continue;
                 }
 
-                field.SetValue(null, jsonObj.GetValue(field.Name).ToObject(field.FieldType));
+                field.SetValue(null, JsonConvert.DeserializeObject(jsonObj.GetValue(field.Name).ToString(), field.FieldType, settings));
             }
         }
 
@@ -92,7 +92,7 @@ public partial class MyGame
                     }
 
                     writer.WritePropertyName(field.Name);
-                    writer.WriteRawValue(JsonConvert.SerializeObject(field.GetValue(null), Formatting.Indented));
+                    writer.WriteRawValue(JsonConvert.SerializeObject(field.GetValue(null), settings));
                 }
 
                 writer.WriteEndObject();
@@ -101,6 +101,7 @@ public partial class MyGame
             return sb.ToString();
         }
 
+        static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
 
     }
 }

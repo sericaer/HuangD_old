@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class InitScene : MonoBehaviour 
 {
-
 	void Awake()
 	{
 		GameObject UIRoot = GameObject.Find("Canvas/Panel");

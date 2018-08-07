@@ -3,43 +3,88 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
+using UnityEngine;
+using static MyGame;
 
 namespace HuangDAPI
 {
-    public class COUNTRY_FLAG<T> : ReflectBase where T : COUNTRY_FLAG<T>, new()
-    {	
-        public static bool IsEnabled()
+    [JsonObject(MemberSerialization.Fields)]
+    public class COUNTRY_FLAG : SerializeManager //: ReflectBase
+    {
+        public COUNTRY_FLAG()
         {
-            return _inst._exist;
+            //_funcTitle = GetDelegateInSubEvent<Func<string>>("Title",
+            //                                                 () =>
+            //                                                 {
+            //                                                     return this.GetType().Name + "TITLE";
+            //                                                 });
+            //_funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
+                                                 //() =>
+                                                 //{
+                                                 //    return this.GetType().Name + "DESC";
+                                                 //});
+            _All.Add(this);
         }
 
-        public static bool Test()
+        public bool IsEnabled()
         {
-            return true;
+            return _exist;
         }
 
-        public static T Inst
+        public void Enable()
+        {
+            _exist = true;
+        }
+        public void Disable()
+        {
+            _exist = false;
+        }
+
+        public virtual string Title()
+        {
+            return this.GetType().Name + "TITLE";
+        }
+
+        public virtual string Desc()
+        {
+            return this.GetType().Name + "Desc";
+        }
+
+        public virtual FlagEffect EffectKey()
+        {
+            return FlagEffect.EFFECT_NULL;
+        }
+
+        public virtual void EffectAction(ref object obj)
+        {
+            return;
+        }
+
+        public static COUNTRY_FLAG[] All
         {
             get
             {
-                return _inst;
+                return _All.ToArray();
             }
+
+
         }
 
-        public static void Enable()
-        {
-            _inst._exist = true;
-        }
-        public static void Disable()
-        {
-            _inst._exist = false;
-        }
-        
-        public string EFFECT;
+        //public Func<string> _funcTitle;
+        //public Func<string> _funcDesc;
 
-        private bool _exist=false;
+        [SerializeField]
+        private static List<COUNTRY_FLAG> _All = new List<COUNTRY_FLAG>();
 
-        private static T _inst = new T();
+        [SerializeField]
+        private bool _exist = false;
 
+    }
+
+    public enum FlagEffect
+    {
+        EFFECT_NULL,
+        PROVINCE_TAX,
     }
 }

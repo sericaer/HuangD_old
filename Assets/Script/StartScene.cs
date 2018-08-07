@@ -8,6 +8,11 @@ using System;
 
 public class StartScene : MonoBehaviour
 {
+    void Awake()
+    {
+        StreamManager.Initialize();
+    }
+
     // Use this for initialization
     void Start()
     {

@@ -18,6 +18,14 @@ using Mono.CSharp;
 
 public class StreamManager
 {
+    public static void Initialize()
+    {
+        if(wInst == null)
+        {
+            wInst = new StreamManager();
+        }
+    }
+
 	public class DynastyName
 	{
 		public string GetRandom()
@@ -140,8 +148,11 @@ public class StreamManager
         }
 
         string[] defineSourceCodes = GenerateByDefine(path + "/define");
+        string FlagSourceCodes   = GenerateFlags(path + "/flag");
 
         List<string> sourceCodes = defineSourceCodes.ToList();
+        sourceCodes.Add(FlagSourceCodes);
+
         foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
         {
             //string script = ScriptPerProcess(File.ReadAllText(filename));
@@ -157,57 +168,81 @@ public class StreamManager
         LoadEvent(Types);
         LoadDecision(Types);
         LoadDefines(Types);
-        LoadFlags(Types);
+        //LoadFlags(Types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
 
-    private void LoadFlags(Type[] types)
+    private string GenerateFlags(string path)
     {
-        Type[] FlagTypes = types.Where(x => x.BaseType.Name.StartsWith("COUNTRY_FLAG")).ToArray();
-        foreach (Type type in FlagTypes)
+        List<string> defineSourceCodes = new List<string>();
+
+        string[] fileNames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+        CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchScriptsBundle(fileNames);
+
+        Type[] types = bd.assembly.GetTypes();
+
+        Type[] FlagTypes = types.Where(x => x.BaseType.Name == "COUNTRY_FLAG").ToArray();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        foreach (var type in FlagTypes)
         {
-            List<MethodInfo> _subMethods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
-
-            Func<string> funcTitle = null;
-            MethodInfo method = _subMethods.Find((obj) => obj.Name == "Title");
-            if (method != null) 
-            {
-                funcTitle = (Func<string>) Delegate.CreateDelegate(typeof(Func<string>), null, method);
-            }
-            else
-            {
-                funcTitle = () =>
-                {
-                    return type.Name + "_TITLE";
-                };
-            }
-
-            Func<string> funcDesc = null;
-            method = _subMethods.Find((obj) => obj.Name == "Desc");
-            if (method != null)
-            {
-                funcDesc = (Func<string>)Delegate.CreateDelegate(typeof(Func<string>), null, method);
-            }
-            else
-            {
-                funcDesc = () =>
-                {
-                    return type.Name + "_DESC";
-                };
-            }
-
-            _subMethods = type.BaseType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
-            Func<bool> funcIsEnabled = null;
-            method = _subMethods.Find((obj) => obj.Name == "IsEnabled");
-            funcIsEnabled = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), null, method);
-
-
-            countryFlagDict.Add(type.Name, new {_funcTitle = funcTitle, _funcDesc = funcDesc, _funcIsEnabled = funcIsEnabled});
+            fields.Add(new Tuple<string, Type, Type, List<object>>(type.Name, type, type, null));
         }
 
-        Debug.Log("Load country flag count:" + countryFlagDict.Count);
+        CodeDomGen sourceCodeCreater = new CodeDomGen("CountryFlags", fields);
+        string source = sourceCodeCreater.Create();
+
+        Debug.Log(source);
+        return source;
     }
+
+    //private void LoadFlags(Type[] types)
+    //{
+    //    Type[] FlagTypes = types.Where(x => x.BaseType.Name.StartsWith("COUNTRY_FLAG")).ToArray();
+    //    foreach (Type type in FlagTypes)
+    //    {
+    //        List<MethodInfo> _subMethods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
+
+    //        Func<string> funcTitle = null;
+    //        MethodInfo method = _subMethods.Find((obj) => obj.Name == "Title");
+    //        if (method != null) 
+    //        {
+    //            funcTitle = (Func<string>) Delegate.CreateDelegate(typeof(Func<string>), null, method);
+    //        }
+    //        else
+    //        {
+    //            funcTitle = () =>
+    //            {
+    //                return type.Name + "_TITLE";
+    //            };
+    //        }
+
+    //        Func<string> funcDesc = null;
+    //        method = _subMethods.Find((obj) => obj.Name == "Desc");
+    //        if (method != null)
+    //        {
+    //            funcDesc = (Func<string>)Delegate.CreateDelegate(typeof(Func<string>), null, method);
+    //        }
+    //        else
+    //        {
+    //            funcDesc = () =>
+    //            {
+    //                return type.Name + "_DESC";
+    //            };
+    //        }
+
+    //        _subMethods = type.BaseType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static).ToList();
+    //        Func<bool> funcIsEnabled = null;
+    //        method = _subMethods.Find((obj) => obj.Name == "IsEnabled");
+    //        funcIsEnabled = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), null, method);
+
+
+    //        countryFlagDict.Add(type.Name, new {_funcTitle = funcTitle, _funcDesc = funcDesc, _funcIsEnabled = funcIsEnabled});
+    //    }
+
+    //    Debug.Log("Load country flag count:" + countryFlagDict.Count);
+    //}
 
     private string[] GenerateByDefine(string path)
     {
@@ -523,9 +558,8 @@ public class StreamManager
         public static double PROV_LOW;
         public static double PROV_HIGH;
     }
-#pragma warning disable 414
-    private static StreamManager wInst = new StreamManager();
-#pragma warning restore
+
+    private static StreamManager wInst;
 
     private CSharpCompiler.ScriptBundleLoader csharpLoader;
 }

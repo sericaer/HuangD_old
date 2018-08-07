@@ -163,21 +163,27 @@ public class MainScene : MonoBehaviour
             List<string> oldFlags = (from x in CountryFlagPanel.GetComponentsInChildren<Text>()
                                      select x.name).ToList();
 
-            List<string> NewFlags = new List<string>();
-            foreach (var elem in StreamManager.countryFlagDict)
-            {
-                if(elem.Value._funcIsEnabled())
-                {
-                    NewFlags.Add(elem.Key);
-                }
-            }
+            List<string> NewFlags = (from x in HuangDAPI.COUNTRY_FLAG.All
+                                     where x.IsEnabled()
+                                     select x.Title()).ToList();
+            
+            //List<string> NewFlags = new List<string>();
+            //foreach (var elem in StreamManager.countryFlagDict)
+            //{
+            //    if(elem.Value._funcIsEnabled())
+            //    {
+            //        NewFlags.Add(elem.Key);
+            //    }
+            //}
 
             foreach (var addFlag in NewFlags.Except(oldFlags))
             {
                 var decisionUI = Instantiate(Resources.Load("Prefabs/CountryFlag"), CountryFlagPanel.transform) as GameObject;
                 decisionUI.name = addFlag;
-                decisionUI.GetComponent<Text>().text = StreamManager.countryFlagDict[addFlag]._funcTitle();
-                decisionUI.GetComponent<TooltipTrigger>().mDisplayText = StreamManager.countryFlagDict[addFlag]._funcDesc();
+
+                var flag = HuangDAPI.COUNTRY_FLAG.All.Where((arg) => arg.Title() == addFlag).Single();
+                decisionUI.GetComponent<Text>().text = addFlag;
+                decisionUI.GetComponent<TooltipTrigger>().mDisplayText = flag.Desc();
             }
 
             foreach (var delFlag in oldFlags.Except(NewFlags))
