@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using HuangDAPI;
+using Newtonsoft.Json;
 
 #if NET_4_6
 #else
@@ -15,7 +16,7 @@ using UnityEngine;
 
 public partial class MyGame
 {
-    [Serializable]
+    [JsonObject(MemberSerialization.Fields)]
     public class DecisionPlan : SerializeManager,HuangDAPI.DecisionPlan
     {
         public DecisionPlan(string key)
@@ -86,6 +87,7 @@ public partial class MyGame
         public static List<DecisionPlan> All = new List<DecisionPlan>();
     }
 
+    [JsonObject(MemberSerialization.Fields)]
     public class DecisionProc : SerializeManager,HuangDAPI.DecisionProc
     {
         public DecisionProc(string key)

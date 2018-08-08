@@ -14,8 +14,7 @@ using Mono.CSharp;
 
 public partial class MyGame
 {
-    [JsonObject(MemberSerialization.Fields)]
-    public class Faction : SerializeManager, HuangDAPI.Faction
+    public class Faction : HuangDAPI.Faction
     {
 
         public static void Initialize()

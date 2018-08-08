@@ -13,8 +13,7 @@ using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    [JsonObject(MemberSerialization.Fields)]
-    public class Office : SerializeManager, HuangDAPI.Office
+    public class Office : HuangDAPI.Office
     {
         public Office(string name, int power, OfficeGroup group)
         {

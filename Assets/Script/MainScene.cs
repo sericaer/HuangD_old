@@ -167,15 +167,6 @@ public class MainScene : MonoBehaviour
                                      where x.IsEnabled()
                                      select x.Title()).ToList();
             
-            //List<string> NewFlags = new List<string>();
-            //foreach (var elem in StreamManager.countryFlagDict)
-            //{
-            //    if(elem.Value._funcIsEnabled())
-            //    {
-            //        NewFlags.Add(elem.Key);
-            //    }
-            //}
-
             foreach (var addFlag in NewFlags.Except(oldFlags))
             {
                 var decisionUI = Instantiate(Resources.Load("Prefabs/CountryFlag"), CountryFlagPanel.transform) as GameObject;

@@ -13,8 +13,7 @@ using Newtonsoft.Json;
 
 public partial class MyGame
 {
-    [JsonObject(MemberSerialization.Fields)]
-    public class Province : SerializeManager, HuangDAPI.Province
+    public class Province : HuangDAPI.Province
     {
         public static Province[] All
         {

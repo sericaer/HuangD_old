@@ -15,16 +15,6 @@ namespace HuangDAPI
     {
         public COUNTRY_FLAG()
         {
-            //_funcTitle = GetDelegateInSubEvent<Func<string>>("Title",
-            //                                                 () =>
-            //                                                 {
-            //                                                     return this.GetType().Name + "TITLE";
-            //                                                 });
-            //_funcDesc = GetDelegateInSubEvent<Func<string>>("Desc",
-                                                 //() =>
-                                                 //{
-                                                 //    return this.GetType().Name + "DESC";
-                                                 //});
             _All.Add(this);
         }
 

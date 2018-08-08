@@ -1,5 +1,6 @@
 ﻿using HuangDAPI;
 using System.Linq;
+using UnityEngine;
 
 namespace native
 {
@@ -133,12 +134,21 @@ namespace native
         {
             get
             {
+                Debug.Log(_param.level);
                 return (int)_param.level;
             }
             set
             {
-                Enable();
                 _param.level = value;
+                if (_param.level == 0)
+                {
+                    Disable();
+                }
+                else
+                {
+                    Enable();
+                }
+
             }
         }
     }

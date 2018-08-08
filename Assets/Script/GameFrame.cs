@@ -44,6 +44,9 @@ public class GameFrame
     {
         gameEnd = false;
 
+
+        InitStage();
+
         string strSavePath = GetSavePath();
         Debug.Log(strSavePath);
 
@@ -77,12 +80,17 @@ public class GameFrame
         return Application.persistentDataPath + "/save";
     }
 
-    private static void Initialize(string strEmpName, string strYearName, string strDynastyName)
+    private static void InitStage()
     {
         MyGame.Office.Initialize();
         MyGame.Province.Initialize();
         MyGame.Hougong.Initialize();
         MyGame.Faction.Initialize();
+    }
+
+    private static void Initialize(string strEmpName, string strYearName, string strDynastyName)
+    {
+        InitStage();
 
         MyGame.Person.Initialize();
 

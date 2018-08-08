@@ -168,7 +168,6 @@ public class StreamManager
         LoadEvent(Types);
         LoadDecision(Types);
         LoadDefines(Types);
-        //LoadFlags(Types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
@@ -192,6 +191,27 @@ public class StreamManager
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("CountryFlags", fields);
         string source = sourceCodeCreater.Create();
+
+        Regex r = new Regex(@"(.*)( = new )(.*())(.*;)");
+        source = r.Replace(source, new MatchEvaluator((Match match) =>
+        {
+            string result = string.Format(@"
+                var elem = (from x in COUNTRY_FLAG.All
+                where x.GetType().Name == typeof({0}).Name
+                select x).SingleOrDefault();
+
+                if (elem != null)
+                {{
+                    {1} = elem as {2};
+                }}
+                else
+                {{
+                    {3} = new {4}();
+                }}", 
+                                          match.Groups[3].Value.TrimEnd("()".ToCharArray()), match.Groups[1].Value, match.Groups[3].Value.TrimEnd("()".ToCharArray()), match.Groups[1].Value, match.Groups[3].Value.TrimEnd("()".ToCharArray()));
+
+            return result;
+        }));
 
         Debug.Log(source);
         return source;

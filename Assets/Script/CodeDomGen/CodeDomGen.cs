@@ -23,6 +23,7 @@ public class CodeDomGen
         _targetUnit = new CodeCompileUnit();
         CodeNamespace ns = new CodeNamespace(_ns);
         ns.Imports.Add(new CodeNamespaceImport("System"));
+        ns.Imports.Add(new CodeNamespaceImport("System.Linq"));
         if (namespaces != null)
         {
             foreach(var value in namespaces)
@@ -86,7 +87,7 @@ public class CodeDomGen
     private void AddStaticCtor()
     {
         CodeTypeConstructor constructor = new CodeTypeConstructor();
-        constructor.Attributes = MemberAttributes.Public;
+        //constructor.Attributes = MemberAttributes.Public | MemberAttributes.Static;
 
         foreach (var kv in _fieldsDictionary)
         {
