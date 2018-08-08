@@ -26,37 +26,13 @@ namespace HuangDAPI
         public void Enable()
         {
             _exist = true;
-
-            FlagEffect key = EffectKey();
-            switch(key)
-            {
-                case FlagEffect.PROVINCE_TAX:
-                    foreach(var prov in MyGame.Province.All)
-                    {
-                        prov.ProvTaxEffectEvent += this.EffectAction;
-                    }
-                    break;
-                default:
-                    break;
-            }
+            SetEffectEvent();
         }
 
         public void Disable()
         {
             _exist = false;
-
-            FlagEffect key = EffectKey();
-            switch (key)
-            {
-                case FlagEffect.PROVINCE_TAX:
-                    foreach (var prov in MyGame.Province.All)
-                    {
-                        prov.ProvTaxEffectEvent -= this.EffectAction;
-                    }
-                    break;
-                default:
-                    break;
-            }
+            ResetEffectEvent();
         }
 
         public virtual string Title()
@@ -79,14 +55,61 @@ namespace HuangDAPI
             return;
         }
 
+
+        public static void AfterDeserial()
+        {
+            foreach(var elem in All)
+            {
+                if(elem.IsEnabled())
+                {
+                    elem.SetEffectEvent();
+                }
+                else
+                {
+                    elem.ResetEffectEvent();
+                }
+            }
+        }
+
+        public void SetEffectEvent()
+        {
+            FlagEffect key = EffectKey();
+            switch (key)
+            {
+                case FlagEffect.PROVINCE_TAX:
+                    foreach (var prov in MyGame.Province.All)
+                    {
+                        prov.ProvTaxEffectEvent -= this.EffectAction;
+                        prov.ProvTaxEffectEvent += this.EffectAction;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void ResetEffectEvent()
+        {
+            FlagEffect key = EffectKey();
+            switch (key)
+            {
+                case FlagEffect.PROVINCE_TAX:
+                    foreach (var prov in MyGame.Province.All)
+                    {
+                        prov.ProvTaxEffectEvent -= this.EffectAction;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public static COUNTRY_FLAG[] All
         {
             get
             {
                 return _All.ToArray();
             }
-
-
         }
 
         //public Func<string> _funcTitle;

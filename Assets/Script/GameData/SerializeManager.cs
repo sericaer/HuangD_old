@@ -71,6 +71,12 @@ public partial class MyGame
 
                 field.SetValue(null, JsonConvert.DeserializeObject(jsonObj.GetValue(field.Name).ToString(), field.FieldType, settings));
             }
+
+            MethodInfo method = type.GetMethod("AfterDeserial", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            if(method != null)
+            {
+                method.Invoke(null, null);
+            }
         }
 
         static string GetTypeJsonValue(Type type)
