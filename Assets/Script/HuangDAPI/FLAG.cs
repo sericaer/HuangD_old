@@ -26,10 +26,37 @@ namespace HuangDAPI
         public void Enable()
         {
             _exist = true;
+
+            FlagEffect key = EffectKey();
+            switch(key)
+            {
+                case FlagEffect.PROVINCE_TAX:
+                    foreach(var prov in MyGame.Province.All)
+                    {
+                        prov.ProvTaxEffectEvent += this.EffectAction;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+
         public void Disable()
         {
             _exist = false;
+
+            FlagEffect key = EffectKey();
+            switch (key)
+            {
+                case FlagEffect.PROVINCE_TAX:
+                    foreach (var prov in MyGame.Province.All)
+                    {
+                        prov.ProvTaxEffectEvent -= this.EffectAction;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public virtual string Title()

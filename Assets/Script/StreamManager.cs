@@ -196,17 +196,19 @@ public class StreamManager
         source = r.Replace(source, new MatchEvaluator((Match match) =>
         {
             string result = string.Format(@"
-                var elem = (from x in COUNTRY_FLAG.All
-                where x.GetType().Name == typeof({0}).Name
-                select x).SingleOrDefault();
+                {{
+                    var elem = (from x in COUNTRY_FLAG.All
+                    where x.GetType().Name == typeof({0}).Name
+                    select x).SingleOrDefault();
 
-                if (elem != null)
-                {{
-                    {1} = elem as {2};
-                }}
-                else
-                {{
-                    {3} = new {4}();
+                    if (elem != null)
+                    {{
+                        {1} = elem as {2};
+                    }}
+                    else
+                    {{
+                        {3} = new {4}();
+                    }}
                 }}", 
                                           match.Groups[3].Value.TrimEnd("()".ToCharArray()), match.Groups[1].Value, match.Groups[3].Value.TrimEnd("()".ToCharArray()), match.Groups[1].Value, match.Groups[3].Value.TrimEnd("()".ToCharArray()));
 
@@ -214,6 +216,8 @@ public class StreamManager
         }));
 
         Debug.Log(source);
+
+        Debug.Log("Load country flag count:" + FlagTypes.Count());
         return source;
     }
 

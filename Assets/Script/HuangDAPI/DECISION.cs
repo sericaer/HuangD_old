@@ -62,6 +62,9 @@ namespace HuangDAPI
                                                       return "";
                                                   });
 
+            List<PropertyInfo> propers = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
+            _sponsor = propers.Find(x => x.Name == "Sponsor");
+
             var fieldInfo = _subFields.Where(x => x.Name == "CostDay").SingleOrDefault();
             if (fieldInfo != null)
             {
@@ -75,6 +78,20 @@ namespace HuangDAPI
             }
         }
 
+        public bool IsEnable()
+        {
+            return IsSponsorVaild() && _funcEnable();
+        }
+
+        private bool IsSponsorVaild()
+        {
+            if (_sponsor == null)
+            {
+                return true;
+            }
+
+            return _sponsor.GetValue(this) != null;
+        }
 
         public Func<bool> _funcVisable;
         public Func<bool> _funcEnable;
@@ -100,6 +117,7 @@ namespace HuangDAPI
         public IList<string> Flags;
 
         public dynamic param = new ExpandoObject();
+        private PropertyInfo _sponsor;
     }
 
     public class Decision

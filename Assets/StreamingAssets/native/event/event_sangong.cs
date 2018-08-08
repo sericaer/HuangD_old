@@ -8,14 +8,6 @@ namespace native
 {
     class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
-
         class OPTION1 : Option
         {
             string Desc(dynamic Precondition)
@@ -47,93 +39,6 @@ namespace native
         }
     }
 
-
-    //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
-    //{
-    //    Person Sponsor
-    //    {
-    //        get
-    //        {
-    //            return Offices.SG1.person;
-    //        }
-    //    }
-
-    //    bool Precondition(ref dynamic Precondition)
-    //    {
-    //        if (Sponsor.faction == Factions.SHI)
-    //        {
-    //            int powerPercent = Factions.SHI.powerPercent;
-    //            if (powerPercent > 70)
-    //            {
-    //                if (CountryFlags.SSYD.Level < 3)
-    //                {
-    //                    Precondition.Flag1 = 3;
-    //                    Precondition.Flag2 = null;
-    //                    return true;
-    //                }
-    //            }
-    //            if (powerPercent > 50)
-    //            {
-    //                if (CountryFlags.SSYD.Level < 2)
-    //                {
-    //                    Precondition.Flag1 = 2;
-    //                    Precondition.Flag2 = 3;
-    //                    return true;
-    //                }
-    //            }
-    //            if (powerPercent > 40)
-    //            {
-    //                if (CountryFlags.SSYD.Level < 1)
-    //                {
-    //                    Precondition.Flag1 = 1;
-    //                    Precondition.Flag2 = 2;
-    //                    return true;
-    //                }
-    //            }
-    //            if (powerPercent > 30)
-    //            {
-    //                if (CountryFlags.SSYD.Level < 1)
-    //                {
-    //                    Precondition.Flag1 = 0;
-    //                    Precondition.Flag2 = 1;
-    //                    return true;
-    //                }
-    //            }
-    //        }
-
-    //        return false;
-    //    }
-
-    //    class OPTION1 : Option
-    //    {
-    //        string Desc(dynamic Precondition)
-    //        {
-    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.Flag1.ToString());
-
-    //        }
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-    //             CountryFlags.SSYD.Level = Precondition.Flag1;
-    //        }
-    //    }
-
-    //    class OPTION2 : Option
-    //    {
-    //        bool IsVisable(dynamic Precondition)
-    //        {
-    //            return Precondition.Flag2 != null;
-    //        }
-    //        string Desc(dynamic Precondition)
-    //        {
-    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.Flag2.ToString());
-    //        }
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-    //            CountryFlags.SSYD.Level = Precondition.Flag2;
-    //            Stability.current += 1;
-    //        }
-    //    }
-    //}
 
 ////    //class EVENT_SG_EMPTY : EVENT_HD
 ////    //{

@@ -28,7 +28,7 @@ public partial class MyGame
         public bool IsEnable()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            bool isEnable =  decisionDef._funcEnable();
+            bool isEnable =  decisionDef.IsEnable();
 
             if(oldState != isEnable)
             {
@@ -240,7 +240,7 @@ public partial class MyGame
         {
             foreach (var elem in StreamManager.decisionDict)
             {
-                if (elem.Value._funcEnable())
+                if (elem.Value.IsEnable() )
                 {
                     if(!Plans.Exists((obj) => obj.name == elem.Key)
                        && !Procs.Exists((obj) => obj.name == elem.Key))

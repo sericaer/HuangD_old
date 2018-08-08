@@ -193,7 +193,7 @@ public partial class MyGame
         {
             Dictionary<string, int> result = new Dictionary<string, int>();
 
-            result.Add("TAX_BASE", (int)_economy.baseTax);
+            result.Add("TAX_BASE", baseTax);
             return result;
         }
 
@@ -202,6 +202,24 @@ public partial class MyGame
             Type type = StreamManager.Types.Where(x => x.Name == "Provinces").Single();
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
+
+        int baseTax
+        {
+            get
+            {
+                object _baseTax =  (int)_economy.baseTax;
+
+                if(ProvTaxEffectEvent != null)
+                {
+                    ProvTaxEffectEvent(ref _baseTax);
+                }
+
+                return (int)_baseTax;
+            }
+        }
+
+        public delegate void ProvTaxEffect(ref object param);
+        public event ProvTaxEffect ProvTaxEffectEvent;
 
         [SerializeField]
         private string _name;
