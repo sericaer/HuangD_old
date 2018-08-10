@@ -22,7 +22,10 @@ public partial class MyGame
 
         public static Dictionary<string, int> DecomeDetail()
         {
-            return new Dictionary<string, int>();
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            result = result.Union(Military.GetConsumer()).ToDictionary(arg => arg.Key, arg => arg.Value);
+            return result;
         }
 
         public static int NetInCome()
@@ -44,10 +47,10 @@ public partial class MyGame
                 desc += "\t" + HuangDAPI.UI.Format(elem.Key) + ":" + elem.Value + "\n";
             }
 
-            desc += HuangDAPI.UI.Format("DECOME_PER_MONTH") + ":" + decome.Values.Sum() + "\n";
+            desc += HuangDAPI.UI.Format("DECOME_PER_MONTH") + ":" + -decome.Values.Sum() + "\n";
             foreach (var elem in decome)
             {
-                desc += "\t" + HuangDAPI.UI.Format(elem.Key) + ":" + elem.Value + "\n";
+                desc += "\t" + HuangDAPI.UI.Format(elem.Key) + ":" + -elem.Value + "\n";
             }
 
             desc += HuangDAPI.UI.Format("NET_INCOME_PER_MONTH") + ":" + (income.Values.Sum() - decome.Values.Sum());

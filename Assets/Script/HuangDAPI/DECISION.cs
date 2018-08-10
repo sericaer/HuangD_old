@@ -41,6 +41,7 @@ namespace HuangDAPI
                                                   {
                                                       return "";
                                                   });
+
             _funcDisableEvent = GetDelegateInSubEvent<Func<string>>("DisableEvent",
                                                   () =>
                                                   {
@@ -81,6 +82,7 @@ namespace HuangDAPI
         public bool IsEnable()
         {
             return IsSponsorVaild() && _funcEnable();
+
         }
 
         private bool IsSponsorVaild()
@@ -93,6 +95,8 @@ namespace HuangDAPI
             return _sponsor.GetValue(this) != null;
         }
 
+
+
         public Func<bool> _funcVisable;
         public Func<bool> _funcEnable;
         public Func<bool> _funcProcFinish;
@@ -103,6 +107,7 @@ namespace HuangDAPI
         public delegate string DelegateEnableEvent(ref dynamic param);
 
         public DelegateEnableEvent _funcEnableEvent;
+
         public Func<string> _funcDisableEvent;
 
         public Func<string> _funcStartEvent;
@@ -117,6 +122,7 @@ namespace HuangDAPI
         public IList<string> Flags;
 
         public dynamic param = new ExpandoObject();
+        public dynamic preparam = new ExpandoObject();
         private PropertyInfo _sponsor;
     }
 

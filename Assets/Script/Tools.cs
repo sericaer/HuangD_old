@@ -20,6 +20,11 @@ namespace Tools
                 return false;
             }
 
+            if (prob > 1.0)
+            {
+                return true;
+            }
+
             if (Math.Abs(prob-1.0D) < Double.Epsilon)
             {
                 return true;

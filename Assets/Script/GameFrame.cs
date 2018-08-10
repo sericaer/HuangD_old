@@ -38,6 +38,15 @@ public class GameFrame
 
         string json = MyGame.SerializeManager.Serial();
         File.WriteAllText(GetSavePath() + "/game.save", json);
+
+        List<dynamic> serialEvent = new List<dynamic>();
+        foreach(var elem in StreamManager.eventDict)
+        {
+            if(elem.Value.LastTriggleDay != null)
+            {
+                serialEvent.Add(new { name = elem.Key, lasttriggle = elem.Value.LastTriggleDay });
+            }
+        }
     }
 
     public static void OnLoad()

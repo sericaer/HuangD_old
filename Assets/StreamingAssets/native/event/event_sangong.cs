@@ -39,6 +39,142 @@ namespace native
         }
     }
 
+    class EVENT_SG1_SUGGEST_REDUCE_MILITARY : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+
+        bool Precondition(ref dynamic result)
+        {
+            if (Sponsor.faction == Factions.SHI)
+            {
+                if(Economy.NetIncome < 30)
+                {
+                    Debug.Log(((double)LastTriggleInterval - 60) / 10);
+                    if(LastTriggleInterval > 90 && Probability.IsProbOccur(((double)LastTriggleInterval - 90)/10))
+                    {
+                        result.LowPercent = Sponsor.faction.powerPercent / 2;
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG1_SUGGEST_REDUCE_MILITARY_DESC", Precondition.LowPercent);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Military.current = Military.current * Precondition.LowPercent / 100;
+            }
+        }
+    }
+
+    class EVENT_SG1_SUGGEST_INCREACE_MILITARY : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+
+        bool Precondition(ref dynamic result)
+        {
+            if (Sponsor.faction == Factions.XUN)
+            {
+                if (Economy.NetIncome > 10)
+                {
+                    Debug.Log(((double)LastTriggleInterval - 90) / 10);
+                    if (LastTriggleInterval > 60 && Probability.IsProbOccur(((double)LastTriggleInterval - 90) / 10))
+                    {
+                        result.LowPercent = Sponsor.faction.powerPercent / 2;
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG1_SUGGEST_INCREACE_MILITARY", Precondition.LowPercent);
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Military.current = Military.current * (100+Precondition.LowPercent) / 100;
+            }
+        }
+    }
+
+    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if(CountryFlags.TSJZ.Level > 3)
+            {
+                return false;
+            }
+
+            if (Economy.NetIncome <= 10)
+            {
+                return Probability.IsProbOccur(0.02);
+            }
+
+            if (Economy.NetIncome <= 5)
+            {
+                return Probability.IsProbOccur(0.03);
+            }
+
+            if (Economy.NetIncome <= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                CountryFlags.TSJZ.Level++;
+            }
+        }
+    }
 
 ////    //class EVENT_SG_EMPTY : EVENT_HD
 ////    //{

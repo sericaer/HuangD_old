@@ -24,11 +24,11 @@ namespace HuangDAPI
                                                                 FieldInfo field = _subFields.Where(x => x.Name == "title").First();
                                                                 return (string)field.GetValue(this);
                                                             });
-            _funcDesc = GetDelegateInSubEvent<Func<object>>("Desc",
-                                                            () =>
+            _funcDesc = GetDelegateInSubEvent<Func<dynamic, string>>("Desc",
+                                                                     (dynamic param) =>
                                                             {
                                                                 FieldInfo field = _subFields.Where(x => x.Name == "desc").First();
-                                                                return field.GetValue(this);
+                                                                return (string)field.GetValue(this);
                                                             });
             _funcHistorRecord = GetDelegateInSubEvent<Func<string>>("HistorRecord",
                                                                     () =>
@@ -114,6 +114,19 @@ namespace HuangDAPI
             return _sponsor.GetValue(this) != null;
         }
 
+        public int LastTriggleInterval
+        {
+            get
+            {
+                if(LastTriggleDay == null)
+                {
+                    return int.MaxValue;
+                }
+
+                return MyGame.GameTime.current - LastTriggleDay;
+            }
+        }
+
         public abstract class Option : ReflectBase
         {
             public Option()
@@ -174,12 +187,13 @@ namespace HuangDAPI
         }
 
 
+        public MyGame.GameTime LastTriggleDay = null;
 
         public delegate bool Precondition(ref dynamic preResult);
 
         public Precondition _funcPrecondition;
         public Func<string> _funcTitle;
-        public Func<object> _funcDesc;
+        public Func<dynamic, string> _funcDesc;
         public Func<string> _funcHistorRecord;
         public Action<object> _funcInitialize;
 

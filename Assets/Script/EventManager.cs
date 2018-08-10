@@ -47,7 +47,7 @@ public class GMEvent : ItfEvent
 	{
 		get 
 		{
-            return ie._funcDesc();
+            return ie._funcDesc(preResult);
 		}
 	}
 

@@ -38,8 +38,22 @@ public partial class MyGame
 
                 }
 
+                List<SERIAL_EVENT> serialEvent = new List<SERIAL_EVENT>();
+                foreach (var elem in StreamManager.eventDict)
+                {
+                    if (elem.Value.LastTriggleDay != null)
+                    {
+                        serialEvent.Add(new SERIAL_EVENT{ name = elem.Key, lasttriggle = elem.Value.LastTriggleDay });
+                    }
+                }
+
+                writer.WritePropertyName("EVENT");
+                writer.WriteRawValue(JsonConvert.SerializeObject(serialEvent, settings));
+
                 writer.WriteEndObject();
             }
+
+
 
             return JToken.Parse(sb.ToString()).ToString();
         }
@@ -55,6 +69,15 @@ public partial class MyGame
             {
                 Deserial(type, jsonObj.GetValue(type.Name).ToString());
             }
+
+            IList<JToken> results =jsonObj["EVENT"].Children().ToList();
+
+            foreach (JToken result in results)
+            {
+                dynamic searchResult = result.ToObject<SERIAL_EVENT>();
+                StreamManager.eventDict[searchResult.name].LastTriggleDay = searchResult.lasttriggle;
+            }
+
         }
 
         public static void Deserial(Type type, string json)
@@ -107,7 +130,13 @@ public partial class MyGame
             return sb.ToString();
         }
 
-        static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+        static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+
+        struct SERIAL_EVENT
+        {
+            public string name;
+            public GameTime lasttriggle;
+        }
 
     }
 }

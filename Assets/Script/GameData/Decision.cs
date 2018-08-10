@@ -28,6 +28,7 @@ public partial class MyGame
         public bool IsEnable()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
+
             bool isEnable =  decisionDef.IsEnable();
 
             if(oldState != isEnable)

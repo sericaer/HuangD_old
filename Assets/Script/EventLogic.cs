@@ -35,6 +35,9 @@ public class EventLogic : MonoBehaviour
 		float costtime = 0.0f;
         foreach(ItfEvent eventobj in eventManager.GetEvent ())
         {
+            var EventObj = eventobj as GMEvent;
+            EventObj.ie.LastTriggleDay = MyGame.GameTime.current;
+
 			yield return new WaitForSeconds(0.5f);
 
             DialogLogic.DelegateProcess delegateProcess = delegate(string op, ref string nextEvent, ref object nextParam) {

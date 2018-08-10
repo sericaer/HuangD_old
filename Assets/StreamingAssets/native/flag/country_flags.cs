@@ -134,7 +134,7 @@ namespace native
         {
             get
             {
-                Debug.Log(_param.level);
+                //Debug.Log(_param.level);
                 return (int)_param.level;
             }
             set
@@ -153,6 +153,65 @@ namespace native
         }
     }
 
+    public class TSJZ : COUNTRY_FLAG
+    {
+        public TSJZ()
+        {
+            _param.level = 0;
+        }
+
+        public override string Title()
+        {
+            return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "TITLE");
+        }
+
+        public override string Desc()
+        {
+            return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
+        }
+
+        public override FlagEffect EffectKey()
+        {
+            return FlagEffect.PROVINCE_TAX;
+        }
+
+        public override void EffectAction(ref object tax)
+        {
+            switch (Level)
+            {
+                case 1:
+                    tax = (int)((int)tax * 1.3);
+                    break;
+                case 2:
+                    tax = (int)((int)tax * 1.5);
+                    break;
+                case 3:
+                    tax = (int)((int)tax * 1.8);
+                    break;
+            }
+        }
+
+        public int Level
+        {
+            get
+            {
+                return (int)_param.level;
+            }
+            set
+            {
+                _param.level = value;
+                if (_param.level == 0)
+                {
+                    Disable();
+                }
+                else
+                {
+                    Enable();
+                }
+
+            }
+        }
+    }
 
     //public class SSYD1 : COUNTRY_FLAG
     //{

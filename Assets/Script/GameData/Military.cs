@@ -18,5 +18,13 @@ public partial class MyGame
 
         [SerializeField]
         public static int current = Probability.GetRandomNum(60, 90);
+
+        internal static Dictionary<string, int> GetConsumer()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            result.Add("MILITARY_CONSUMER", current);
+
+            return result;
+        }
     }
 }
