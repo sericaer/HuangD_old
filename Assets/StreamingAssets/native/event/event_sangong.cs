@@ -8,8 +8,85 @@ namespace native
 {
     class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if (LastTriggleInterval < 50)
+            {
+                return false;
+            }
+
+            if (Sponsor.faction == Factions.SHI)
+            {
+                int powerPercent = Factions.SHI.powerPercent;
+                if (powerPercent > 70)
+                {
+                    if (CountryFlags.SSYD.Level < 3)
+                    {
+                        result.maxlevel = 3;
+                        result.minlevel = 3;
+                        return true;
+                    }
+                }
+                else if(powerPercent > 50)
+                {
+                    if (CountryFlags.SSYD.Level < 2)
+                    {
+                        result.maxlevel = 3;
+                        result.minlevel = 2;
+                        return true;
+                    }
+                }
+                else if(powerPercent > 30)
+                {
+                    if (CountryFlags.SSYD.Level < 1)
+                    {
+                        result.maxlevel = 2;
+                        result.minlevel = 1;
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (CountryFlags.SSYD.Level < 1 && LastTriggleInterval > 60 && Probability.IsProbOccur(1/Math.Pow(Stability.current+2, 2)))
+                    {
+                        result.maxlevel = 1;
+                        result.minlevel = 0;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         class OPTION1 : Option
         {
+            string Desc(dynamic Precondition)
+            {
+                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
+
+            }
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                CountryFlags.SSYD.Level = Precondition.maxlevel;
+                Stability.current++;
+            }
+        }
+        class OPTION2 : Option
+        {
+            bool IsVisable(dynamic Precondition)
+            {
+                return Precondition.maxlevel != Precondition.minlevel;
+            }
+
             string Desc(dynamic Precondition)
             {
                 return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
@@ -20,21 +97,270 @@ namespace native
                 CountryFlags.SSYD.Level = Precondition.minlevel;
             }
         }
+    }
 
-        class OPTION2 : Option
+    class EVENT_SG1_SUGGEST_REDUCE_SSYD : EVENT_HD
+    {
+        Person Sponsor
         {
-            bool IsVisable(dynamic Precondition)
+            get
             {
-                return Precondition.maxlevel != Precondition.minlevel;
+                return Offices.SG1.person;
             }
-            string Desc(dynamic Precondition)
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if (LastTriggleInterval < 60)
             {
-                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.maxlevel.ToString());
+                return false;
             }
+
+            if(Sponsor.faction == Factions.SHI)
+            {
+                return false;
+            }
+
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent < 40)
+            {
+                if (CountryFlags.SSYD.Level >= 3)
+                {
+                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (powerPercent < 20)
+            {
+                if (CountryFlags.SSYD.Level >= 2)
+                {
+                    if (Probability.IsProbOccur((double)1/powerPercent))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (Probability.IsProbOccur((double)1 / (powerPercent+200)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level = Precondition.maxlevel;
-                Stability.current += 1;
+                CountryFlags.SSYD.Level--;
+
+                Stability.current = Stability.current - Probability.GetRandomNum(0, (Factions.SHI.powerPercent)/10-1);
+            }
+        }
+        class OPTION2 : Option
+        {
+            
+        }
+    }
+
+
+    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if (LastTriggleInterval < 20)
+            {
+                return false;
+            }
+
+            if (CountryFlags.TSJZ.Level > 3)
+            {
+                return false;
+            }
+
+            if (Economy.NetIncome > 30)
+            {
+                return false;
+            }
+
+            double prob = 0.0;
+            if (Sponsor.faction == Factions.SHI)
+            {
+                prob -= 0.01;
+            }
+            if(Dip.current = Dip.WAR)
+            {
+                prob += 0.05;
+            }
+
+            if (Economy.NetIncome <= 10)
+            {
+                prob += 0.02;
+            }
+            else if (Economy.NetIncome <= 5)
+            {
+                prob += 0.03;
+            }
+            else if (Economy.NetIncome <= 0)
+            {
+                prob = 1.0;
+            }
+
+            return Probability.IsProbOccur(prob);
+        }
+
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                CountryFlags.TSJZ.Level++;
+            }
+        }
+    }
+
+    class EVENT_SG1_SUGGEST_REDUCE_TAX : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if (LastTriggleInterval < 60)
+            {
+                return false;
+            }
+
+            if (Sponsor.faction == Factions.SHI)
+            {
+                return false;
+            }
+
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent < 40)
+            {
+                if (CountryFlags.SSYD.Level >= 3)
+                {
+                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (powerPercent < 20)
+            {
+                if (CountryFlags.SSYD.Level >= 2)
+                {
+                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (Probability.IsProbOccur((double)1 / (powerPercent + 200)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                CountryFlags.SSYD.Level--;
+
+                Stability.current = Stability.current - Probability.GetRandomNum(0, (Factions.SHI.powerPercent) / 10 - 1);
+            }
+        }
+        class OPTION2 : Option
+        {
+
+        }
+    }
+
+
+    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        bool Precondition(ref dynamic result)
+        {
+            if (LastTriggleInterval < 30)
+            {
+                return false;
+            }
+
+            if (CountryFlags.TSJZ.Level == 0)
+            {
+                return false;
+            }
+
+            if (Economy.current < 300)
+            {
+                return false;
+            }
+
+            if (Economy.NetIncome <= 10)
+            {
+                return Probability.IsProbOccur(0.02);
+            }
+
+            if (Economy.NetIncome <= 5)
+            {
+                return Probability.IsProbOccur(0.03);
+            }
+
+            if (Economy.NetIncome <= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
+        }
+
+        class OPTION1 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                CountryFlags.TSJZ.Level++;
             }
         }
     }
@@ -48,7 +374,6 @@ namespace native
                 return Offices.SG1.person;
             }
         }
-
 
         bool Precondition(ref dynamic result)
         {
@@ -127,54 +452,40 @@ namespace native
         }
     }
 
-    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
 
-        bool Precondition(ref dynamic result)
-        {
-            if(CountryFlags.TSJZ.Level > 3)
-            {
-                return false;
-            }
+    //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
+    //{
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc(dynamic Precondition)
+    //        {
+    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
 
-            if (Economy.NetIncome <= 10)
-            {
-                return Probability.IsProbOccur(0.02);
-            }
+    //        }
+    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.SSYD.Level = Precondition.minlevel;
+    //        }
+    //    }
 
-            if (Economy.NetIncome <= 5)
-            {
-                return Probability.IsProbOccur(0.03);
-            }
+    //    class OPTION2 : Option
+    //    {
+    //        bool IsVisable(dynamic Precondition)
+    //        {
+    //            return Precondition.maxlevel != Precondition.minlevel;
+    //        }
+    //        string Desc(dynamic Precondition)
+    //        {
+    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.maxlevel.ToString());
+    //        }
+    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.SSYD.Level = Precondition.maxlevel;
+    //            Stability.current += 1;
+    //        }
+    //    }
+    //}
 
-            if (Economy.NetIncome <= 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        string Desc(dynamic Precondition)
-        {
-            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
-        }
-
-        class OPTION1 : Option
-        {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-            {
-                CountryFlags.TSJZ.Level++;
-            }
-        }
-    }
 
 ////    //class EVENT_SG_EMPTY : EVENT_HD
 ////    //{

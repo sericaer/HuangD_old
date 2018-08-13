@@ -3,205 +3,205 @@ using System.Linq;
 
 namespace native
 {
-    class DECISION_SSYD1 : DECISION
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class DECISION_SSYD1 : DECISION
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        string Title()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
-        }
+    //    string Title()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
+    //    }
 
-        string Desc()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
-        }
+    //    string Desc()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
+    //    }
 
-        bool Enable()
-        {
-            if (Sponsor.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent >= 30 && powerPercent < 40)
-                {
-                    if (CountryFlags.SSYD.Level < 1)
-                    {
-                        param.maxlevel = 1;
-                        param.minlevel = 0;
-                        return true;
-                    }
-                }
-            }
+    //    bool Enable()
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent >= 30 && powerPercent < 40)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 1)
+    //                {
+    //                    param.maxlevel = 1;
+    //                    param.minlevel = 0;
+    //                    return true;
+    //                }
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
 
-        string EnableEvent(ref dynamic param)
-        {
-            param.maxlevel = this.param.maxlevel;
-            param.minlevel = this.param.minlevel;
+    //    string EnableEvent(ref dynamic param)
+    //    {
+    //        param.maxlevel = this.param.maxlevel;
+    //        param.minlevel = this.param.minlevel;
 
-            return "EVENT_SG1_SUGGEST_SSYD";
-        }
+    //        return "EVENT_SG1_SUGGEST_SSYD";
+    //    }
 
-        string FinishEvent()
-        {
-            CountryFlags.SSYD.Level = param.maxlevel;
-            Stability.current += 1;
-            return "";
-        }
-    }
+    //    string FinishEvent()
+    //    {
+    //        CountryFlags.SSYD.Level = param.maxlevel;
+    //        Stability.current += 1;
+    //        return "";
+    //    }
+    //}
 
-    class DECISION_SSYD2 : DECISION
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class DECISION_SSYD2 : DECISION
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        string Title()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
-        }
+    //    string Title()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
+    //    }
 
-        string Desc()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
-        }
+    //    string Desc()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
+    //    }
 
-        bool Enable()
-        {
-            if (Sponsor.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent >= 40 && powerPercent <= 50)
-                {
-                    if (CountryFlags.SSYD.Level < 2)
-                    {
-                        param.maxlevel = 2;
-                        param.minlevel = 1;
-                        return true;
-                    }
-                }
-            }
+    //    bool Enable()
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent >= 40 && powerPercent <= 50)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 2)
+    //                {
+    //                    param.maxlevel = 2;
+    //                    param.minlevel = 1;
+    //                    return true;
+    //                }
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
 
-        string EnableEvent(ref dynamic param)
-        {
-            param.maxlevel = this.param.maxlevel;
-            param.minlevel = this.param.minlevel;
+    //    string EnableEvent(ref dynamic param)
+    //    {
+    //        param.maxlevel = this.param.maxlevel;
+    //        param.minlevel = this.param.minlevel;
 
-            return "EVENT_SG1_SUGGEST_SSYD";
-        }
-    }
+    //        return "EVENT_SG1_SUGGEST_SSYD";
+    //    }
+    //}
 
 
-    class DECISION_SSYD3 : DECISION
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class DECISION_SSYD3 : DECISION
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        string Title()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
-        }
+    //    string Title()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
+    //    }
 
-        string Desc()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
-        }
+    //    string Desc()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
+    //    }
 
-        bool Enable()
-        {
-            if (Sponsor.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent >= 50 && powerPercent < 70)
-                {
-                    if (CountryFlags.SSYD.Level < 3)
-                    {
-                        param.maxlevel = 3;
-                        param.minlevel = 2;
-                        return true;
-                    }
-                }
-            }
+    //    bool Enable()
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent >= 50 && powerPercent < 70)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 3)
+    //                {
+    //                    param.maxlevel = 3;
+    //                    param.minlevel = 2;
+    //                    return true;
+    //                }
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
 
-        string EnableEvent(ref dynamic param)
-        {
-            param.maxlevel = this.param.maxlevel;
-            param.minlevel = this.param.minlevel;
+    //    string EnableEvent(ref dynamic param)
+    //    {
+    //        param.maxlevel = this.param.maxlevel;
+    //        param.minlevel = this.param.minlevel;
 
-            return "EVENT_SG1_SUGGEST_SSYD";
-        }
-    }
+    //        return "EVENT_SG1_SUGGEST_SSYD";
+    //    }
+    //}
 
-    class DECISION_SSYD4 : DECISION
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class DECISION_SSYD4 : DECISION
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        string Title()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
-        }
+    //    string Title()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
+    //    }
 
-        string Desc()
-        {
-            return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
-        }
+    //    string Desc()
+    //    {
+    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
+    //    }
 
-        bool Enable()
-        {
-            if (Sponsor.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent >= 70)
-                {
-                    if (CountryFlags.SSYD.Level < 3)
-                    {
-                        param.maxlevel = 3;
-                        param.minlevel = 3;
-                        return true;
-                    }
-                }
-            }
+    //    bool Enable()
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent >= 70)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 3)
+    //                {
+    //                    param.maxlevel = 3;
+    //                    param.minlevel = 3;
+    //                    return true;
+    //                }
+    //            }
+    //        }
 
-            return false;
-        }
+    //        return false;
+    //    }
 
-        string EnableEvent(ref dynamic param)
-        {
-            param.maxlevel = this.param.maxlevel;
-            param.minlevel = this.param.minlevel;
+    //    string EnableEvent(ref dynamic param)
+    //    {
+    //        param.maxlevel = this.param.maxlevel;
+    //        param.minlevel = this.param.minlevel;
 
-            return "EVENT_SG1_SUGGEST_SSYD";
-        }
-    }
+    //        return "EVENT_SG1_SUGGEST_SSYD";
+    //    }
+    //}
 
 
     //class DECISION_SSYD3 : DECISION
