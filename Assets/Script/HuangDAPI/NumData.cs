@@ -18,7 +18,7 @@ namespace HuangDAPI
 
     public class Economy
     {
-        public static int current
+        public static double current
         {
             get
             {
@@ -30,7 +30,7 @@ namespace HuangDAPI
             }
         }
 
-        public static int NetIncome
+        public static double NetIncome
         {
             get
             {
@@ -52,5 +52,23 @@ namespace HuangDAPI
                 MyGame.Military.current = value;
             }
         }
+    }
+
+    public class Diplomacy
+    {
+        public static int current
+        {
+            get
+            {
+                return MyGame.Diplomacy.current;
+            }
+            set
+            {
+                MyGame.Diplomacy.current = value;
+            }
+        }
+
+        public const int WAR = MyGame.Diplomacy.WAR;
+        public const int PEACE = MyGame.Diplomacy.PEACE;
     }
 }

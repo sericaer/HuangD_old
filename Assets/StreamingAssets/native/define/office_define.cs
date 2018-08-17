@@ -49,7 +49,9 @@ namespace native
         [OfficeAttr(Power = 3, group = OfficeGroup.Local)]
         CS8,
         [OfficeAttr(Power = 3, group = OfficeGroup.Local)]
-        CS9
+        CS9,
+        [OfficeAttr(Power = 3, group = OfficeGroup.Local)]
+        CS10
     }
 
     public enum HOUGONG_DEFINE

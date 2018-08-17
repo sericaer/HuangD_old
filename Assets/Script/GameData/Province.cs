@@ -189,9 +189,9 @@ public partial class MyGame
         //    return result.ToArray();
         //}
 
-        public Dictionary<string, int> taxDetail()
+        public Dictionary<string, double> taxDetail()
         {
-            Dictionary<string, int> result = new Dictionary<string, int>();
+            Dictionary<string, double> result = new Dictionary<string, double>();
 
             result.Add("TAX_BASE", baseTax);
             return result;
@@ -203,18 +203,18 @@ public partial class MyGame
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
-        int baseTax
+        double baseTax
         {
             get
             {
-                object _baseTax =  (int)_economy.baseTax;
+                object _baseTax =  (double)_economy.baseTax;
 
                 if(ProvTaxEffectEvent != null)
                 {
                     ProvTaxEffectEvent(ref _baseTax);
                 }
 
-                return (int)_baseTax;
+                return (double)_baseTax;
             }
         }
 

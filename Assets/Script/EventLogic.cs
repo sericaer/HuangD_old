@@ -36,7 +36,7 @@ public class EventLogic : MonoBehaviour
         foreach(ItfEvent eventobj in eventManager.GetEvent ())
         {
             var EventObj = eventobj as GMEvent;
-            EventObj.ie.LastTriggleDay = MyGame.GameTime.current;
+            EventObj.ie.LastTriggleDay = new MyGame.GameTime(MyGame.GameTime.current);
 
 			yield return new WaitForSeconds(0.5f);
 
@@ -76,9 +76,10 @@ public class EventLogic : MonoBehaviour
 
         MyGame.DecisionManager.Update();
 
+        MyGame.GameTime.current.Increase();
+
         yield return new WaitForSeconds(m_fWaitTime - costtime);
 
-        MyGame.GameTime.current.Increase();
         StartCoroutine(OnTimer());
 
 	}

@@ -5,7 +5,7 @@ namespace native
 {
     public enum PROVINCE_DEFINE
     {
-        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.HIGH, mainOffice = OFFICE_DEFINE.CS1)]
+        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.LOW, mainOffice = OFFICE_DEFINE.CS1)]
         ZHOUJ1,
         [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.LOW, mainOffice = OFFICE_DEFINE.CS2)]
         ZHOUJ2,
@@ -19,9 +19,11 @@ namespace native
         ZHOUJ6,
         [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.MID, mainOffice = OFFICE_DEFINE.CS7)]
         ZHOUJ7,
-        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.HIGH, mainOffice = OFFICE_DEFINE.CS8)]
+        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.MID, mainOffice = OFFICE_DEFINE.CS8)]
         ZHOUJ8,
-        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.HIGH, mainOffice = OFFICE_DEFINE.CS9)]
-        ZHOUJ9
+        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.LOW, mainOffice = OFFICE_DEFINE.CS9)]
+        ZHOUJ9,
+        [ProvinceAttribute(economy = PROV_ECONOMY_DEFINE.HIGH, mainOffice = OFFICE_DEFINE.CS10)]
+        ZHOUJ10
     }
 }

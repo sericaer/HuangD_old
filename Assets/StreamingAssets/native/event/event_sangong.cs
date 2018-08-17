@@ -116,38 +116,51 @@ namespace native
                 return false;
             }
 
+            if(CountryFlags.SSYD.Level == 0)
+            {
+                return false;
+            }
+
             if(Sponsor.faction == Factions.SHI)
             {
                 return false;
             }
 
-            int powerPercent = Factions.SHI.powerPercent;
-            if (powerPercent < 40)
+            int powerPercent = Factions.SHI.powerPercent+1;
+            switch(CountryFlags.SSYD.Level)
             {
-                if (CountryFlags.SSYD.Level >= 3)
-                {
-                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                case 3:
                     {
-                        return true;
+                        if (powerPercent > 40)
+                        {
+                            return false;
+                        }
+
+                        return Probability.IsProbOccur(0.3 / powerPercent);
                     }
-                }
-            }
-            else if (powerPercent < 20)
-            {
-                if (CountryFlags.SSYD.Level >= 2)
-                {
-                    if (Probability.IsProbOccur((double)1/powerPercent))
+                    break;
+                case 2:
                     {
-                        return true;
+                        if (powerPercent > 30)
+                        {
+                            return false;
+                        }
+
+                        return Probability.IsProbOccur(0.2 / powerPercent);
                     }
-                }
-                else
-                {
-                    if (Probability.IsProbOccur((double)1 / (powerPercent+200)))
+                    break;
+                case 1:
                     {
-                        return true;
+                        if (powerPercent > 20)
+                        {
+                            return false;
+                        }
+
+                        return Probability.IsProbOccur(0.1 / powerPercent);
                     }
-                }
+                    break;
+                default:
+                    break;
             }
 
             return false;
@@ -158,8 +171,7 @@ namespace native
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
                 CountryFlags.SSYD.Level--;
-
-                Stability.current = Stability.current - Probability.GetRandomNum(0, (Factions.SHI.powerPercent)/10-1);
+                Stability.current = Stability.current - 1;
             }
         }
         class OPTION2 : Option
@@ -181,17 +193,20 @@ namespace native
 
         bool Precondition(ref dynamic result)
         {
+            Debug.Log("LastTriggleInterval:" + LastTriggleInterval);
+
             if (LastTriggleInterval < 20)
             {
                 return false;
             }
 
-            if (CountryFlags.TSJZ.Level > 3)
+
+            if (CountryFlags.KJZS.Level >= CountryFlags.KJZS.MAX_LEVEL)
             {
                 return false;
             }
 
-            if (Economy.NetIncome > 30)
+            if (Economy.NetIncome > 10)
             {
                 return false;
             }
@@ -201,22 +216,22 @@ namespace native
             {
                 prob -= 0.01;
             }
-            if(Dip.current = Dip.WAR)
+            if (Diplomacy.current == Diplomacy.WAR)
             {
                 prob += 0.05;
             }
 
-            if (Economy.NetIncome <= 10)
+            if (Economy.NetIncome <= 0)
             {
-                prob += 0.02;
+                prob = 0.08;
+            }
+            else if (Economy.NetIncome <= 3)
+            {
+                prob += 0.05;
             }
             else if (Economy.NetIncome <= 5)
             {
                 prob += 0.03;
-            }
-            else if (Economy.NetIncome <= 0)
-            {
-                prob = 1.0;
             }
 
             return Probability.IsProbOccur(prob);
@@ -231,8 +246,12 @@ namespace native
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                CountryFlags.TSJZ.Level++;
+                CountryFlags.KJZS.Level++;
             }
+        }
+        class OPTION2 : Option
+        {
+
         }
     }
 
@@ -253,50 +272,48 @@ namespace native
                 return false;
             }
 
-            if (Sponsor.faction == Factions.SHI)
+            if (CountryFlags.KJZS.Level < 1)
             {
                 return false;
             }
 
-            int powerPercent = Factions.SHI.powerPercent;
-            if (powerPercent < 40)
+            var prob = 0.0;
+            switch(CountryFlags.KJZS.Level)
             {
-                if (CountryFlags.SSYD.Level >= 3)
-                {
-                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                case 3:
                     {
-                        return true;
+                        prob = 0.001;
+                        prob += Economy.NetIncome * 0.0001;
+                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
                     }
-                }
-            }
-            else if (powerPercent < 20)
-            {
-                if (CountryFlags.SSYD.Level >= 2)
-                {
-                    if (Probability.IsProbOccur((double)1 / powerPercent))
+                    break;
+                case 2:
                     {
-                        return true;
+                        prob = 0.0005;
+                        prob += Economy.NetIncome * 0.0001;
+                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
                     }
-                }
-                else
-                {
-                    if (Probability.IsProbOccur((double)1 / (powerPercent + 200)))
+                    break;
+                case 1:
                     {
-                        return true;
+                        prob += Economy.NetIncome * 0.0001;
+                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
                     }
-                }
+                    break;
+                default:
+                    return false;
             }
 
-            return false;
+            return Probability.IsProbOccur(prob);
         }
 
         class OPTION1 : Option
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level--;
+                CountryFlags.KJZS.Level--;
 
-                Stability.current = Stability.current - Probability.GetRandomNum(0, (Factions.SHI.powerPercent) / 10 - 1);
+                Stability.current++;
             }
         }
         class OPTION2 : Option
@@ -305,8 +322,7 @@ namespace native
         }
     }
 
-
-    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
+    class EVENT_SG1_SUGGEST_INCREACE_MILITARY : EVENT_HD
     {
         Person Sponsor
         {
@@ -318,50 +334,122 @@ namespace native
 
         bool Precondition(ref dynamic result)
         {
-            if (LastTriggleInterval < 30)
+            var prob = 0.0;
+
+            if (Diplomacy.current == Diplomacy.WAR)
+            {
+                prob += 0.05;
+            }
+
+            if(Military.current == 100)
             {
                 return false;
             }
 
-            if (CountryFlags.TSJZ.Level == 0)
+            if (Military.current > 90)
             {
-                return false;
+                prob += -0.05;
+            }
+            else if (Military.current > 85)
+            {
+                prob += -0.02;
+            }
+            else if (Military.current > 80)
+            {
+                prob += -0.01;
+            }
+            else if (Military.current > 75)
+            {
+                prob += -0.005;
+            }
+            else if(Military.current > 70)
+            {
+                prob += -0.002;
+            }
+            else if (Military.current > 65)
+            {
+                prob += -0.001;
+            }
+            else if (Military.current > 60)
+            {
+                prob += 0.0;
+            }
+            else if (Military.current > 50)
+            {
+                prob += 0.001;
+            }
+            else if (Military.current > 40)
+            {
+                prob += 0.005;
+            }
+            else if (Military.current > 30)
+            {
+                prob += 0.01;
+            }
+            else if (Military.current > 20)
+            {
+                prob += 0.02;
+            }
+            else if (Military.current > 10)
+            {
+                prob += 0.05;
+            }
+            else
+            {
+                prob += 0.1;
+            }
+    
+            if (Sponsor.faction == Factions.SHI)
+            {
+                prob += -0.05;
+            }
+            else if (Sponsor.faction == Factions.XUN)
+            {
+                prob += 0.05;
+            }
+            else if (Sponsor.faction == Factions.HUAN)
+            {
+                prob += 0.01;
             }
 
-            if (Economy.current < 300)
+            if (Economy.NetIncome < 0)
             {
-                return false;
+                prob += -0.005;
             }
 
-            if (Economy.NetIncome <= 10)
-            {
-                return Probability.IsProbOccur(0.02);
-            }
-
-            if (Economy.NetIncome <= 5)
-            {
-                return Probability.IsProbOccur(0.03);
-            }
-
-            if (Economy.NetIncome <= 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        string Desc(dynamic Precondition)
-        {
-            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
+            return Probability.IsProbOccur(Math.Max(0.0, prob));
         }
 
         class OPTION1 : Option
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                CountryFlags.TSJZ.Level++;
+                Military.current = Military.current + 15;
+                Economy.current = Economy.current - 15;
             }
+        }
+
+        class OPTION2 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Military.current = Military.current + 10;
+                Economy.current = Economy.current - 10;
+            }
+        }
+
+        class OPTION3 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Military.current = Military.current + 5;
+                Economy.current = Economy.current - 5;
+            }
+        }
+
+        class OPTION4 : Option
+        {
+
         }
     }
 
@@ -377,80 +465,161 @@ namespace native
 
         bool Precondition(ref dynamic result)
         {
+            var prob = 0.0;
+
+            if (Diplomacy.current == Diplomacy.PEACE)
+            {
+                prob += 0.01;
+            }
+
+            if (Military.current <= 10)
+            {
+                return false;
+            }
+
+            if (Military.current > 90)
+            {
+                prob += 0.05;
+            }
+            else if (Military.current > 85)
+            {
+                prob += 0.02;
+            }
+            else if (Military.current > 80)
+            {
+                prob += 0.01;
+            }
+            else if (Military.current > 75)
+            {
+                prob += 0.005;
+            }
+            else if (Military.current > 70)
+            {
+                prob += 0.002;
+            }
+            else if (Military.current > 65)
+            {
+                prob += 0.001;
+            }
+            else if (Military.current > 60)
+            {
+                prob += 0.0;
+            }
+            else if (Military.current > 50)
+            {
+                prob += -0.001;
+            }
+            else if (Military.current > 40)
+            {
+                prob += -0.005;
+            }
+            else if (Military.current > 30)
+            {
+                prob += 0.01;
+            }
+            else if (Military.current > 20)
+            {
+                prob += -0.02;
+            }
+
             if (Sponsor.faction == Factions.SHI)
             {
-                if(Economy.NetIncome < 30)
-                {
-                    Debug.Log(((double)LastTriggleInterval - 60) / 10);
-                    if(LastTriggleInterval > 90 && Probability.IsProbOccur(((double)LastTriggleInterval - 90)/10))
-                    {
-                        result.LowPercent = Sponsor.faction.powerPercent / 2;
-                        return true;
-                    }
-
-                }
+                prob += 0.05;
+            }
+            else if (Sponsor.faction == Factions.XUN)
+            {
+                prob += -0.05;
+            }
+            else if (Sponsor.faction == Factions.HUAN)
+            {
+                prob += -0.01;
             }
 
-            return false;
-        }
+            if (Economy.NetIncome > 10)
+            {
+                prob += -0.005;
+            }
 
-        string Desc(dynamic Precondition)
-        {
-            return UI.Format("EVENT_SG1_SUGGEST_REDUCE_MILITARY_DESC", Precondition.LowPercent);
+            return Probability.IsProbOccur(Math.Max(0.0, prob));
         }
 
         class OPTION1 : Option
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                Military.current = Military.current * Precondition.LowPercent / 100;
-            }
-        }
-    }
-
-    class EVENT_SG1_SUGGEST_INCREACE_MILITARY : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
+                Military.current = Military.current - 15;
+                Economy.current = Economy.current - 10;
             }
         }
 
-
-        bool Precondition(ref dynamic result)
-        {
-            if (Sponsor.faction == Factions.XUN)
-            {
-                if (Economy.NetIncome > 10)
-                {
-                    Debug.Log(((double)LastTriggleInterval - 90) / 10);
-                    if (LastTriggleInterval > 60 && Probability.IsProbOccur(((double)LastTriggleInterval - 90) / 10))
-                    {
-                        result.LowPercent = Sponsor.faction.powerPercent / 2;
-                        return true;
-                    }
-
-                }
-            }
-
-            return false;
-        }
-
-        string Desc(dynamic Precondition)
-        {
-            return UI.Format("EVENT_SG1_SUGGEST_INCREACE_MILITARY", Precondition.LowPercent);
-        }
-
-        class OPTION1 : Option
+        class OPTION2 : Option
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
             {
-                Military.current = Military.current * (100+Precondition.LowPercent) / 100;
+                Military.current = Military.current - 10;
+                Economy.current = Economy.current - 8;
             }
         }
+
+        class OPTION3 : Option
+        {
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Military.current = Military.current - 5;
+                Economy.current = Economy.current - 5;
+            }
+        }
+
+        class OPTION4 : Option
+        {
+
+        }
     }
+
+    //class EVENT_SG1_SUGGEST_REDUCE_MILITARY : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
+
+    //    bool Precondition(ref dynamic result)
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            if(Economy.NetIncome < 30)
+    //            {
+    //                Debug.Log(((double)LastTriggleInterval - 60) / 10);
+    //                if(LastTriggleInterval > 90 && Probability.IsProbOccur(((double)LastTriggleInterval - 90)/10))
+    //                {
+    //                    result.LowPercent = Sponsor.faction.powerPercent / 2;
+    //                    return true;
+    //                }
+
+    //            }
+    //        }
+
+    //        return false;
+    //    }
+
+    //    string Desc(dynamic Precondition)
+    //    {
+    //        return UI.Format("EVENT_SG1_SUGGEST_REDUCE_MILITARY_DESC", Precondition.LowPercent);
+    //    }
+
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current * Precondition.LowPercent / 100;
+    //        }
+    //    }
+    //}
+
+
 
 
     //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD

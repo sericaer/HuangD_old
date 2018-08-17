@@ -479,17 +479,17 @@ namespace HuangDAPI
         //    }
         //}
 
-        public static int Economy
-        {
-            get
-            {
-                return MyGame.Economy.current;
-            }
-            set
-            {
-                MyGame.Economy.current = value;
-            }
-        }
+        //public static int Economy
+        //{
+        //    get
+        //    {
+        //        return MyGame.Economy.current;
+        //    }
+        //    set
+        //    {
+        //        MyGame.Economy.current = value;
+        //    }
+        //}
 
         //public static int Military
         //{

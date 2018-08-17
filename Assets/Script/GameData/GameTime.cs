@@ -133,33 +133,42 @@ public partial class MyGame
 
         public static int operator - (GameTime c1, GameTime c2)
         {
-            int result = 0;
+            int day = 0;
+            int month = 0;
+            int year = 0;
+
             if(c1.day < c2.day)
             {
-                result += c1.day + 30 - c2.day;
-                c1._month--;
+                day = c1.day + 30 - c2.day;
+                month = c1.month - 1;
             }
             else
             {
-                result += c1.day - c2.day;
+                day = c1.day - c2.day;
+                month = c1.month;
             }
 
-            if(c1.month < c2.month)
+            if(month < c2.month)
             {
-                result += (c1.month + 12 - c2.month) * 30;
-                c1._year--;
+                month = (month + 12 - c2.month);
+                year = c1.year -1;
             }
             else
             {
-                result += (c1.month - c2.month) * 30;
+                month = (month - c2.month);
+                year = c1.year;
             }
 
-            if(c1.year < c2.year)
+            if(year < c2.year)
             {
                 throw new ArgumentException(c1 + "is earlier than" + c2);
             }
+            else
+            {
+                year = year - c2.year;
+            }
 
-            result += (c1.year - c2.year) * 12 * 30;
+            int result = year * 30*12 + month * 30 + day;
 
             return result;
         }

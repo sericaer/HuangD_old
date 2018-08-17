@@ -8,12 +8,12 @@ public partial class MyGame
 {
     public class Economy : SerializeManager
     {
-        public static Dictionary<string, int> IncomeDetail()
+        public static Dictionary<string, double> IncomeDetail()
         {
-            Dictionary<string, int> result = new Dictionary<string, int>();
+            Dictionary<string, double> result = new Dictionary<string, double>();
             foreach (var p in MyGame.Province.All)
             {
-                Dictionary <string, int> provTaxDetail = p.taxDetail();
+                Dictionary <string, double> provTaxDetail = p.taxDetail();
                 result.Add(p.name, provTaxDetail.Values.Sum());
             }
 
@@ -28,7 +28,7 @@ public partial class MyGame
             return result;
         }
 
-        public static int NetInCome()
+        public static double NetInCome()
         {
             var income = IncomeDetail();
             var decome = DecomeDetail();
@@ -63,6 +63,6 @@ public partial class MyGame
         }
 
         [SerializeField]
-        public static int current = Probability.GetRandomNum(60, 90);
+        public static double current = Probability.GetRandomNum(60, 90);
     }
 }

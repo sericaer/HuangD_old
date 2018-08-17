@@ -119,13 +119,13 @@ namespace native
             switch(Level)
             {
                 case 1:
-                    tax = (int)((int)tax * 0.9);
+                    tax = ((double)tax * 0.9);
                     break;
                 case 2:
-                    tax = (int)((int)tax * 0.75);
+                    tax = ((double)tax * 0.75);
                     break;
                 case 3:
-                    tax = (int)((int)tax * 0.5);
+                    tax = ((double)tax * 0.5);
                     break;
             }
         }
@@ -153,9 +153,9 @@ namespace native
         }
     }
 
-    public class TSJZ : COUNTRY_FLAG
+    public class KJZS : COUNTRY_FLAG
     {
-        public TSJZ()
+        public KJZS()
         {
             _param.level = 0;
         }
@@ -180,13 +180,15 @@ namespace native
             switch (Level)
             {
                 case 1:
-                    tax = (int)((int)tax * 1.3);
+                    tax = ((double)tax * 1.1);
                     break;
                 case 2:
-                    tax = (int)((int)tax * 1.5);
+                    tax = ((double)tax * 1.3);
                     break;
                 case 3:
-                    tax = (int)((int)tax * 1.8);
+                    tax = ((double)tax * 1.5);
+                    break;
+                default:
                     break;
             }
         }
@@ -211,6 +213,9 @@ namespace native
 
             }
         }
+
+        public int MAX_LEVEL = 3;
+        public int MIN_LEVEL = 0;
     }
 
     //public class SSYD1 : COUNTRY_FLAG
