@@ -92,6 +92,22 @@ public partial class MyGame
 
                 return Person.Males.Where((arg) => arg.name == personname).Single();
             }
+            set
+            {
+                var relation = (from x in MyGame.RelationManager.mapOffice2Person
+                                where x.person == value.name
+                                select x).SingleOrDefault();
+                if(relation != null)
+                {
+                    relation.person = "";
+                }
+
+                relation = (from x in MyGame.RelationManager.mapOffice2Person
+                                     where x.office == this.name
+                                     select x).Single();
+
+                relation.person = value;
+            }
         }
 
         [SerializeField]

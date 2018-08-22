@@ -12,7 +12,7 @@ namespace HuangDAPI
     {
         string name { get; }
         int power { get; }
-        Person person { get; }
+        Person person { get; set; }
     }
 
     public interface Hougong
@@ -20,6 +20,8 @@ namespace HuangDAPI
         string name { get; }
         Person person { get; }
     }
+
+
 
     //public class Offices
     //{

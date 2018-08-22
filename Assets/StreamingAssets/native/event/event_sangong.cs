@@ -237,11 +237,6 @@ namespace native
             return Probability.IsProbOccur(prob);
         }
 
-        string Desc(dynamic Precondition)
-        {
-            return UI.Format("EVENT_SG1_SUGGEST_INCREASE_TAX");
-        }
-
         class OPTION1 : Option
         {
             void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
@@ -407,7 +402,7 @@ namespace native
             {
                 prob += 0.05;
             }
-            else if (Sponsor.faction == Factions.HUAN)
+            else if (Sponsor.faction == Factions.WAI)
             {
                 prob += 0.01;
             }
@@ -530,7 +525,7 @@ namespace native
             {
                 prob += -0.05;
             }
-            else if (Sponsor.faction == Factions.HUAN)
+            else if (Sponsor.faction == Factions.WAI)
             {
                 prob += -0.01;
             }
@@ -576,173 +571,86 @@ namespace native
         }
     }
 
-    //class EVENT_SG1_SUGGEST_REDUCE_MILITARY : EVENT_HD
-    //{
-    //    Person Sponsor
-    //    {
-    //        get
-    //        {
-    //            return Offices.SG1.person;
-    //        }
-    //    }
+    class EVENT_SG_EMPTY : EVENT_HD
+    {
+        bool Precondition(ref dynamic result)
+        {
+            Office emptyOffice = Offices.groupCenter1.Where(x=>x.person == null).FirstOrDefault();
+            if(emptyOffice == null)
+            {
+                return false;
+            }
 
-    //    bool Precondition(ref dynamic result)
-    //    {
-    //        if (Sponsor.faction == Factions.SHI)
-    //        {
-    //            if(Economy.NetIncome < 30)
-    //            {
-    //                Debug.Log(((double)LastTriggleInterval - 60) / 10);
-    //                if(LastTriggleInterval > 90 && Probability.IsProbOccur(((double)LastTriggleInterval - 90)/10))
-    //                {
-    //                    result.LowPercent = Sponsor.faction.powerPercent / 2;
-    //                    return true;
-    //                }
+            result.emptyOffice = emptyOffice;
+            result.preferPersons = GetPreferPersons();
+            return true;
+        }
 
-    //            }
-    //        }
+        string Desc(dynamic Precondition)
+        {
+            return UI.Format("EVENT_SG_EMPTY_DESC", Precondition.emptyOffice.name);
+        }
 
-    //        return false;
-    //    }
+        class OPTION1 : Option
+        {
+            string Desc(dynamic Precondition)
+            {
+                Person p = Precondition.preferPersons[0];
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+            }
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Precondition.emptyOffice.person = Precondition.preferPersons[0];
+            }
+        }
+        class OPTION2 : Option
+        {
+            bool IsVisable(dynamic Precondition)
+            {
+                return Precondition.preferPersons.Count >= 2;
+            }
 
-    //    string Desc(dynamic Precondition)
-    //    {
-    //        return UI.Format("EVENT_SG1_SUGGEST_REDUCE_MILITARY_DESC", Precondition.LowPercent);
-    //    }
+            string Desc(dynamic Precondition)
+            {
+                Person p = Precondition.preferPersons[1];
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+            }
 
-    //    class OPTION1 : Option
-    //    {
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-    //            Military.current = Military.current * Precondition.LowPercent / 100;
-    //        }
-    //    }
-    //}
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Precondition.emptyOffice.person = Precondition.preferPersons[1];
+            }
+        }
 
+        class OPTION3 : Option
+        {
+            bool IsVisable(dynamic Precondition)
+            {
+                return Precondition.preferPersons.Count >= 3;
+            }
 
+            string Desc(dynamic Precondition)
+            {
+                Person p = Precondition.preferPersons[2];
+                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+            }
 
-
-    //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
-    //{
-    //    class OPTION1 : Option
-    //    {
-    //        string Desc(dynamic Precondition)
-    //        {
-    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
-
-    //        }
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-    //            CountryFlags.SSYD.Level = Precondition.minlevel;
-    //        }
-    //    }
-
-    //    class OPTION2 : Option
-    //    {
-    //        bool IsVisable(dynamic Precondition)
-    //        {
-    //            return Precondition.maxlevel != Precondition.minlevel;
-    //        }
-    //        string Desc(dynamic Precondition)
-    //        {
-    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.maxlevel.ToString());
-    //        }
-    //        void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
-    //        {
-    //            CountryFlags.SSYD.Level = Precondition.maxlevel;
-    //            Stability.current += 1;
-    //        }
-    //    }
-    //}
+            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            {
+                Precondition.emptyOffice.person = Precondition.preferPersons[2];
+            }
+        }
 
 
-////    //class EVENT_SG_EMPTY : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        emptyOffice = (from x in GMData.Offices.SG
-////    //                       where x.person == null
-////    //                       select x).FirstOrDefault();
+        List<Person> GetPreferPersons()
+        {
+            var q = from x in Offices.groupCenter2
+                    group x by x.person.faction into g
+                    select g.OrderByDescending(y => y.person.score).FirstOrDefault().person;
 
-////    //        listPerson = new List<Person>();
-
-////    //        if (emptyOffice != null)
-////    //        {
-////    //            var q = from x in GMData.Offices.JQ
-////    //                    group x by x.person.faction into g
-////    //                    select g.OrderByDescending(y => y.person.score).FirstOrDefault().person;
-
-////    //            foreach (var m in q)
-////    //            {
-////    //                listPerson.Add(m);
-////    //            }
-
-////    //         }
-
-////    //        if(listPerson != null && listPerson.Count != 0)
-////    //            return true;
-
-////    //        return false; 
-////    //    }
-
-////    //    string Desc()
-////    //    {
-////    //        return UI.Format("EVENT_SG_EMPTY_DESC", emptyOffice.name);
-////    //    }
-
-////    //    class OPTION1 : Option
-////    //    {
-////    //        string Desc()
-////    //        {
-////    //            Person p = OUTTER.listPerson[0];
-////    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
-////    //        }
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.RelationManager.SetOffice(OUTTER.listPerson[0], OUTTER.emptyOffice);
-////    //        }
-////    //    }
-////    //    class OPTION2 : Option
-////    //    {
-////    //        bool Precondition()
-////    //        {
-////    //            return OUTTER.listPerson.Count >= 2;
-////    //        }
-
-////    //        string Desc()
-////    //        {
-////    //            Person p = OUTTER.listPerson[1];
-////    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
-////    //        }
-
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.RelationManager.SetOffice(OUTTER.listPerson[1], OUTTER.emptyOffice);
-////    //        }
-////    //    }
-
-////    //    class OPTION3 : Option
-////    //    {
-////    //        bool Precondition()
-////    //        {
-////    //            return OUTTER.listPerson.Count >= 3;
-////    //        }
-
-////    //        string Desc()
-////    //        {
-////    //            Person p = OUTTER.listPerson[2];
-////    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.ToString(), p.faction.name);
-////    //        }
-
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.RelationManager.SetOffice(OUTTER.listPerson[2], OUTTER.emptyOffice);
-////    //        }
-////    //    }
-
-////    //    private Office emptyOffice;
-////    //    private List<Person> listPerson;
-////    //}
+            return new List<Person>(q);
+        }
+    }
 
 ////    //class EVENT_SG2_DEAL_TL : EVENT_HD
 ////    //{

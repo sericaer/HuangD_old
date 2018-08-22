@@ -9,6 +9,7 @@ using System.Linq;
 using HuangDAPI;
 using System.Text.RegularExpressions;
 using System.Dynamic;
+using System.CodeDom;
 
 
 #if NET_4_6
@@ -183,10 +184,10 @@ public class StreamManager
 
         Type[] FlagTypes = types.Where(x => x.BaseType.Name == "COUNTRY_FLAG").ToArray();
 
-        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (var type in FlagTypes)
         {
-            fields.Add(new Tuple<string, Type, Type, List<object>>(type.Name, type, type, null));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(type.Name, type, type, null, null));
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("CountryFlags", fields);
@@ -254,13 +255,13 @@ public class StreamManager
     {
         Type officeDefineType = types.Where(x => x.Name == "HOUGONG_DEFINE").Single();
 
-        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (var eHougong in Enum.GetValues(officeDefineType))
         {
             FieldInfo field = eHougong.GetType().GetField(eHougong.ToString());
             HougongAttr attribute = Attribute.GetCustomAttribute(field, typeof(HougongAttr)) as HougongAttr;
 
-            fields.Add(new Tuple<string, Type, Type, List<object>>(eHougong.ToString(), typeof(HuangDAPI.Hougong), typeof(MyGame.Hougong), new List<object> { eHougong.ToString(), attribute.group }));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(eHougong.ToString(), typeof(HuangDAPI.Hougong), typeof(MyGame.Hougong), new List<object> { eHougong.ToString(), attribute.group }, null));
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("Hougongs", fields);
@@ -271,16 +272,49 @@ public class StreamManager
     {
         Type officeDefineType = types.Where(x => x.Name == "OFFICE_DEFINE").Single();
 
-        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (var eoffice in Enum.GetValues(officeDefineType))
         {
             FieldInfo field = eoffice.GetType().GetField(eoffice.ToString());
             OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
 
-            fields.Add(new Tuple<string, Type, Type, List<object>> (eoffice.ToString(), typeof(HuangDAPI.Office), typeof(MyGame.Office), new List<object>{eoffice.ToString(), attribute.Power, attribute.group}));
+
+            var value = new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(attribute.group.GetType().Name), ((Enum)attribute.group).ToString());
+            CodeAttributeDeclaration attrib = new CodeAttributeDeclaration("OfficeAttr", new CodeAttributeArgument("group", value));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration> (eoffice.ToString(), typeof(HuangDAPI.Office), typeof(MyGame.Office), new List<object>{eoffice.ToString(), attribute.Power, attribute.group}, attrib));
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("Offices", fields);
+
+        foreach (var egroup in Enum.GetValues(typeof(OfficeGroup)))
+        {
+            CodeMemberProperty prty = new CodeMemberProperty();
+            prty.Name = "group" + egroup.ToString();
+            prty.Type = new CodeTypeReference(typeof(HuangDAPI.Office[]));
+            prty.Attributes = MemberAttributes.Public | MemberAttributes.Static;
+            prty.HasGet = true;
+
+            string seq = string.Format(@"
+            Type type = typeof(Offices);
+            List<FieldInfo> _subFields = type.GetFields(BindingFlags.Static).ToList();
+            
+            List<HuangDAPI.Office> rslt = new List<HuangDAPI.Office>();
+            foreach(var field in _subFields)
+            {{
+                OfficeAttr attribute = Attribute.GetCustomAttribute(field, typeof(OfficeAttr)) as OfficeAttr;
+                if(attribute != null && attribute.group == OfficeGroup.{0})
+                {{
+                    rslt.Add((HuangDAPI.Office)field.GetValue(null));
+                }}
+            }}
+            return rslt.ToArray();", egroup);
+
+            CodeSnippetStatement snippet = new CodeSnippetStatement(seq);
+            prty.GetStatements.Add(snippet);
+
+            sourceCodeCreater.AddMemeber(prty);
+        }
+
         return sourceCodeCreater.Create();
     }
 
@@ -288,11 +322,11 @@ public class StreamManager
     {
         Type officeDefineType = types.Where(x => x.Name == "FACTION_DEFINE").Single();
 
-        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (var efaction in Enum.GetValues(officeDefineType))
         {
 
-            fields.Add(new Tuple<string, Type, Type, List<object>>(efaction.ToString(), typeof(HuangDAPI.Faction), typeof(MyGame.Faction), new List<object> { efaction.ToString()}));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(efaction.ToString(), typeof(HuangDAPI.Faction), typeof(MyGame.Faction), new List<object> { efaction.ToString()}, null));
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("Factions", fields);
@@ -303,7 +337,7 @@ public class StreamManager
     {
         Type provDefineType = types.Where(x => x.Name == "PROVINCE_DEFINE").Single();
 
-        var fields = new List<Tuple<string, Type, Type, List<object>>>();
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (var eprov in Enum.GetValues(provDefineType))
         {
             FieldInfo field = eprov.GetType().GetField(eprov.ToString());
@@ -315,10 +349,10 @@ public class StreamManager
             string econmoy = attribute.economy + "|" + Levelattr.baseTax;
             //dynamic econmoy = new { baseTax = Levelattr.baseTax, levelName = attribute.economy.ToString() };
 
-            fields.Add(new Tuple<string, Type, Type, List<object>>(eprov.ToString(), 
-                                                                   typeof(HuangDAPI.Province), 
-                                                                   typeof(MyGame.Province), 
-                                                                   new List<object> { eprov.ToString(), econmoy, attribute.mainOffice.ToString() }));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(eprov.ToString(), 
+                                                                                             typeof(HuangDAPI.Province), 
+                                                                                             typeof(MyGame.Province), 
+                                                                                             new List<object> { eprov.ToString(), econmoy, attribute.mainOffice.ToString() }, null));
         }
 
         string[] namespaces = { "native" };

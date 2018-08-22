@@ -10,6 +10,7 @@ namespace HuangDAPI
         //public abstract int press { get; }
         int score { get; set; }
         Faction faction { get; }
+        Office office { get; }
         //public abstract int heath { get; set; }
         //public abstract int age { get; set; }
         //public abstract Dictionary<string, string> Flags { get; set; }

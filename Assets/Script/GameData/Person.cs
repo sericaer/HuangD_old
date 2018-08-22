@@ -137,7 +137,7 @@ public partial class MyGame
             }
         }
 
-        public Office office
+        public HuangDAPI.Office office
         {
             get
             {

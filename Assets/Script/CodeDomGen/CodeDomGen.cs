@@ -9,13 +9,13 @@ public class CodeDomGen
 {
     private string _ns = "HuangDAPI";
     private string _className;
-    private List<Tuple<string, Type, Type, List<object>>> _fieldsDictionary;
+    private List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>> _fieldsDictionary;
 
     private string _sourceCode;
 
     private CodeCompileUnit _targetUnit;
     private CodeTypeDeclaration _targetClass;
-    public CodeDomGen(string className, List<Tuple<string, Type, Type, List<object>>> fieldsDictionary, string[] namespaces = null)
+    public CodeDomGen(string className, List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>> fieldsDictionary, string[] namespaces = null)
     {
         _fieldsDictionary = fieldsDictionary;
         _className = className;
@@ -24,9 +24,11 @@ public class CodeDomGen
         CodeNamespace ns = new CodeNamespace(_ns);
         ns.Imports.Add(new CodeNamespaceImport("System"));
         ns.Imports.Add(new CodeNamespaceImport("System.Linq"));
+        ns.Imports.Add(new CodeNamespaceImport("System.Reflection"));
+        ns.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
         if (namespaces != null)
         {
-            foreach(var value in namespaces)
+            foreach (var value in namespaces)
             {
                 ns.Imports.Add(new CodeNamespaceImport(value));
             }
@@ -71,6 +73,11 @@ public class CodeDomGen
 
     }
 
+    public void AddMemeber(CodeTypeMember value)
+    {
+        _targetClass.Members.Add(value);
+    }
+
     private void AddFields()
     {
         // Declare  fields .
@@ -80,6 +87,11 @@ public class CodeDomGen
             widthValueField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
             widthValueField.Name = kv.Item1;
             widthValueField.Type = new CodeTypeReference(kv.Item2);
+            if(kv.Item5 != null)
+            {
+                widthValueField.CustomAttributes.Add(kv.Item5);
+            }
+
             _targetClass.Members.Add(widthValueField);
         }
     }

@@ -106,28 +106,10 @@ partial class MyGame
 
 
 
- //       public void SetOffice2Person(HuangDAPI.Office officeParam, HuangDAPI.Person ppersonParam)
- //       {
- //           var elem = listOffice2Person.Find(x => x.person == ppersonParam);
- //           if (elem != null)
- //           {
- //               elem.person = null;
- //           }
-
- //           elem = listOffice2Person.Find(x => x.office == officeParam);
- //           if(elem == null)
- //           {
- //               listOffice2Person.Add(new HuangDAPI.GMData.OfficeMapElem { office = officeParam, person = ppersonParam });
- //               return;
- //           }
-
- //           if(elem.person != null)
- //           {
- //               throw new ArgumentException(string.Format("office {0} already has person {1}", elem.office.name, elem.person.name));
- //           }
-
- //           elem.person = ppersonParam;
- //       }
+        public void SetOffice2Person(string officename, string personname)
+        {
+            
+        }
 
  //       public void SetFaction2Person(HuangDAPI.Faction factionParam, HuangDAPI.Person personParam)
  //       {
