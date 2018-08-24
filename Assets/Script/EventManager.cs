@@ -47,7 +47,7 @@ public class GMEvent : ItfEvent
 	{
 		get 
 		{
-            return ie._funcDesc(preResult);
+            return ie._funcDesc();
 		}
 	}
 
@@ -58,12 +58,12 @@ public class GMEvent : ItfEvent
 			List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>> ();
             foreach (EVENT_HD.Option option in optionDic.Values) 
 			{
-                if (!option._funcIsVisable(preResult))
+                if (!option._funcIsVisable())
                 {
                     continue;
                 }
 
-                string Desc =  option._funcDesc(preResult);
+                string Desc =  option._funcDesc();
                 result.Add (new KeyValuePair<string, string> (option.GetType().Name, Desc));
 			}
 
@@ -93,7 +93,7 @@ public class GMEvent : ItfEvent
 	{
         _isChecked = true;
 
-        optionDic[opKey]._funcSelected(preResult, ref nxtEvent, ref ret);
+        optionDic[opKey]._funcSelected(ref nxtEvent, ref ret);
        
     }
 
@@ -204,7 +204,7 @@ public class EventManager
             }
 
             dynamic rslt = new ExpandoObject();
-            if (!ie._funcPrecondition(ref rslt))
+            if (!ie.funcPrecondition(rslt))
 			{
 				continue;
 			}

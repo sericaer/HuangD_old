@@ -16,7 +16,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             if (LastTriggleInterval < 50)
             {
@@ -30,8 +30,8 @@ namespace native
                 {
                     if (CountryFlags.SSYD.Level < 3)
                     {
-                        result.maxlevel = 3;
-                        result.minlevel = 3;
+                        PreData.maxlevel = 3;
+                        PreData.minlevel = 3;
                         return true;
                     }
                 }
@@ -39,8 +39,8 @@ namespace native
                 {
                     if (CountryFlags.SSYD.Level < 2)
                     {
-                        result.maxlevel = 3;
-                        result.minlevel = 2;
+                        PreData.maxlevel = 3;
+                        PreData.minlevel = 2;
                         return true;
                     }
                 }
@@ -48,8 +48,8 @@ namespace native
                 {
                     if (CountryFlags.SSYD.Level < 1)
                     {
-                        result.maxlevel = 2;
-                        result.minlevel = 1;
+                        PreData.maxlevel = 2;
+                        PreData.minlevel = 1;
                         return true;
                     }
                 }
@@ -57,8 +57,8 @@ namespace native
                 {
                     if (CountryFlags.SSYD.Level < 1 && LastTriggleInterval > 60 && Probability.IsProbOccur(1/Math.Pow(Stability.current+2, 2)))
                     {
-                        result.maxlevel = 1;
-                        result.minlevel = 0;
+                        PreData.maxlevel = 1;
+                        PreData.minlevel = 0;
                         return true;
                     }
                 }
@@ -69,32 +69,32 @@ namespace native
 
         class OPTION1 : Option
         {
-            string Desc(dynamic Precondition)
+            string Desc()
             {
-                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
+                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
 
             }
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected(ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level = Precondition.maxlevel;
+                CountryFlags.SSYD.Level = PreData.maxlevel;
                 Stability.current++;
             }
         }
         class OPTION2 : Option
         {
-            bool IsVisable(dynamic Precondition)
+            bool IsVisable()
             {
-                return Precondition.maxlevel != Precondition.minlevel;
+                return PreData.maxlevel != PreData.minlevel;
             }
 
-            string Desc(dynamic Precondition)
+            string Desc()
             {
-                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + Precondition.minlevel.ToString());
+                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
 
             }
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected(ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level = Precondition.minlevel;
+                CountryFlags.SSYD.Level = PreData.minlevel;
             }
         }
     }
@@ -109,7 +109,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             if (LastTriggleInterval < 60)
             {
@@ -168,7 +168,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected(ref string nxtEvent, ref object param)
             {
                 CountryFlags.SSYD.Level--;
                 Stability.current = Stability.current - 1;
@@ -191,7 +191,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             Debug.Log("LastTriggleInterval:" + LastTriggleInterval);
 
@@ -239,7 +239,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 CountryFlags.KJZS.Level++;
             }
@@ -260,7 +260,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             if (LastTriggleInterval < 60)
             {
@@ -304,7 +304,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 CountryFlags.KJZS.Level--;
 
@@ -327,7 +327,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             var prob = 0.0;
 
@@ -417,7 +417,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current + 15;
                 Economy.current = Economy.current - 15;
@@ -426,7 +426,7 @@ namespace native
 
         class OPTION2 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current + 10;
                 Economy.current = Economy.current - 10;
@@ -435,7 +435,7 @@ namespace native
 
         class OPTION3 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current + 5;
                 Economy.current = Economy.current - 5;
@@ -458,7 +458,7 @@ namespace native
             }
         }
 
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             var prob = 0.0;
 
@@ -540,7 +540,7 @@ namespace native
 
         class OPTION1 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current - 15;
                 Economy.current = Economy.current - 10;
@@ -549,7 +549,7 @@ namespace native
 
         class OPTION2 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current - 10;
                 Economy.current = Economy.current - 8;
@@ -558,7 +558,7 @@ namespace native
 
         class OPTION3 : Option
         {
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
                 Military.current = Military.current - 5;
                 Economy.current = Economy.current - 5;
@@ -573,7 +573,7 @@ namespace native
 
     class EVENT_SG_EMPTY : EVENT_HD
     {
-        bool Precondition(ref dynamic result)
+        bool Precondition()
         {
             Office emptyOffice = Offices.groupCenter1.Where(x=>x.person == null).FirstOrDefault();
             if(emptyOffice == null)
@@ -581,63 +581,63 @@ namespace native
                 return false;
             }
 
-            result.emptyOffice = emptyOffice;
-            result.preferPersons = GetPreferPersons();
+            PreData.emptyOffice = emptyOffice;
+            PreData.preferPersons = GetPreferPersons();
             return true;
         }
 
-        string Desc(dynamic Precondition)
+        string Desc()
         {
-            return UI.Format("EVENT_SG_EMPTY_DESC", Precondition.emptyOffice.name);
+            return UI.Format("EVENT_SG_EMPTY_DESC", PreData.emptyOffice.name);
         }
 
         class OPTION1 : Option
         {
-            string Desc(dynamic Precondition)
+            string Desc()
             {
-                Person p = Precondition.preferPersons[0];
+                Person p = PreData.preferPersons[0];
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
             }
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
-                Precondition.emptyOffice.person = Precondition.preferPersons[0];
+                PreData.emptyOffice.person = PreData.preferPersons[0];
             }
         }
         class OPTION2 : Option
         {
-            bool IsVisable(dynamic Precondition)
+            bool IsVisable()
             {
-                return Precondition.preferPersons.Count >= 2;
+                return PreData.preferPersons.Count >= 2;
             }
 
-            string Desc(dynamic Precondition)
+            string Desc()
             {
-                Person p = Precondition.preferPersons[1];
+                Person p = PreData.preferPersons[1];
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
             }
 
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
-                Precondition.emptyOffice.person = Precondition.preferPersons[1];
+                PreData.emptyOffice.person = PreData.preferPersons[1];
             }
         }
 
         class OPTION3 : Option
         {
-            bool IsVisable(dynamic Precondition)
+            bool IsVisable()
             {
-                return Precondition.preferPersons.Count >= 3;
+                return PreData.preferPersons.Count >= 3;
             }
 
-            string Desc(dynamic Precondition)
+            string Desc()
             {
-                Person p = Precondition.preferPersons[2];
+                Person p = PreData.preferPersons[2];
                 return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
             }
 
-            void Selected(dynamic Precondition, ref string nxtEvent, ref object param)
+            void Selected( ref string nxtEvent, ref object param)
             {
-                Precondition.emptyOffice.person = Precondition.preferPersons[2];
+                PreData.emptyOffice.person = PreData.preferPersons[2];
             }
         }
 

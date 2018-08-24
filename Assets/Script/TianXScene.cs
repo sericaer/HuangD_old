@@ -24,16 +24,16 @@ public class TianXScene: MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        List<string> colums = new List<string>{ "name", "economy", "status", "cs", "age", "faction", "score"};
+        List<string> colums = new List<string>{ "name", "economy", "status", "income", "reb", "cs", "age", "faction", "score"};
         List<IList<object>> data = new List<IList<object>>();
 
         foreach(var prov in MyGame.Province.All)
         {
             var person = prov.mainOffice.person;
             if (person != null)
-                data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", person.name, "", StreamManager.uiDesc.Get(person.faction.name), person.score });
+                data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", prov.income, prov.reb, person.name, "", StreamManager.uiDesc.Get(person.faction.name), person.score });
             else
-                data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", "", "", "", 0 });
+                data.Add(new List<object>() { StreamManager.uiDesc.Get(prov.name), StreamManager.uiDesc.Get(prov.economy), "", "", "", "", "", "", 0 });
         }
 
         wdataTable.InitDataTable(data, colums);

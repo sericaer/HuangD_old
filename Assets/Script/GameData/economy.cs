@@ -13,8 +13,7 @@ public partial class MyGame
             Dictionary<string, double> result = new Dictionary<string, double>();
             foreach (var p in MyGame.Province.All)
             {
-                Dictionary <string, double> provTaxDetail = p.taxDetail();
-                result.Add(p.name, provTaxDetail.Values.Sum());
+                result.Add(p.name, p.income);
             }
 
             return result;

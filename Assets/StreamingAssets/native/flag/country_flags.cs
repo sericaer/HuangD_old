@@ -1,97 +1,10 @@
 ﻿using HuangDAPI;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace native
 {
-    //public class SSYD : COUNTRY_FLAG
-    //{
-    //    public readonly int LEVEL0 = 0;
-    //    public readonly int LEVEL1 = 1;
-    //    public readonly int LEVEL2 = 2;
-    //    public readonly int LEVEL3 = 3;
-
-    //    public SSYD()
-    //    {
-    //        _level = LEVEL0;
-    //    }
-
-    //    public string Title()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", GetType().Name, _level, "TITLE");
-    //    }
-
-    //    public string Desc()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", GetType().Name, _level, "DESC");
-    //    }
-
-    //    public FlagEffect EffectKey()
-    //    {
-    //        return FlagEffect.PROVINCE_TAX;
-    //    }
-
-    //    public void EffectAction(ref int tax)
-    //    {
-    //        if(_level == LEVEL1)
-    //        {
-    //            tax = (int)(tax * 0.9);
-    //            return;
-    //        }
-    //        if (_level == LEVEL2)
-    //        {
-    //            tax = (int)(tax * 0.75);
-    //            return;
-    //        }
-    //        if (_level == LEVEL3)
-    //        {
-    //            tax = (int)(tax * 0.5);
-    //            return;
-    //        }
-
-    //        return;
-    //    }
-
-    //    //public static string EFFECT()
-    //    //{
-    //    //    switch (Inst._level)
-    //    //    {
-    //    //        case LV.LEVEL1:
-    //    //            return "PROVINCE_TAX|*0.9";
-    //    //        case LV.LEVEL2:
-    //    //            return "PROVINCE_TAX|*0.75";
-    //    //        case LV.LEVEL3:
-    //    //            return "PROVINCE_TAX|*0.5";
-    //    //        default:
-    //    //            return "";
-    //    //    }
-    //    //}
-
-    //    //public class LV
-    //    //{
-    //    //    public const int LEVEL0 = 0;
-    //    //    public const int LEVEL1 = 1;
-    //    //    public const int LEVEL2 = 2;
-    //    //    public const int LEVEL3 = 3;
-    //    //}
-
-    //    public int Level
-    //    {
-    //        get
-    //        {
-    //            return _level;
-    //        }
-    //        set
-    //        {
-    //            Enable();
-    //            _level = value;
-    //        }
-    //    }
-
-    //    private int _level;
-
-    //}
-
     public class SSYD : COUNTRY_FLAG
     {
         public SSYD()
@@ -109,25 +22,27 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
-        public override FlagEffect EffectKey()
-        {
-            return FlagEffect.PROVINCE_TAX;
-        }
 
-        public override void EffectAction(ref object tax)
+
+        public override void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
         {
-            switch(Level)
+            effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
             {
-                case 1:
-                    tax = ((double)tax * 0.9);
-                    break;
-                case 2:
-                    tax = ((double)tax * 0.75);
-                    break;
-                case 3:
-                    tax = ((double)tax * 0.5);
-                    break;
-            }
+                switch (Level)
+                {
+                    case 1:
+                        return -tax * 0.1;
+                        break;
+                    case 2:
+                        return -tax * 0.25;
+                        break;
+                    case 3:
+                        return -tax * 0.5;
+                        break;
+                    default:
+                        return null;
+                }
+            });
         }
 
         public int Level
@@ -170,27 +85,29 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
-        public override FlagEffect EffectKey()
+        public override void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
         {
-            return FlagEffect.PROVINCE_TAX;
-        }
-
-        public override void EffectAction(ref object tax)
-        {
-            switch (Level)
+            effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
             {
-                case 1:
-                    tax = ((double)tax * 1.1);
-                    break;
-                case 2:
-                    tax = ((double)tax * 1.3);
-                    break;
-                case 3:
-                    tax = ((double)tax * 1.5);
-                    break;
-                default:
-                    break;
-            }
+                switch (Level)
+                {
+                    case 1:
+                        return tax * 0.1;
+                        break;
+                    case 2:
+                        return tax * 0.3;
+                        break;
+                    case 3:
+                        return tax * 0.5;
+                        break;
+                    default:
+                        return null;
+                }
+            });
+            effectDict.Add(FlagEffect.PROVINCE_REB, (dynamic reb)=>
+            {
+                return Level;
+            });
         }
 
         public int Level

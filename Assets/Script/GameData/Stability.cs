@@ -8,6 +8,6 @@ public partial class MyGame
     {
 
         [SerializeField]
-        public static int current = Probability.GetRandomNum(60, 90);
+        public static int current = Probability.GetRandomNum(0, 3);
     }
 }

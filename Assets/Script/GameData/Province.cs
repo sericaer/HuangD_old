@@ -23,101 +23,6 @@ public partial class MyGame
             }
         }
 
-        //public static STATUS[] GetDebuffStatus()
-        //{
-        //    List<STATUS> result = new List<STATUS>();
-        //    foreach (var status in Enum.GetValues(typeof(Province.ENUM_PROV_STATUS)))
-        //    {
-
-        //        FieldInfo field = status.GetType().GetField(status.ToString());
-        //        Province.ProvStatusAttribute attribute = Attribute.GetCustomAttribute(field, typeof(Province.ProvStatusAttribute)) as Province.ProvStatusAttribute;
-
-        //        if (!attribute.isBuff)
-        //        {
-        //            result.Add(new STATUS(status.ToString(), false));
-        //        }
-        //    }
-
-        //    return result.ToArray();
-        //}
-
-        //public enum ENUM_PROV
-        //{
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.HIGH)]
-        //    ZHOUJ1,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.LOW)]
-        //    ZHOUJ2,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.HIGH)]
-        //    ZHOUJ3,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.MID)]
-        //    ZHOUJ4,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.HIGH)]
-        //    ZHOUJ5,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.MID)]
-        //    ZHOUJ6,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.MID)]
-        //    ZHOUJ7,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.HIGH)]
-        //    ZHOUJ8,
-        //    [ProvinceAttribute(economy = ENUM_ECONOMY.HIGH)]
-        //    ZHOUJ9
-        //}
-
-        //public enum ENUM_BUFF_TYPE
-        //{
-        //    NORMAL,
-        //    BUFF,
-        //    DEBUFF
-        //}
-
-        //public class ProvStatusAttribute : Attribute
-        //{
-        //    public bool isBuff;
-        //}
-
-        //public enum ENUM_PROV_STATUS
-        //{
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    HONG,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    HAN,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    HUANG,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    WEN,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    ZHEN,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    KOU,
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    FAN,
-     
-        //    [ProvStatusAttribute(isBuff = false)]
-        //    FENG
-        //}
-
-        //public class STATUS
-        //{
-        //    public STATUS(string name, bool isbuff)
-        //    {
-        //        this.name = name;
-        //        this.isbuff = isbuff;
-
-        //        days = 0;
-        //        cover = 0.0;
-        //        corrput = false;
-        //        recover = false;
-        //    }
-
-        //    public string name;
-        //    public int days;
-        //    public double cover;
-        //    public bool corrput;
-        //    public bool isbuff;
-        //    public bool recover;
-        //}
-
-
         public Province(string name, string economy, string mainOfficeName)
         {
             _name = name;
@@ -138,16 +43,6 @@ public partial class MyGame
             }
         }
 
-
-        //public Province(string name, ENUM_ECONOMY economy)
-        //{
-        //    _name = name;
-        //    _economy = economy;
-        //    listStatus = new List<STATUS>();
-        //}
-
-
-
         public  string name
         {
             get
@@ -164,36 +59,48 @@ public partial class MyGame
             }
         }
 
-        //public STATUS[] status
-        //{
-        //    get
-        //    {
-        //        return listStatus.ToArray();
-        //    }
-        //}
-
-        //public override  string ToString()
-        //{
-        //    return name;
-        //}
-
-        //public STATUS[] GetBuffArray(bool isBuff)
-        //{
-        //    List<STATUS> result = new List<STATUS>();
-        //    //foreach (STATUS status in listStatus)
-        //    //{
-        //    //    if (status.isbuff == isBuff)
-        //    //        result.Add(status);
-        //    //}
-
-        //    return result.ToArray();
-        //}
-
-        public Dictionary<string, double> taxDetail()
+        public double income
         {
-            Dictionary<string, double> result = new Dictionary<string, double>();
+            get
+            {
+                return Math.Max(0, (from x in taxDetail()
+                                    select x.Item2).Sum());
+            }
+        }
 
-            result.Add("TAX_BASE", baseTax);
+        public double reb
+        {
+            get
+            {
+                return Math.Max(0, (from x in rebDetail()
+                                    select x.Item2).Sum());
+            }
+        }
+
+        public List<Tuple<string, double>>  taxDetail()
+        {
+            List<Tuple<string, double>> result = new List<Tuple<string, double>>();
+
+            result.Add(new Tuple<string, double>("TAX_BASE", baseTax));
+            foreach(var elem in ProvTaxEffects)
+            {
+                result.Add(new Tuple<string, double>(elem.Key, elem.Value(baseTax)));
+            }
+
+            return result;
+        }
+
+        public List<Tuple<string, double>>  rebDetail()
+        {
+            List<Tuple<string, double>> result = new List<Tuple<string, double>>();
+
+            result.Add(new Tuple<string, double>("STABILITY_REFLECTION", (double)-Stability.current));
+
+            foreach (var elem in ProvRebEffects)
+            {
+                result.Add(new Tuple<string, double>(elem.Key, elem.Value(0)));
+            }
+
             return result;
         }
 
@@ -207,19 +114,12 @@ public partial class MyGame
         {
             get
             {
-                object _baseTax =  (double)_economy.baseTax;
-
-                if(ProvTaxEffectEvent != null)
-                {
-                    ProvTaxEffectEvent(ref _baseTax);
-                }
-
-                return (double)_baseTax;
+                return (double)_economy.baseTax;
             }
         }
 
-        public delegate void ProvTaxEffect(ref object param);
-        public event ProvTaxEffect ProvTaxEffectEvent;
+        public Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect> ProvTaxEffects =  new Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect>();
+        public Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect> ProvRebEffects =  new Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect>();
 
         [SerializeField]
         private string _name;
@@ -234,70 +134,5 @@ public partial class MyGame
         [SerializeField]
         static List<Province> _All = new List<Province>();
     }
-
-    //[Serializable]
-    //public class ProvinceManager : IEnumerable
-    //{
-    //    public ProvinceManager()
-    //    {
-    //        foreach (var zj in Enum.GetValues(typeof(Province.ENUM_PROV)))
-    //        {
-
-    //            FieldInfo field = zj.GetType().GetField(zj.ToString());
-    //            ProvinceAttribute attribute = Attribute.GetCustomAttribute(field, typeof(ProvinceAttribute)) as ProvinceAttribute;
-
-    //            Province ZhoujObj = new Province(zj.ToString(), attribute.economy);
-    //            lstProvince.Add(ZhoujObj);
-
-    //        }
-    //    }
-
-    //    public Province[] provinces
-    //    {
-    //        get
-    //        {
-    //            return lstProvince.ToArray();
-    //        }
-    //    }
-
-    //    delegate bool delCompare(MyGame.Province.STATUS a);
-
-    //    //public List<Province> GetProvinceBySelector(SelectElem selectElem)
-    //    //{
-    //    //    List<Province> lstResult = new List<Province>();
-
-    //    //    foreach(Province  prov in lstProvince)
-    //    //    {
-    //    //        List<Province.STATUS> lst = prov.listStatus.Where(selectElem.Complie<Province.STATUS>()).ToList();
-    //    //        if (lst.Count != 0)
-    //    //        {
-    //    //            lstResult.Add(prov);
-    //    //        }
-    //    //    }
-
-    //    //    return lstResult;
-    //    //}
-
-    //    public Province GetByName(string name)
-    //    {
-    //        return lstProvince.Find(x => x.name == name);
-    //    }
-
-    //    public IEnumerator GetEnumerator()
-    //    {
-    //        for (int i = 0; i < lstProvince.Count; i++)
-    //        {
-    //            yield return lstProvince[i];
-    //        }
-    //    }
-
-    //    public Province[] Array()
-    //    {
-    //         return lstProvince.ToArray();
-    //    }
-
-    //    private List<Province> lstProvince = new List<Province>();
-    //}
-
 }
 

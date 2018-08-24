@@ -26,13 +26,28 @@ namespace HuangDAPI
         public void Enable()
         {
             _exist = true;
+            _startTime = new GameTime(GameTime.current);
             SetEffectEvent();
         }
 
         public void Disable()
         {
             _exist = false;
+            _startTime = null;
             ResetEffectEvent();
+        }
+
+        public int LastTime
+        {
+            get
+            {
+                if(!_exist)
+                {
+                    return 0;
+                }
+
+                return GameTime.current - _startTime;
+            }
         }
 
         public virtual string Title()
@@ -45,16 +60,12 @@ namespace HuangDAPI
             return this.GetType().Name + "Desc";
         }
 
-        public virtual FlagEffect EffectKey()
-        {
-            return FlagEffect.EFFECT_NULL;
-        }
+        public delegate dynamic DelegateEffect(dynamic param);
 
-        public virtual void EffectAction(ref object obj)
+        public virtual void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
         {
-            return;
+            return ;
         }
-
 
         public static void AfterDeserial()
         {
@@ -73,34 +84,56 @@ namespace HuangDAPI
 
         public void SetEffectEvent()
         {
-            FlagEffect key = EffectKey();
-            switch (key)
+            var effectDict = new Dictionary<FlagEffect, DelegateEffect>();
+            Effect(ref effectDict);
+
+            foreach(var elem in effectDict)
             {
-                case FlagEffect.PROVINCE_TAX:
-                    foreach (var prov in MyGame.Province.All)
-                    {
-                        prov.ProvTaxEffectEvent -= this.EffectAction;
-                        prov.ProvTaxEffectEvent += this.EffectAction;
-                    }
-                    break;
-                default:
-                    break;
+                switch (elem.Key)
+                {
+                    case FlagEffect.PROVINCE_TAX:
+                        foreach (var prov in MyGame.Province.All)
+                        {
+                            prov.ProvTaxEffects.Add(this.Title(), elem.Value);
+                        }
+                        break;
+                    case FlagEffect.PROVINCE_REB:
+                        foreach (var prov in MyGame.Province.All)
+                        {
+                            prov.ProvRebEffects.Add(this.Title(), elem.Value);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+
         }
 
         public void ResetEffectEvent()
         {
-            FlagEffect key = EffectKey();
-            switch (key)
+            var effectDict = new Dictionary<FlagEffect, DelegateEffect>();
+            Effect(ref effectDict);
+
+            foreach (var elem in effectDict)
             {
-                case FlagEffect.PROVINCE_TAX:
-                    foreach (var prov in MyGame.Province.All)
-                    {
-                        prov.ProvTaxEffectEvent -= this.EffectAction;
-                    }
-                    break;
-                default:
-                    break;
+                switch (elem.Key)
+                {
+                    case FlagEffect.PROVINCE_TAX:
+                        foreach (var prov in MyGame.Province.All)
+                        {
+                            prov.ProvTaxEffects.Remove(this.Title());
+                        }
+                        break;
+                    case FlagEffect.PROVINCE_REB:
+                        foreach (var prov in MyGame.Province.All)
+                        {
+                            prov.ProvRebEffects.Remove(this.Title());
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -122,6 +155,9 @@ namespace HuangDAPI
         private bool _exist = false;
 
         [SerializeField]
+        private GameTime _startTime;
+
+        [SerializeField]
         protected dynamic _param = new ExpandoObject();
 
     }
@@ -130,5 +166,6 @@ namespace HuangDAPI
     {
         EFFECT_NULL,
         PROVINCE_TAX,
+        PROVINCE_REB,
     }
 }
