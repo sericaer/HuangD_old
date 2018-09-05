@@ -42,6 +42,31 @@ namespace Tools
             return false;
         }
 
+        public static void ProbAction(double prob1, Action action1,
+                                      double prob2, Action action2)
+        {
+            if (Math.Abs(prob1+prob2) < Double.Epsilon)
+            {
+                return;
+            }
+
+            int prb1 = (int)(prob1 * 1000);
+            int prb2 = (int)(prob2 * 1000);
+
+            System.Random ra = new System.Random(GetRandomSeed());
+            int result = ra.Next(1, 1000);
+            if (result <= prb1)
+            {
+                action1();
+                return;
+            }
+            if (result <= prb1+prb2)
+            {
+                action2();
+                return;
+            }
+        }
+
         public static int GetRandomNum(int min, int max)
         {
 			if (min == max) 

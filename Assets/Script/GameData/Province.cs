@@ -118,8 +118,8 @@ public partial class MyGame
             }
         }
 
-        public Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect> ProvTaxEffects =  new Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect>();
-        public Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect> ProvRebEffects =  new Dictionary<string, HuangDAPI.COUNTRY_FLAG.DelegateEffect>();
+        public Dictionary<string, Func<dynamic, dynamic>> ProvTaxEffects =  new Dictionary<string, Func<dynamic, dynamic>>();
+        public Dictionary<string, Func<dynamic, dynamic>> ProvRebEffects =  new Dictionary<string, Func<dynamic, dynamic>>();
 
         [SerializeField]
         private string _name;

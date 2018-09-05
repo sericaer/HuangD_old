@@ -38,7 +38,7 @@ public class EventLogic : MonoBehaviour
             var EventObj = eventobj as GMEvent;
             EventObj.ie.LastTriggleDay = new MyGame.GameTime(MyGame.GameTime.current);
 
-			yield return new WaitForSeconds(0.5f);
+			//yield return new WaitForSeconds(0.5f);
 
             DialogLogic.DelegateProcess delegateProcess = delegate(string op, ref string nextEvent, ref object nextParam) {
 

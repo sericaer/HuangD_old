@@ -1,49 +1,24 @@
-﻿//using HuangDAPI;
-//using System.Linq;
-//using UnityEngine;
+﻿using HuangDAPI;
+using System.Linq;
+using UnityEngine;
 
-//namespace native
-//{
-//    class EVENT_STAB_DEC : EVENT_HD
-//    {
-//        bool Precondition()
-//        {
-//            //Offices1.SG1 = null;
-//            Debug.Log(Offices1.SG1.name + Offices1.SG1.power);
+namespace native
+{
+    class EVENT_STAB_DEC : EVENT_HD
+    {
+        bool Precondition()
+        {            
+            return false;
+        }
 
-//            float prob = CalcProb();
-
-//            if (Probability.IsProbOccur(prob))
-//                return true;
-            
-//            return false;
-//        }
-
-//        class OPTION1 : Option
-//        {
-//            void Selected(ref string nxtEvent, ref object param)
-//            {
-//                GMData.Stability--;
-//            }
-//        }
-
-//        float CalcProb()
-//        {
-//            float prob = 0.001f;
-//            if(GMData.CountryFlags.Contains("STATUS_YHSX"))
-//            {
-//                prob += 0.003f;
-//            }
-
-//            var impwork = GMData.ImpWorks.Find("STATUS_YHSX");
-//            if (impwork != null && impwork.detail == "STATUS_YHSX_PARAM_STAB")
-//            {
-//                prob += 0.003f;
-//            }
-
-//            return prob;
-//        }
-//    }
+        class OPTION1 : Option
+        {
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                Stability.current--;
+            }
+        }
+    }
 
 //    class EVENT_STAB_INC : EVENT_HD
 //    {
@@ -184,4 +159,4 @@
 
 //        int dec = 1;
 //    }
-//}
+}

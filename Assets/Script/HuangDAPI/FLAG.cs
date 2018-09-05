@@ -27,14 +27,14 @@ namespace HuangDAPI
         {
             _exist = true;
             _startTime = new GameTime(GameTime.current);
-            SetEffectEvent();
+            SetEffect();
         }
 
         public void Disable()
         {
             _exist = false;
             _startTime = null;
-            ResetEffectEvent();
+            ResetEffect();
         }
 
         public int LastTime
@@ -60,11 +60,15 @@ namespace HuangDAPI
             return this.GetType().Name + "Desc";
         }
 
-        public delegate dynamic DelegateEffect(dynamic param);
-
-        public virtual void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
+        //public delegate dynamic DelegateEffect(dynamic param);
+        public virtual void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
         {
             return ;
+        }
+
+        public virtual void ProcEvent(ref string name, ref dynamic param)
+        {
+            return;
         }
 
         public static void AfterDeserial()
@@ -73,18 +77,18 @@ namespace HuangDAPI
             {
                 if(elem.IsEnabled())
                 {
-                    elem.SetEffectEvent();
+                    elem.SetEffect();
                 }
                 else
                 {
-                    elem.ResetEffectEvent();
+                    elem.ResetEffect();
                 }
             }
         }
 
-        public void SetEffectEvent()
+        public void SetEffect()
         {
-            var effectDict = new Dictionary<FlagEffect, DelegateEffect>();
+            var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
             Effect(ref effectDict);
 
             foreach(var elem in effectDict)
@@ -103,6 +107,11 @@ namespace HuangDAPI
                             prov.ProvRebEffects.Add(this.Title(), elem.Value);
                         }
                         break;
+                    case FlagEffect.EMP_HEATH:
+                        {
+                            MyGame.Emperor.HeathEffects.Add(this.Title(), elem.Value);
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -110,9 +119,9 @@ namespace HuangDAPI
 
         }
 
-        public void ResetEffectEvent()
+        public void ResetEffect()
         {
-            var effectDict = new Dictionary<FlagEffect, DelegateEffect>();
+            var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
             Effect(ref effectDict);
 
             foreach (var elem in effectDict)
@@ -131,6 +140,11 @@ namespace HuangDAPI
                             prov.ProvRebEffects.Remove(this.Title());
                         }
                         break;
+                    case FlagEffect.EMP_HEATH:
+                        {
+                            MyGame.Emperor.HeathEffects.Remove(this.Title());
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -143,6 +157,30 @@ namespace HuangDAPI
             {
                 return _All.ToArray();
             }
+        }
+
+        public static GMEvent GetEVENT()
+        {
+            System.Random rnd = new System.Random();
+
+            var query = (from x in All 
+                         where x.IsEnabled()
+                         select x).ToList().OrderBy(x => rnd.Next());
+            
+            foreach (var elem in query)
+            {
+                string nextEvent = "";
+                dynamic param = null;
+
+                elem.ProcEvent(ref nextEvent, ref param);
+                if (nextEvent != "")
+                {
+                    GMEvent gmEvent = new GMEvent(StreamManager.eventDict[nextEvent], param, null);
+                    return gmEvent;
+                }
+            }
+
+            return null;
         }
 
         //public Func<string> _funcTitle;
@@ -167,5 +205,7 @@ namespace HuangDAPI
         EFFECT_NULL,
         PROVINCE_TAX,
         PROVINCE_REB,
+
+        EMP_HEATH,
     }
 }

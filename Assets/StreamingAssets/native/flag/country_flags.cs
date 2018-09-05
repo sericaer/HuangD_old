@@ -1,4 +1,5 @@
 ﻿using HuangDAPI;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace native
 
 
 
-        public override void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
+        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
         {
             effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
             {
@@ -85,7 +86,7 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
-        public override void Effect(ref Dictionary<FlagEffect, DelegateEffect> effectDict)
+        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
         {
             effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
             {
@@ -106,7 +107,20 @@ namespace native
             });
             effectDict.Add(FlagEffect.PROVINCE_REB, (dynamic reb)=>
             {
-                return Level;
+                switch (Level)
+                {
+                    case 1:
+                        return 0.5;
+                        break;
+                    case 2:
+                        return 1.0;
+                        break;
+                    case 3:
+                        return 3.0;
+                        break;
+                        default:
+                        return null;
+                }
             });
         }
 
@@ -135,84 +149,28 @@ namespace native
         public int MIN_LEVEL = 0;
     }
 
-    //public class SSYD1 : COUNTRY_FLAG
-    //{
+    public class YHSX : COUNTRY_FLAG
+    {
+        public override void ProcEvent(ref string name, ref dynamic param)
+        {
+            string eventname = "";
+            Probability.ProbAction(1,     ()=>{
+                                                eventname = "EVENT_STAB_DEC";
+                                              },
+                                   0.015, ()=>{
+                                                eventname = "";
+                                               }
+                                   );
 
-    //    public override string Title()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "TITLE");
-    //    }
+            name = eventname;
+        }
 
-    //    public override string Desc()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "DESC");
-    //    }
-
-    //    public override FlagEffect EffectKey()
-    //    {
-    //        return FlagEffect.PROVINCE_TAX;
-    //    }
-
-    //    public override void EffectAction(ref object tax)
-    //    {
-  
-    //        tax = (int)((int)tax * 0.9);
-    //        return;
-    //    }
-
-    //}
-
-    //public class SSYD2 : COUNTRY_FLAG
-    //{
-    //    public override string Title()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "TITLE");
-    //    }
-
-    //    public override string Desc()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "DESC");
-    //    }
-
-    //    public override FlagEffect EffectKey()
-    //    {
-    //        return FlagEffect.PROVINCE_TAX;
-    //    }
-
-    //    public override void EffectAction(ref object tax)
-    //    {
-
-    //        tax = (int)((int)tax * 0.75);
-    //        return;
-    //    }
-
-    //}
-
-    //public class SSYD3 : COUNTRY_FLAG
-    //{
-
-    //    public override string Title()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "TITLE");
-    //    }
-
-    //    public override string Desc()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name, "DESC");
-    //    }
-
-    //    public override FlagEffect EffectKey()
-    //    {
-    //        return FlagEffect.PROVINCE_TAX;
-    //    }
-
-    //    public override void EffectAction(ref object tax)
-    //    {
-
-    //        tax = (int)((int)tax * 0.5);
-    //        return;
-    //    }
-
-    //}
-
+        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
+        {
+            effectDict.Add(FlagEffect.EMP_HEATH, (dynamic value) =>
+            {
+                return -3;
+            });
+        }
+    }
 }

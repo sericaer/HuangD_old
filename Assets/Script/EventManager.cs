@@ -194,6 +194,13 @@ public class EventManager
                 decisionEvent = null;
         }
 
+        GMEvent gmEvent = COUNTRY_FLAG.GetEVENT();
+        if(gmEvent != null)
+        {
+            gmEvent.Initlize();
+            yield return gmEvent;
+        }
+
         foreach (EVENT_HD ie in StreamManager.eventDict.Values) 
 		{
             ie.LoadMemento();
