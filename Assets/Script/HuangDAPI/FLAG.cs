@@ -23,18 +23,29 @@ namespace HuangDAPI
             return _exist;
         }
 
+
+        public virtual void Enabled()
+        {
+
+        }
+
         public void Enable()
         {
             _exist = true;
             _startTime = new GameTime(GameTime.current);
-            SetEffect();
+            Enabled();
         }
 
         public void Disable()
         {
             _exist = false;
             _startTime = null;
-            ResetEffect();
+            Disabled();
+        }
+
+        public virtual void Disabled()
+        {
+
         }
 
         public int LastTime
@@ -88,67 +99,67 @@ namespace HuangDAPI
 
         public void SetEffect()
         {
-            var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
-            Effect(ref effectDict);
+            //var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
+            //Effect(ref effectDict);
 
-            foreach(var elem in effectDict)
-            {
-                switch (elem.Key)
-                {
-                    case FlagEffect.PROVINCE_TAX:
-                        foreach (var prov in MyGame.Province.All)
-                        {
-                            prov.ProvTaxEffects.Add(this.Title(), elem.Value);
-                        }
-                        break;
-                    case FlagEffect.PROVINCE_REB:
-                        foreach (var prov in MyGame.Province.All)
-                        {
-                            prov.ProvRebEffects.Add(this.Title(), elem.Value);
-                        }
-                        break;
-                    case FlagEffect.EMP_HEATH:
-                        {
-                            MyGame.Emperor.HeathEffects.Add(this.Title(), elem.Value);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //foreach(var elem in effectDict)
+            //{
+            //    switch (elem.Key)
+            //    {
+            //        case FlagEffect.PROVINCE_TAX:
+            //            foreach (var prov in MyGame.Province.All)
+            //            {
+            //                prov.ProvTaxEffects.Add(this.Title(), elem.Value);
+            //            }
+            //            break;
+            //        case FlagEffect.PROVINCE_REB:
+            //            foreach (var prov in MyGame.Province.All)
+            //            {
+            //                prov.ProvRebEffects.Add(this.Title(), elem.Value);
+            //            }
+            //            break;
+            //        case FlagEffect.EMP_HEATH:
+            //            {
+            //                MyGame.Emperor.HeathEffects.Add(this.Title(), elem.Value);
+            //            }
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
 
         }
 
         public void ResetEffect()
         {
-            var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
-            Effect(ref effectDict);
+            //var effectDict = new Dictionary<FlagEffect, Func<dynamic, dynamic>>();
+            //Effect(ref effectDict);
 
-            foreach (var elem in effectDict)
-            {
-                switch (elem.Key)
-                {
-                    case FlagEffect.PROVINCE_TAX:
-                        foreach (var prov in MyGame.Province.All)
-                        {
-                            prov.ProvTaxEffects.Remove(this.Title());
-                        }
-                        break;
-                    case FlagEffect.PROVINCE_REB:
-                        foreach (var prov in MyGame.Province.All)
-                        {
-                            prov.ProvRebEffects.Remove(this.Title());
-                        }
-                        break;
-                    case FlagEffect.EMP_HEATH:
-                        {
-                            MyGame.Emperor.HeathEffects.Remove(this.Title());
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //foreach (var elem in effectDict)
+            //{
+            //    switch (elem.Key)
+            //    {
+            //        case FlagEffect.PROVINCE_TAX:
+            //            foreach (var prov in MyGame.Province.All)
+            //            {
+            //                prov.ProvTaxEffects.Remove(this.Title());
+            //            }
+            //            break;
+            //        case FlagEffect.PROVINCE_REB:
+            //            foreach (var prov in MyGame.Province.All)
+            //            {
+            //                prov.ProvRebEffects.Remove(this.Title());
+            //            }
+            //            break;
+            //        case FlagEffect.EMP_HEATH:
+            //            {
+            //                MyGame.Emperor.HeathEffects.Remove(this.Title());
+            //            }
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
         }
 
         public static COUNTRY_FLAG[] All
@@ -183,7 +194,7 @@ namespace HuangDAPI
             return null;
         }
 
-        public Tuple<string, Func<dynamic, dynamic>> NewEffect(int param)
+        public Tuple<string, Func<dynamic, dynamic>> NewEffect(int param = 0)
         {
             return new Tuple<string, Func<dynamic, dynamic>>(this.GetType().Name, (dynamic v)=>{
                 return param;

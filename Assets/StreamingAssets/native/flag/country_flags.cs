@@ -23,7 +23,15 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
+        public override void Enabled()
+        {
+            Province.taxEffects += NewEffect(-3);
+        }
 
+        public override void Disabled()
+        {
+            Province.taxEffects -= NewEffect();
+        }
 
         public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
         {
@@ -165,14 +173,14 @@ namespace native
             name = eventname;
         }
 
-        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
+        public override void Enabled()
         {
             Emperor.Heath += NewEffect(-3);
+        }
 
-            effectDict.Add(FlagEffect.EMP_HEATH, (dynamic value) =>
-            {
-                return -3;
-            });
+        public override void Disabled()
+        {
+            Emperor.Heath -= NewEffect();
         }
     }
 }

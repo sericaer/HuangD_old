@@ -70,25 +70,25 @@ namespace HuangDAPI
 
 
 
-    public interface Province
-    {
-          string name { get; }
-          string economy { get; }
-        //public Disaster debuff
-        //{
-        //    get
-        //    {
-        //        return (from x in GMData.RelationManager.ProvinceStatusMap
-        //                where x.province == this
-        //                select x.debuff).SingleOrDefault();
-        //    }
-        //    set
-        //    {
-        //        GMData.RelationManager.ProvinceStatusMap.Find(x => x.province.name == name).debuff = value;
-        //    }
+    //public interface Province
+    //{
+    //      string name { get; }
+    //      string economy { get; }
+    //    //public Disaster debuff
+    //    //{
+    //    //    get
+    //    //    {
+    //    //        return (from x in GMData.RelationManager.ProvinceStatusMap
+    //    //                where x.province == this
+    //    //                select x.debuff).SingleOrDefault();
+    //    //    }
+    //    //    set
+    //    //    {
+    //    //        GMData.RelationManager.ProvinceStatusMap.Find(x => x.province.name == name).debuff = value;
+    //    //    }
 
-        //}
-    }
+    //    //}
+    //}
 
     public abstract class Disaster
     {

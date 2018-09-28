@@ -10,6 +10,12 @@ public class EffectType
         return effect;
     }
 
+    public static EffectType operator - (EffectType effect, Tuple<string, Func<dynamic, dynamic>> elem)
+    {
+        effect.dict.Remove(elem.Item1);
+        return effect;
+    }
+
     public dynamic current 
     {
         get
@@ -17,7 +23,7 @@ public class EffectType
             int rslt = 0;
             foreach (var elem in dict)
             {
-                rslt += elem.Value(0);
+                rslt += elem.Value(Base);
             }
 
             return rslt;
@@ -39,5 +45,6 @@ public class EffectType
     }
 
     Dictionary<string, Func<dynamic, dynamic>> dict = new Dictionary<string, Func<dynamic, dynamic>>();
+    dynamic Base;
 }
 
