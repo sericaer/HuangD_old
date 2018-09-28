@@ -3319,6 +3319,41 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 3.2
       objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 50.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -15.000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929110004514332, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114098500991482358, guid: 739d6107fecd3aa45ac61164a6dc4682,
+        type: 2}
+      propertyPath: m_Text
+      value: Tooltip Text
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 739d6107fecd3aa45ac61164a6dc4682, type: 2}
   m_IsPrefabParent: 0
