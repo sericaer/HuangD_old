@@ -47,8 +47,8 @@ public class MainScene : MonoBehaviour
         // ZhoujTable.InitDataTable(data, colums);
 
 
-        btnEmp.transform.SetAsFirstSibling();
-        btnEmpDetail.transform.SetAsFirstSibling();
+        //btnEmp.transform.SetAsFirstSibling();
+        //btnEmpDetail.transform.SetAsFirstSibling();
         //ZhoujTable.transform.SetAsFirstSibling();
 
         panelCenter.transform.SetAsLastSibling();
@@ -108,6 +108,7 @@ public class MainScene : MonoBehaviour
         else
         {
             btnDynDetail.SetActive(true);
+
         }
     }
 
@@ -128,7 +129,9 @@ public class MainScene : MonoBehaviour
         else
         {
             btnDynDetail.SetActive(true);
-            btnEmp.transform.SetAsLastSibling();
+            btnEmpDetail.SetActive(true);
+
+            //btnEmp.transform.SetAsLastSibling();
         }
     }
 
@@ -156,7 +159,9 @@ public class MainScene : MonoBehaviour
 
         txtEmpName.text = MyGame.Emperor.name;
         txtEmpAge.text = MyGame.Emperor.age.ToString();
-        sldEmpHeath.value = MyGame.Emperor.heath;
+        sldEmpHeath.value = MyGame.Emperor.Inst.mHeath.current;
+
+        sldEmpHeath.GetComponent<Tooltip>().mDisplayText = MyGame.Emperor.Inst.mHeath.detail;
 
         if(btnDynDetail.activeSelf)
         {

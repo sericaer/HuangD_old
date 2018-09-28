@@ -19,11 +19,15 @@ namespace HuangDAPI
             }
         }
 
-        public static int heath
+        public static EffectType Heath
         {
             get
             {
-                return MyGame.Emperor.heath;
+                return MyGame.Emperor.Inst.mHeath;
+            }
+            set
+            {
+                MyGame.Emperor.Inst.mHeath = value;
             }
         }
     }

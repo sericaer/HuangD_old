@@ -30,34 +30,6 @@ public partial class MyGame
             }
         }
 
-        public static int heath
-        {
-            get
-            {
-                int rslt = Inst.heathbase;
-                foreach (var elem in HeathEffects)
-                {
-                    rslt += elem.Value(0);
-                }
-
-                return rslt;
-            }
-        }
-
-        public static List<Tuple<string, int>> heathDetail()
-        {
-            List<Tuple<string, int>> result = new List<Tuple<string, int>>();
-
-            result.Add(new Tuple<string, int>("HEATH_BASE", Inst.heathbase));
-
-            foreach (var elem in HeathEffects)
-            {
-                result.Add(new Tuple<string, int>(elem.Key, elem.Value(0)));
-            }
-
-            return result;
-        }
-
         public static Dictionary<string, Func<dynamic, dynamic>> HeathEffects = new Dictionary<string, Func<dynamic, dynamic>>();
 
         [JsonProperty]
@@ -67,15 +39,20 @@ public partial class MyGame
         [JsonProperty]
         private int heathbase;
 
+        public EffectType mHeath = new EffectType();
 
         private Emperor(string strEmpName, int age, int heath)
         {
             this.strEmpName = strEmpName;
             this._age = age;
             this.heathbase = heath;
+
+            mHeath += new Tuple<string, Func<dynamic, dynamic>>("HEATH_BASE", (dynamic v)=>{
+                return heath;
+            });
         }
 
         [SerializeField]
-        static Emperor Inst;
+        public static Emperor Inst;
     }
 }

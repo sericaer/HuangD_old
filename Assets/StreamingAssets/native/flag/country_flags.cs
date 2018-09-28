@@ -167,6 +167,8 @@ namespace native
 
         public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
         {
+            Emperor.Heath += NewEffect(-3);
+
             effectDict.Add(FlagEffect.EMP_HEATH, (dynamic value) =>
             {
                 return -3;

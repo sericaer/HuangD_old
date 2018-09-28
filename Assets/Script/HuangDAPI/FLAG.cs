@@ -183,6 +183,13 @@ namespace HuangDAPI
             return null;
         }
 
+        public Tuple<string, Func<dynamic, dynamic>> NewEffect(int param)
+        {
+            return new Tuple<string, Func<dynamic, dynamic>>(this.GetType().Name, (dynamic v)=>{
+                return param;
+            });
+        }
+
         //public Func<string> _funcTitle;
         //public Func<string> _funcDesc;
 
