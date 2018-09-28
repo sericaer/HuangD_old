@@ -167,6 +167,13 @@ public class MainScene : MonoBehaviour
         {
             List<string> oldFlags = (from x in CountryFlagPanel.GetComponentsInChildren<Text>()
                                      select x.name).ToList();
+            string str = "";
+            foreach(string s in oldFlags)
+            {
+                str += s;
+            }
+
+            Debug.Log("oldFlags:" + str);
 
             List<string> NewFlags = (from x in HuangDAPI.COUNTRY_FLAG.All
                                      where x.IsEnabled()
@@ -185,6 +192,11 @@ public class MainScene : MonoBehaviour
             foreach (var delFlag in oldFlags.Except(NewFlags))
             {
                 var decisionUI = CountryFlagPanel.transform.Find(delFlag);
+                if (decisionUI == null)
+                {
+                    continue;
+                }
+
                 Destroy(decisionUI.gameObject);
             }
         }
