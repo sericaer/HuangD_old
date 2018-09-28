@@ -69,7 +69,7 @@ public class ChaoTScene : MonoBehaviour
             var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), PanelDecision.transform) as GameObject;
             decisionUI.name = addPlan;
             decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addPlan]._funcTitle();
-            decisionUI.GetComponent<TooltipTrigger>().mDisplayText = StreamManager.decisionDict[addPlan]._funcDesc(); ;
+            //decisionUI.GetComponent<TooltipTrigger>().mDisplayText = StreamManager.decisionDict[addPlan]._funcDesc(); ;
         }
 
         foreach (var delPlan in oldPlans.Except(newPlans))

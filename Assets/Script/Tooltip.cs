@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class testtooltiptrg : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public string mDisplayText;
+
     // Use this for initialization
     void Start ()
     {
-        testtooltip.Instance.gameObject.SetActive(false);
+        
 
     }
 	
@@ -19,28 +22,27 @@ public class testtooltiptrg : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (_isEnter && _timer - 1.0f > 0f)
         {
-            if (testtooltip.Instance.gameObject.activeSelf)
+            if(Obj != null)
             {
                 return;
             }
 
-            Debug.Log("aaaa" + _isEnter.ToString() + _timer.ToString());
 
-            testtooltip.Instance.transform.position = position;
-            testtooltip.Instance.transform.SetAsLastSibling();
-
-            testtooltip.Instance.gameObject.SetActive(true);
+            Quaternion quaternion = new Quaternion();
+            var position = Input.mousePosition;
+            position.x = position.x + 16;
+            position.y = position.y - 32;
+            Obj = Instantiate(Resources.Load("Prefabs/Tooltip"), position, quaternion, this.transform) as GameObject;
+            Obj.transform.Find("Text").GetComponent<Text>().text = mDisplayText;
         }
         else
         {
-            if (!testtooltip.Instance.gameObject.activeSelf)
+            if (Obj == null)
             {
                 return;
             }
 
-            Debug.Log("bbb" + _isEnter.ToString() + _timer.ToString());
-
-            testtooltip.Instance.gameObject.SetActive(false);
+            Destroy(Obj);
         }
     }
 
@@ -50,7 +52,6 @@ public class testtooltiptrg : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         _isEnter = true;
         _timer = 0.0f;
-        position = eventData.position;
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -63,5 +64,5 @@ public class testtooltiptrg : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private bool _isEnter;
     private float _timer;
-    private Vector2 position;
+    private GameObject Obj;
 }

@@ -149,7 +149,7 @@ public class MainScene : MonoBehaviour
         Stability.text = MyGame.Stability.current.ToString();
 
         Economy.text   = MyGame.Economy.current.ToString();
-        Economy.GetComponent<TooltipTrigger>().mDisplayText = MyGame.Economy.Desc();
+        Economy.GetComponent<Tooltip>().mDisplayText = MyGame.Economy.Desc();
 
         Military.text  = MyGame.Military.current.ToString();
         txtTime.text   = MyGame.DynastyInfo.dynastyName + MyGame.DynastyInfo.yearName + MyGame.GameTime.current.ToString();
@@ -174,7 +174,7 @@ public class MainScene : MonoBehaviour
 
                 var flag = HuangDAPI.COUNTRY_FLAG.All.Where((arg) => arg.Title() == addFlag).Single();
                 decisionUI.GetComponent<Text>().text = addFlag;
-                decisionUI.GetComponent<TooltipTrigger>().mDisplayText = flag.Desc();
+                //decisionUI.GetComponent<TooltipTrigger>().mDisplayText = flag.Desc();
             }
 
             foreach (var delFlag in oldFlags.Except(NewFlags))

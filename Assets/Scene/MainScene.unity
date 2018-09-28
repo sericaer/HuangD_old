@@ -196,7 +196,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 10279375}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61514afb141e1df4eaff319c2c80ba10, type: 3}
+  m_Script: {fileID: 11500000, guid: 69ec8531dc9bfce47b403e3c2c945033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mDisplayText: 
@@ -1877,11 +1877,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1020650211}
---- !u!224 &1049186096 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224983327391709482, guid: 739d6107fecd3aa45ac61164a6dc4682,
-    type: 2}
-  m_PrefabInternal: {fileID: 1432490681}
 --- !u!1 &1064664839
 GameObject:
   m_ObjectHideFlags: 0
@@ -3357,6 +3352,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 739d6107fecd3aa45ac61164a6dc4682, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1432490682 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1432490681}
 --- !u!1 &1442995146
 GameObject:
   m_ObjectHideFlags: 0
@@ -3573,7 +3572,7 @@ RectTransform:
   - {fileID: 2102316172}
   - {fileID: 1315805494}
   - {fileID: 1298184057}
-  - {fileID: 1049186096}
+  - {fileID: 1432490682}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
