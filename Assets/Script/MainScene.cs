@@ -174,7 +174,7 @@ public class MainScene : MonoBehaviour
 
                 var flag = HuangDAPI.COUNTRY_FLAG.All.Where((arg) => arg.Title() == addFlag).Single();
                 decisionUI.GetComponent<Text>().text = addFlag;
-                //decisionUI.GetComponent<TooltipTrigger>().mDisplayText = flag.Desc();
+                decisionUI.GetComponent<Tooltip>().mDisplayText = flag.Desc();
             }
 
             foreach (var delFlag in oldFlags.Except(NewFlags))
