@@ -159,9 +159,9 @@ public class MainScene : MonoBehaviour
 
         txtEmpName.text = MyGame.Emperor.name;
         txtEmpAge.text = MyGame.Emperor.age.ToString();
-        sldEmpHeath.value = MyGame.Emperor.Inst.mHeath.current;
+        sldEmpHeath.value = MyGame.Emperor.Inst.tHeath.current;
 
-        sldEmpHeath.GetComponent<Tooltip>().mDisplayText = MyGame.Emperor.Inst.mHeath.detail;
+        sldEmpHeath.GetComponent<Tooltip>().mDisplayText = MyGame.Emperor.Inst.tHeath.detail;
 
         if(btnDynDetail.activeSelf)
         {

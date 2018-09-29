@@ -6,13 +6,13 @@ public class EffectType
 {
     public static EffectType operator + (EffectType effect, Tuple<string, Func<dynamic, dynamic>> elem)
     {
-        effect.dict.Add(elem.Item1, elem.Item2);
+        //effect.dict.Add(elem.Item1, elem.Item2);
         return effect;
     }
 
     public static EffectType operator - (EffectType effect, Tuple<string, Func<dynamic, dynamic>> elem)
     {
-        effect.dict.Remove(elem.Item1);
+        //effect.dict.Remove(elem.Item1);
         return effect;
     }
 

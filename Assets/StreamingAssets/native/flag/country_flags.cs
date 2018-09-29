@@ -173,6 +173,11 @@ namespace native
             name = eventname;
         }
 
+        public int affectHeath(int baseValue)
+        {
+            return -5;
+        }
+
         public override void Enabled()
         {
             Emperor.Heath += NewEffect(-3);

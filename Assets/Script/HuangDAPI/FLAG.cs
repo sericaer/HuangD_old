@@ -15,6 +15,12 @@ namespace HuangDAPI
     {
         public COUNTRY_FLAG()
         {
+            MethodInfo method = this.GetType().GetMethod("affectHeath");
+            if(method != null)
+            {
+                funcHeathEffect = (Func<int, int>)(object)Delegate.CreateDelegate(typeof(Func<int, int>), this, method);
+            }
+            
             _All.Add(this);
         }
 
@@ -63,12 +69,12 @@ namespace HuangDAPI
 
         public virtual string Title()
         {
-            return this.GetType().Name + "TITLE";
+            return this.GetType().Name + "_TITLE";
         }
 
         public virtual string Desc()
         {
-            return this.GetType().Name + "Desc";
+            return this.GetType().Name + "_Desc";
         }
 
         //public delegate dynamic DelegateEffect(dynamic param);
@@ -200,6 +206,8 @@ namespace HuangDAPI
                 return param;
             });
         }
+
+        public Func<int, int> funcHeathEffect = null;
 
         //public Func<string> _funcTitle;
         //public Func<string> _funcDesc;
