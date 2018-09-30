@@ -175,8 +175,7 @@ public class MainScene : MonoBehaviour
 
             Debug.Log("oldFlags:" + str);
 
-            List<string> NewFlags = (from x in HuangDAPI.COUNTRY_FLAG.All
-                                     where x.IsEnabled()
+            List<string> NewFlags = (from x in MyGame.CountryFlags.current
                                      select x.Title()).ToList();
             
             foreach (var addFlag in NewFlags.Except(oldFlags))

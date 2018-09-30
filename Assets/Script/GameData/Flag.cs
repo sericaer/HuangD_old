@@ -1,32 +1,40 @@
 ﻿using System;
 using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
+using HuangDAPI;
+using Newtonsoft.Json;
+                                                  
 public partial class MyGame
 {
-    public class CountryFlag 
+    [JsonObject(MemberSerialization.Fields)]
+    public class CountryFlags : SerializeManager
     {
-        public CountryFlag()
+        public static List<COUNTRY_FLAG> current
         {
+            get
+            {
+                List<COUNTRY_FLAG> rslt = new List<COUNTRY_FLAG>();
+                foreach(string name in flagNames)
+                {
+                    rslt.Add(COUNTRY_FLAG.Find(name));
+                }
+
+                return rslt;
+            }
         }
+
+        public static void Add(COUNTRY_FLAG flag)
+        {
+            flagNames.Add(flag.Title());
+        }
+
+        public static void Remove(COUNTRY_FLAG flag)
+        {
+            flagNames.Remove(flag.Title());
+        }
+
+        [SerializeField]
+        static List<string> flagNames = new List<string>();
     }
-
-    //public class PersonFlag : HuangDAPI.PersonFlag
-    //{
-    //    public PersonFlag(string name, string effect)
-    //    {
-    //        _name = name;
-    //        _effect = effect;
-    //    }
-
-    //    public string name
-    //    {
-    //        get
-    //        {
-    //            return _name;
-    //        }
-    //    }
-
-    //    string _name;
-    //    string _effect;
-    //}
 }

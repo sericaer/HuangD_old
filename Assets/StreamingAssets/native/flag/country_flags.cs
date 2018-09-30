@@ -25,12 +25,12 @@ namespace native
 
         public override void Enabled()
         {
-            Province.taxEffects += NewEffect(-3);
+            //Province.taxEffects += NewEffect(-3);
         }
 
         public override void Disabled()
         {
-            Province.taxEffects -= NewEffect();
+            //Province.taxEffects -= NewEffect();
         }
 
         public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
@@ -173,7 +173,7 @@ namespace native
             name = eventname;
         }
 
-        public int affectHeath(int baseValue)
+        public int affectEmperorHeath(int baseValue)
         {
             return -5;
         }

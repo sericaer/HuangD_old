@@ -10,16 +10,20 @@ using static MyGame;
 
 namespace HuangDAPI
 {
-    [JsonObject(MemberSerialization.Fields)]
-    public class COUNTRY_FLAG : SerializeManager //: ReflectBase
+    public class COUNTRY_FLAG
     {
+        public Func<int, int> funcAffectEmperorHeath = null;
+        public Func<int, int> funcAffectProvTax = null;
+
+        public static COUNTRY_FLAG Find(string name)
+        {
+            return _All.Find((x) => x.Title() == name);
+        }
+
         public COUNTRY_FLAG()
         {
-            MethodInfo method = this.GetType().GetMethod("affectHeath");
-            if(method != null)
-            {
-                funcHeathEffect = (Func<int, int>)(object)Delegate.CreateDelegate(typeof(Func<int, int>), this, method);
-            }
+            funcAffectEmperorHeath = AssocAffect("affectEmperorHeath");
+            funcAffectProvTax      = AssocAffect("affectProvTax");;
             
             _All.Add(this);
         }
@@ -37,6 +41,8 @@ namespace HuangDAPI
 
         public void Enable()
         {
+            MyGame.CountryFlags.Add(this);
+
             _exist = true;
             _startTime = new GameTime(GameTime.current);
             Enabled();
@@ -44,6 +50,8 @@ namespace HuangDAPI
 
         public void Disable()
         {
+            MyGame.CountryFlags.Remove(this);
+
             _exist = false;
             _startTime = null;
             Disabled();
@@ -207,23 +215,25 @@ namespace HuangDAPI
             });
         }
 
-        public Func<int, int> funcHeathEffect = null;
 
-        //public Func<string> _funcTitle;
-        //public Func<string> _funcDesc;
+        private Func<int, int> AssocAffect(string methodName)
+        {
+            MethodInfo method = this.GetType().GetMethod(methodName);
+            if (method != null)
+            {
+                return (Func<int, int>)(object)Delegate.CreateDelegate(typeof(Func<int, int>), this, method);
+            }
 
-        [SerializeField]
+            return null;
+        }
+
         private static List<COUNTRY_FLAG> _All = new List<COUNTRY_FLAG>();
 
-        [SerializeField]
         private bool _exist = false;
 
-        [SerializeField]
         private GameTime _startTime;
 
-        [SerializeField]
-        protected dynamic _param = new ExpandoObject();
-
+        public dynamic _param = new ExpandoObject();
     }
 
     public enum FlagEffect

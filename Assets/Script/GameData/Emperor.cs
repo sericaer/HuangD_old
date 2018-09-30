@@ -84,7 +84,7 @@ public partial class MyGame
                 string rslt = "";
                 foreach (var elem in Effects)
                 {
-                    rslt += rslt += elem.Item2.ToString() + " " + elem.Item1 + "\n";
+                    rslt += elem.Item2.ToString() + " " + elem.Item1 + "\n";
 
                 }
                 return rslt;
@@ -98,14 +98,14 @@ public partial class MyGame
                 List<Tuple<string, int>> rslt = new List<Tuple<string, int>>();
                 rslt.Add(new Tuple<string, int>("BASE_VALUE", baseValue));
 
-                foreach (var flag in HuangDAPI.COUNTRY_FLAG.All)
+                foreach (var flag in CountryFlags.current)
                 {
-                    if (flag.funcHeathEffect == null)
+                    if (flag.funcAffectEmperorHeath == null)
                     {
                         continue;
                     }
 
-                    rslt.Add(new Tuple<string, int>(flag.Title(), flag.funcHeathEffect(baseValue)));
+                    rslt.Add(new Tuple<string, int>(flag.Title(), flag.funcAffectEmperorHeath(baseValue)));
                 }
 
                 return rslt;
