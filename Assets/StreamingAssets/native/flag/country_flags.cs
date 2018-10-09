@@ -23,35 +23,19 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
-        public override void Enabled()
+        public double affectCountryTax(double baseValue)
         {
-            //Province.taxEffects += NewEffect(-3);
-        }
-
-        public override void Disabled()
-        {
-            //Province.taxEffects -= NewEffect();
-        }
-
-        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
-        {
-            effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
+            switch (Level)
             {
-                switch (Level)
-                {
-                    case 1:
-                        return -tax * 0.1;
-                        break;
-                    case 2:
-                        return -tax * 0.25;
-                        break;
-                    case 3:
-                        return -tax * 0.5;
-                        break;
-                    default:
-                        return null;
-                }
-            });
+                case 1:
+                    return -baseValue * 0.1;
+                case 2:
+                    return -baseValue * 0.25;
+                case 3:
+                    return -baseValue * 0.5;
+                default:
+                    throw new Exception();
+            }
         }
 
         public int Level
@@ -94,42 +78,34 @@ namespace native
             return string.Format("{0}_{1}_{2}", "COUNTRY_FLAG", GetType().Name + Level.ToString(), "DESC");
         }
 
-        public override void Effect(ref Dictionary<FlagEffect, Func<dynamic, dynamic>> effectDict)
+        public double affectCountryTax(double baseValue)
         {
-            effectDict.Add(FlagEffect.PROVINCE_TAX, (dynamic tax)=>
+            switch (Level)
             {
-                switch (Level)
-                {
-                    case 1:
-                        return tax * 0.1;
-                        break;
-                    case 2:
-                        return tax * 0.3;
-                        break;
-                    case 3:
-                        return tax * 0.5;
-                        break;
-                    default:
-                        return null;
-                }
-            });
-            effectDict.Add(FlagEffect.PROVINCE_REB, (dynamic reb)=>
+                case 1:
+                    return baseValue * 0.1;
+                case 2:
+                    return baseValue * 0.3;
+                case 3:
+                    return baseValue * 0.5;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public double affectCountryReb(double baseValue)
+        {
+            switch (Level)
             {
-                switch (Level)
-                {
-                    case 1:
-                        return 0.5;
-                        break;
-                    case 2:
-                        return 1.0;
-                        break;
-                    case 3:
-                        return 3.0;
-                        break;
-                        default:
-                        return null;
-                }
-            });
+                case 1:
+                    return 0.5;
+                case 2:
+                    return 1.0;
+                case 3:
+                    return 3.0;
+                default:
+                    throw new Exception();
+            }
         }
 
         public int Level
@@ -176,16 +152,6 @@ namespace native
         public int affectEmperorHeath(int baseValue)
         {
             return -5;
-        }
-
-        public override void Enabled()
-        {
-            Emperor.Heath += NewEffect(-3);
-        }
-
-        public override void Disabled()
-        {
-            Emperor.Heath -= NewEffect();
         }
     }
 }

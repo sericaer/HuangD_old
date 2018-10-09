@@ -82,9 +82,12 @@ public partial class MyGame
             List<Tuple<string, double>> result = new List<Tuple<string, double>>();
 
             result.Add(new Tuple<string, double>("TAX_BASE", baseTax));
-            foreach(var elem in ProvTaxEffects)
+            foreach(var elem in CountryFlags.current)
             {
-                result.Add(new Tuple<string, double>(elem.Key, elem.Value(baseTax)));
+                if (elem.funcAffectCountryTax != null)
+                {
+                    result.Add(new Tuple<string, double>(elem.Title(), elem.funcAffectCountryTax(baseTax)));
+                }
             }
 
             return result;
@@ -96,10 +99,15 @@ public partial class MyGame
 
             result.Add(new Tuple<string, double>("STABILITY_REFLECTION", (double)-Stability.current));
 
-            foreach (var elem in ProvRebEffects)
+            foreach (var elem in CountryFlags.current)
             {
-                result.Add(new Tuple<string, double>(elem.Key, elem.Value(0)));
+                if (elem.funcAffectCountryReb != null)
+                {
+                    result.Add(new Tuple<string, double>(elem.Title(), elem.funcAffectCountryReb(baseTax)));
+                }
             }
+
+            return result;
 
             return result;
         }
