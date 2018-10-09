@@ -63,6 +63,12 @@ namespace HuangDAPI
                                                       return "";
                                                   });
 
+            MethodInfo methodInfo = this.GetType().GetMethod("InitProcess", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            if(methodInfo != null)
+            {
+                methodInfo.Invoke(this, null);
+            }
+
             List<PropertyInfo> propers = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).ToList();
             _sponsor = propers.Find(x => x.Name == "Sponsor");
 
@@ -85,6 +91,11 @@ namespace HuangDAPI
 
         }
 
+        public void ProcessAdd(string name, int time)
+        {
+            processTimes.Add(new Tuple<string, int>(name, time));
+        }
+
         private bool IsSponsorVaild()
         {
             if (_sponsor == null)
@@ -97,6 +108,7 @@ namespace HuangDAPI
 
 
 
+        public List<Tuple<string, int>> processTimes = new List<Tuple<string, int>>();
         public Func<bool> _funcVisable;
         public Func<bool> _funcEnable;
         public Func<bool> _funcProcFinish;

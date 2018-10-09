@@ -16,7 +16,6 @@ using UnityEngine;
 
 public partial class MyGame
 {
-    [JsonObject(MemberSerialization.Fields)]
     public class DecisionPlan : SerializeManager,HuangDAPI.DecisionPlan
     {
         public DecisionPlan(string key)

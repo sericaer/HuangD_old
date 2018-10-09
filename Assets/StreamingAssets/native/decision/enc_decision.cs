@@ -1,62 +1,58 @@
 ﻿using HuangDAPI;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace native
 {
-    //class DECISION_SSYD1 : DECISION
-    //{
-    //    Person Sponsor
-    //    {
-    //        get
-    //        {
-    //            return Offices.SG1.person;
-    //        }
-    //    }
+    class DECISION_SSYD1 : DECISION
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
 
-    //    string Title()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "TITLE");
-    //    }
+        void InitProcess()
+        {
+            ProcessAdd("Process1", 10);
+            ProcessAdd("Process2", 20);
+            ProcessAdd("Process3", 30);
+        }
 
-    //    string Desc()
-    //    {
-    //        return string.Format("{0}_{1}_{2}", "DECISION_SSYD", param.maxlevel.ToString(), "DESC");
-    //    }
+        bool IsEnable()
+        {
+            if(CountryFlags.SSYD1.IsEnabled())
+            {
+                return false;
+            }
 
-    //    bool Enable()
-    //    {
-    //        if (Sponsor.faction == Factions.SHI)
-    //        {
-    //            int powerPercent = Factions.SHI.powerPercent;
-    //            if (powerPercent >= 30 && powerPercent < 40)
-    //            {
-    //                if (CountryFlags.SSYD.Level < 1)
-    //                {
-    //                    param.maxlevel = 1;
-    //                    param.minlevel = 0;
-    //                    return true;
-    //                }
-    //            }
-    //        }
+            if (Sponsor.faction != Factions.SHI)
+            {
+                return false;
+            }
 
-    //        return false;
-    //    }
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent >= 30)
+            {
+                return true;
+            }
 
-    //    string EnableEvent(ref dynamic param)
-    //    {
-    //        param.maxlevel = this.param.maxlevel;
-    //        param.minlevel = this.param.minlevel;
+            return false;
+        }
 
-    //        return "EVENT_SG1_SUGGEST_SSYD";
-    //    }
+        string EnableEvent(ref dynamic param)
+        {
+            return "EVENT_SG1_SUGGEST_SSYD1";
+        }
 
-    //    string FinishEvent()
-    //    {
-    //        CountryFlags.SSYD.Level = param.maxlevel;
-    //        Stability.current += 1;
-    //        return "";
-    //    }
-    //}
+        string FinishEvent()
+        {
+            return "EVENT_SSYD1_ENABLED";
+        }
+    }
 
     //class DECISION_SSYD2 : DECISION
     //{

@@ -14,26 +14,18 @@ public class ProcessLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        decpro = MyGame.DecisionManager.Procs.Find((obj) => obj.name == this.name) as MyGame.DecisionProc;
-        mainSlider.maxValue = decpro.maxDay;
-        if (decpro.maxDay == 0)
-        {
-            mainSlider.maxValue = decpro.currDay;
-        }
-        
-        mainSlider.value = decpro.currDay;
+        decpro = MyGame.DecisionProcess.current.Find((obj) => obj.name == this.name);
+        mainSlider.maxValue = decpro.maxTimes;
+        mainSlider.value = decpro.lastTimes;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        mainSlider.value = decpro.currDay;
-        if (decpro.maxDay == 0)
-        {
-            mainSlider.maxValue = decpro.currDay;
-        }
+        mainSlider.maxValue = decpro.maxTimes;
+        mainSlider.value = decpro.lastTimes;
     }
 
     private Slider mainSlider;
-    private MyGame.DecisionProc decpro;
+    private MyGame.DecisionProcess decpro;
 }

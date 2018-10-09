@@ -74,7 +74,7 @@ public class EventLogic : MonoBehaviour
 
         eventManager.isEventDialogExit = false;
 
-        MyGame.DecisionManager.Update();
+        MyGame.DecisionProcess.Update();
 
         MyGame.GameTime.current.Increase();
 

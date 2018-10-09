@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 namespace native
 {
-    class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
+    class EVENT_SG1_SUGGEST_SSYD1 : EVENT_HD
     {
         Person Sponsor
         {
@@ -16,82 +16,15 @@ namespace native
             }
         }
 
-        bool Precondition()
-        {
-            if (LastTriggleInterval < 50)
-            {
-                return false;
-            }
-
-            if (Sponsor.faction == Factions.SHI)
-            {
-                int powerPercent = Factions.SHI.powerPercent;
-                if (powerPercent > 70)
-                {
-                    if (CountryFlags.SSYD.Level < 3)
-                    {
-                        PreData.maxlevel = 3;
-                        PreData.minlevel = 3;
-                        return true;
-                    }
-                }
-                else if(powerPercent > 50)
-                {
-                    if (CountryFlags.SSYD.Level < 2)
-                    {
-                        PreData.maxlevel = 3;
-                        PreData.minlevel = 2;
-                        return true;
-                    }
-                }
-                else if(powerPercent > 30)
-                {
-                    if (CountryFlags.SSYD.Level < 1)
-                    {
-                        PreData.maxlevel = 2;
-                        PreData.minlevel = 1;
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (CountryFlags.SSYD.Level < 1 && LastTriggleInterval > 60 && Probability.IsProbOccur(1/Math.Pow(Stability.current+2, 2)))
-                    {
-                        PreData.maxlevel = 1;
-                        PreData.minlevel = 0;
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         class OPTION1 : Option
         {
-            string Desc()
-            {
-                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
-
-            }
             void Selected(ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level = PreData.maxlevel;
-                Stability.current++;
+                Decisions.
             }
         }
         class OPTION2 : Option
         {
-            bool IsVisable()
-            {
-                return PreData.maxlevel != PreData.minlevel;
-            }
-
-            string Desc()
-            {
-                return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
-
-            }
             void Selected(ref string nxtEvent, ref object param)
             {
                 CountryFlags.SSYD.Level = PreData.minlevel;
@@ -99,558 +32,651 @@ namespace native
         }
     }
 
-    class EVENT_SG1_SUGGEST_REDUCE_SSYD : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        bool Precondition()
-        {
-            if (LastTriggleInterval < 60)
-            {
-                return false;
-            }
+    //    bool Precondition()
+    //    {
+    //        if (LastTriggleInterval < 50)
+    //        {
+    //            return false;
+    //        }
 
-            if(CountryFlags.SSYD.Level == 0)
-            {
-                return false;
-            }
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            int powerPercent = Factions.SHI.powerPercent;
+    //            if (powerPercent > 70)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 3)
+    //                {
+    //                    PreData.maxlevel = 3;
+    //                    PreData.minlevel = 3;
+    //                    return true;
+    //                }
+    //            }
+    //            else if(powerPercent > 50)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 2)
+    //                {
+    //                    PreData.maxlevel = 3;
+    //                    PreData.minlevel = 2;
+    //                    return true;
+    //                }
+    //            }
+    //            else if(powerPercent > 30)
+    //            {
+    //                if (CountryFlags.SSYD.Level < 1)
+    //                {
+    //                    PreData.maxlevel = 2;
+    //                    PreData.minlevel = 1;
+    //                    return true;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                if (CountryFlags.SSYD.Level < 1 && LastTriggleInterval > 60 && Probability.IsProbOccur(1/Math.Pow(Stability.current+2, 2)))
+    //                {
+    //                    PreData.maxlevel = 1;
+    //                    PreData.minlevel = 0;
+    //                    return true;
+    //                }
+    //            }
+    //        }
 
-            if(Sponsor.faction == Factions.SHI)
-            {
-                return false;
-            }
+    //        return false;
+    //    }
 
-            int powerPercent = Factions.SHI.powerPercent+1;
-            switch(CountryFlags.SSYD.Level)
-            {
-                case 3:
-                    {
-                        if (powerPercent > 40)
-                        {
-                            return false;
-                        }
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc()
+    //        {
+    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
 
-                        return Probability.IsProbOccur(0.3 / powerPercent);
-                    }
-                    break;
-                case 2:
-                    {
-                        if (powerPercent > 30)
-                        {
-                            return false;
-                        }
+    //        }
+    //        void Selected(ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.SSYD.Level = PreData.maxlevel;
+    //            Stability.current++;
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
+    //        bool IsVisable()
+    //        {
+    //            return PreData.maxlevel != PreData.minlevel;
+    //        }
 
-                        return Probability.IsProbOccur(0.2 / powerPercent);
-                    }
-                    break;
-                case 1:
-                    {
-                        if (powerPercent > 20)
-                        {
-                            return false;
-                        }
+    //        string Desc()
+    //        {
+    //            return UI.Format("EVENT_SG1_SUGGEST_SSYD" + PreData.minlevel.ToString());
 
-                        return Probability.IsProbOccur(0.1 / powerPercent);
-                    }
-                    break;
-                default:
-                    break;
-            }
+    //        }
+    //        void Selected(ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.SSYD.Level = PreData.minlevel;
+    //        }
+    //    }
+    //}
 
-            return false;
-        }
+    //class EVENT_SG1_SUGGEST_REDUCE_SSYD : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected(ref string nxtEvent, ref object param)
-            {
-                CountryFlags.SSYD.Level--;
-                Stability.current = Stability.current - 1;
-            }
-        }
-        class OPTION2 : Option
-        {
+    //    bool Precondition()
+    //    {
+    //        if (LastTriggleInterval < 60)
+    //        {
+    //            return false;
+    //        }
+
+    //        if(CountryFlags.SSYD.Level == 0)
+    //        {
+    //            return false;
+    //        }
+
+    //        if(Sponsor.faction == Factions.SHI)
+    //        {
+    //            return false;
+    //        }
+
+    //        int powerPercent = Factions.SHI.powerPercent+1;
+    //        switch(CountryFlags.SSYD.Level)
+    //        {
+    //            case 3:
+    //                {
+    //                    if (powerPercent > 40)
+    //                    {
+    //                        return false;
+    //                    }
+
+    //                    return Probability.IsProbOccur(0.3 / powerPercent);
+    //                }
+    //                break;
+    //            case 2:
+    //                {
+    //                    if (powerPercent > 30)
+    //                    {
+    //                        return false;
+    //                    }
+
+    //                    return Probability.IsProbOccur(0.2 / powerPercent);
+    //                }
+    //                break;
+    //            case 1:
+    //                {
+    //                    if (powerPercent > 20)
+    //                    {
+    //                        return false;
+    //                    }
+
+    //                    return Probability.IsProbOccur(0.1 / powerPercent);
+    //                }
+    //                break;
+    //            default:
+    //                break;
+    //        }
+
+    //        return false;
+    //    }
+
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected(ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.SSYD.Level--;
+    //            Stability.current = Stability.current - 1;
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
             
-        }
-    }
+    //    }
+    //}
 
 
-    class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class EVENT_SG1_SUGGEST_INCREASE_TAX : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        bool Precondition()
-        {
-            Debug.Log("LastTriggleInterval:" + LastTriggleInterval);
+    //    bool Precondition()
+    //    {
+    //        Debug.Log("LastTriggleInterval:" + LastTriggleInterval);
 
-            if (LastTriggleInterval < 20)
-            {
-                return false;
-            }
+    //        if (LastTriggleInterval < 20)
+    //        {
+    //            return false;
+    //        }
 
 
-            if (CountryFlags.KJZS.Level >= CountryFlags.KJZS.MAX_LEVEL)
-            {
-                return false;
-            }
+    //        if (CountryFlags.KJZS.Level >= CountryFlags.KJZS.MAX_LEVEL)
+    //        {
+    //            return false;
+    //        }
 
-            if (Economy.NetIncome > 10)
-            {
-                return false;
-            }
+    //        if (Economy.NetIncome > 10)
+    //        {
+    //            return false;
+    //        }
 
-            double prob = 0.0;
-            if (Sponsor.faction == Factions.SHI)
-            {
-                prob -= 0.01;
-            }
-            if (Diplomacy.current == Diplomacy.WAR)
-            {
-                prob += 0.05;
-            }
+    //        double prob = 0.0;
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            prob -= 0.01;
+    //        }
+    //        if (Diplomacy.current == Diplomacy.WAR)
+    //        {
+    //            prob += 0.05;
+    //        }
 
-            if (Economy.NetIncome <= 0)
-            {
-                prob = 0.08;
-            }
-            else if (Economy.NetIncome <= 3)
-            {
-                prob += 0.05;
-            }
-            else if (Economy.NetIncome <= 5)
-            {
-                prob += 0.03;
-            }
+    //        if (Economy.NetIncome <= 0)
+    //        {
+    //            prob = 0.08;
+    //        }
+    //        else if (Economy.NetIncome <= 3)
+    //        {
+    //            prob += 0.05;
+    //        }
+    //        else if (Economy.NetIncome <= 5)
+    //        {
+    //            prob += 0.03;
+    //        }
 
-            return Probability.IsProbOccur(prob);
-        }
+    //        return Probability.IsProbOccur(prob);
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                CountryFlags.KJZS.Level++;
-            }
-        }
-        class OPTION2 : Option
-        {
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.KJZS.Level++;
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
-    class EVENT_SG1_SUGGEST_REDUCE_TAX : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class EVENT_SG1_SUGGEST_REDUCE_TAX : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        bool Precondition()
-        {
-            if (LastTriggleInterval < 60)
-            {
-                return false;
-            }
+    //    bool Precondition()
+    //    {
+    //        if (LastTriggleInterval < 60)
+    //        {
+    //            return false;
+    //        }
 
-            if (CountryFlags.KJZS.Level < 1)
-            {
-                return false;
-            }
+    //        if (CountryFlags.KJZS.Level < 1)
+    //        {
+    //            return false;
+    //        }
 
-            var prob = 0.0;
-            switch(CountryFlags.KJZS.Level)
-            {
-                case 3:
-                    {
-                        prob = 0.001;
-                        prob += Economy.NetIncome * 0.0001;
-                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
-                    }
-                    break;
-                case 2:
-                    {
-                        prob = 0.0005;
-                        prob += Economy.NetIncome * 0.0001;
-                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
-                    }
-                    break;
-                case 1:
-                    {
-                        prob += Economy.NetIncome * 0.0001;
-                        prob -= Math.Pow(Stability.current, 3) * 0.0001;
-                    }
-                    break;
-                default:
-                    return false;
-            }
+    //        var prob = 0.0;
+    //        switch(CountryFlags.KJZS.Level)
+    //        {
+    //            case 3:
+    //                {
+    //                    prob = 0.001;
+    //                    prob += Economy.NetIncome * 0.0001;
+    //                    prob -= Math.Pow(Stability.current, 3) * 0.0001;
+    //                }
+    //                break;
+    //            case 2:
+    //                {
+    //                    prob = 0.0005;
+    //                    prob += Economy.NetIncome * 0.0001;
+    //                    prob -= Math.Pow(Stability.current, 3) * 0.0001;
+    //                }
+    //                break;
+    //            case 1:
+    //                {
+    //                    prob += Economy.NetIncome * 0.0001;
+    //                    prob -= Math.Pow(Stability.current, 3) * 0.0001;
+    //                }
+    //                break;
+    //            default:
+    //                return false;
+    //        }
 
-            return Probability.IsProbOccur(prob);
-        }
+    //        return Probability.IsProbOccur(prob);
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                CountryFlags.KJZS.Level--;
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            CountryFlags.KJZS.Level--;
 
-                Stability.current++;
-            }
-        }
-        class OPTION2 : Option
-        {
+    //            Stability.current++;
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
-    class EVENT_SG1_SUGGEST_INCREACE_MILITARY : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class EVENT_SG1_SUGGEST_INCREACE_MILITARY : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        bool Precondition()
-        {
-            var prob = 0.0;
+    //    bool Precondition()
+    //    {
+    //        var prob = 0.0;
 
-            if (Diplomacy.current == Diplomacy.WAR)
-            {
-                prob += 0.05;
-            }
+    //        if (Diplomacy.current == Diplomacy.WAR)
+    //        {
+    //            prob += 0.05;
+    //        }
 
-            if(Military.current == 100)
-            {
-                return false;
-            }
+    //        if(Military.current == 100)
+    //        {
+    //            return false;
+    //        }
 
-            if (Military.current > 90)
-            {
-                prob += -0.05;
-            }
-            else if (Military.current > 85)
-            {
-                prob += -0.02;
-            }
-            else if (Military.current > 80)
-            {
-                prob += -0.01;
-            }
-            else if (Military.current > 75)
-            {
-                prob += -0.005;
-            }
-            else if(Military.current > 70)
-            {
-                prob += -0.002;
-            }
-            else if (Military.current > 65)
-            {
-                prob += -0.001;
-            }
-            else if (Military.current > 60)
-            {
-                prob += 0.0;
-            }
-            else if (Military.current > 50)
-            {
-                prob += 0.001;
-            }
-            else if (Military.current > 40)
-            {
-                prob += 0.005;
-            }
-            else if (Military.current > 30)
-            {
-                prob += 0.01;
-            }
-            else if (Military.current > 20)
-            {
-                prob += 0.02;
-            }
-            else if (Military.current > 10)
-            {
-                prob += 0.05;
-            }
-            else
-            {
-                prob += 0.1;
-            }
+    //        if (Military.current > 90)
+    //        {
+    //            prob += -0.05;
+    //        }
+    //        else if (Military.current > 85)
+    //        {
+    //            prob += -0.02;
+    //        }
+    //        else if (Military.current > 80)
+    //        {
+    //            prob += -0.01;
+    //        }
+    //        else if (Military.current > 75)
+    //        {
+    //            prob += -0.005;
+    //        }
+    //        else if(Military.current > 70)
+    //        {
+    //            prob += -0.002;
+    //        }
+    //        else if (Military.current > 65)
+    //        {
+    //            prob += -0.001;
+    //        }
+    //        else if (Military.current > 60)
+    //        {
+    //            prob += 0.0;
+    //        }
+    //        else if (Military.current > 50)
+    //        {
+    //            prob += 0.001;
+    //        }
+    //        else if (Military.current > 40)
+    //        {
+    //            prob += 0.005;
+    //        }
+    //        else if (Military.current > 30)
+    //        {
+    //            prob += 0.01;
+    //        }
+    //        else if (Military.current > 20)
+    //        {
+    //            prob += 0.02;
+    //        }
+    //        else if (Military.current > 10)
+    //        {
+    //            prob += 0.05;
+    //        }
+    //        else
+    //        {
+    //            prob += 0.1;
+    //        }
     
-            if (Sponsor.faction == Factions.SHI)
-            {
-                prob += -0.05;
-            }
-            else if (Sponsor.faction == Factions.XUN)
-            {
-                prob += 0.05;
-            }
-            else if (Sponsor.faction == Factions.WAI)
-            {
-                prob += 0.01;
-            }
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            prob += -0.05;
+    //        }
+    //        else if (Sponsor.faction == Factions.XUN)
+    //        {
+    //            prob += 0.05;
+    //        }
+    //        else if (Sponsor.faction == Factions.WAI)
+    //        {
+    //            prob += 0.01;
+    //        }
 
-            if (Economy.NetIncome < 0)
-            {
-                prob += -0.005;
-            }
+    //        if (Economy.NetIncome < 0)
+    //        {
+    //            prob += -0.005;
+    //        }
 
-            return Probability.IsProbOccur(Math.Max(0.0, prob));
-        }
+    //        return Probability.IsProbOccur(Math.Max(0.0, prob));
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current + 15;
-                Economy.current = Economy.current - 15;
-            }
-        }
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current + 15;
+    //            Economy.current = Economy.current - 15;
+    //        }
+    //    }
 
-        class OPTION2 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current + 10;
-                Economy.current = Economy.current - 10;
-            }
-        }
+    //    class OPTION2 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current + 10;
+    //            Economy.current = Economy.current - 10;
+    //        }
+    //    }
 
-        class OPTION3 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current + 5;
-                Economy.current = Economy.current - 5;
-            }
-        }
+    //    class OPTION3 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current + 5;
+    //            Economy.current = Economy.current - 5;
+    //        }
+    //    }
 
-        class OPTION4 : Option
-        {
+    //    class OPTION4 : Option
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
-    class EVENT_SG1_SUGGEST_REDUCE_MILITARY : EVENT_HD
-    {
-        Person Sponsor
-        {
-            get
-            {
-                return Offices.SG1.person;
-            }
-        }
+    //class EVENT_SG1_SUGGEST_REDUCE_MILITARY : EVENT_HD
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
 
-        bool Precondition()
-        {
-            var prob = 0.0;
+    //    bool Precondition()
+    //    {
+    //        var prob = 0.0;
 
-            if (Diplomacy.current == Diplomacy.PEACE)
-            {
-                prob += 0.01;
-            }
+    //        if (Diplomacy.current == Diplomacy.PEACE)
+    //        {
+    //            prob += 0.01;
+    //        }
 
-            if (Military.current <= 10)
-            {
-                return false;
-            }
+    //        if (Military.current <= 10)
+    //        {
+    //            return false;
+    //        }
 
-            if (Military.current > 90)
-            {
-                prob += 0.05;
-            }
-            else if (Military.current > 85)
-            {
-                prob += 0.02;
-            }
-            else if (Military.current > 80)
-            {
-                prob += 0.01;
-            }
-            else if (Military.current > 75)
-            {
-                prob += 0.005;
-            }
-            else if (Military.current > 70)
-            {
-                prob += 0.002;
-            }
-            else if (Military.current > 65)
-            {
-                prob += 0.001;
-            }
-            else if (Military.current > 60)
-            {
-                prob += 0.0;
-            }
-            else if (Military.current > 50)
-            {
-                prob += -0.001;
-            }
-            else if (Military.current > 40)
-            {
-                prob += -0.005;
-            }
-            else if (Military.current > 30)
-            {
-                prob += 0.01;
-            }
-            else if (Military.current > 20)
-            {
-                prob += -0.02;
-            }
+    //        if (Military.current > 90)
+    //        {
+    //            prob += 0.05;
+    //        }
+    //        else if (Military.current > 85)
+    //        {
+    //            prob += 0.02;
+    //        }
+    //        else if (Military.current > 80)
+    //        {
+    //            prob += 0.01;
+    //        }
+    //        else if (Military.current > 75)
+    //        {
+    //            prob += 0.005;
+    //        }
+    //        else if (Military.current > 70)
+    //        {
+    //            prob += 0.002;
+    //        }
+    //        else if (Military.current > 65)
+    //        {
+    //            prob += 0.001;
+    //        }
+    //        else if (Military.current > 60)
+    //        {
+    //            prob += 0.0;
+    //        }
+    //        else if (Military.current > 50)
+    //        {
+    //            prob += -0.001;
+    //        }
+    //        else if (Military.current > 40)
+    //        {
+    //            prob += -0.005;
+    //        }
+    //        else if (Military.current > 30)
+    //        {
+    //            prob += 0.01;
+    //        }
+    //        else if (Military.current > 20)
+    //        {
+    //            prob += -0.02;
+    //        }
 
-            if (Sponsor.faction == Factions.SHI)
-            {
-                prob += 0.05;
-            }
-            else if (Sponsor.faction == Factions.XUN)
-            {
-                prob += -0.05;
-            }
-            else if (Sponsor.faction == Factions.WAI)
-            {
-                prob += -0.01;
-            }
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            prob += 0.05;
+    //        }
+    //        else if (Sponsor.faction == Factions.XUN)
+    //        {
+    //            prob += -0.05;
+    //        }
+    //        else if (Sponsor.faction == Factions.WAI)
+    //        {
+    //            prob += -0.01;
+    //        }
 
-            if (Economy.NetIncome > 10)
-            {
-                prob += -0.005;
-            }
+    //        if (Economy.NetIncome > 10)
+    //        {
+    //            prob += -0.005;
+    //        }
 
-            return Probability.IsProbOccur(Math.Max(0.0, prob));
-        }
+    //        return Probability.IsProbOccur(Math.Max(0.0, prob));
+    //    }
 
-        class OPTION1 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current - 15;
-                Economy.current = Economy.current - 10;
-            }
-        }
+    //    class OPTION1 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current - 15;
+    //            Economy.current = Economy.current - 10;
+    //        }
+    //    }
 
-        class OPTION2 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current - 10;
-                Economy.current = Economy.current - 8;
-            }
-        }
+    //    class OPTION2 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current - 10;
+    //            Economy.current = Economy.current - 8;
+    //        }
+    //    }
 
-        class OPTION3 : Option
-        {
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                Military.current = Military.current - 5;
-                Economy.current = Economy.current - 5;
-            }
-        }
+    //    class OPTION3 : Option
+    //    {
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            Military.current = Military.current - 5;
+    //            Economy.current = Economy.current - 5;
+    //        }
+    //    }
 
-        class OPTION4 : Option
-        {
+    //    class OPTION4 : Option
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
-    class EVENT_SG_EMPTY : EVENT_HD
-    {
-        bool Precondition()
-        {
-            Office emptyOffice = Offices.groupCenter1.Where(x=>x.person == null).FirstOrDefault();
-            if(emptyOffice == null)
-            {
-                return false;
-            }
+    //class EVENT_SG_EMPTY : EVENT_HD
+    //{
+    //    bool Precondition()
+    //    {
+    //        Office emptyOffice = Offices.groupCenter1.Where(x=>x.person == null).FirstOrDefault();
+    //        if(emptyOffice == null)
+    //        {
+    //            return false;
+    //        }
 
-            PreData.emptyOffice = emptyOffice;
-            PreData.preferPersons = GetPreferPersons();
-            return true;
-        }
+    //        PreData.emptyOffice = emptyOffice;
+    //        PreData.preferPersons = GetPreferPersons();
+    //        return true;
+    //    }
 
-        string Desc()
-        {
-            return UI.Format("EVENT_SG_EMPTY_DESC", PreData.emptyOffice.name);
-        }
+    //    string Desc()
+    //    {
+    //        return UI.Format("EVENT_SG_EMPTY_DESC", PreData.emptyOffice.name);
+    //    }
 
-        class OPTION1 : Option
-        {
-            string Desc()
-            {
-                Person p = PreData.preferPersons[0];
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
-            }
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                PreData.emptyOffice.person = PreData.preferPersons[0];
-            }
-        }
-        class OPTION2 : Option
-        {
-            bool IsVisable()
-            {
-                return PreData.preferPersons.Count >= 2;
-            }
+    //    class OPTION1 : Option
+    //    {
+    //        string Desc()
+    //        {
+    //            Person p = PreData.preferPersons[0];
+    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+    //        }
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            PreData.emptyOffice.person = PreData.preferPersons[0];
+    //        }
+    //    }
+    //    class OPTION2 : Option
+    //    {
+    //        bool IsVisable()
+    //        {
+    //            return PreData.preferPersons.Count >= 2;
+    //        }
 
-            string Desc()
-            {
-                Person p = PreData.preferPersons[1];
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
-            }
+    //        string Desc()
+    //        {
+    //            Person p = PreData.preferPersons[1];
+    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+    //        }
 
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                PreData.emptyOffice.person = PreData.preferPersons[1];
-            }
-        }
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            PreData.emptyOffice.person = PreData.preferPersons[1];
+    //        }
+    //    }
 
-        class OPTION3 : Option
-        {
-            bool IsVisable()
-            {
-                return PreData.preferPersons.Count >= 3;
-            }
+    //    class OPTION3 : Option
+    //    {
+    //        bool IsVisable()
+    //        {
+    //            return PreData.preferPersons.Count >= 3;
+    //        }
 
-            string Desc()
-            {
-                Person p = PreData.preferPersons[2];
-                return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
-            }
+    //        string Desc()
+    //        {
+    //            Person p = PreData.preferPersons[2];
+    //            return UI.Format("EVENT_SG_EMPTY_OPTION1_DESC", p.office.name, p.name, p.score, p.faction.name);
+    //        }
 
-            void Selected( ref string nxtEvent, ref object param)
-            {
-                PreData.emptyOffice.person = PreData.preferPersons[2];
-            }
-        }
+    //        void Selected( ref string nxtEvent, ref object param)
+    //        {
+    //            PreData.emptyOffice.person = PreData.preferPersons[2];
+    //        }
+    //    }
 
 
-        List<Person> GetPreferPersons()
-        {
-            var q = from x in Offices.groupCenter2
-                    group x by x.person.faction into g
-                    select g.OrderByDescending(y => y.person.score).FirstOrDefault().person;
+    //    List<Person> GetPreferPersons()
+    //    {
+    //        var q = from x in Offices.groupCenter2
+    //                group x by x.person.faction into g
+    //                select g.OrderByDescending(y => y.person.score).FirstOrDefault().person;
 
-            return new List<Person>(q);
-        }
-    }
+    //        return new List<Person>(q);
+    //    }
+    //}
 
 ////    //class EVENT_SG2_DEAL_TL : EVENT_HD
 ////    //{

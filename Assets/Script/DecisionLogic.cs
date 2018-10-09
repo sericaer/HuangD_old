@@ -15,22 +15,22 @@ public class DecisionLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        decplan = MyGame.DecisionManager.Plans.Find((obj) => obj.name == this.name) as MyGame.DecisionPlan;
+        //decplan = MyGame.DecisionManager.Plans.Find((obj) => obj.name == this.name) as MyGame.DecisionPlan;
 
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        btnDo.interactable = decplan.IsEnable() && !GameFrame.eventManager.isEventDialogExit;
+        //btnDo.interactable = decplan.IsEnable() && !GameFrame.eventManager.isEventDialogExit;
 	}
 
     public void OnButtonClick()
     {
         Debug.Log("Do Decision:" + this.name);
-        decplan.process();
+        MyGame.DecisionProcess.current.Find(x => x.name == this.name).lastTimes = 0;
     }
 
     private Button btnDo;
-    private MyGame.DecisionPlan decplan;
+    //private MyGame.DecisionPlan decplan;
 }
