@@ -20,14 +20,30 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                Decisions.
+                Decision.DECISION_SSYD1.Start();
             }
         }
         class OPTION2 : Option
         {
+
+        }
+    }
+
+    class EVENT_SG1_SSYD1_ENABLED : EVENT_HD
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        class OPTION1 : Option
+        {
             void Selected(ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD.Level = PreData.minlevel;
+                CountryFlags.SSYD1.Enable();
             }
         }
     }
@@ -202,7 +218,7 @@ namespace native
     //    }
     //    class OPTION2 : Option
     //    {
-            
+
     //    }
     //}
 
@@ -419,7 +435,7 @@ namespace native
     //        {
     //            prob += 0.1;
     //        }
-    
+
     //        if (Sponsor.faction == Factions.SHI)
     //        {
     //            prob += -0.05;
@@ -678,293 +694,293 @@ namespace native
     //    }
     //}
 
-////    //class EVENT_SG2_DEAL_TL : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        if (GMData.Date.month == 10 && GMData.Date.day == 5)
-////    //        {
-////    //            sg2Person = GMData.Offices.SG[1].person;
+    ////    //class EVENT_SG2_DEAL_TL : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        if (GMData.Date.month == 10 && GMData.Date.day == 5)
+    ////    //        {
+    ////    //            sg2Person = GMData.Offices.SG[1].person;
 
-////    //            if (sg2Person == null)
-////    //                return false;
+    ////    //            if (sg2Person == null)
+    ////    //                return false;
 
-////    //            return true;
-////    //        }
+    ////    //            return true;
+    ////    //        }
 
-////    //        return false;
-////    //    }
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        bool Precondition()
-////    //        {
-////    //            if (GMData.Emp.heath > 5)
-////    //                return true;
-////    //            return false;
-////    //        }
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        bool Precondition()
+    ////    //        {
+    ////    //            if (GMData.Emp.heath > 5)
+    ////    //                return true;
+    ////    //            return false;
+    ////    //        }
 
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.ImpWorks.Add("DEAL_TL", "DEAL_TL_PARAM", OUTTER.sg2Person);
-////    //            nxtEvent = "EVENT_ECO_DEC";
-////    //            param = 5;
-////    //        }
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            GMData.ImpWorks.Add("DEAL_TL", "DEAL_TL_PARAM", OUTTER.sg2Person);
+    ////    //            nxtEvent = "EVENT_ECO_DEC";
+    ////    //            param = 5;
+    ////    //        }
 
-////    //        EVENT_SG2_DEAL_TL OUTTER;
-////    //    }
-////    //    class OPTION2 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.Military -= 5;
-////    //        }
-////    //    }
+    ////    //        EVENT_SG2_DEAL_TL OUTTER;
+    ////    //    }
+    ////    //    class OPTION2 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            GMData.Military -= 5;
+    ////    //        }
+    ////    //    }
 
-////    //    Person sg2Person;
-////    //}
+    ////    //    Person sg2Person;
+    ////    //}
 
-////    //class EVENT_SG2_TL_END : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        if (GMData.Date.month == 10 && GMData.Date.day == 20)
-////    //        {
-////    //            if (GMData.ImpWorks.Contains("DEAL_TL"))
-////    //                return true;
-////    //        }
+    ////    //class EVENT_SG2_TL_END : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        if (GMData.Date.month == 10 && GMData.Date.day == 20)
+    ////    //        {
+    ////    //            if (GMData.ImpWorks.Contains("DEAL_TL"))
+    ////    //                return true;
+    ////    //        }
 
-////    //        return false;
-////    //    }
-////    //    string Desc()
-////    //    {
-////    //        var p = GMData.Offices.SG[1].person;
-////    //        return UI.Format("EVENT_SG2_TL_END", p.ToString(), GMData.ImpWorks.Find("DEAL_TL").detail);
-////    //    }
+    ////    //        return false;
+    ////    //    }
+    ////    //    string Desc()
+    ////    //    {
+    ////    //        var p = GMData.Offices.SG[1].person;
+    ////    //        return UI.Format("EVENT_SG2_TL_END", p.ToString(), GMData.ImpWorks.Find("DEAL_TL").detail);
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //        //    var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
-////    //        //    GMData.ImpWorks.Remove("DEAL_JS");
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //        //    var detail = GMData.ImpWorks.Find("DEAL_JS").detail;
+    ////    //        //    GMData.ImpWorks.Remove("DEAL_JS");
 
-////    //        //    if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
-////    //        //    {
-////    //        //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-////    //        //        return;
-////    //        //    }
-////    //        //    else if (detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
-////    //        //    {
-////    //        //        nxtEvent = "EVENT_JQ1_JS_FAILED";
-////    //        //        return;
-////    //        //    }
-////    //        //    else if (detail.Contains("DEAL_JS_PARAM_BIG"))
-////    //        //    {
-////    //        //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-////    //        //        return;
-////    //        //    }
-////    //        //    else if (detail.Contains("DEAL_JS_PARAM_MID"))
-////    //        //    {
-////    //        //        if (Probability.IsProbOccur(0.7))
-////    //        //        {
-////    //        //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-////    //        //            return;
-////    //        //        }
-////    //        //        if (Probability.IsProbOccur(0.3))
-////    //        //        {
-////    //        //            nxtEvent = "EVENT_JQ1_JS_FAILED";
-////    //        //            return;
-////    //        //        }
-////    //        //    }
-////    //        //    else if (detail.Contains("DEAL_JS_PARAM_LOW"))
-////    //        //    {
-////    //        //        if (Probability.IsProbOccur(0.7))
-////    //        //        {
-////    //        //            nxtEvent = "EVENT_JQ1_JS_FAILED";
-////    //        //            return;
-////    //        //        }
-////    //        //        else
-////    //        //        {
-////    //        //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
-////    //        //            return;
-////    //        //        }
-////    //        //    }
-////    //        }
-////    //    }
-////    //}
+    ////    //        //    if (detail.Contains("EVENT_JQ1_JS_GOOD_EVENT"))
+    ////    //        //    {
+    ////    //        //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+    ////    //        //        return;
+    ////    //        //    }
+    ////    //        //    else if (detail.Contains("EVENT_JQ1_JS_BAD_EVENT"))
+    ////    //        //    {
+    ////    //        //        nxtEvent = "EVENT_JQ1_JS_FAILED";
+    ////    //        //        return;
+    ////    //        //    }
+    ////    //        //    else if (detail.Contains("DEAL_JS_PARAM_BIG"))
+    ////    //        //    {
+    ////    //        //        nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+    ////    //        //        return;
+    ////    //        //    }
+    ////    //        //    else if (detail.Contains("DEAL_JS_PARAM_MID"))
+    ////    //        //    {
+    ////    //        //        if (Probability.IsProbOccur(0.7))
+    ////    //        //        {
+    ////    //        //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+    ////    //        //            return;
+    ////    //        //        }
+    ////    //        //        if (Probability.IsProbOccur(0.3))
+    ////    //        //        {
+    ////    //        //            nxtEvent = "EVENT_JQ1_JS_FAILED";
+    ////    //        //            return;
+    ////    //        //        }
+    ////    //        //    }
+    ////    //        //    else if (detail.Contains("DEAL_JS_PARAM_LOW"))
+    ////    //        //    {
+    ////    //        //        if (Probability.IsProbOccur(0.7))
+    ////    //        //        {
+    ////    //        //            nxtEvent = "EVENT_JQ1_JS_FAILED";
+    ////    //        //            return;
+    ////    //        //        }
+    ////    //        //        else
+    ////    //        //        {
+    ////    //        //            nxtEvent = "EVENT_JQ1_JS_SUCCESS";
+    ////    //        //            return;
+    ////    //        //        }
+    ////    //        //    }
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_SG2_TL_WHITE_DEER : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        if (GMData.ImpWorks.Contains("DEAL_TL"))
-////    //            return false;
-////    //        if (Probability.IsProbOccur(0.005))
-////    //            return true;
-////    //        return false;
-////    //    }
+    ////    //class EVENT_SG2_TL_WHITE_DEER : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        if (GMData.ImpWorks.Contains("DEAL_TL"))
+    ////    //            return false;
+    ////    //        if (Probability.IsProbOccur(0.005))
+    ////    //            return true;
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            nxtEvent = "EVENT_STAB_INC";
-////    //        }
-////    //    }
-////    //}
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            nxtEvent = "EVENT_STAB_INC";
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_SG2_TL_TIGER_EVENT : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        if (!GMData.ImpWorks.Contains("DEAL_TL"))
-////    //            return false;
-////    //        if (Probability.IsProbOccur(0.005))
-////    //            return true;
-////    //        return false;
-////    //    }
+    ////    //class EVENT_SG2_TL_TIGER_EVENT : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        if (!GMData.ImpWorks.Contains("DEAL_TL"))
+    ////    //            return false;
+    ////    //        if (Probability.IsProbOccur(0.005))
+    ////    //            return true;
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            if (Probability.IsProbOccur(0.6))
-////    //            {
-////    //                //GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
-////    //                nxtEvent = "EVENT_TIGER_BITE_EMP";
-////    //                return;
-////    //            }
-////    //            if (Probability.IsProbOccur(0.4))
-////    //            {
-////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
-////    //                nxtEvent = "EVENT_TIGER_KILLER_EMP";
-////    //                return;
-////    //            }
-////    //        }
-////    //    }
-////    //    class OPTION2 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            if (Probability.IsProbOccur(0.4))
-////    //            {
-////    //                nxtEvent = "EVENT_TIGER_BITE_SG2";
-////    //                return;
-////    //            }
-////    //            if (Probability.IsProbOccur(0.4))
-////    //            {
-////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
-////    //                nxtEvent = "EVENT_TIGER_KILLER_SG2";
-////    //                return;
-////    //            }
-////    //            if (Probability.IsProbOccur(0.1))
-////    //            {
-////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
-////    //                nxtEvent = "EVENT_TIGER_KILLER_EMP";
-////    //                return;
-////    //            }
-////    //            if (Probability.IsProbOccur(0.1))
-////    //            {
-////    //                nxtEvent = "EVENT_TIGER_BITE_EMP";
-////    //                return;
-////    //            }
-////    //        }
-////    //    }
-////    //    class OPTION3 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            nxtEvent = "EVENT_TIGER_LOSER_EMP";
-////    //        }
-////    //    }
-////    //}
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            if (Probability.IsProbOccur(0.6))
+    ////    //            {
+    ////    //                //GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
+    ////    //                nxtEvent = "EVENT_TIGER_BITE_EMP";
+    ////    //                return;
+    ////    //            }
+    ////    //            if (Probability.IsProbOccur(0.4))
+    ////    //            {
+    ////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+    ////    //                nxtEvent = "EVENT_TIGER_KILLER_EMP";
+    ////    //                return;
+    ////    //            }
+    ////    //        }
+    ////    //    }
+    ////    //    class OPTION2 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            if (Probability.IsProbOccur(0.4))
+    ////    //            {
+    ////    //                nxtEvent = "EVENT_TIGER_BITE_SG2";
+    ////    //                return;
+    ////    //            }
+    ////    //            if (Probability.IsProbOccur(0.4))
+    ////    //            {
+    ////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+    ////    //                nxtEvent = "EVENT_TIGER_KILLER_SG2";
+    ////    //                return;
+    ////    //            }
+    ////    //            if (Probability.IsProbOccur(0.1))
+    ////    //            {
+    ////    //                //GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+    ////    //                nxtEvent = "EVENT_TIGER_KILLER_EMP";
+    ////    //                return;
+    ////    //            }
+    ////    //            if (Probability.IsProbOccur(0.1))
+    ////    //            {
+    ////    //                nxtEvent = "EVENT_TIGER_BITE_EMP";
+    ////    //                return;
+    ////    //            }
+    ////    //        }
+    ////    //    }
+    ////    //    class OPTION3 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            nxtEvent = "EVENT_TIGER_LOSER_EMP";
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_TIGER_BITE_EMP : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        return false;
-////    //    }
+    ////    //class EVENT_TIGER_BITE_EMP : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
-////    //            nxtEvent = "EVENT_STAB_DEC";
-////    //        }
-////    //    }
-////    //}
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            GMData.Emp.Flags.Add("TIGER_BITE", "heath:-4");
+    ////    //            nxtEvent = "EVENT_STAB_DEC";
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_TIGER_KILLER_EMP : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        return false;
-////    //    }
+    ////    //class EVENT_TIGER_KILLER_EMP : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            GMData.Emp.Flags.Add("TIGER_KILLER", "power:+5");
 
-////    //        }
-////    //    }
-////    //}
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_TIGER_BITE_SG2 : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        return false;
-////    //    }
+    ////    //class EVENT_TIGER_BITE_SG2 : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            var sg2Person = GMData.Offices.SG[1].person;
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            var sg2Person = GMData.Offices.SG[1].person;
 
-////    //            sg2Person.Flags.Add("TIGER_BITE", "heath:-4");
+    ////    //            sg2Person.Flags.Add("TIGER_BITE", "heath:-4");
 
-////    //        }
-////    //    }
-////    //}
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_TIGER_KILLER_SG2 : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        return false;
-////    //    }
+    ////    //class EVENT_TIGER_KILLER_SG2 : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            var sg2Person = GMData.Offices.SG[1].person;
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            var sg2Person = GMData.Offices.SG[1].person;
 
-////    //            sg2Person.Flags.Add("TIGER_KILLER", "power:+5");
+    ////    //            sg2Person.Flags.Add("TIGER_KILLER", "power:+5");
 
-////    //        }
-////    //    }
-////    //}
+    ////    //        }
+    ////    //    }
+    ////    //}
 
-////    //class EVENT_TIGER_LOSER_EMP : EVENT_HD
-////    //{
-////    //    bool Precondition()
-////    //    {
-////    //        return false;
-////    //    }
+    ////    //class EVENT_TIGER_LOSER_EMP : EVENT_HD
+    ////    //{
+    ////    //    bool Precondition()
+    ////    //    {
+    ////    //        return false;
+    ////    //    }
 
-////    //    class OPTION1 : Option
-////    //    {
-////    //        void Selected(ref string nxtEvent, ref object param)
-////    //        {
-////    //            GMData.Emp.Flags.Add("TIGER_LOSER", "power:-4");
-////    //        }
-////    //    }
-////    //}
+    ////    //    class OPTION1 : Option
+    ////    //    {
+    ////    //        void Selected(ref string nxtEvent, ref object param)
+    ////    //        {
+    ////    //            GMData.Emp.Flags.Add("TIGER_LOSER", "power:-4");
+    ////    //        }
+    ////    //    }
+    ////    //}
 }

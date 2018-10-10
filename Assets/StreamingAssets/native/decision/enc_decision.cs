@@ -17,9 +17,9 @@ namespace native
 
         void InitProcess()
         {
-            ProcessAdd("Process1", 10);
-            ProcessAdd("Process2", 20);
-            ProcessAdd("Process3", 30);
+            ProcessAdd("Process1", 1);
+            ProcessAdd("Process2", 2);
+            ProcessAdd("Process3", 3);
         }
 
         bool IsEnable()
@@ -43,14 +43,14 @@ namespace native
             return false;
         }
 
-        string EnableEvent(ref dynamic param)
+        string EnableEvent()
         {
             return "EVENT_SG1_SUGGEST_SSYD1";
         }
 
         string FinishEvent()
         {
-            return "EVENT_SSYD1_ENABLED";
+            return "EVENT_SG1_SSYD1_ENABLED";
         }
     }
 
