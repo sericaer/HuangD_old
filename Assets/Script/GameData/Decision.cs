@@ -35,17 +35,17 @@ public partial class MyGame
                 if(isEnable == true)
                 {
                     dynamic param = new ExpandoObject();
-                    string eventName = decisionDef._funcEnableEvent(ref param);
+                    //string eventName = decisionDef._funcEnableEvent(ref param);
 
 
-                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, param);
+                    //GameFrame.eventManager.InsertDecisionEvent(eventName, name, param);
                 }
                 if(isEnable == false)
                 {
                     string eventName = decisionDef._funcDisableEvent();
 
 
-                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, null);
+                    //GameFrame.eventManager.InsertDecisionEvent(eventName, name, null);
                 }
 
                 oldState = isEnable;
@@ -57,7 +57,7 @@ public partial class MyGame
         public void process()
         {
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, null);
+            //GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcStartEvent(), name, null);
 
             var process = new DecisionProc(name);
             All.Remove(this);
@@ -180,20 +180,20 @@ public partial class MyGame
             currDay++;
 
             HuangDAPI.DECISION decisionDef = StreamManager.decisionDict[name];
-            GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
+            //GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcProcEvent(), name, "");
 
 
             if(decisionDef._funcProcFinish != null && decisionDef._funcProcFinish())
             {
                 All.Remove(this);
-                GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
+                //GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
             else if (currDay >= maxDay)
             {
                 MyGame.GameTime.current.incDayEvent -= DayIncrease;
                 All.Remove(this);
-                GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
+                //GameFrame.eventManager.InsertDecisionEvent(decisionDef._funcFinishEvent(), name, "");
                 return;
             }
         }

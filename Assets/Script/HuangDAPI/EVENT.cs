@@ -184,6 +184,14 @@ namespace HuangDAPI
                 }
             }
 
+            public dynamic Decision
+            {
+                get
+                {
+                    return OUTTER.Decision;
+                }
+            }
+
             public delegate void DelegateSelected(ref string nxtEvent, ref object param);
             public delegate string DelegatecDesc();
             public delegate bool DelegateIsVisable();
@@ -218,6 +226,7 @@ namespace HuangDAPI
         public object param;
         public Decision AssocDecision;
         private PropertyInfo _sponsor;
+        public dynamic Decision;
 
         private List<Option> listOptions;
         private static Dictionary<string, Dictionary<string, object>> _mementoDict = new Dictionary<string, Dictionary<string, object>>();

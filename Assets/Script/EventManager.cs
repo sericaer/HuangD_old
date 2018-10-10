@@ -234,7 +234,7 @@ public class EventManager
         nextEvent = new GMEvent (StreamManager.eventDict [key], param, param);
 	}
 
-    public void InsertDecisionEvent(string key, string decision, dynamic param)
+    public void InsertDecisionEvent(string key, string decision, dynamic param, MyGame.DecisionProcess process)
     {
         if (key.Length == 0)
         {
@@ -243,6 +243,10 @@ public class EventManager
 
         decisionEvent = new GMEvent(StreamManager.eventDict[key], param, param);
         ((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
+        ((GMEvent)decisionEvent).ie.Decision = new ExpandoObject();
+
+        var initDict = (IDictionary<string, object>)((GMEvent)decisionEvent).ie.Decision;
+        initDict.Add(process.name, process);
     }
 
     //public void Insert(List<List<object>> table)

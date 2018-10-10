@@ -35,11 +35,18 @@ public partial class MyGame
                 process.Increase();
             }
 
-            foreach(var decision in StreamManager.decisionDict.Values)
+            _current.RemoveAll(x => x.IsFinish);
+
+            foreach (var decision in StreamManager.decisionDict.Values)
             {
                 if(decision.IsEnable() && _current.Find(x => x.name != decision._funcTitle()) == null)
                 {
-                    _current.Add(new DecisionProcess(decision));
+                    var newDecisionProcess = new DecisionProcess(decision);
+
+                    string eventName = decision._funcEnableEvent();
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, newDecisionProcess.name, null, newDecisionProcess);
+
+                    _current.Add(newDecisionProcess);
                 }
             }
         }
@@ -48,19 +55,36 @@ public partial class MyGame
         {
             name = decision.GetType().Name;
             lastTimes = -1;
+            IsFinish = false;
 
             currProcessName = decision.processTimes[0].Item1;
             currProcessTimes = 0;
+            maxTimes = 0;
 
-            foreach(var elem in decision.processTimes)
+            foreach (var elem in decision.processTimes)
             {
                 maxTimes += elem.Item2;
             }
         }
 
+        public void Start()
+        {
+            if(lastTimes != -1)
+            {
+                throw new Exception();
+            }
+
+            lastTimes = 0;
+        }
+
+        public bool IsStart()
+        {
+            return lastTimes != -1;
+        }
+
         private void Increase()
         {
-            if(lastTimes == -1)
+            if(!IsStart())
             {
                 return;
             }
@@ -68,16 +92,25 @@ public partial class MyGame
             lastTimes++;
 
             var decisionDef = StreamManager.decisionDict[name];
-            var processDef = decisionDef.processTimes.Find(x => x.Item1 == currProcessName);
+            var Index = decisionDef.processTimes.FindIndex(x => x.Item1 == currProcessName);
 
-            if(currProcessTimes+1 < processDef.Item2)
+            if(currProcessTimes+1 < decisionDef.processTimes[Index].Item2)
             {
                 currProcessTimes++;
             }
             else
             {
+                if(Index == decisionDef.processTimes.Count -1)
+                {
+                    string eventName = decisionDef._funcFinishEvent();
+                    GameFrame.eventManager.InsertDecisionEvent(eventName, name, null, this);
+
+                    IsFinish = true;
+                    return;
+                }
+
                 currProcessTimes = 0;
-                currProcessName = processDef.Item1;
+                currProcessName = decisionDef.processTimes[Index+1].Item1;
             }
         }
 
@@ -95,6 +128,9 @@ public partial class MyGame
 
         [SerializeField]
         public int maxTimes;
+
+        [SerializeField]
+        public bool IsFinish;
 
         [SerializeField]
         static List<DecisionProcess> _current = new List<DecisionProcess>();

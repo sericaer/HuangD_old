@@ -36,8 +36,8 @@ namespace HuangDAPI
                                                   });
             _funcProcFinish = GetDelegateInSubEvent<Func<bool>>("ProcFinish", null);
 
-            _funcEnableEvent = GetDelegateInSubEvent<DelegateEnableEvent>("EnableEvent",
-                                                  (ref dynamic param) =>
+            _funcEnableEvent = GetDelegateInSubEvent<Func<string>>("EnableEvent",
+                                                  () =>
                                                   {
                                                       return "";
                                                   });
@@ -116,9 +116,7 @@ namespace HuangDAPI
         public Func<string> _funcTitle;
         public Func<string> _funcDesc;
 
-        public delegate string DelegateEnableEvent(ref dynamic param);
-
-        public DelegateEnableEvent _funcEnableEvent;
+        public Func<string> _funcEnableEvent;
 
         public Func<string> _funcDisableEvent;
 

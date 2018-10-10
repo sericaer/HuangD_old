@@ -28,7 +28,7 @@ public class DecisionLogic : MonoBehaviour
     public void OnButtonClick()
     {
         Debug.Log("Do Decision:" + this.name);
-        MyGame.DecisionProcess.current.Find(x => x.name == this.name).lastTimes = 0;
+        MyGame.DecisionProcess.current.Find(x => x.name == this.name).Start();
     }
 
     private Button btnDo;
