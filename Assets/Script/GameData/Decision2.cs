@@ -35,7 +35,7 @@ public partial class MyGame
                 process.Increase();
             }
 
-            _current.RemoveAll(x => x.IsFinish);
+            //_current.RemoveAll(x => x.IsFinish);
 
             foreach (var decision in StreamManager.decisionDict.Values)
             {

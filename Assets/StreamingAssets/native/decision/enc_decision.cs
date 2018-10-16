@@ -24,11 +24,6 @@ namespace native
 
         bool IsEnable()
         {
-            if(CountryFlags.SSYD1.IsEnabled())
-            {
-                return false;
-            }
-
             if (Sponsor.faction != Factions.SHI)
             {
                 return false;
@@ -50,7 +45,8 @@ namespace native
 
         string FinishEvent()
         {
-            return "EVENT_SG1_SSYD1_ENABLED";
+            CountryFlags.SSYD1.Enabled();
+            return "";
         }
     }
 
