@@ -10,12 +10,8 @@ using static MyGame;
 
 namespace HuangDAPI
 {
-    public class COUNTRY_FLAG
+    public class COUNTRY_FLAG : Affect
     {
-        public Func<int, int> funcAffectEmperorHeath = null;
-        public Func<double, double> funcAffectCountryTax = null;
-        public Func<double, double> funcAffectCountryReb = null;
-
         public static COUNTRY_FLAG Find(string name)
         {
             return _All.Find((x) => x.Title() == name);
@@ -23,9 +19,7 @@ namespace HuangDAPI
 
         public COUNTRY_FLAG()
         {
-            funcAffectEmperorHeath = AssocAffect<int, int>("affectEmperorHeath");
-            funcAffectCountryTax   = AssocAffect<double, double>("affectCountryTax");
-            funcAffectCountryReb   = AssocAffect<double, double>("affectCountryReb");
+
             
             _All.Add(this);
         }
@@ -125,17 +119,6 @@ namespace HuangDAPI
             return null;
         }
 
-        private Func<T, TResult> AssocAffect<T, TResult>(string methodName)
-        {
-            MethodInfo method = this.GetType().GetMethod(methodName);
-            if (method != null)
-            {
-                return (Func<T, TResult>)(object)Delegate.CreateDelegate(typeof(Func<T, TResult>), this, method);
-            }
-
-            return null;
-        }
-
         private static List<COUNTRY_FLAG> _All = new List<COUNTRY_FLAG>();
 
         private bool _exist = false;
@@ -143,14 +126,5 @@ namespace HuangDAPI
         private GameTime _startTime;
 
         public dynamic _param = new ExpandoObject();
-    }
-
-    public enum FlagEffect
-    {
-        EFFECT_NULL,
-        PROVINCE_TAX,
-        PROVINCE_REB,
-
-        EMP_HEATH,
     }
 }

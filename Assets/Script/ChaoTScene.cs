@@ -20,7 +20,7 @@ public class ChaoTScene : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		
+        RefreshDecision();
 	}
 	
 	// Update is called once per frame
@@ -50,81 +50,25 @@ public class ChaoTScene : MonoBehaviour
 
     private void RefreshDecision()
     {
-        RefreshDecisionPlan();
-        //RefreshDecisionProc();
-    }
-
-    private void RefreshDecisionPlan()
-    {
-        List<string> newPlans = (from x in MyGame.DecisionProcess.current
-                                 select x.name).ToList();
-
-        List<string> oldPlans = (from x in PanelDecision.GetComponentsInChildren<DecisionLogic>()
-                                 select x.name).ToList();
-
-        foreach (var addPlan in newPlans.Except(oldPlans))
+        var currDecisionUIs = PanelDecision.GetComponentsInChildren<DecisionLogic>();
+        foreach (var decision in MyGame.DecisionProcess.current)
         {
-            var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), PanelDecision.transform) as GameObject;
-            decisionUI.name = addPlan;
-            decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addPlan]._funcTitle();
-            decisionUI.transform.Find("Slider").gameObject.SetActive(false);
-            //decisionUI.GetComponent<TooltipTrigger>().mDisplayText = StreamManager.decisionDict[addPlan]._funcDesc(); ;
-        }
-
-        foreach (var delPlan in oldPlans.Except(newPlans))
-        {
-            var decisionUI = PanelDecision.transform.Find(delPlan);
-            Destroy(decisionUI.gameObject);
-        }
-
-        foreach(var decisionui in PanelDecision.GetComponentsInChildren<DecisionLogic>())
-        {
-            RefreshDecisionState(decisionui, MyGame.DecisionProcess.current.First((x)=>x.name == decisionui.name));
-        }
-
-    }
-
-    private void RefreshDecisionState(DecisionLogic decisionUI, MyGame.DecisionProcess decisionProcess)
-    {
-        if(decisionProcess.IsStart())
-        {
-            decisionUI.transform.Find("Button").gameObject.SetActive(false);
-
-            Slider slider = decisionUI.transform.Find("Slider").GetComponent<Slider>();
-            if(decisionProcess.maxTimes == decisionProcess.lastTimes)
+            if(currDecisionUIs.FirstOrDefault(x=>x.name == decision.name) == null)
             {
-                slider.gameObject.SetActive(false);
-                return;
+                var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/decision"), PanelDecision.transform) as GameObject;
+                decisionUI.name = decision.name;
+                decisionUI.GetComponent<DecisionLogic>().decisionname = decision.name;
             }
+        }
 
-            slider.gameObject.SetActive(true);
-            slider.maxValue = decisionProcess.maxTimes;
-            slider.value = decisionProcess.lastTimes;
+        foreach (var decisionUi in currDecisionUIs)
+        {
+            if (MyGame.DecisionProcess.current.FirstOrDefault(x => x.name == decisionUi.name) == null)
+            {
+                Destroy(decisionUi.gameObject);
+            }
         }
     }
-
-    //private void RefreshDecisionProc()
-    //{
-    //    List<string> newProcs = (from x in MyGame.DecisionProcess.current
-    //                             where x.IsStart()
-    //                             select x.name).ToList();
-
-    //    List<string> oldProcs = (from x in PanelProcess.GetComponentsInChildren<ProcessLogic>()
-    //                             select x.name).ToList();
-
-    //    foreach (var addProc in newProcs.Except(oldProcs))
-    //    {
-    //        var decisionUI = Instantiate(Resources.Load("Prefabs/Dialog/process"), PanelProcess.transform) as GameObject;
-    //        decisionUI.name = addProc;
-    //        decisionUI.transform.Find("Text").GetComponent<Text>().text = StreamManager.decisionDict[addProc]._funcTitle();
-    //    }
-
-    //    foreach (var delProc in oldProcs.Except(newProcs))
-    //    {
-    //        var decisionUI = PanelProcess.transform.Find(delProc);
-    //        Destroy(decisionUI.gameObject);
-    //    }
-    //}
 
     private List<ChaoChenUI> lstChaoc = new List<ChaoChenUI>();
 

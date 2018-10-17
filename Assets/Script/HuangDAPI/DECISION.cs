@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HuangDAPI
 {
-    public abstract class DECISION : ReflectBase
+    public abstract class DECISION : Affect
     {
         public DECISION()
         {
@@ -29,6 +29,18 @@ namespace HuangDAPI
                                                   {
                                                       return true;
                                                   });
+
+            _funcCanPublish = GetDelegateInSubEvent<Func<bool>>("CanPublish",
+                                                  () =>
+                                                  {
+                                                      return true;
+                                                  });
+            _funcCanCancel = GetDelegateInSubEvent<Func<bool>>("CanCancel",
+                                                  () =>
+                                                  {
+                                                      return true;
+                                                  });
+
             _funcEnable = GetDelegateInSubEvent<Func<bool>>("Enable",
                                                   () =>
                                                   {
@@ -107,6 +119,8 @@ namespace HuangDAPI
         }
 
 
+        public Func<bool> _funcCanPublish;
+        public Func<bool> _funcCanCancel;
 
         public List<Tuple<string, int>> processTimes = new List<Tuple<string, int>>();
         public Func<bool> _funcVisable;

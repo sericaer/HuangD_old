@@ -15,6 +15,11 @@ namespace native
             }
         }
 
+        public double affectCountryTax(double baseValue)
+        {
+            return -baseValue * 0.1;
+        }
+
         void InitProcess()
         {
             ProcessAdd("Process1", 1);
@@ -22,7 +27,12 @@ namespace native
             ProcessAdd("Process3", 3);
         }
 
-        bool IsEnable()
+        bool IsVisiable()
+        {
+            return true;
+        }
+
+        bool CanPublish()
         {
             if (Sponsor.faction != Factions.SHI)
             {
@@ -30,20 +40,36 @@ namespace native
             }
 
             int powerPercent = Factions.SHI.powerPercent;
-            if (powerPercent >= 30)
+            if (powerPercent < 30)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
-        string EnableEvent()
+        bool CanCancel()
+        {
+            if (Sponsor.faction == Factions.SHI)
+            {
+                return false;
+            }
+
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent > 15)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        string CanPublishEvent()
         {
             return "EVENT_SG1_SUGGEST_SSYD1";
         }
 
-        string FinishEvent()
+        string CanCancelEvent()
         {
             CountryFlags.SSYD1.Enabled();
             return "";

@@ -108,6 +108,15 @@ public partial class MyGame
                     rslt.Add(new Tuple<string, int>(flag.Title(), flag.funcAffectEmperorHeath(baseValue)));
                 }
 
+                foreach (var elem in DecisionProcess.current)
+                {
+                    var decision = StreamManager.decisionDict[elem.name];
+                    if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectEmperorHeath != null)
+                    {
+                        rslt.Add(new Tuple<string, int>(decision._funcTitle(), decision.funcAffectEmperorHeath(baseValue)));
+                    }
+                }
+
                 return rslt;
             }
         }

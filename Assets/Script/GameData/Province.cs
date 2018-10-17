@@ -89,7 +89,14 @@ public partial class MyGame
                     result.Add(new Tuple<string, double>(elem.Title(), elem.funcAffectCountryTax(baseTax)));
                 }
             }
-
+            foreach (var elem in DecisionProcess.current)
+            {
+                var decision = StreamManager.decisionDict[elem.name];
+                if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectCountryTax != null)
+                {
+                    result.Add(new Tuple<string, double>(decision._funcTitle(), decision.funcAffectCountryTax(baseTax)));
+                }
+            }
             return result;
         }
 
@@ -107,8 +114,14 @@ public partial class MyGame
                 }
             }
 
-            return result;
-
+            foreach (var elem in DecisionProcess.current)
+            {
+                var decision = StreamManager.decisionDict[elem.name];
+                if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectCountryReb != null)
+                {
+                    result.Add(new Tuple<string, double>(decision._funcTitle(), decision.funcAffectCountryReb(baseTax)));
+                }
+            }
             return result;
         }
 

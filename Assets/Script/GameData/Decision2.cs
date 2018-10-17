@@ -30,7 +30,7 @@ public partial class MyGame
 
         public static void Update()
         {
-            foreach(var process in _current)
+            foreach (var process in _current)
             {
                 process.Increase();
             }
@@ -39,7 +39,7 @@ public partial class MyGame
 
             foreach (var decision in StreamManager.decisionDict.Values)
             {
-                if(decision.IsEnable() && _current.Find(x => x.name != decision._funcTitle()) == null)
+                if (decision.IsEnable() && _current.Find(x => x.name != decision._funcTitle()) == null)
                 {
                     var newDecisionProcess = new DecisionProcess(decision);
 
@@ -49,6 +49,55 @@ public partial class MyGame
                     _current.Add(newDecisionProcess);
                 }
             }
+        }
+
+        public enum ENUState
+        {
+            Publishing,
+            UnPublish,
+            Published
+        }
+
+        public ENUState state
+        {
+            get
+            {
+                if(IsFinish)
+                {
+                    return ENUState.Published;
+                }
+
+                if(lastTimes == -1)
+                {
+                    return ENUState.UnPublish;
+                }
+                else
+                {
+                    return ENUState.Publishing;
+                }
+            }
+        }
+
+        public bool CanPublish()
+        {
+            if(state != ENUState.UnPublish)
+            {
+                return false;
+            }
+
+            var decision = StreamManager.decisionDict[name];
+            return decision._funcCanPublish();
+        }
+
+        public bool CanCancel()
+        {
+            if (state != ENUState.Published)
+            {
+                return false;
+            }
+
+            var decision = StreamManager.decisionDict[name];
+            return decision._funcCanCancel();
         }
 
         public DecisionProcess(DECISION decision)
@@ -67,7 +116,7 @@ public partial class MyGame
             }
         }
 
-        public void Start()
+        public void Publish()
         {
             if(lastTimes != -1)
             {
@@ -77,14 +126,32 @@ public partial class MyGame
             lastTimes = 0;
         }
 
-        public bool IsStart()
+
+        public void Cancel()
         {
-            return lastTimes != -1;
+            if (!IsFinish)
+            {
+                throw new Exception();
+            }
+
+            lastTimes = -1;
+            IsFinish = false;
+
+            var decision = StreamManager.decisionDict[name];
+
+            currProcessName = decision.processTimes[0].Item1;
+            currProcessTimes = 0;
+            maxTimes = 0;
+
+            foreach (var elem in decision.processTimes)
+            {
+                maxTimes += elem.Item2;
+            }
         }
 
         private void Increase()
         {
-            if(!IsStart())
+            if(state != ENUState.Publishing)
             {
                 return;
             }
