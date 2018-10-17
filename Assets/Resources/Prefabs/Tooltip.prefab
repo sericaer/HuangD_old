@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 114240281709857468}
   - component: {fileID: 114103748695271956}
   - component: {fileID: 114061905274758614}
-  - component: {fileID: 114889864562567002}
   m_Layer: 5
   m_Name: Tooltip
   m_TagString: Untagged
@@ -147,17 +146,6 @@ MonoBehaviour:
     456456
 
 '
---- !u!114 &114889864562567002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1004510890316444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e7c50dabaf72d499107376ce39ab4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &222244122046917920
 CanvasRenderer:
   m_ObjectHideFlags: 1
