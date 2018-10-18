@@ -91,7 +91,7 @@ public partial class MyGame
             }
             foreach (var elem in DecisionProcess.current)
             {
-                var decision = StreamManager.decisionDict[elem.name];
+                var decision = HuangDAPI.DECISION.All[elem.name];
                 if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectCountryTax != null)
                 {
                     result.Add(new Tuple<string, double>(decision._funcTitle(), decision.funcAffectCountryTax(baseTax)));
@@ -116,7 +116,7 @@ public partial class MyGame
 
             foreach (var elem in DecisionProcess.current)
             {
-                var decision = StreamManager.decisionDict[elem.name];
+                var decision = HuangDAPI.DECISION.All[elem.name];
                 if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectCountryReb != null)
                 {
                     result.Add(new Tuple<string, double>(decision._funcTitle(), decision.funcAffectCountryReb(baseTax)));

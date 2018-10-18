@@ -176,13 +176,13 @@ namespace HuangDAPI
 
             }
 
-            public Decision AssocDecision
-            {
-                get
-                {
-                    return OUTTER.AssocDecision;
-                }
-            }
+            //public Decision AssocDecision
+            //{
+            //    get
+            //    {
+            //        return OUTTER.AssocDecision;
+            //    }
+            //}
 
             public dynamic Decision
             {
@@ -224,7 +224,7 @@ namespace HuangDAPI
         protected dynamic PreData;
 
         public object param;
-        public Decision AssocDecision;
+        //public Decision AssocDecision;
         private PropertyInfo _sponsor;
         public dynamic Decision;
 

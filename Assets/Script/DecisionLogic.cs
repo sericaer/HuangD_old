@@ -32,7 +32,7 @@ public class DecisionLogic : MonoBehaviour
 	void Update ()
     {
         MyGame.DecisionProcess decision = MyGame.DecisionProcess.current.Find(x => x.name == decisionname);
-        title.text = StreamManager.decisionDict[name]._funcTitle();
+        title.text = HuangDAPI.DECISION.All[name]._funcTitle();
 
         switch (decision.state)
         {

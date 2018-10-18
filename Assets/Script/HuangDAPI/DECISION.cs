@@ -95,6 +95,8 @@ namespace HuangDAPI
             {
                 _Responsible = (string)fieldInfo.GetValue(this);
             }
+
+            All.Add(GetType().Name, this);
         }
 
         public bool CanPublish()
@@ -118,6 +120,7 @@ namespace HuangDAPI
             return _sponsor.GetValue(this) != null;
         }
 
+        public static Dictionary<string, DECISION> All = new Dictionary<string, DECISION>();
 
         public Func<bool> _funcCanPublish;
         public Func<bool> _funcCanCancel;
@@ -148,54 +151,7 @@ namespace HuangDAPI
         public dynamic param = new ExpandoObject();
         public dynamic preparam = new ExpandoObject();
         private PropertyInfo _sponsor;
-    }
 
-    public class Decision
-    {
-        public Decision(string name)
-        {
-            this._name = name;
-        }
-
-        //public Person ResponsiblePerson
-        //{
-        //    get
-        //    {
-        //        if(MyGame.DecisionManager.Procs.ContainsKey(_name))
-        //        {
-        //            return MyGame.DecisionManager.Procs[_name].ResponsiblePerson;
-        //        }
-
-        //        return MyGame.DecisionManager.Plans[_name].ResponsibleOffice.person;
-
-        //    }
-        //}
-
-        public void process()
-        {
-            if(MyGame.DecisionManager.Procs.Exists((obj)=>obj.name == _name))
-            {
-                throw new Exception("decision already process! name:" + _name);
-            }
-
-            MyGame.DecisionManager.Plans.Find((obj) => obj.name == _name).process();
-        }
-
-        public IList<string> Flags
-        {
-            get
-            {
-                if (MyGame.DecisionManager.Procs.Exists((obj) => obj.name == _name))
-                {
-                    return MyGame.DecisionManager.Procs.Find((obj) => obj.name == _name).Flags;
-                }
-
-                throw new Exception("decision not process! name:" + _name);
-            }
-
-        }
-
-        string _name;
     }
 
     public interface DecisionProc

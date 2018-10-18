@@ -29,7 +29,7 @@ namespace native
         }
     }
 
-    class EVENT_SG1_SSYD1_ENABLED : EVENT_HD
+    class EVENT_SG1_SUGGEST_SSYD2 : EVENT_HD
     {
         Person Sponsor
         {
@@ -43,10 +43,53 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                CountryFlags.SSYD1.Enable();
+                Decision.DECISION_SSYD2.Publish();
+            }
+        }
+        class OPTION2 : Option
+        {
+            bool IsVisable()
+            {
+                return Decision.DECISION_SSYD1.IsUnPublished(); 
+            }
+
+            void Selected(ref string nxtEvent, ref object param)
+            {
+                Decision.DECISION_SSYD1.Publish();
             }
         }
     }
+
+    //class EVENT_SG1_SUGGEST_SSYD3 : EVENT_HD
+    //{
+        //Person Sponsor
+        //{
+        //    get
+        //    {
+        //        return Offices.SG1.person;
+        //    }
+        //}
+
+        //class OPTION1 : Option
+        //{
+        //    void Selected(ref string nxtEvent, ref object param)
+        //    {
+        //        Decision.DECISION_SSYD3.Publish();
+        //    }
+        //}
+        //class OPTION2 : Option
+        //{
+        //    bool IsVisable()
+        //    {
+        //        return Decision.DECISION_SSYD2.IsUnPublished(); 
+        //    }
+
+        //    void Selected(ref string nxtEvent, ref object param)
+        //    {
+        //        Decision.DECISION_SSYD2.Publish();
+        //    }
+        //}
+    //}
 
     //class EVENT_SG1_SUGGEST_SSYD : EVENT_HD
     //{

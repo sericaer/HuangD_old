@@ -35,7 +35,7 @@ public partial class MyGame
                 process.Increase();
             }
 
-            foreach (var decision in StreamManager.decisionDict.Values)
+            foreach (var decision in HuangDAPI.DECISION.All.Values)
             {
                 if (decision.CanPublish() && _current.Find(x => x.name == decision.GetType().Name) == null)
                 {
@@ -81,7 +81,7 @@ public partial class MyGame
                 return false;
             }
 
-            var decision = StreamManager.decisionDict[name];
+            var decision = HuangDAPI.DECISION.All[name];
             return decision._funcCanPublish();
         }
 
@@ -92,8 +92,18 @@ public partial class MyGame
                 return false;
             }
 
-            var decision = StreamManager.decisionDict[name];
+            var decision = HuangDAPI.DECISION.All[name];
             return decision._funcCanCancel();
+        }
+
+        public bool IsUnPublish()
+        {
+            return state == ENUState.UnPublish;
+        }
+
+        public bool IsPublished()
+        {
+            return state == ENUState.Published;
         }
 
         public DecisionProcess(DECISION decision)
@@ -137,7 +147,7 @@ public partial class MyGame
             lastTimes = -1;
             IsFinish = false;
 
-            var decision = StreamManager.decisionDict[name];
+            var decision = HuangDAPI.DECISION.All[name];
 
             currProcessName = decision.processTimes[0].Item1;
             currProcessTimes = 0;
@@ -158,7 +168,7 @@ public partial class MyGame
 
             lastTimes++;
 
-            var decisionDef = StreamManager.decisionDict[name];
+            var decisionDef = HuangDAPI.DECISION.All[name];
             var Index = decisionDef.processTimes.FindIndex(x => x.Item1 == currProcessName);
 
             if(currProcessTimes+1 < decisionDef.processTimes[Index].Item2)

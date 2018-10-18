@@ -150,9 +150,12 @@ public class StreamManager
 
         string[] defineSourceCodes = GenerateByDefine(path + "/define");
         string FlagSourceCodes   = GenerateFlags(path + "/flag");
+        string DecisionSourceCodes   = GenerateDecision(path + "/decision", defineSourceCodes);
+        Debug.Log(DecisionSourceCodes);
 
         List<string> sourceCodes = defineSourceCodes.ToList();
         sourceCodes.Add(FlagSourceCodes);
+        sourceCodes.Add(DecisionSourceCodes);
 
         foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
         {
@@ -167,7 +170,6 @@ public class StreamManager
 
         LoadName(Types);
         LoadEvent(Types);
-        LoadDecision(Types);
         LoadDefines(Types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
@@ -222,6 +224,33 @@ public class StreamManager
         return source;
     }
 
+    private string GenerateDecision(string path, string[] defines)
+    {
+        List<string> defineSourceCodes = defines.ToList();
+
+        string[] fileNames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+        foreach (string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
+        {
+            //string script = ScriptPerProcess(File.ReadAllText(filename));
+            string script = File.ReadAllText(filename);
+            defineSourceCodes.Add(script);
+        }
+
+        CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchSourceBundle(defineSourceCodes.ToArray());
+
+        Type[] types = bd.assembly.GetTypes();
+        Type[] DecisonTypes = types.Where(x => x.BaseType == typeof(DECISION)).ToArray();
+
+        var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
+        foreach (Type type in DecisonTypes)
+        {
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(type.ToString().Replace("native.", ""), typeof(HuangDAPI.DECISION), type, null, null));
+        }
+
+        CodeDomGen sourceCodeCreater = new CodeDomGen("Decisions", fields);
+        return sourceCodeCreater.Create();
+    }
+
     private string[] GenerateByDefine(string path)
     {
         List<string> defineSourceCodes = new List<string>();
@@ -250,6 +279,7 @@ public class StreamManager
 
         return defineSourceCodes.ToArray();
     }
+
 
     private string GenerateHougongCode(Type[] types)
     {
@@ -379,20 +409,6 @@ public class StreamManager
         }
 
         Debug.Log("Load event count:" + eventDict.Count);
-    }
-
-    private void LoadDecision(Type[] types)
-    {
-        Type[] DecisonTypes = types.Where(x => x.BaseType == typeof(DECISION)).ToArray();
-        foreach (Type type in DecisonTypes)
-        {
-            DECISION decision = Activator.CreateInstance(type) as DECISION;
-            //decision.SetMemento();
-
-            decisionDict.Add(type.Name, decision);
-        }
-
-        Debug.Log("Load decision count:" + decisionDict.Count);
     }
 
     private void LoadDefines(Type[] types)

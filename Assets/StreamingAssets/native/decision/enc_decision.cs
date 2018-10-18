@@ -75,6 +75,147 @@ namespace native
         }
     }
 
+    class DECISION_SSYD2 : DECISION
+    {
+        Person Sponsor
+        {
+            get
+            {
+                return Offices.SG1.person;
+            }
+        }
+
+        public double affectCountryTax(double baseValue)
+        {
+            return -baseValue * 0.15;
+        }
+
+        void InitProcess()
+        {
+            ProcessAdd("Process1", 1);
+            ProcessAdd("Process2", 2);
+            ProcessAdd("Process3", 3);
+        }
+
+        bool IsVisiable()
+        {
+            return true;
+        }
+
+        bool CanPublish()
+        {
+            if (Sponsor.faction != Factions.SHI)
+            {
+                return false;
+            }
+
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent < 40)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool CanCancel()
+        {
+            if (Sponsor.faction == Factions.SHI)
+            {
+                return false;
+            }
+
+            int powerPercent = Factions.SHI.powerPercent;
+            if (powerPercent > 20)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        string CanPublishEvent()
+        {
+            
+            return "EVENT_SG1_SUGGEST_SSYD2";
+        }
+
+        string CanCancelEvent()
+        {
+            return "";
+        }
+    }
+
+    //class DECISION_SSYD3 : DECISION
+    //{
+    //    Person Sponsor
+    //    {
+    //        get
+    //        {
+    //            return Offices.SG1.person;
+    //        }
+    //    }
+
+    //    public double affectCountryTax(double baseValue)
+    //    {
+    //        return -baseValue * 0.25;
+    //    }
+
+    //    void InitProcess()
+    //    {
+    //        ProcessAdd("Process1", 1);
+    //        ProcessAdd("Process2", 2);
+    //        ProcessAdd("Process3", 3);
+    //    }
+
+    //    bool IsVisiable()
+    //    {
+    //        return true;
+    //    }
+
+    //    bool CanPublish()
+    //    {
+    //        if (Sponsor.faction != Factions.SHI)
+    //        {
+    //            return false;
+    //        }
+
+    //        int powerPercent = Factions.SHI.powerPercent;
+    //        if (powerPercent < 50)
+    //        {
+    //            return false;
+    //        }
+
+    //        return true;
+    //    }
+
+    //    bool CanCancel()
+    //    {
+    //        if (Sponsor.faction == Factions.SHI)
+    //        {
+    //            return false;
+    //        }
+
+    //        int powerPercent = Factions.SHI.powerPercent;
+    //        if (powerPercent > 30)
+    //        {
+    //            return false;
+    //        }
+
+    //        return true;
+    //    }
+
+    //    string CanPublishEvent()
+    //    {
+    //        return "EVENT_SG1_SUGGEST_SSYD3";
+    //    }
+
+    //    string CanCancelEvent()
+    //    {
+    //        return "";
+    //    }
+    //}
+
     //class DECISION_SSYD2 : DECISION
     //{
     //    Person Sponsor

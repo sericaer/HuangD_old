@@ -110,7 +110,7 @@ public partial class MyGame
 
                 foreach (var elem in DecisionProcess.current)
                 {
-                    var decision = StreamManager.decisionDict[elem.name];
+                    var decision = HuangDAPI.DECISION.All[elem.name];
                     if (elem.state == DecisionProcess.ENUState.Published && decision.funcAffectEmperorHeath != null)
                     {
                         rslt.Add(new Tuple<string, int>(decision._funcTitle(), decision.funcAffectEmperorHeath(baseValue)));
