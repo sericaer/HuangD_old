@@ -71,7 +71,6 @@ namespace native
 
         string CanCancelEvent()
         {
-            CountryFlags.SSYD1.Enabled();
             return "";
         }
     }

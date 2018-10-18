@@ -48,7 +48,7 @@ namespace HuangDAPI
                                                   });
             _funcProcFinish = GetDelegateInSubEvent<Func<bool>>("ProcFinish", null);
 
-            _funcEnableEvent = GetDelegateInSubEvent<Func<string>>("EnableEvent",
+            _funcCanPublishEvent = GetDelegateInSubEvent<Func<string>>("CanPublishEvent",
                                                   () =>
                                                   {
                                                       return "";
@@ -97,9 +97,9 @@ namespace HuangDAPI
             }
         }
 
-        public bool IsEnable()
+        public bool CanPublish()
         {
-            return IsSponsorVaild() && _funcEnable();
+            return IsSponsorVaild() && _funcCanPublish();
 
         }
 
@@ -130,7 +130,7 @@ namespace HuangDAPI
         public Func<string> _funcTitle;
         public Func<string> _funcDesc;
 
-        public Func<string> _funcEnableEvent;
+        public Func<string> _funcCanPublishEvent;
 
         public Func<string> _funcDisableEvent;
 

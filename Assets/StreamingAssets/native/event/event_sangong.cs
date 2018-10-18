@@ -20,7 +20,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                Decision.DECISION_SSYD1.Start();
+                Decision.DECISION_SSYD1.Publish();
             }
         }
         class OPTION2 : Option

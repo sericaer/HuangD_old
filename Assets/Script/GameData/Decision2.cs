@@ -35,18 +35,14 @@ public partial class MyGame
                 process.Increase();
             }
 
-            //_current.RemoveAll(x => x.IsFinish);
-
             foreach (var decision in StreamManager.decisionDict.Values)
             {
-                if (decision.IsEnable() && _current.Find(x => x.name != decision._funcTitle()) == null)
+                if (decision.CanPublish() && _current.Find(x => x.name == decision.GetType().Name) == null)
                 {
                     var newDecisionProcess = new DecisionProcess(decision);
 
-                    string eventName = decision._funcEnableEvent();
+                    string eventName = decision._funcCanPublishEvent();
                     GameFrame.eventManager.InsertDecisionEvent(eventName, newDecisionProcess.name, null, newDecisionProcess);
-
-                    _current.Add(newDecisionProcess);
                 }
             }
         }
@@ -103,6 +99,8 @@ public partial class MyGame
         public DecisionProcess(DECISION decision)
         {
             name = decision.GetType().Name;
+            Debug.Log("new decision:" + name);
+
             lastTimes = -1;
             IsFinish = false;
 
@@ -114,6 +112,8 @@ public partial class MyGame
             {
                 maxTimes += elem.Item2;
             }
+
+            _current.Add(this);
         }
 
         public void Publish()

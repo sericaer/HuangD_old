@@ -10,7 +10,7 @@ namespace native
         {
             if (!CountryFlags.YHSX.IsEnabled())
             {
-                if (Probability.IsProbOccur(1.0))
+                if (Probability.IsProbOccur(0.001))
                 {
                     return true;
                 }
