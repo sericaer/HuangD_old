@@ -242,11 +242,6 @@ public class EventManager
         }
 
         decisionEvent = new GMEvent(StreamManager.eventDict[key], param, param);
-        //((GMEvent)decisionEvent).ie.AssocDecision = new Decision(decision);
-        ((GMEvent)decisionEvent).ie.Decision = new ExpandoObject();
-
-        var initDict = (IDictionary<string, object>)((GMEvent)decisionEvent).ie.Decision;
-        initDict.Add(process.name, process);
     }
 
     //public void Insert(List<List<object>> table)

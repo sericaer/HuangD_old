@@ -184,13 +184,13 @@ namespace HuangDAPI
             //    }
             //}
 
-            public dynamic Decision
-            {
-                get
-                {
-                    return OUTTER.Decision;
-                }
-            }
+            //public dynamic Decision
+            //{
+            //    get
+            //    {
+            //        return OUTTER.Decision;
+            //    }
+            //}
 
             public delegate void DelegateSelected(ref string nxtEvent, ref object param);
             public delegate string DelegatecDesc();
@@ -203,6 +203,8 @@ namespace HuangDAPI
             public dynamic OUTTER;
 
             public dynamic PreData;
+
+            public static dynamic Decision = StreamManager.Decision;
 
             protected string desc;
 

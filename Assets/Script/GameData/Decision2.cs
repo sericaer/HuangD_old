@@ -35,16 +35,17 @@ public partial class MyGame
                 process.Increase();
             }
 
-            foreach (var decision in HuangDAPI.DECISION.All.Values)
-            {
-                if (decision.CanPublish() && _current.Find(x => x.name == decision.GetType().Name) == null)
-                {
-                    var newDecisionProcess = new DecisionProcess(decision);
 
-                    string eventName = decision._funcCanPublishEvent();
-                    GameFrame.eventManager.InsertDecisionEvent(eventName, newDecisionProcess.name, null, newDecisionProcess);
-                }
-            }
+            //foreach (var decision in HuangDAPI.DECISION.All.Values)
+            //{
+            //    if (decision.CanPublish() && _current.Find(x => x.name == decision.GetType().Name) == null)
+            //    {
+            //        var newDecisionProcess = new DecisionProcess(decision);
+
+            //        string eventName = decision._funcCanPublishEvent();
+            //        GameFrame.eventManager.InsertDecisionEvent(eventName, newDecisionProcess.name, null, newDecisionProcess);
+            //    }
+            //}
         }
 
         public enum ENUState
@@ -96,7 +97,7 @@ public partial class MyGame
             return decision._funcCanCancel();
         }
 
-        public bool IsUnPublish()
+        public bool IsUnPublished()
         {
             return state == ENUState.UnPublish;
         }
@@ -113,6 +114,7 @@ public partial class MyGame
 
             lastTimes = -1;
             IsFinish = false;
+            IsCanPublish = false;
 
             currProcessName = decision.processTimes[0].Item1;
             currProcessTimes = 0;
@@ -146,6 +148,7 @@ public partial class MyGame
 
             lastTimes = -1;
             IsFinish = false;
+            IsCanPublish = false;
 
             var decision = HuangDAPI.DECISION.All[name];
 
@@ -161,6 +164,15 @@ public partial class MyGame
 
         private void Increase()
         {
+            if (state == ENUState.UnPublish)
+            {
+                if (!IsCanPublish && CanPublish())
+                {
+                    GameFrame.eventManager.InsertDecisionEvent(HuangDAPI.DECISION.All[name]._funcCanPublishEvent(), name, null, null);
+                    IsCanPublish = true;
+                }
+            }
+
             if(state != ENUState.Publishing)
             {
                 return;
@@ -208,6 +220,9 @@ public partial class MyGame
 
         [SerializeField]
         public bool IsFinish;
+
+        [SerializeField]
+        public bool IsCanPublish;
 
         [SerializeField]
         static List<DecisionProcess> _current = new List<DecisionProcess>();

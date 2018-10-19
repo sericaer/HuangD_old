@@ -20,7 +20,7 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                Decision.DECISION_SSYD1.Publish();
+                Decisions.DECISION_SSYD1.Publish();
             }
         }
         class OPTION2 : Option
@@ -43,19 +43,19 @@ namespace native
         {
             void Selected(ref string nxtEvent, ref object param)
             {
-                Decision.DECISION_SSYD2.Publish();
+                Decisions.DECISION_SSYD2.Publish();
             }
         }
         class OPTION2 : Option
         {
             bool IsVisable()
             {
-                return Decision.DECISION_SSYD1.IsUnPublished(); 
+                return Decisions.DECISION_SSYD1.IsUnPublished(); 
             }
 
             void Selected(ref string nxtEvent, ref object param)
             {
-                Decision.DECISION_SSYD1.Publish();
+                Decisions.DECISION_SSYD1.Publish();
             }
         }
     }

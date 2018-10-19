@@ -151,11 +151,10 @@ public class StreamManager
         string[] defineSourceCodes = GenerateByDefine(path + "/define");
         string FlagSourceCodes   = GenerateFlags(path + "/flag");
         string DecisionSourceCodes   = GenerateDecision(path + "/decision", defineSourceCodes);
-        Debug.Log(DecisionSourceCodes);
+
 
         List<string> sourceCodes = defineSourceCodes.ToList();
         sourceCodes.Add(FlagSourceCodes);
-        sourceCodes.Add(DecisionSourceCodes);
 
         foreach(string filename in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
         {
@@ -164,6 +163,8 @@ public class StreamManager
             sourceCodes.Add(script);
         }
 
+        sourceCodes.Add(DecisionSourceCodes);
+
         CSharpCompiler.ScriptBundleLoader.IScriptBundle bd = csharpLoader.LoadAndWatchSourceBundle(sourceCodes.ToArray());
 
         Types = bd.assembly.GetTypes();
@@ -171,6 +172,7 @@ public class StreamManager
         LoadName(Types);
         LoadEvent(Types);
         LoadDefines(Types);
+        LoadDecision(Types);
 
         Debug.Log(string.Format("*****************End Load mod {0}********************", path));
     }
@@ -226,6 +228,7 @@ public class StreamManager
 
     private string GenerateDecision(string path, string[] defines)
     {
+        //return "";
         List<string> defineSourceCodes = defines.ToList();
 
         string[] fileNames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
@@ -244,11 +247,15 @@ public class StreamManager
         var fields = new List<Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>>();
         foreach (Type type in DecisonTypes)
         {
-            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(type.ToString().Replace("native.", ""), typeof(HuangDAPI.DECISION), type, null, null));
+            fields.Add(new Tuple<string, Type, Type, List<object>, CodeAttributeDeclaration>(type.Name, typeof(MyGame.DecisionProcess), typeof(MyGame.DecisionProcess), new List<object> { "new " + type.ToString() + "()" }, null));
         }
 
         CodeDomGen sourceCodeCreater = new CodeDomGen("Decisions", fields);
-        return sourceCodeCreater.Create();
+        string source = sourceCodeCreater.Create();
+        source = source.Replace("\"", "");
+
+        Debug.Log(source);
+        return source;
     }
 
     private string[] GenerateByDefine(string path)
@@ -423,6 +430,21 @@ public class StreamManager
         //officeDefineType = types.Where(x => x.Name == "OFFICE_DEFINE").Single();
     }
 
+    private void LoadDecision(Type[] types)
+    {
+        Type[] DecisonTypes = types.Where(x => x.BaseType == typeof(DECISION)).ToArray();
+        foreach (Type type in DecisonTypes)
+        {
+            DECISION decision = Activator.CreateInstance(type) as DECISION;
+            var decisionProcess = new MyGame.DecisionProcess(decision);
+
+            var initDict = (IDictionary<string, object>)Decision;
+            initDict.Add(decisionProcess.name, decisionProcess);
+        }
+
+        Debug.Log("Load decision count:" + decisionDict.Count);
+    }
+
     private void AnaylizeDynastyName(Type[] types)
     {
         Type type = types.Where(x => x.Name == "DynastyName").First();
@@ -561,6 +583,7 @@ public class StreamManager
     }
     //public static Type officeDefineType = null;
 
+
     public static Type[] Types;
 
     public static Type OfficesType = null;
@@ -578,6 +601,8 @@ public class StreamManager
     public static Dictionary<string, dynamic> countryFlagDict = new Dictionary<string, dynamic>();
 
     public static UIDesc uiDesc = new UIDesc("CHI");
+
+    public static dynamic Decision = new ExpandoObject();
 
     public static class ECONOMY
     {
